@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ScalaCompilerConfiguration">
+    <option name="separateProdTestSources" value="true" />
+    <profile name="sbt 1" modules="07-Paradigmi di Programmazione e Sviluppo (6).PPS-25-ProtoFlow,07-Paradigmi di Programmazione e Sviluppo (6).PPS-25-ProtoFlow.main,07-Paradigmi di Programmazione e Sviluppo (6).PPS-25-ProtoFlow.test,PPS-25-ProtoFlow,PPS-25-ProtoFlow.main,PPS-25-ProtoFlow.test,ProtoFlow,ProtoFlow.main,ProtoFlow.main~1,ProtoFlow.test,ProtoFlow.test~1" />
+  </component>
+</project>
