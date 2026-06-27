@@ -50,8 +50,8 @@ object Init
 
     // Processo
     path = "protoFlow" + fs + "documentazione" + fs + "process"
-    createFile(path + fs + "Meeting_iniziale", "")
-    createFile(path + fs + "Product_Backlog", "")
+    createFile(path + fs + "Meeting Iniziale", "")
+    createFile(path + fs + "Product Backlog", "")
 
     path = "protoFlow" + fs + "documentazione" + fs + "process" + fs + "sprint" + fs + "sprint 0"
     createFile(path + fs + "1 Sprint Planning Meeting", "")
