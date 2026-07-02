@@ -8,7 +8,11 @@ lazy val root = (project in file("."))
   )
 
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules" %% "scala-xml" % "2.4.0"
+  "org.scala-lang.modules" %% "scala-xml" % "2.4.0",
+  "org.scalafx" %% "scalafx" % "21.0.0-R32",
+  "junit" % "junit" % "4.13.2" % Test,
+  "com.github.sbt" % "junit-interface" % "0.13.3" % Test
 )
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.20" % Test
