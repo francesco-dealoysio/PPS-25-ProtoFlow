@@ -55,10 +55,8 @@ object Login extends SimpleSwingApplication {
         costraints
       }
 
-      // Logo
       val logoLbl = new Label("PF") {
         preferredSize = new Dimension(40, 40)
-        //background = new Color(255, 0, 0)
         background = Color.LIGHT_GRAY
         foreground = Color.BLACK
         opaque = true // Needed for background color to be visible
@@ -69,13 +67,11 @@ object Login extends SimpleSwingApplication {
       //layout(logoLbl) = c
       add(logoLbl, gbpc(0, 0, 1, 2, 0, 0, Both, Center, new Insets(5, 4, 0, 0)))
 
-      // Title
       val titleLbl = new Label("ProtoFlow") {
         font = new Font("Arial", Font.PLAIN, 16)
       }
       add(titleLbl, gbpc(1, 0, 2, 1, 0, 0, Both, Center, new Insets(5, 4, 0, 5)))
 
-      // Description
       val descriptionLbl = new Label("Enterprise Document Protocol System") {
         peer.setVerticalAlignment(javax.swing.SwingConstants.CENTER)
         peer.setFont(new Font("Arial", Font.PLAIN, 12))
@@ -83,42 +79,35 @@ object Login extends SimpleSwingApplication {
       //descriptionLbl.font = new Font("Arial", Font.PLAIN, 12) // 18px font size
       add(descriptionLbl, gbpc(1, 1, 2, 1, 0, 0, Both, Center, new Insets(5, 4, 0, 5)))
 
-      // UsernameLbl
       val usernameLbl = Component.wrap(new MyJLabel("Username", 80, 25, LEFT));
       add(usernameLbl, gbpc(0, 2, 1, 1, 0, 0))
 
-      // UsernameFld
       var javaUsernameFld = MyJTextField(100, 25, 15)
       var usernameFld = Component.wrap(javaUsernameFld)
       add(usernameFld, gbpc(1, 2, 1, 1, 0, 0))
 
-      // PasswordLbl
       val passwordLbl = Component.wrap(new MyJLabel("Password", 80, 25, LEFT));
       add(passwordLbl, gbpc(0, 3, 1, 1, 0, 0))
 
-      // PasswordFld
       val passwordFld = new PasswordField(10)
       add(passwordFld, gbpc(1, 3, 1, 1, 0, 0))
 
-      // ResetBtn
       val resetBtn = new Button("Reset")
       resetBtn.focusable = false
       add(resetBtn, gbpc(2, 2, 1, 2, 0, 0, Both, Center, new Insets(5, 4, 0, 5)))
 
-      // AccessBtn
-      val submitBtn = new Button("Accedi")
-      add(submitBtn, gbpc(0, 4, 3, 1, 0, 0, Both, Center, new Insets(5, 4, 0, 5)))
+      val accessBtn = new Button("Accedi")
+      add(accessBtn, gbpc(0, 4, 3, 1, 0, 0, Both, Center, new Insets(5, 4, 0, 5)))
 
-      // RegistrationBtn
       val registrationBtn = new Button("Registrati")
       add(registrationBtn, gbpc(0, 5, 3, 1, 0, 0, Both, Center, new Insets(5, 4, 0, 5)))
 
-      listenTo(submitBtn)
+      listenTo(accessBtn)
       listenTo(resetBtn)
       listenTo(registrationBtn)
 
       reactions += {
-        case ButtonClicked(`submitBtn`) =>
+        case ButtonClicked(`accessBtn`) =>
           val username = usernameFld.peer.asInstanceOf[MyJTextField].getText.trim
           val password = passwordFld.password.mkString.trim
           if (username.nonEmpty && password.nonEmpty)
