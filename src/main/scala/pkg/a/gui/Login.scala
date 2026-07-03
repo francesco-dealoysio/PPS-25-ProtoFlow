@@ -125,7 +125,6 @@ object Login extends SimpleSwingApplication {
             //Dialog.showMessage(this, s"Username: $username\nPassword: $password", title = "Submitted")
             val home = new HomepageAdmin
             home.visible = true
-          //new Homepage().visible = true
           else
             Dialog.showMessage(this, "Invalid input!", title = "Error", Dialog.Message.Error)
         case ButtonClicked(`resetBtn`) =>
@@ -133,7 +132,9 @@ object Login extends SimpleSwingApplication {
           passwordFld.peer.setText("")
           javaUsernameFld.requestFocusInWindow()
         case ButtonClicked(`registrationBtn`) =>
-          Dialog.showMessage(this, "Registration functionality\nis in progress!", title = "Error", Dialog.Message.Info)
+          //Dialog.showMessage(this, "Registration functionality\nis in progress!", title = "Error", Dialog.Message.Info)
+          val registration = new Registration
+          registration.visible = true
         case _ =>
           javaUsernameFld.requestFocusInWindow()
       }
