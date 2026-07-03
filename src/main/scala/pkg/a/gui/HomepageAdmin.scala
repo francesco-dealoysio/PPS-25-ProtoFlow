@@ -5,12 +5,10 @@ import scala.swing.{BorderPanel, Button, Dimension, Label, MainFrame}
 import scala.swing.event.ButtonClicked
 
 class HomepageAdmin extends MainFrame {
-  title = "Administrator Homepage"
-  contents = new Label("Hello from App 2!")
+  title = "ProtoFlow - Administrator Homepage"
   val screenSize = Toolkit.getDefaultToolkit.getScreenSize
   preferredSize = screenSize
-
-
+  
   val label = new Label("Hello from Administrator Homepage!")
   val closeButton = new Button("Close")
 

@@ -23,7 +23,7 @@ object Login extends SimpleSwingApplication {
 
   def top: Frame = new MainFrame {
     val defaultSize: Dimension = new Dimension(330, 220)
-    title = "ProtoFlow - Portale Gestione Protocollo"
+    title = "ProtoFlow - Portale"
 
     //minimumSize = new Dimension(420, 280)
     preferredSize = defaultSize

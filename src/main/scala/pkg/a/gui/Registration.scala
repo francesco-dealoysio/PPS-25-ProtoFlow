@@ -6,11 +6,9 @@ import scala.swing.event.ButtonClicked
 
 class Registration extends MainFrame {
   title = "ProtoFlow - Registration"
-  //contents = new Label("Hello from App 2!")
   val screenSize = Toolkit.getDefaultToolkit.getScreenSize
   preferredSize = screenSize
-
-
+  
   val label = new Label("Hello from Registration page!")
   val closeButton = new Button("Close")
 
