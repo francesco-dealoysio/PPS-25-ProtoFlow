@@ -3,7 +3,6 @@ package pkg.c.data
 import java.io.*
 import java.nio.file.{Path, Paths}
 import java.util.Properties
-//import scala.util.Properties
 import scala.io.Source
 import scala.jdk.CollectionConverters.*
 
@@ -102,32 +101,10 @@ object Properties
     try
       val propsMap: Map[String, String] = props.asScala.toMap
       propsMap.foreach { case (k, v) => println(s"$k = $v") }
-      //props.asScala.toMap.foreach { case (k, v) => println(s"$k = $v") }
-      //props.asScala.toList.foreach { case (k, v) => println(s"$k = $v") }
-      /*
-          // Option 1: Iterate over keys
-          for (key <- props.stringPropertyNames().asScala) {
-            println(s"$key = ${props.getProperty(key)}")
-          }
-  
-          // Option 2: Iterate over entries
-          for ((key, value) <- props.asScala) {
-            println(s"$key = $value")
-          }
-      */
+
     catch
       case e: IOException =>
         println(s"Error in displayProperties: ${e.getMessage}")
   
   @main def tryHandleProperties: Unit =
-  /* test in PropertiesTest.scala */
-  
-  /*
-    val filePath = "protoflow.properties"
-  
-    // test displayPropsFileProperties
-    displayPropsFileProperties(filePath)
-  
-    // test displayProperties
-    displayProperties(getPropsFileProperties(filePath))
-  */
+    println("Tested in PropertiesTest.scala")

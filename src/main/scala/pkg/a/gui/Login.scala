@@ -22,14 +22,10 @@ import javax.swing.SwingConstants.*
 object Login extends SimpleSwingApplication {
 
   def top: Frame = new MainFrame {
-    val defaultSize: Dimension = new Dimension(330, 220)
     title = "ProtoFlow - Portale"
-
-    //minimumSize = new Dimension(420, 280)
-    preferredSize = defaultSize
+    preferredSize = new Dimension(330, 220)
     resizable = false
 
-    // Create the GridBagPanel
     contents = new GridBagPanel {
 
       def gbpc(
@@ -59,12 +55,9 @@ object Login extends SimpleSwingApplication {
         preferredSize = new Dimension(40, 40)
         background = Color.LIGHT_GRAY
         foreground = Color.BLACK
-        opaque = true // Needed for background color to be visible
-        // Apply a line border (red, 2px thick)
-        //border = BorderFactory.createLineBorder(Color.RED, 1)
+        opaque = true
         peer.setBorder(new RoundedBorder(10, Color.GRAY))
       }
-      //layout(logoLbl) = c
       add(logoLbl, gbpc(0, 0, 1, 2, 0, 0, Both, Center, new Insets(5, 4, 0, 0)))
 
       val titleLbl = new Label("ProtoFlow") {
@@ -76,7 +69,6 @@ object Login extends SimpleSwingApplication {
         peer.setVerticalAlignment(javax.swing.SwingConstants.CENTER)
         peer.setFont(new Font("Arial", Font.PLAIN, 12))
       }
-      //descriptionLbl.font = new Font("Arial", Font.PLAIN, 12) // 18px font size
       add(descriptionLbl, gbpc(1, 1, 2, 1, 0, 0, Both, Center, new Insets(5, 4, 0, 5)))
 
       val usernameLbl = Component.wrap(new MyJLabel("Username", 80, 25, LEFT));
@@ -111,9 +103,12 @@ object Login extends SimpleSwingApplication {
           val username = usernameFld.peer.asInstanceOf[MyJTextField].getText.trim
           val password = passwordFld.password.mkString.trim
           if (username.nonEmpty && password.nonEmpty)
-            //Dialog.showMessage(this, s"Username: $username\nPassword: $password", title = "Submitted")
-            val home = new HomepageAdmin
-            home.visible = true
+            // call check credentials
+            if true then
+              val home = new HomepageAdmin
+              home.visible = true
+            else
+              Dialog.showMessage(this, "Access denied!", title = "Error", Dialog.Message.Error)
           else
             Dialog.showMessage(this, "Invalid input!", title = "Error", Dialog.Message.Error)
         case ButtonClicked(`resetBtn`) =>
@@ -121,13 +116,11 @@ object Login extends SimpleSwingApplication {
           passwordFld.peer.setText("")
           javaUsernameFld.requestFocusInWindow()
         case ButtonClicked(`registrationBtn`) =>
-          //Dialog.showMessage(this, "Registration functionality\nis in progress!", title = "Error", Dialog.Message.Info)
           val registration = new Registration
           registration.visible = true
         case _ =>
           javaUsernameFld.requestFocusInWindow()
       }
-
     }
 
     pack()
