@@ -106,5 +106,5 @@ object Properties
       case e: IOException =>
         println(s"Error in displayProperties: ${e.getMessage}")
   
-  @main def tryHandleProperties: Unit =
+  @main def tryHandleProperties(): Unit =
     println("Tested in PropertiesTest.scala")
