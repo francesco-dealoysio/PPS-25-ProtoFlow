@@ -28,8 +28,9 @@ object Properties:
       props.store(new FileOutputStream(filePath),"")
     catch
       case e: IOException =>
-        println(s"Error in setPropsFileProperty: ${e.getMessage}")
-  
+        //println(s"Error in setPropsFileProperty: ${e.getMessage}")
+        println(s"Error in setPropsFileProperty: ${filePath}")
+
   /* Restituisce il valore corrispondente alla chiave key o "<not set>"S se la chiave non esiste */
   def getPropsFileProperty(filePath: String, key: String): String =
     val props = new Properties()
@@ -108,3 +109,4 @@ object Properties:
   
   @main def tryHandleProperties(): Unit =
     println("Tested in PropertiesTest.scala")
+    displayPropsFileProperties("src/main/resources/protoflow.properties")

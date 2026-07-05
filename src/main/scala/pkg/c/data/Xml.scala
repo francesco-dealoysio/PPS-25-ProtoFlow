@@ -39,8 +39,8 @@ object Xml:
   @main def tryXml(): Unit =
 
     val fs = java.io.File.separator
-    val databaseFolder = getPropsFileProperty("protoflow.properties", "database.folder")
-
+    val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
+    val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
 /*
     // test writeXML
     writeXML(databaseFolder + fs + "accounts.xml", DummyData.accounts)
@@ -74,7 +74,5 @@ object Xml:
       println(s"Selected: ${p.cognome}")
     println
 
-    for (record <- accounts) {
-      //println(record.getClass.getName)
+    for (record <- accounts)
       println(record.asInstanceOf[Account].cognome)
-    }

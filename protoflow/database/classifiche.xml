@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<classifiche>
+    <record>
+      <id>1</id>
+      <classifica>presidenza</classifica>
+    </record>
+    <record>
+      <id>2</id>
+      <classifica>segreteria</classifica>
+    </record>
+    <record>
+      <id>3</id>
+      <classifica>amministrazione</classifica>
+    </record>
+    <record>
+      <id>4</id>
+      <classifica>personale</classifica>
+    </record>
+    <record>
+      <id>5</id>
+      <classifica>materiali</classifica>
+    </record>
+    <record>
+      <id>6</id>
+      <classifica>infrastrutture</classifica>
+    </record>
+    <record>
+      <id>7</id>
+      <classifica>addestramento</classifica>
+    </record>
+    <record>
+      <id>8</id>
+      <classifica>informatica</classifica>
+    </record>
+  </classifiche>

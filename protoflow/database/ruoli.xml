@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ruoli>
+    <record>
+      <id>1</id>
+      <ruolo>admin</ruolo>
+    </record>
+    <record>
+      <id>2</id>
+      <ruolo>oper</ruolo>
+    </record>
+    <record>
+      <id>3</id>
+      <ruolo>viewer</ruolo>
+    </record>
+  </ruoli>

@@ -39,7 +39,7 @@ object Login extends SimpleSwingApplication {
     preferredSize = new Dimension(330, 220)
     resizable = false
 
-    val image: BufferedImage = loadImage("message.jpg")
+    val image: BufferedImage = loadImage("img/message.jpg")
     iconImage = image
 
     contents = new GridBagPanel {
@@ -67,11 +67,57 @@ object Login extends SimpleSwingApplication {
         costraints
       }
 
+      def getResourcePath(filePathName: String): String =
+        import java.net.URL
+
+        val resourceUrl: URL | Null = getClass.getClassLoader.getResource(filePathName)
+
+        if resourceUrl == null then
+          println(s"Risorsa '$filePathName' non trovata nel classpath.")
+          //Dialog.showMessage(this, s"Risorsa '$filePathName' non trovata nel classpath.", title = "Debug", Dialog.Message.Plain)
+        else
+          println(s"URL della risorsa: $resourceUrl xxxxx")
+          //Dialog.showMessage(this, s"URL della risorsa: $resourceUrl", title = "Debug", Dialog.Message.Plain)
+
+        resourceUrl.toString
+/*
+      def getXmlFile(filePathName: String): Unit =
+        val stream = Option(getClass.getClassLoader.getResourceAsStream(filePathName))
+        println(stream.getClass.getName)
+        Dialog.showMessage(this, stream.getClass.getName, title = "Debug", Dialog.Message.Plain)
+        Using(stream) { is =>
+          XML.load(is)
+        }.get
+*/
+      def readPropsFile: Unit =
+        import scala.io.Source
+
+        val resourceStream = getClass.getResourceAsStream("/protoflow.properties")
+        if resourceStream == null then
+          println("Risorsa non trovata!")
+          Dialog.showMessage(this, "Risorsa non trovata!", title = "Debug", Dialog.Message.Plain)
+        else
+          try
+            val content = Source.fromInputStream(resourceStream).mkString
+            Dialog.showMessage(this, content, title = "Debug", Dialog.Message.Plain)
+            println("Contenuto del file:")
+            println(content)
+          finally
+            resourceStream.close()
+
       def checkCredentials(username: String, password: String): AnyRef =
         var result: Account = null
         val fs = java.io.File.separator
-        val databaseFolder = getPropsFileProperty("protoflow.properties", "database.folder")
+        val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
+        val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
+
+        // test
+        //Dialog.showMessage(this, baseFolder, title = "Debug", Dialog.Message.Plain)
+        //Dialog.showMessage(this, databaseFolder, title = "Debug", Dialog.Message.Plain)
+        // end test
+
         val accounts = loadXML(databaseFolder + fs + "accounts.xml", classOf[Account])
+        //val accounts = loadXML(getResourcePath("database" + fs + "accounts.xml"), classOf[Account])
         val found = accounts.map(a => a.asInstanceOf[Account]).filter(_.username == username)
 
         if (found != Nil && found(0).password == md5(password))

@@ -50,7 +50,7 @@ object Util:
 
     // test loadImage
     print("\nTest loadImage:\n\t")
-    val image = loadImage("message.jpg")
+    val image = loadImage("img/message.jpg")
 
     // test md5
     println("\nTest md5:")
