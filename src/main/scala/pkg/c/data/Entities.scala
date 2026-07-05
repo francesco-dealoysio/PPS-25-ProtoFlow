@@ -1,7 +1,7 @@
 package pkg.c.data
 
 import scala.xml.Elem
-import pkg.d.util.md5
+import pkg.d.util.Util.md5
 
 object Entities:
 

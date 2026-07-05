@@ -30,6 +30,5 @@ object FileSystem:
       case e: IOException =>
         println(s"Errore in createFile: ${e.getMessage}")
 
-  @main def tryFileSystem: Unit =
-
+  @main def tryFileSystem(): Unit =
     println("")

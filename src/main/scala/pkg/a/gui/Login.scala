@@ -1,10 +1,12 @@
 package pkg.a.gui
 
 import pkg.d.util.{MyJLabel, MyJTextField, RoundedBorder}
+import pkg.d.util.Util.loadImage
+import pkg.d.util.Util.md5
+
 import pkg.c.data.Properties.*
 import pkg.c.data.Xml.*
 import pkg.c.data.Entities.*
-import pkg.d.util.md5
 
 import scala.swing.*
 import scala.swing.Component
@@ -12,6 +14,7 @@ import scala.swing.GridBagPanel.*
 import scala.swing.GridBagPanel.Fill.*
 import scala.swing.GridBagPanel.Anchor.*
 import scala.swing.event.*
+
 import java.awt.{Color, Dimension, Insets}
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
@@ -27,12 +30,17 @@ import javax.swing.SpringLayout.Constraints
 import javax.swing.text.*
 import javax.swing.SwingConstants.*
 
+import java.awt.image.BufferedImage
+
 object Login extends SimpleSwingApplication {
 
   def top: Frame = new MainFrame {
     title = "ProtoFlow - Portal"
     preferredSize = new Dimension(330, 220)
     resizable = false
+
+    val image: BufferedImage = loadImage("message.jpg")
+    iconImage = image
 
     contents = new GridBagPanel {
 
