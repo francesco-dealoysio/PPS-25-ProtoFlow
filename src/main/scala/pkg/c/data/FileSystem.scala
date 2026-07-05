@@ -4,7 +4,7 @@ import java.nio.file.{Files, Paths}
 import java.nio.charset.StandardCharsets
 import java.io.IOException
 
-object FileSystem
+object FileSystem:
 
   def createDirectory(dirPath: String): Unit =
     val path = Paths.get(dirPath)

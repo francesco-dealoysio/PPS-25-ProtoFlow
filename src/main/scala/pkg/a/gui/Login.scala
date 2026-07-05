@@ -1,6 +1,10 @@
 package pkg.a.gui
 
 import pkg.d.util.{MyJLabel, MyJTextField, RoundedBorder}
+import pkg.c.data.Properties.*
+import pkg.c.data.Xml.*
+import pkg.c.data.Entities.*
+import pkg.d.util.md5
 
 import scala.swing.*
 import scala.swing.Component
@@ -12,6 +16,10 @@ import java.awt.{Color, Dimension, Insets}
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.awt.Font
+
+import java.awt.Robot
+import java.awt.event.KeyEvent
+
 import javax.swing.border.AbstractBorder
 import javax.swing.BorderFactory
 import javax.swing.JComponent
@@ -22,7 +30,7 @@ import javax.swing.SwingConstants.*
 object Login extends SimpleSwingApplication {
 
   def top: Frame = new MainFrame {
-    title = "ProtoFlow - Portale"
+    title = "ProtoFlow - Portal"
     preferredSize = new Dimension(330, 220)
     resizable = false
 
@@ -51,6 +59,18 @@ object Login extends SimpleSwingApplication {
         costraints
       }
 
+      def checkCredentials(username: String, password: String): AnyRef =
+        var result: Account = null
+        val fs = java.io.File.separator
+        val databaseFolder = getPropsFileProperty("protoflow.properties", "database.folder")
+        val accounts = loadXML(databaseFolder + fs + "accounts.xml", classOf[Account])
+        val found = accounts.map(a => a.asInstanceOf[Account]).filter(_.username == username)
+
+        if (found != Nil && found(0).password == md5(password))
+          result = found(0)
+
+        result
+
       val logoLbl = new Label("PF") {
         preferredSize = new Dimension(40, 40)
         background = Color.LIGHT_GRAY
@@ -71,56 +91,90 @@ object Login extends SimpleSwingApplication {
       }
       add(descriptionLbl, gbpc(1, 1, 2, 1, 0, 0, Both, Center, new Insets(5, 4, 0, 5)))
 
-      val usernameLbl = Component.wrap(new MyJLabel("Username", 80, 25, LEFT));
+      val usernameLbl = Component.wrap(new MyJLabel("Username *", 80, 25, LEFT));
       add(usernameLbl, gbpc(0, 2, 1, 1, 0, 0))
 
       var javaUsernameFld = MyJTextField(100, 25, 15)
       var usernameFld = Component.wrap(javaUsernameFld)
       add(usernameFld, gbpc(1, 2, 1, 1, 0, 0))
 
-      val passwordLbl = Component.wrap(new MyJLabel("Password", 80, 25, LEFT));
+      val passwordLbl = Component.wrap(new MyJLabel("Password *", 80, 25, LEFT));
       add(passwordLbl, gbpc(0, 3, 1, 1, 0, 0))
 
       val passwordFld = new PasswordField(10)
       add(passwordFld, gbpc(1, 3, 1, 1, 0, 0))
 
-      val resetBtn = new Button("Reset")
-      resetBtn.focusable = false
-      add(resetBtn, gbpc(2, 2, 1, 2, 0, 0, Both, Center, new Insets(5, 4, 0, 5)))
+      val clearBtn = new Button("Clear")
+      clearBtn.focusable = false
+      clearBtn.peer.setMnemonic(KeyEvent.VK_C)
+      add(clearBtn, gbpc(2, 2, 1, 2, 0, 0, Both, Center, new Insets(5, 4, 0, 5)))
 
-      val accessBtn = new Button("Accedi")
+      val accessBtn = new Button("Access")
+      accessBtn.peer.setMnemonic(KeyEvent.VK_A)
       add(accessBtn, gbpc(0, 4, 3, 1, 0, 0, Both, Center, new Insets(5, 4, 0, 5)))
 
-      val registrationBtn = new Button("Registrati")
+      val registrationBtn = new Button("Registration")
+      registrationBtn.peer.setMnemonic(KeyEvent.VK_R)
       add(registrationBtn, gbpc(0, 5, 3, 1, 0, 0, Both, Center, new Insets(5, 4, 0, 5)))
 
+      listenTo(usernameFld.keys)
+      listenTo(passwordFld.keys)
+      listenTo(accessBtn.keys)
+      listenTo(registrationBtn.keys)
       listenTo(accessBtn)
-      listenTo(resetBtn)
+      listenTo(clearBtn)
       listenTo(registrationBtn)
 
       reactions += {
+
+        case KeyPressed(src, Key.Enter, _, _) =>
+          src match
+            case c: Component if c eq usernameFld =>
+              (new Robot()).keyPress(KeyEvent.VK_TAB)
+            case c: Component if c eq passwordFld =>
+              accessBtn.doClick()
+            case c: Component if c eq accessBtn =>
+              accessBtn.doClick()
+            case c: Component if c eq registrationBtn =>
+              registrationBtn.doClick()
+
         case ButtonClicked(`accessBtn`) =>
           val username = usernameFld.peer.asInstanceOf[MyJTextField].getText.trim
           val password = passwordFld.password.mkString.trim
           if (username.nonEmpty && password.nonEmpty)
-            // call check credentials
-            if true then
-              val home = new HomepageAdmin
-              home.visible = true
+            val obj = checkCredentials(username, password)
+            if (obj != null) then
+              val account = obj.asInstanceOf[Account]
+              val role = account.ruolo
+              val home = role match
+                case "admin" => new Homepage(account)
+                case "oper" => new Homepage(account)
+                case "viewer" => new Homepage(account)
+                case _ => null
+              if (home != null) then
+                home.visible = true
+              else
+                Dialog.showMessage(this, "Application Error: \"" + role + "\" role not found!", title = "Error", Dialog.Message.Error)
             else
               Dialog.showMessage(this, "Access denied!", title = "Error", Dialog.Message.Error)
           else
             Dialog.showMessage(this, "Invalid input!", title = "Error", Dialog.Message.Error)
-        case ButtonClicked(`resetBtn`) =>
+
+          javaUsernameFld.requestFocusInWindow()
+
+        case ButtonClicked(`clearBtn`) =>
           javaUsernameFld.setText("")
           passwordFld.peer.setText("")
           javaUsernameFld.requestFocusInWindow()
+
         case ButtonClicked(`registrationBtn`) =>
           val registration = new Registration
           registration.visible = true
-        case _ =>
           javaUsernameFld.requestFocusInWindow()
+
+        case _ =>
       }
+
     }
 
     pack()

@@ -6,7 +6,7 @@ import java.util.Properties
 import scala.io.Source
 import scala.jdk.CollectionConverters.*
 
-object Properties
+object Properties:
 
   /* Crea un file di Properties vuoto */
   def createPropsFile(filePath: String, comment: String): Unit =
