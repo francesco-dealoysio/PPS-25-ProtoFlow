@@ -12,7 +12,7 @@ object Init
 
   def init: Unit =
 
-    // Creazione file di configurazione
+    // Creazione file di configurazione nel folder corrente
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
     val databaseFolder = baseFolder + fs + "database"
@@ -20,7 +20,7 @@ object Init
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "base.folder", baseFolder)
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder", databaseFolder)
 
-    // Creazione struttura per i dati
+    // Creazione struttura per i dati nel folder corrente
     createDirectoryStructure
 
     // Struttura per la documentazione

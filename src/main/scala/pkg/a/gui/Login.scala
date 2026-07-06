@@ -66,7 +66,7 @@ object Login extends SimpleSwingApplication {
         costraints.insets = insets
         costraints
       }
-
+/*
       def getResourcePath(filePathName: String): String =
         import java.net.URL
 
@@ -80,15 +80,8 @@ object Login extends SimpleSwingApplication {
           //Dialog.showMessage(this, s"URL della risorsa: $resourceUrl", title = "Debug", Dialog.Message.Plain)
 
         resourceUrl.toString
-/*
-      def getXmlFile(filePathName: String): Unit =
-        val stream = Option(getClass.getClassLoader.getResourceAsStream(filePathName))
-        println(stream.getClass.getName)
-        Dialog.showMessage(this, stream.getClass.getName, title = "Debug", Dialog.Message.Plain)
-        Using(stream) { is =>
-          XML.load(is)
-        }.get
 */
+/*
       def readPropsFile: Unit =
         import scala.io.Source
 
@@ -104,20 +97,14 @@ object Login extends SimpleSwingApplication {
             println(content)
           finally
             resourceStream.close()
-
+*/
       def checkCredentials(username: String, password: String): AnyRef =
         var result: Account = null
         val fs = java.io.File.separator
         val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
         val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
 
-        // test
-        //Dialog.showMessage(this, baseFolder, title = "Debug", Dialog.Message.Plain)
-        //Dialog.showMessage(this, databaseFolder, title = "Debug", Dialog.Message.Plain)
-        // end test
-
         val accounts = loadXML(databaseFolder + fs + "accounts.xml", classOf[Account])
-        //val accounts = loadXML(getResourcePath("database" + fs + "accounts.xml"), classOf[Account])
         val found = accounts.map(a => a.asInstanceOf[Account]).filter(_.username == username)
 
         if (found != Nil && found(0).password == md5(password))

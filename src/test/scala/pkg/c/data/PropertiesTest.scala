@@ -7,6 +7,8 @@ import java.io.{File, IOException}
 import java.nio.file.{Files, Paths}
 import java.util.Properties
 
+import pkg.c.data.Properties.*
+
 class PropertiesTest:
 
   @Before
