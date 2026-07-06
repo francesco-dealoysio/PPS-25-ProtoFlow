@@ -12,6 +12,9 @@ object Init
 
   def init: Unit =
 
+    // Creazione struttura per i dati nel folder corrente
+    createDirectoryStructure
+
     // Creazione file di configurazione nel folder corrente
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
@@ -19,9 +22,6 @@ object Init
     createPropsFile(baseFolder + fs + "protoflow.properties", " ProtoFlow Configuration")
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "base.folder", baseFolder)
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder", databaseFolder)
-
-    // Creazione struttura per i dati nel folder corrente
-    createDirectoryStructure
 
     // Struttura per la documentazione
     createDirectory("protoflow" + fs + "documentazione")
@@ -96,6 +96,9 @@ object Init
     writeXML(databaseFolder + fs + "accounts.xml", DummyData.accounts)
     writeXML(databaseFolder + fs + "ruoli.xml", DummyData.ruoli)
     writeXML(databaseFolder + fs + "classifiche.xml", DummyData.classifiche)
+    writeXML(databaseFolder + fs + "registrazioni" + fs + "richieste.xml", DummyData.registrazioni)
+    writeXML(databaseFolder + fs + "registrazioni" + fs + "rifiutate.xml", DummyData.registrazioni)
+    writeXML(databaseFolder + fs + "registrazioni" + fs + "accettate.xml", DummyData.registrazioni)
 
   @main def tryInit: Unit =
     init
