@@ -2,10 +2,9 @@ package pkg.a.gui
 
 
 import pkg.c.data.guiStructures.{HomePageConfig, HomePageViewModel, MenuAction, Role}
-import scalafx.geometry.{Insets, Pos}
+import scalafx.geometry.Pos
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
-import scalafx.scene.text.Font
 
 object HomePageView:
 
@@ -16,7 +15,7 @@ object HomePageView:
            ): BorderPane =
 
     val contentArea = new StackPane:
-      padding = Insets(20)
+      styleClass += "content-area"
       children = Seq(dashboardContent())
 
     val sidebar = createSidebar(config, viewModel, contentArea)
@@ -29,21 +28,18 @@ object HomePageView:
 
   private def createHeader(config: HomePageConfig, currentUser: String): HBox =
     new HBox:
-      padding = Insets(15)
       alignment = Pos.CenterLeft
-      spacing = 20
-      style = "-fx-background-color: #ffffff; -fx-border-color: #e5e7eb;"
+      styleClass += "app-header"
 
       children = Seq(
         new Label("☰"):
-          font = Font(22),
+          styleClass += "app-logo",
         new Label(config.applicationTitle):
-          font = Font.font(20)
-          style = "-fx-font-weight: bold;",
+          styleClass += "app-title",
         new Region:
           HBox.setHgrow(this, Priority.Always),
         new Label(s"$currentUser\n${config.roleDescription}"):
-          style = "-fx-text-fill: #1f2937;"
+          styleClass += "user-info"
       )
 
   private def roleDescription(role: Role): String =
@@ -58,26 +54,24 @@ object HomePageView:
       new Button(item.label):
         maxWidth = Double.MaxValue
         alignment = Pos.CenterLeft
-        style =
-          "-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 12;"
+        styleClass += "sidebar-button"
+
         onAction = _ =>
           viewModel.select(item.action)
           contentArea.children = Seq(contentFor(item.action))
 
     new VBox:
       prefWidth = 230
-      padding = Insets(20, 10, 20, 10)
-      spacing = 8
-      style = "-fx-background-color: linear-gradient(to bottom, #08213f, #031526);"
+      styleClass += "sidebar"
       children = buttons
 
   private def createFooter(currentUser: String, config: HomePageConfig): HBox =
     new HBox:
-      padding = Insets(10)
       alignment = Pos.CenterRight
-      style = "-fx-background-color: #f9fafb; -fx-border-color: #e5e7eb;"
+      styleClass += "app-footer"
       children = Seq(
-        new Label(s"👤 $currentUser (${config.roleDescription})    Data e ora dinamici")
+        new Label(s"👤 $currentUser (${config.roleDescription})    Data e ora dinamici"):
+          styleClass += "app-footer"
       )
 
   private def contentFor(action: MenuAction): Pane =
@@ -99,27 +93,28 @@ object HomePageView:
 
   private def placeholder(title: String): VBox =
     new VBox:
-      padding = Insets(30)
+      styleClass += "placeholder-container"
       children = Seq(
         new Label(title):
-          font = Font.font(26)
+          styleClass += "placeholder-title"
       )
 
-  private def dashboardContent(): VBox =
+  private def dashboardContent(): VBox = {
+    val title = new Label("Dashboard"):
+      styleClass += "page-title"
+
     new VBox:
-      spacing = 20
-      padding = Insets(20)
+      styleClass += "dashboard-container"
       children = Seq(
-        new Label("Dashboard"):
-          font = Font.font(28)
-          style = "-fx-font-weight: bold;",
-          createCards(),
+        title,
+        createCards(),
         createDocumentsTable()
       )
+  }
 
   private def createCards(): HBox =
     new HBox:
-      spacing = 20
+      styleClass += "cards-container"
       children = Seq(
         statCard("Totale Documenti", "1.248", "+12% da ieri"),
         statCard("In Carico", "32", "+5 da ieri"),
@@ -130,21 +125,19 @@ object HomePageView:
   private def statCard(title: String, value: String, subtitle: String): VBox =
     new VBox:
       prefWidth = 190
-      padding = Insets(15)
-      spacing = 8
-      style = "-fx-background-color: white; -fx-border-color: #e5e7eb; -fx-background-radius: 8; -fx-border-radius: 8;"
+      styleClass += "stat-card"
       children = Seq(
         new Label(title):
-          style = "-fx-text-fill: #6b7280;",
+          styleClass += "stat-card-title",
         new Label(value):
-          font = Font.font(26)
-          style = "-fx-font-weight: bold;",
+          styleClass += "stat-card-value",
         new Label(subtitle):
-          style = "-fx-text-fill: #22c55e;"
+          styleClass += "stat-card-subtitle"
       )
 
   private def createDocumentsTable(): TableView[DocumentRow] =
     val table = new TableView[DocumentRow]()
+    table.styleClass += "documents-table"
 
     val protocollo = new TableColumn[DocumentRow, String]("Protocollo")
     protocollo.cellValueFactory = _.value.protocolloProperty

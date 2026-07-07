@@ -1,0 +1,116 @@
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-background-color: #f5f7fb;
+}
+
+/* Header */
+.app-header {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 15;
+    -fx-spacing: 20;
+}
+
+.app-logo {
+    -fx-font-size: 22px;
+}
+
+.app-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.user-info {
+    -fx-text-fill: #1f2937;
+    -fx-font-size: 13px;
+}
+
+/* Sidebar */
+.sidebar {
+    -fx-background-color: linear-gradient(to bottom, #08213f, #031526);
+    -fx-padding: 20 10 20 10;
+    -fx-spacing: 8;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 12;
+    -fx-alignment: center-left;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+}
+
+.sidebar-button:focused {
+    -fx-background-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Footer */
+.app-footer {
+    -fx-background-color: #f9fafb;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 10;
+}
+
+.footer-text {
+    -fx-text-fill: #374151;
+    -fx-font-size: 13px;
+}
+
+/* Dashboard */
+.dashboard-container {
+    -fx-padding: 20;
+    -fx-spacing: 20;
+}
+
+.page-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.cards-container {
+    -fx-spacing: 20;
+}
+
+.stat-card {
+    -fx-background-color: white;
+    -fx-border-color: #e5e7eb;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-padding: 15;
+    -fx-spacing: 8;
+}
+
+.stat-card-title {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 13px;
+}
+
+.stat-card-value {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.stat-card-subtitle {
+    -fx-text-fill: #22c55e;
+    -fx-font-size: 13px;
+}
+
+/* Placeholder */
+.placeholder-container {
+    -fx-padding: 30;
+}
+
+.placeholder-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
