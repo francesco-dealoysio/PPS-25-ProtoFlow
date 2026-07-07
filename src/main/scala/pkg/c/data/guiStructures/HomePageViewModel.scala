@@ -1,4 +1,4 @@
-package pkg.c.data
+package pkg.c.data.guiStructures
 
 class HomePageViewModel(val config: HomePageConfig):
 

@@ -1,7 +1,7 @@
 package pkg.a.gui
 
 import org.scalatest.funsuite.AnyFunSuite
-import pkg.c.data.{HomePageConfig, HomePageViewModel, MenuAction, Role}
+import pkg.c.data.guiStructures.{HomePageConfig, HomePageViewModel, MenuAction, Role}
 
 
 class HomePageViewModelTest extends AnyFunSuite{

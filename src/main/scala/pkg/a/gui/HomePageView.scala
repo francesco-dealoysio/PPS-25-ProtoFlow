@@ -1,11 +1,10 @@
 package pkg.a.gui
 
 
-import pkg.c.data.{HomePageConfig, HomePageViewModel, MenuAction, Role}
+import pkg.c.data.guiStructures.{HomePageConfig, HomePageViewModel, MenuAction, Role}
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
-import scalafx.scene.paint.Color
 import scalafx.scene.text.Font
 
 object HomePageView:
@@ -26,7 +25,7 @@ object HomePageView:
       left = sidebar
       top = createHeader(config, currentUser)
       center = contentArea
-      bottom = createFooter(currentUser, config.role)
+      bottom = createFooter(currentUser, config)
 
   private def createHeader(config: HomePageConfig, currentUser: String): HBox =
     new HBox:
@@ -38,14 +37,20 @@ object HomePageView:
       children = Seq(
         new Label("☰"):
           font = Font(22),
-        new Label("ProtoFlow"):
+        new Label(config.applicationTitle):
           font = Font.font(20)
           style = "-fx-font-weight: bold;",
         new Region:
           HBox.setHgrow(this, Priority.Always),
-        new Label(s"$currentUser\nOperatore Protocollo"):
+        new Label(s"$currentUser\n${config.roleDescription}"):
           style = "-fx-text-fill: #1f2937;"
       )
+
+  private def roleDescription(role: Role): String =
+    role match
+      case Role.Viewer => "Viewer"
+      case Role.Operator => "Operatore Protocollo"
+      case Role.Admin => "Amministratore"
 
   private def createSidebar(config: HomePageConfig, viewModel: HomePageViewModel, contentArea: StackPane): VBox =
 
@@ -66,13 +71,13 @@ object HomePageView:
       style = "-fx-background-color: linear-gradient(to bottom, #08213f, #031526);"
       children = buttons
 
-  private def createFooter(currentUser: String, role: Role): HBox =
+  private def createFooter(currentUser: String, config: HomePageConfig): HBox =
     new HBox:
       padding = Insets(10)
       alignment = Pos.CenterRight
       style = "-fx-background-color: #f9fafb; -fx-border-color: #e5e7eb;"
       children = Seq(
-        new Label(s"👤 $currentUser ($role)    Data e ora dinamici")
+        new Label(s"👤 $currentUser (${config.roleDescription})    Data e ora dinamici")
       )
 
   private def contentFor(action: MenuAction): Pane =

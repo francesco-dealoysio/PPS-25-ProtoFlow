@@ -1,8 +1,8 @@
-package pkg.c.data
+package pkg.c.data.filesManagement
 
-import java.nio.file.{Files, Paths}
-import java.nio.charset.StandardCharsets
 import java.io.IOException
+import java.nio.charset.StandardCharsets
+import java.nio.file.{Files, Paths}
 
 object FileSystem
 
