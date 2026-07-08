@@ -1,0 +1,87 @@
+.registration-root {
+    -fx-background-color: #ffffff;
+}
+
+.registration-card {
+    -fx-background-color: #ffffff;
+    -fx-padding: 35 65 35 65;
+    -fx-spacing: 18;
+}
+
+.registration-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.registration-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6b7280;
+}
+
+.registration-grid {
+    -fx-padding: 10 0 5 0;
+}
+
+.form-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.form-field {
+    -fx-pref-width: 330;
+    -fx-pref-height: 36;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 6 10 6 10;
+}
+
+.form-field:focused {
+    -fx-border-color: #2563eb;
+}
+
+.primary-button {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 9 18 9 18;
+    -fx-background-radius: 5;
+}
+
+.primary-button:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.secondary-button {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #374151;
+    -fx-border-color: #d1d5db;
+    -fx-padding: 9 18 9 18;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #f3f4f6;
+}
+
+.form-message {
+    -fx-pref-height: 90;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.form-message-success {
+    -fx-text-fill: #166534;
+    -fx-border-color: #bbf7d0;
+    -fx-background-color: #f0fdf4;
+}
+
+.form-message-error {
+    -fx-text-fill: #991b1b;
+    -fx-border-color: #fecaca;
+    -fx-background-color: #fef2f2;
+}
