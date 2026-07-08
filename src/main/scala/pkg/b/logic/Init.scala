@@ -1,27 +1,28 @@
 package pkg.b.logic
 
 import java.nio.file.{Files, Paths}
-//import pkg.c.data.*
-import pkg.c.data.Entities.*
-import pkg.c.data.DummyData
-import pkg.c.data.FileSystem.*
-import pkg.c.data.Properties.*
-import pkg.c.data.Xml.*
+import pkg.c.data.*
+import pkg.c.data.filesManagement.{createDirectory, createFile}
 
 object Init
 
   def init: Unit =
 
-    // Creazione struttura per i dati nel folder corrente
-    createDirectoryStructure
-
-    // Creazione file di configurazione nel folder corrente
+    // File di configurazione
     val fs = java.io.File.separator
-    val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-    val databaseFolder = baseFolder + fs + "database"
-    createPropsFile(baseFolder + fs + "protoflow.properties", " ProtoFlow Configuration")
-    setPropsFileProperty(baseFolder + fs + "protoflow.properties", "base.folder", baseFolder)
-    setPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder", databaseFolder)
+    val propsFile = "protoflow.properties"
+    if (Files.notExists(Paths.get(propsFile)))
+      createPropsFile(propsFile, " ProtoFlow Configuration")
+      setPropsFileProperty(propsFile, "base.folder", "protoflow")
+      setPropsFileProperty(propsFile, "database.folder", "protoflow/database")
+
+    // Struttura per lo sviluppo
+    createDirectory("protoflow" + fs + "archivio" + fs + "presidenza")
+    createDirectory("protoflow" + fs + "archivio" + fs + "segreteria")
+    createDirectory("protoflow" + fs + "archivio" + fs + "amministrazione")
+    createDirectory("protoflow" + fs + "archivio" + fs + "personale")
+    createDirectory("protoflow" + fs + "database")
+    createDirectory("protoflow" + fs + "log")
 
     // Struttura per la documentazione
     createDirectory("protoflow" + fs + "documentazione")
@@ -91,14 +92,6 @@ object Init
     createFile(path + fs + "5. Implementazione.MD", "")
     createFile(path + fs + "6. Testing.MD", "")
     createFile(path + fs + "7. Retrospettiva.MD", "")
-
-    // Creazione dati fittizi
-    writeXML(databaseFolder + fs + "accounts.xml", DummyData.accounts)
-    writeXML(databaseFolder + fs + "ruoli.xml", DummyData.ruoli)
-    writeXML(databaseFolder + fs + "classifiche.xml", DummyData.classifiche)
-    writeXML(databaseFolder + fs + "registrazioni" + fs + "richieste.xml", DummyData.registrazioni)
-    writeXML(databaseFolder + fs + "registrazioni" + fs + "rifiutate.xml", DummyData.registrazioni)
-    writeXML(databaseFolder + fs + "registrazioni" + fs + "accettate.xml", DummyData.registrazioni)
 
   @main def tryInit: Unit =
     init
