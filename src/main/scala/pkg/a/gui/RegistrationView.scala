@@ -120,7 +120,7 @@ object RegistrationView:
       styleClass += "secondary-button"
       onAction = _ => resetForm()
 
-    val exitButton = new Button("Uscita/Annulla"):
+    val exitButton = new Button("Annulla"):
       styleClass += "secondary-button"
       onAction = _ => onExit()
 
@@ -156,24 +156,25 @@ object RegistrationView:
       children = Seq(exitButton, resetButton, submitButton)
 
     val card = new VBox:
+      maxWidth = Double.MaxValue
+      maxHeight = Double.MaxValue
       styleClass += "registration-card"
       children = Seq(
         new Label("Registrazione"):
-          styleClass += "registration-title",
+          styleClass += "registration-title"
+        ,
 
-      new Label("Compila il modulo per richiedere l'accreditamento al sistema ProtoFlow."):
-        styleClass += "registration-subtitle",
-
-      formGrid,
-      messageArea,
-      buttonsBox
+        new Label("Compila il modulo per richiedere l'accreditamento al sistema ProtoFlow."):
+          styleClass += "registration-subtitle"
+        ,
+        formGrid,
+        messageArea,
+        buttonsBox
       )
 
     new BorderPane:
-      top = createHeader()
-      center = new StackPane:
-        styleClass += "registration-background"
-        children = Seq(card)
+      styleClass += "registration-root"
+      center = card
 
   private def createHeader(): HBox =
     new HBox:
@@ -182,16 +183,16 @@ object RegistrationView:
 
       children = Seq(
         new Label("☰"):
-          styleClass += "app-logo",
-
-      new Label("ProtoFlow"):
-        styleClass += "app-title",
-
-      new Region:
-        HBox.setHgrow(this, Priority.Always),
-
-      new Label("Richiesta Registrazione"):
-        styleClass += "user-info"
+          styleClass += "app-logo"
+        ,
+        new Label("ProtoFlow"):
+          styleClass += "app-title"
+        ,
+        new Region:
+          HBox.setHgrow(this, Priority.Always)
+        ,
+        new Label("Richiesta Registrazione"):
+          styleClass += "user-info"
       )
 
   private def formLabel(text: String): Label =
