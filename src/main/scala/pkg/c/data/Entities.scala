@@ -37,6 +37,24 @@ object Entities:
       this("","")
   }
 
+  case class Registrazione (
+                              id: String = "",
+                              cognome: String = "",
+                              nome: String = "",
+                              email: String = "",
+                              telefono: String = "",
+                              ruolo: String = "",
+                              area: String = "",
+                              incarico: String = "",
+                              data: String = "",
+                              stato: String = "",
+                              esito: String = "",
+                              motivazione: String = ""
+                            ) {
+    def this() =
+      this("", "", "", "", "", "", "", "", "", "", "", "")
+  }
+
 object DummyData:
 
   private val passwd1 = md5("topolino")
@@ -131,3 +149,20 @@ object DummyData:
       <classifica>informatica</classifica>
     </record>
   </classifiche>
+
+  val registrazioni: Elem = <registrazioni>
+    <record>
+      <id>1</id>
+      <cognome>rossi</cognome>
+      <nome>mario</nome>
+      <email>mario.rossi@alice.it</email>
+      <telefono>06/1234567</telefono>
+      <ruolo>viewer</ruolo>
+      <area>personale</area>
+      <incarico>addetto</incarico>
+      <data>06/07/2026</data>
+      <stato>evadere</stato>
+      <esito></esito>
+      <motivazione></motivazione>
+    </record>
+  </registrazioni>
