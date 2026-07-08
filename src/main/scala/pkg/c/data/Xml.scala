@@ -48,9 +48,10 @@ object Xml:
     writeXML(databaseFolder + fs + "classifiche.xml", DummyData.classifiche)
 */
     // test loadXML
+    println("\n\nInizio Test")
     val accounts = loadXML(databaseFolder + fs + "accounts.xml", classOf[Account])
     accounts.foreach(println)
-    println
+    println("XXXXXXXXXXXXXXXXXXX")
 /*
     loadXML(databaseFolder + fs + "ruoli.xml", classOf[Ruolo]).foreach(println)
 
@@ -65,7 +66,7 @@ object Xml:
     println(admins(0).cognome + " " + admins(0).nome)
     println
 
-    val selection: Seq[Account] = accounts.map(a => a.asInstanceOf[Account]).filter(_.id == "1")
+    val selection: Seq[Account] = accounts.map(a => a.asInstanceOf[Account]).filter(_.id == "2")
     selection.foreach(r => println(r.cognome))
     println
 
