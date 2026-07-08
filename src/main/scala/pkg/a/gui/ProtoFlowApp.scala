@@ -16,4 +16,4 @@ object ProtoFlowApp extends JFXApp3:
       title = "ProtoFlow"
       scene = new Scene(1100, 700):
         root = HomePageView(config, viewModel, currentUser)
-        stylesheets.add(getClass.getResource("/protoflow.css").toExternalForm)
+        stylesheets.add(getClass.getResource("/homepages.css").toExternalForm)

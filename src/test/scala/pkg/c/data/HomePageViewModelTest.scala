@@ -1,4 +1,4 @@
-package pkg.a.gui
+package pkg.c.data
 
 import org.scalatest.funsuite.AnyFunSuite
 import pkg.c.data.guiStructures.{HomePageConfig, HomePageViewModel, MenuAction, Role}
