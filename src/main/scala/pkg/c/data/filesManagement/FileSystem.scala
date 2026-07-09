@@ -2,7 +2,7 @@ package pkg.c.data.filesManagement
 
 import java.io.IOException
 import java.nio.charset.StandardCharsets
-import java.nio.file.{Files, Paths}
+import java.nio.file.{Files, Paths, Path}
 
 object FileSystem
 
@@ -29,6 +29,39 @@ object FileSystem
     catch
       case e: IOException =>
         println(s"Errore in createFile: ${e.getMessage}")
+
+  def getCurrentDirectory: Path =
+    try
+      Paths.get(System.getProperty("user.dir")).toAbsolutePath.normalize()
+    catch
+      case ex: SecurityException =>
+        throw new RuntimeException("Permesso negato per ottenere la directory corrente", ex)
+  
+  def createDirectoryStructure: Unit =
+    val baseDir = getCurrentDirectory
+    val structure = Seq(
+      baseDir.resolve("protoflow/database"),
+      baseDir.resolve("protoflow/database/registrazioni"),
+      baseDir.resolve("protoflow/log"),
+      baseDir.resolve("protoflow/archivio/presidenza"),
+      baseDir.resolve("protoflow/archivio/segreteria"),
+      baseDir.resolve("protoflow/archivio/amministrazione"),
+      baseDir.resolve("protoflow/archivio/personale"),
+    )
+  
+    structure.foreach { dir =>
+      try
+        if (!Files.exists(dir)) {
+          Files.createDirectories(dir)
+          println(s"Creata directory: $dir")
+        } else {
+          println(s"Directory già esistente: $dir")
+        }
+      catch
+        case ex: IOException =>
+          System.err.println(s"Errore nella creazione di $dir: ${ex.getMessage}")
+    }
+
 
   @main def tryFileSystem: Unit =
 

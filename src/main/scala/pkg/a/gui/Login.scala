@@ -31,7 +31,7 @@ import javax.swing.text.*
 import javax.swing.SwingConstants.*
 
 import java.awt.image.BufferedImage
-/*
+
 object Login extends SimpleSwingApplication {
 
   def top: Frame = new MainFrame {
@@ -187,11 +187,7 @@ object Login extends SimpleSwingApplication {
             if (obj != null) then
               val account = obj.asInstanceOf[Account]
               val role = account.ruolo
-              val home = role match
-                case "admin" => new Homepage(account)
-                case "oper" => new Homepage(account)
-                case "viewer" => new Homepage(account)
-                case _ => null
+              val home = new Homepage(account)
               if (home != null) then
                 home.visible = true
               else
@@ -223,4 +219,3 @@ object Login extends SimpleSwingApplication {
 
   }
 }
-*/

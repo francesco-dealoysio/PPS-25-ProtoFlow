@@ -1,25 +1,36 @@
 package pkg
 
 // Entry point to run the application
+import pkg.a.gui.Login
 import pkg.b.logic.Init
 import pkg.a.gui.AppNavigator
 import scalafx.application.JFXApp3
 import scalafx.scene.image.Image
 
+object RunApp {
+  def main(args: Array[String]): Unit = {
+    Init.init
+    Login.main(args)
+  }
+}
+
+/*
 object RunApp extends JFXApp3:
 
-  override def start(): Unit =
+  override def start(): Unit = {
     Init.init
     stage = new JFXApp3.PrimaryStage:
       title = "ProtoFlow"
       width = 460
       height = 560
       resizable = false
-
+    
     Option(getClass.getResourceAsStream("/img/message.jpg"))
       .foreach(stream => stage.icons.add(new Image(stream)))
-
+    
     val navigator = AppNavigator(stage)
     navigator.showLogin()
-
+    
     stage.show()
+  }
+ */
