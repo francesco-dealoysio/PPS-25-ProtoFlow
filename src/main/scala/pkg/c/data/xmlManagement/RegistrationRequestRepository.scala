@@ -1,5 +1,7 @@
 package pkg.c.data
 
+import pkg.c.data.generalStructures.RegistrationRequestStatus
+
 import java.io.File
 import java.time.LocalDateTime
 import scala.xml.{Elem, Node, XML}
