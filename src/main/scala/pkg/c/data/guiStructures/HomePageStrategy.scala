@@ -1,5 +1,7 @@
 package pkg.c.data.guiStructures
 
+import pkg.c.data.generalStructures.Role
+
 trait HomePageStrategy:
   def role: Role
   def pageTitle: String

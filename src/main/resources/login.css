@@ -1,0 +1,35 @@
+.login-card {
+    -fx-max-width: 420;
+    -fx-max-height: 520;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 18, 0.2, 0, 4);
+}
+
+.login-logo {
+    -fx-background-color: #f3f4f6;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+.login-logo-text {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.login-message {
+    -fx-padding: 10 12 10 12;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-font-size: 12px;
+}
+
+.login-message-error {
+    -fx-text-fill: #991b1b;
+    -fx-border-color: #fecaca;
+    -fx-background-color: #fef2f2;
+}

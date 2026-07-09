@@ -1,6 +1,10 @@
 package pkg.b.logic
 
 import pkg.c.data.*
+import pkg.c.data.generalStructures.RegistrationRequestStatus
+import pkg.c.data.guiStructures.RegistrationRequest
+import pkg.c.data.xmlManagement.RegistrationRequestRepository
+
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -37,7 +41,7 @@ class RegistrationRequestService(repository: RegistrationRequestRepository):
       //Se tutto ok, salvo richiesta
       Right(repository.save(request))
 
-  def getPendingRequests(): List[RegistrationRequest] =
+  def getPendingRequests: List[RegistrationRequest] =
     repository.findPending()
 
   def approveRequest(id: String): Either[String, RegistrationRequest] =

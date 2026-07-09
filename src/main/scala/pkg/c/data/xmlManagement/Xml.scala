@@ -1,6 +1,6 @@
 package pkg.c.data.xmlManagement
 
-import pkg.c.data.Entities.*
+import Entities.*
 import pkg.c.data.Properties.*
 
 import scala.util.{Failure, Success, Try}

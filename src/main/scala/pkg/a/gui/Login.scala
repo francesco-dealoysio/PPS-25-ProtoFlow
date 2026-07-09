@@ -5,8 +5,8 @@ import pkg.d.util.Util.loadImage
 import pkg.d.util.Util.md5
 
 import pkg.c.data.Properties.*
-import pkg.c.data.Xml.*
-import pkg.c.data.Entities.*
+import pkg.c.data.xmlManagement.Xml.*
+import pkg.c.data.xmlManagement.Entities.*
 
 import scala.swing.*
 import scala.swing.Component
@@ -31,7 +31,7 @@ import javax.swing.text.*
 import javax.swing.SwingConstants.*
 
 import java.awt.image.BufferedImage
-
+/*
 object Login extends SimpleSwingApplication {
 
   def top: Frame = new MainFrame {
@@ -223,3 +223,4 @@ object Login extends SimpleSwingApplication {
 
   }
 }
+*/

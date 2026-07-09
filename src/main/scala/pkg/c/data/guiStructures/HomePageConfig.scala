@@ -1,6 +1,6 @@
 package pkg.c.data.guiStructures
 
-import pkg.c.data.guiStructures.Role
+import pkg.c.data.generalStructures.Role
 
 
 enum MenuAction:

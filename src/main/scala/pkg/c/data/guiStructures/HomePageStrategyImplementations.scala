@@ -1,5 +1,7 @@
 package pkg.c.data.guiStructures
 
+import pkg.c.data.generalStructures.Role
+
 object ViewerHomePageStrategy extends HomePageStrategy:
 
   override val role: Role =

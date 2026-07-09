@@ -4,7 +4,7 @@ import pkg.c.data.guiStructures.{RegistrationRequest, RegistrationViewModel}
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, ComboBox, Label, TextArea, TextField}
-import scalafx.scene.layout.{BorderPane, GridPane, HBox, Priority, Region, StackPane, VBox}
+import scalafx.scene.layout.{BorderPane, GridPane, HBox, Priority, Region, VBox}
 
 object RegistrationView:
 
@@ -64,7 +64,7 @@ object RegistrationView:
         email = emailField.text.value,
         phone = phoneField.text.value,
         requestedRole = Option(roleCombo.value.value).getOrElse(""),
-        area = Option(areaCombo.value.value).getOrElse(""),
+        requestedArea = Option(areaCombo.value.value).getOrElse(""),
         assignment = assignmentField.text.value
       )
 
@@ -163,7 +163,6 @@ object RegistrationView:
         new Label("Registrazione"):
           styleClass += "registration-title"
         ,
-
         new Label("Compila il modulo per richiedere l'accreditamento al sistema ProtoFlow."):
           styleClass += "registration-subtitle"
         ,
@@ -175,25 +174,6 @@ object RegistrationView:
     new BorderPane:
       styleClass += "registration-root"
       center = card
-
-  private def createHeader(): HBox =
-    new HBox:
-      alignment = Pos.CenterLeft
-      styleClass += "app-header"
-
-      children = Seq(
-        new Label("☰"):
-          styleClass += "app-logo"
-        ,
-        new Label("ProtoFlow"):
-          styleClass += "app-title"
-        ,
-        new Region:
-          HBox.setHgrow(this, Priority.Always)
-        ,
-        new Label("Richiesta Registrazione"):
-          styleClass += "user-info"
-      )
 
   private def formLabel(text: String): Label =
     new Label(text):

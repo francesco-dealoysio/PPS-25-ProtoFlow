@@ -1,7 +1,8 @@
 package pkg.a.gui
 
 
-import pkg.c.data.guiStructures.{HomePageConfig, HomePageViewModel, MenuAction, Role}
+import pkg.c.data.generalStructures.Role
+import pkg.c.data.guiStructures.{HomePageConfig, HomePageViewModel, MenuAction}
 import scalafx.geometry.Pos
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
@@ -11,14 +12,15 @@ object HomePageView:
   def apply(
              config: HomePageConfig,
              viewModel: HomePageViewModel,
-             currentUser: String
+             currentUser: String,
+             onLogout: () => Unit = () => ()
            ): BorderPane =
 
     val contentArea = new StackPane:
       styleClass += "content-area"
       children = Seq(dashboardContent())
 
-    val sidebar = createSidebar(config, viewModel, contentArea)
+    val sidebar = createSidebar(config, viewModel, contentArea, onLogout)
 
     new BorderPane:
       left = sidebar
@@ -48,7 +50,7 @@ object HomePageView:
       case Role.Operator => "Operatore Protocollo"
       case Role.Admin => "Amministratore"
 
-  private def createSidebar(config: HomePageConfig, viewModel: HomePageViewModel, contentArea: StackPane): VBox =
+  private def createSidebar(config: HomePageConfig, viewModel: HomePageViewModel, contentArea: StackPane, onLogout: () => Unit): VBox =
 
     val buttons = config.menuItems.map: item =>
       new Button(item.label):

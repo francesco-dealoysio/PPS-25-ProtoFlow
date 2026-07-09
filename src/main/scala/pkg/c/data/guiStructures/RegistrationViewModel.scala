@@ -7,7 +7,7 @@ class RegistrationViewModel:
       validateRequired("Cognome", request.surname),
       validateEmail(request.email),
       validateRequired("Ruolo richiesto", request.requestedRole),
-      validateRequired("Area/Settore di appartenenza", request.area),
+      validateRequired("Area/Settore di appartenenza", request.requestedArea),
       validateRequired("Incarico", request.assignment)
     ).flatten
 

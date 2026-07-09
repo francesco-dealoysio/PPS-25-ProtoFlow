@@ -2,9 +2,10 @@ package pkg.b.logic
 
 import java.nio.file.{Files, Paths}
 import pkg.c.data.*
+import pkg.c.data.Properties.{createPropsFile, setPropsFileProperty}
 import pkg.c.data.filesManagement.{createDirectory, createFile}
 
-object Init
+object Init:
 
   def init: Unit =
 
