@@ -1,8 +1,6 @@
 package pkg.a.gui
 
-import pkg.b.logic.RegistrationRequestService
 import pkg.c.data.guiStructures.{RegistrationRequest, RegistrationViewModel}
-import pkg.c.data.xmlManagement.RegistrationRequestRepository
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, ComboBox, Label, TextArea, TextField}
@@ -111,7 +109,7 @@ object RegistrationView:
         val errors = viewModel.validate(request)
 
         if errors.isEmpty then {
-          
+
           showMessage("Richiesta presa in carico.", success = true)
         } else
           showMessage(

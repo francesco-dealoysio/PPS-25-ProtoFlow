@@ -1,7 +1,6 @@
-package pkg.c.data
+package pkg.d.util
 
 import java.io.*
-import java.nio.file.{Path, Paths}
 import java.util.Properties
 import scala.io.Source
 import scala.jdk.CollectionConverters.*
@@ -96,16 +95,6 @@ object Properties:
     catch
       case e: IOException =>
         println(s"Error in displayPropsFileProperties: ${e.getMessage}")
-  
-  /* Display di tutte le proprietà contenute nel file di properties */
-  def displayProperties(props: Properties): Unit =
-    try
-      val propsMap: Map[String, String] = props.asScala.toMap
-      propsMap.foreach { case (k, v) => println(s"$k = $v") }
-
-    catch
-      case e: IOException =>
-        println(s"Error in displayProperties: ${e.getMessage}")
   
   @main def tryHandleProperties(): Unit =
     println("Tested in PropertiesTest.scala")

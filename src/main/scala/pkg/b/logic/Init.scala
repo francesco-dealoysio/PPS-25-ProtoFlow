@@ -2,7 +2,7 @@ package pkg.b.logic
 
 import java.nio.file.{Files, Paths}
 import pkg.c.data.*
-import pkg.c.data.Properties.{createPropsFile, setPropsFileProperty}
+import pkg.d.util.Properties.{createPropsFile, setPropsFileProperty}
 import pkg.c.data.filesManagement.*
 import pkg.c.data.xmlManagement.Xml.*
 import pkg.c.data.xmlManagement.Entities.*

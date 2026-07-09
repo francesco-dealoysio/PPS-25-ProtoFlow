@@ -1,6 +1,6 @@
 package pkg.a.gui
 
-import pkg.c.data.Properties.*
+import pkg.d.util.Properties.*
 import pkg.c.data.xmlManagement.Entities.Account
 import pkg.c.data.xmlManagement.Xml.*
 import pkg.d.util.Util.md5
@@ -8,7 +8,7 @@ import scalafx.Includes.jfxKeyEvent2sfx
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, Label, PasswordField, TextField}
 import scalafx.scene.input.KeyCode
-import scalafx.scene.layout.{BorderPane, GridPane, HBox, Region, StackPane, VBox}
+import scalafx.scene.layout.{BorderPane, HBox, Region, StackPane, VBox}
 
 object LoginView:
 
@@ -18,10 +18,12 @@ object LoginView:
            ): BorderPane =
 
     val usernameField = new TextField:
+      maxWidth = 220
       promptText = "Inserisci username"
       styleClass += "form-field"
 
     val passwordField = new PasswordField:
+      maxWidth = 220
       promptText = "Inserisci password"
       styleClass += "form-field"
 
@@ -113,16 +115,31 @@ object LoginView:
       spacing = 10
       children = Seq(logo, title, subtitle)
 
-    val formGrid = new GridPane:
-      hgap = 14
-      vgap = 10
-      styleClass += "registration-grid"
+    val usernameBox = new VBox:
+      spacing = 6
+      alignment = Pos.CenterLeft
+      maxWidth = 220
+      children = Seq(
+        formLabel("Username *"),
+        usernameField
+      )
 
-      add(formLabel("Username *"), 0, 0)
-      add(usernameField, 0, 1)
+    val passwordBox = new VBox:
+      spacing = 6
+      alignment = Pos.CenterLeft
+      maxWidth = 220
+      children = Seq(
+        formLabel("Password *"),
+        passwordField
+      )
 
-      add(formLabel("Password *"), 0, 2)
-      add(passwordField, 0, 3)
+    val formBox = new VBox:
+      spacing = 16
+      alignment = Pos.Center
+      children = Seq(
+        usernameBox,
+        passwordBox
+      )
 
     val clearButton = new Button("Pulisci"):
       styleClass += "secondary-button"
@@ -134,12 +151,12 @@ object LoginView:
       onAction = _ => access()
 
     val buttonsBox = new HBox:
-      alignment = Pos.CenterRight
+      alignment = Pos.Center
       spacing = 12
       children = Seq(clearButton, accessButton)
 
     val registrationButton = new Button("Richiedi registrazione"):
-      maxWidth = Double.MaxValue
+      maxWidth = 220
       styleClass += "secondary-button"
       onAction = _ => onRegistrationRequest()
 
@@ -150,7 +167,7 @@ object LoginView:
       styleClass ++= Seq("registration-card", "login-card")
       children = Seq(
         header,
-        formGrid,
+        formBox,
         messageLabel,
         buttonsBox,
         new Region:
