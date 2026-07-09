@@ -9,7 +9,6 @@ import scala.xml.{Elem, Node, XML}
 
 class RegistrationRequestRepository:
 
-  //Attualmente il file viene creato la prima volta nella root del progetto (spostare in futuro?)
   private val filePath = "registration_requests.xml"
 
   private def emptyXml: Elem =
@@ -33,8 +32,10 @@ class RegistrationRequestRepository:
       <name>{request.name}</name>
       <surname>{request.surname}</surname>
       <email>{request.email}</email>
+      <phone>{request.phone}</phone>
       <requestedRole>{request.requestedRole}</requestedRole>
       <requestedArea>{request.requestedArea}</requestedArea>
+      <assignment>{request.assignment}</assignment>
       <requestDate>{request.requestDate.toString}</requestDate>
       <status>{request.status.toString}</status>
     </request>
@@ -45,8 +46,10 @@ class RegistrationRequestRepository:
       name = (node \ "name").text,
       surname = (node \ "surname").text,
       email = (node \ "email").text,
+      phone = (node \ "phone").text,
       requestedRole = (node \ "requestedRole").text,
       requestedArea = (node \ "requestedArea").text,
+      assignment = (node \ "assignment").text,
       requestDate = LocalDateTime.parse((node \ "requestDate").text),
       status = RegistrationRequestStatus.valueOf((node \ "status").text)
     )

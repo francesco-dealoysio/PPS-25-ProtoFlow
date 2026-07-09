@@ -1,44 +1,46 @@
 package pkg.b.logic
 
-import pkg.c.data.*
 import pkg.c.data.generalStructures.RegistrationRequestStatus
 import pkg.c.data.guiStructures.RegistrationRequest
 import pkg.c.data.xmlManagement.RegistrationRequestRepository
 
 import java.time.LocalDateTime
-import java.util.UUID
 
-// GUI -> Service -> Repository -> XML
 class RegistrationRequestService(repository: RegistrationRequestRepository):
 
-  //Nella gui mi aspetto un pulsante [ Invia richiesta ]
   def submitRequest(
                      name: String,
                      surname: String,
                      email: String,
+                     phone: String,
                      requestedRole: String,
-                     requestedArea: String
+                     requestedArea: String,
+                     assignment: String
                    ): Either[String, RegistrationRequest] =
 
-  //Elenco errori sul rifiuto (cosa vogliamo far vedere?)
     if name.trim.isEmpty || surname.trim.isEmpty || email.trim.isEmpty then
       Left("Nome, cognome ed email sono obbligatori")
+    else if requestedRole.trim.isEmpty then
+      Left("Il ruolo richiesto è obbligatorio")
+    else if requestedArea.trim.isEmpty then
+      Left("L'area di appartenenza è obbligatoria")
+    else if assignment.trim.isEmpty then
+      Left("L'incarico è obbligatorio")
     else if !email.contains("@") then
       Left("Email non valida")
     else
-      //Costruisco oggetto
       val request = RegistrationRequest(
-        id = UUID.randomUUID().toString,
-        name = name,
-        surname = surname,
-        email = email,
-        requestedRole = requestedRole,
-        requestedArea = requestedArea,
+        name = name.trim,
+        surname = surname.trim,
+        email = email.trim,
+        phone = phone.trim,
+        requestedRole = requestedRole.trim,
+        requestedArea = requestedArea.trim,
+        assignment = assignment.trim,
         requestDate = LocalDateTime.now(),
         status = RegistrationRequestStatus.Pending
       )
 
-      //Se tutto ok, salvo richiesta
       Right(repository.save(request))
 
   def getPendingRequests: List[RegistrationRequest] =

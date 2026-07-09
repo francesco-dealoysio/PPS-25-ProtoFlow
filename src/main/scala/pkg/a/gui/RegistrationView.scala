@@ -5,6 +5,8 @@ import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, ComboBox, Label, TextArea, TextField}
 import scalafx.scene.layout.{BorderPane, GridPane, HBox, Priority, Region, VBox}
+import pkg.b.logic.RegistrationRequestService
+import pkg.c.data.xmlManagement.RegistrationRequestRepository
 
 object RegistrationView:
 
@@ -13,6 +15,9 @@ object RegistrationView:
              onExit: () => Unit = () => ()
            ): BorderPane =
 
+    val repository = new RegistrationRequestRepository()
+    val service = new RegistrationRequestService(repository)
+    
     val nameField = new TextField:
       promptText = "Inserisci il nome"
       styleClass += "form-field"
@@ -108,10 +113,23 @@ object RegistrationView:
         val request = currentRequest()
         val errors = viewModel.validate(request)
 
-        if errors.isEmpty then {
+        if errors.isEmpty then
+          service.submitRequest(
+            name = request.name,
+            surname = request.surname,
+            email = request.email,
+            phone = request.phone,
+            requestedRole = request.requestedRole,
+            requestedArea = request.requestedArea,
+            assignment = request.assignment
+          ) match
+            case Right(_) =>
+              showMessage("Richiesta presa in carico e salvata correttamente.", success = true)
+              resetForm()
 
-          showMessage("Richiesta presa in carico.", success = true)
-        } else
+            case Left(error) =>
+              showMessage(error, success = false)
+        else
           showMessage(
             errors.mkString("Errori riscontrati:\n- ", "\n- ", ""),
             success = false
