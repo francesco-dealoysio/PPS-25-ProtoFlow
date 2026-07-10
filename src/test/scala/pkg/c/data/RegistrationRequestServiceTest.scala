@@ -1,17 +1,63 @@
 package pkg.b.logic
 
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite
+
 import pkg.c.data.generalStructures.RegistrationRequestStatus
+import pkg.c.data.xmlManagement.RegistrationRequestRepository
 
-class RegistrationRequestServiceTest extends AnyFunSuite:
+import java.nio.charset.StandardCharsets
+import java.nio.file.{Files, Path}
 
-  private val service = new RegistrationRequestService()
+class RegistrationRequestServiceTest
+  extends AnyFunSuite
+    with BeforeAndAfterEach:
 
-  test("submitRequest crea correttamente una richiesta valida nello stato Pending"):
+  private var tempDirectory: Path = _
+  private var tempXmlFile: Path = _
+  private var service: RegistrationRequestService = _
+
+  override protected def beforeEach(): Unit =
+    super.beforeEach()
+
+    tempDirectory =
+      Files.createTempDirectory("protoflow-registration-test-")
+
+    tempXmlFile =
+      tempDirectory.resolve("registrationRequests.xml")
+
+    Files.writeString(
+      tempXmlFile,
+      """<?xml version="1.0" encoding="UTF-8"?>
+        |<registrationRequests>
+        |</registrationRequests>
+        |""".stripMargin,
+      StandardCharsets.UTF_8
+    )
+
+    val repository =
+      new RegistrationRequestRepository(
+        tempXmlFile.toString
+      )
+
+    service =
+      new RegistrationRequestService(repository)
+
+  override protected def afterEach(): Unit =
+    try
+      if tempXmlFile != null then
+        Files.deleteIfExists(tempXmlFile)
+
+      if tempDirectory != null then
+        Files.deleteIfExists(tempDirectory)
+    finally
+      super.afterEach()
+
+  test("submitRequest crea una richiesta valida nello stato Pending"):
     val result = service.submitRequest(
       name = "Mario",
       surname = "Rossi",
-      email = "mario.rossi.test@email.it",
+      email = "mario.rossi@email.it",
       phone = "3331234567",
       requestedRole = "Viewer",
       requestedArea = "Personale",
@@ -24,9 +70,30 @@ class RegistrationRequestServiceTest extends AnyFunSuite:
 
     assert(request.name == "Mario")
     assert(request.surname == "Rossi")
-    assert(request.email == "mario.rossi.test@email.it")
     assert(request.status == RegistrationRequestStatus.Pending)
     assert(request.id.nonEmpty)
+
+  test("submitRequest salva la richiesta nel repository temporaneo"):
+    val created = service.submitRequest(
+      name = "Mario",
+      surname = "Rossi",
+      email = "mario.repository@email.it",
+      phone = "",
+      requestedRole = "Viewer",
+      requestedArea = "Personale",
+      assignment = "Impiegato"
+    )
+
+    assert(created.isRight)
+
+    val pendingRequests =
+      service.getPendingRequests
+
+    assert(pendingRequests.size == 1)
+    assert(
+      pendingRequests.head.email ==
+        "mario.repository@email.it"
+    )
 
   test("submitRequest rifiuta nome cognome o email mancanti"):
     val result = service.submitRequest(
@@ -39,7 +106,10 @@ class RegistrationRequestServiceTest extends AnyFunSuite:
       assignment = "Impiegato"
     )
 
-    assert(result == Left("Nome, cognome ed email sono obbligatori"))
+    assert(
+      result ==
+        Left("Nome, cognome ed email sono obbligatori")
+    )
 
   test("submitRequest rifiuta una email non valida"):
     val result = service.submitRequest(
@@ -65,7 +135,10 @@ class RegistrationRequestServiceTest extends AnyFunSuite:
       assignment = "Impiegato"
     )
 
-    assert(result == Left("Il ruolo richiesto è obbligatorio"))
+    assert(
+      result ==
+        Left("Il ruolo richiesto è obbligatorio")
+    )
 
   test("submitRequest rifiuta un'area mancante"):
     val result = service.submitRequest(
@@ -78,7 +151,10 @@ class RegistrationRequestServiceTest extends AnyFunSuite:
       assignment = "Impiegato"
     )
 
-    assert(result == Left("L'area di appartenenza è obbligatoria"))
+    assert(
+      result ==
+        Left("L'area di appartenenza è obbligatoria")
+    )
 
   test("submitRequest rifiuta un incarico mancante"):
     val result = service.submitRequest(
@@ -91,32 +167,48 @@ class RegistrationRequestServiceTest extends AnyFunSuite:
       assignment = ""
     )
 
-    assert(result == Left("L'incarico è obbligatorio"))
+    assert(
+      result ==
+        Left("L'incarico è obbligatorio")
+    )
 
-  test("getPendingRequests restituisce solamente richieste Pending"):
-    val requests = service.getPendingRequests
+  test("getPendingRequests restituisce solo richieste Pending"):
+    service.submitRequest(
+      name = "Mario",
+      surname = "Rossi",
+      email = "mario.pending@email.it",
+      phone = "",
+      requestedRole = "Viewer",
+      requestedArea = "Personale",
+      assignment = "Impiegato"
+    )
 
+    val requests =
+      service.getPendingRequests
+
+    assert(requests.nonEmpty)
     assert(
       requests.forall(
         _.status == RegistrationRequestStatus.Pending
       )
     )
 
-  test("approveRequest cambia lo stato della richiesta in Approved"):
+  test("approveRequest cambia lo stato in Approved"):
     val created = service.submitRequest(
       name = "Luigi",
       surname = "Bianchi",
-      email = "luigi.bianchi.approve.test@email.it",
+      email = "luigi.approve@email.it",
       phone = "",
       requestedRole = "Viewer",
       requestedArea = "Segreteria",
       assignment = "Impiegato"
     )
 
-    assert(created.isRight)
+    val requestId =
+      created.toOption.get.id
 
-    val requestId = created.toOption.get.id
-    val result = service.approveRequest(requestId)
+    val result =
+      service.approveRequest(requestId)
 
     assert(result.isRight)
     assert(
@@ -124,21 +216,24 @@ class RegistrationRequestServiceTest extends AnyFunSuite:
         RegistrationRequestStatus.Approved
     )
 
-  test("rejectRequest cambia lo stato della richiesta in Rejected"):
+    assert(service.getPendingRequests.isEmpty)
+
+  test("rejectRequest cambia lo stato in Rejected"):
     val created = service.submitRequest(
       name = "Anna",
       surname = "Verdi",
-      email = "anna.verdi.reject.test@email.it",
+      email = "anna.reject@email.it",
       phone = "",
       requestedRole = "Viewer",
       requestedArea = "Amministrazione",
       assignment = "Impiegata"
     )
 
-    assert(created.isRight)
+    val requestId =
+      created.toOption.get.id
 
-    val requestId = created.toOption.get.id
-    val result = service.rejectRequest(requestId)
+    val result =
+      service.rejectRequest(requestId)
 
     assert(result.isRight)
     assert(
@@ -146,12 +241,16 @@ class RegistrationRequestServiceTest extends AnyFunSuite:
         RegistrationRequestStatus.Rejected
     )
 
-  test("approveRequest restituisce errore se la richiesta non esiste"):
-    val result = service.approveRequest("id-che-non-esiste")
+    assert(service.getPendingRequests.isEmpty)
+
+  test("approveRequest restituisce errore per id inesistente"):
+    val result =
+      service.approveRequest("id-inesistente")
 
     assert(result == Left("Richiesta non trovata"))
 
-  test("rejectRequest restituisce errore se la richiesta non esiste"):
-    val result = service.rejectRequest("id-che-non-esiste")
+  test("rejectRequest restituisce errore per id inesistente"):
+    val result =
+      service.rejectRequest("id-inesistente")
 
     assert(result == Left("Richiesta non trovata"))

@@ -7,9 +7,9 @@ import java.io.File
 import java.time.LocalDateTime
 import scala.xml.{Elem, Node, XML}
 
-class RegistrationRequestRepository:
-
-  private val filePath = "registration_requests.xml"
+class RegistrationRequestRepository(
+                                     private val filePath: String = "registration_requests.xml"
+                                   ):
 
   private def emptyXml: Elem =
     <registrationRequests></registrationRequests>
@@ -77,15 +77,18 @@ class RegistrationRequestRepository:
   def findPending(): List[RegistrationRequest] =
     findAll().filter(_.status == RegistrationRequestStatus.Pending)
 
-  def update(updatedRequest: RegistrationRequest): Either[String, RegistrationRequest] =
+  def update(
+              updatedRequest: RegistrationRequest
+            ): Either[String, RegistrationRequest] =
     val requests = findAll()
 
     if !requests.exists(_.id == updatedRequest.id) then
       Left("Richiesta di registrazione non trovata")
     else
-      val updatedRequests = requests.map(request =>
-        if request.id == updatedRequest.id then updatedRequest else request
-      )
+      val updatedRequests =
+        requests.map: request =>
+          if request.id == updatedRequest.id then updatedRequest
+          else request
 
       saveAll(updatedRequests)
       Right(updatedRequest)
