@@ -6,7 +6,8 @@ import pkg.c.data.xmlManagement.RegistrationRequestRepository
 
 import java.time.LocalDateTime
 
-class RegistrationRequestService(repository: RegistrationRequestRepository):
+class RegistrationRequestService(private val repository: RegistrationRequestRepository = 
+                                 new RegistrationRequestRepository()):
 
   def submitRequest(
                      name: String,

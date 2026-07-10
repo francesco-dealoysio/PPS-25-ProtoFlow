@@ -5,8 +5,10 @@ import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, ComboBox, Label, TextArea, TextField}
 import scalafx.scene.layout.{BorderPane, GridPane, HBox, Priority, Region, VBox}
+//import pkg.b.logic.RegistrationRequestService
+//import pkg.c.data.xmlManagement.RegistrationRequestRepository
 import pkg.b.logic.RegistrationRequestService
-import pkg.c.data.xmlManagement.RegistrationRequestRepository
+import pkg.c.data.guiStructures.RegistrationRequest
 
 object RegistrationView:
 
@@ -15,8 +17,7 @@ object RegistrationView:
              onExit: () => Unit = () => ()
            ): BorderPane =
 
-    val repository = new RegistrationRequestRepository()
-    val service = new RegistrationRequestService(repository)
+    val service = new RegistrationRequestService()
     
     val nameField = new TextField:
       promptText = "Inserisci il nome"
