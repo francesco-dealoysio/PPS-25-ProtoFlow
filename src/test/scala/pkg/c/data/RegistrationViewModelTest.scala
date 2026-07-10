@@ -1,22 +1,17 @@
 package pkg.c.data
 
 import org.scalatest.funsuite.AnyFunSuite
+import pkg.c.data.generalStructures.RegistrationRequestStatus
 import pkg.c.data.guiStructures.{RegistrationRequest, RegistrationViewModel}
+
+import java.time.LocalDateTime
 
 class RegistrationViewModelTest extends AnyFunSuite:
 
   private val viewModel = RegistrationViewModel()
 
   test("una richiesta di registrazione completa e corretta deve essere valida"):
-    val request = RegistrationRequest(
-      name = "Mario",
-      surname = "Rossi",
-      email = "mario.rossi@email.it",
-      phone = "3331234567",
-      requestedRole = "Operatore Protocollo",
-      area = "Urbanistica",
-      assignment = "Addetto protocollo"
-    )
+    val request = validRequest()
 
     val errors = viewModel.validate(request)
 
@@ -64,11 +59,15 @@ class RegistrationViewModelTest extends AnyFunSuite:
     assert(!viewModel.isValid(request))
 
   test("il campo Area o Settore di appartenenza è obbligatorio"):
-    val request = validRequest().copy(area = "")
+    val request = validRequest().copy(requestedArea = "")
 
     val errors = viewModel.validate(request)
 
-    assert(errors.contains("Il campo 'Area/Settore di appartenenza' è obbligatorio."))
+    assert(
+      errors.contains(
+        "Il campo 'Area/Settore di appartenenza' è obbligatorio."
+      )
+    )
     assert(!viewModel.isValid(request))
 
   test("il campo Incarico è obbligatorio"):
@@ -87,13 +86,13 @@ class RegistrationViewModelTest extends AnyFunSuite:
     assert(errors.isEmpty)
     assert(viewModel.isValid(request))
 
-  test("se più campi obbligatori sono vuoti, vengono restituiti più errori"):
+  test("se più campi obbligatori sono vuoti vengono restituiti più errori"):
     val request = validRequest().copy(
       name = "",
       surname = "",
       email = "",
       requestedRole = "",
-      area = "",
+      requestedArea = "",
       assignment = ""
     )
 
@@ -104,17 +103,24 @@ class RegistrationViewModelTest extends AnyFunSuite:
     assert(errors.contains("Il campo 'Cognome' è obbligatorio."))
     assert(errors.contains("Il campo 'Indirizzo email' è obbligatorio."))
     assert(errors.contains("Il campo 'Ruolo richiesto' è obbligatorio."))
-    assert(errors.contains("Il campo 'Area/Settore di appartenenza' è obbligatorio."))
+    assert(
+      errors.contains(
+        "Il campo 'Area/Settore di appartenenza' è obbligatorio."
+      )
+    )
     assert(errors.contains("Il campo 'Incarico' è obbligatorio."))
     assert(!viewModel.isValid(request))
 
   private def validRequest(): RegistrationRequest =
     RegistrationRequest(
+      id = "test-request-1",
       name = "Mario",
       surname = "Rossi",
       email = "mario.rossi@email.it",
       phone = "3331234567",
       requestedRole = "Operatore Protocollo",
-      area = "Urbanistica",
-      assignment = "Addetto protocollo"
+      requestedArea = "Urbanistica",
+      assignment = "Addetto protocollo",
+      requestDate = LocalDateTime.of(2026, 7, 10, 10, 0),
+      status = RegistrationRequestStatus.Pending
     )
