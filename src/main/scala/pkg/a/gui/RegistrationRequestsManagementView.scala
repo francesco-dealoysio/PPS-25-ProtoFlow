@@ -355,7 +355,7 @@ object RegistrationRequestsManagementView:
 
     val content = new VBox:
       spacing = 18
-      padding = Insets(24)
+      padding = Insets(20)
       VBox.setVgrow(table, Priority.Always)
 
       children = Seq(

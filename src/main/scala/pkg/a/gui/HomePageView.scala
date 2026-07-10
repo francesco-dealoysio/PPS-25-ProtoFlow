@@ -13,14 +13,15 @@ object HomePageView:
              config: HomePageConfig,
              viewModel: HomePageViewModel,
              currentUser: String,
-             onLogout: () => Unit = () => ()
+             onLogout: () => Unit = () => (),
+             onRegistrationRequests: () => Unit = () => ()
            ): BorderPane =
 
     val contentArea = new StackPane:
       styleClass += "content-area"
       children = Seq(dashboardContent())
 
-    val sidebar = createSidebar(config, viewModel, contentArea, onLogout)
+    val sidebar = createSidebar(config, viewModel, contentArea, onLogout, onRegistrationRequests)
 
     new BorderPane:
       left = sidebar
@@ -50,7 +51,7 @@ object HomePageView:
       case Role.Operator => "Operatore Protocollo"
       case Role.Admin => "Amministratore"
 
-  private def createSidebar(config: HomePageConfig, viewModel: HomePageViewModel, contentArea: StackPane, onLogout: () => Unit): VBox =
+  private def createSidebar(config: HomePageConfig, viewModel: HomePageViewModel, contentArea: StackPane, onLogout: () => Unit, onRegistrationRequests: () => Unit): VBox =
 
     val buttons = config.menuItems.map: item =>
       new Button(item.label):
@@ -60,7 +61,20 @@ object HomePageView:
 
         onAction = _ =>
           viewModel.select(item.action)
-          contentArea.children = Seq(contentFor(item.action))
+
+          item.action match
+            case MenuAction.Registrazioni =>
+              contentArea.children = Seq(RegistrationRequestsManagementView(
+                onExit = () =>
+                  contentArea.children = Seq(dashboardContent())
+                )
+              )
+
+            case MenuAction.Logout =>
+              onLogout()
+
+            case _ =>
+              contentArea.children = Seq(contentFor(item.action))
 
     new VBox:
       prefWidth = 230
