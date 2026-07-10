@@ -3,8 +3,8 @@ package pkg.a.gui
 import pkg.a.gui.{HomePageView, LoginView, RegistrationView}
 import pkg.c.data.generalStructures.Role
 import pkg.c.data.guiStructures.{HomePageConfig, HomePageViewModel, RegistrationViewModel}
-import pkg.c.data.xmlManagement.Entities.Account
 import scalafx.application.JFXApp3
+import pkg.b.logic.LoginService.LoggedUser
 import scalafx.scene.Scene
 
 class AppNavigator(stage: JFXApp3.PrimaryStage):
@@ -39,15 +39,12 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
     addStylesheet(scene, "/registration.css")
     stage.scene = scene
 
-  def showHome(account: Account): Unit =
-    val role = roleFrom(account.ruolo)
+  private def showHome(user: LoggedUser): Unit =
+    val role = roleFrom(user.role)
     val config = HomePageConfig.forRole(role)
     val viewModel = HomePageViewModel(config)
 
-    val currentUser =
-      s"${account.nome} ${account.cognome}".trim match
-        case "" => account.username
-        case name => name
+    val currentUser = user.fullName
 
     stage.title = "ProtoFlow"
     stage.width = 1100

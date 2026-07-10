@@ -1,9 +1,7 @@
 package pkg.a.gui
 
-import pkg.d.util.Properties.*
-import pkg.c.data.xmlManagement.Entities.Account
-import pkg.c.data.xmlManagement.Xml.*
-import pkg.d.util.Util.md5
+import pkg.b.logic.LoginService
+import pkg.b.logic.LoginService.{LoggedUser, LoginError}
 import scalafx.Includes.jfxKeyEvent2sfx
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, Label, PasswordField, TextField}
@@ -13,7 +11,7 @@ import scalafx.scene.layout.{BorderPane, HBox, Region, StackPane, VBox}
 object LoginView:
 
   def apply(
-             onLoginSuccess: Account => Unit,
+             onLoginSuccess: LoggedUser => Unit,
              onRegistrationRequest: () => Unit
            ): BorderPane =
 
@@ -49,24 +47,6 @@ object LoginView:
       clearMessage()
       usernameField.requestFocus()
 
-    def checkCredentials(username: String, password: String): Option[Account] =
-      val fs = java.io.File.separator
-      val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-
-      val databaseFolder =
-        getPropsFileProperty(
-          baseFolder + fs + "protoflow.properties",
-          "database.folder"
-        )
-
-      val accounts =
-        loadXML(databaseFolder + fs + "accounts.xml", classOf[Account])
-          .map(_.asInstanceOf[Account])
-
-      accounts.find(account =>
-        account.username == username && account.password == md5(password)
-      )
-
     def access(): Unit =
       val username = usernameField.text.value.trim
       val password = passwordField.text.value.trim
@@ -75,17 +55,21 @@ object LoginView:
         showMessage("Inserisci username e password.")
         usernameField.requestFocus()
       else
-        checkCredentials(username, password) match
-          case Some(account) if Set("admin", "oper", "viewer").contains(account.ruolo) =>
-            onLoginSuccess(account)
+        LoginService.login(username, password) match
+          case Right(user) =>
+            onLoginSuccess(user)
 
-          case Some(account) =>
-            showMessage(s"Application Error: ruolo '${account.ruolo}' non riconosciuto.")
+          case Left(LoginError.EmptyCredentials) =>
+            showMessage("Inserisci username e password.")
+            usernameField.requestFocus()
 
-          case None =>
+          case Left(LoginError.InvalidCredentials) =>
             showMessage("Accesso negato. Username o password non corretti.")
             passwordField.clear()
             passwordField.requestFocus()
+
+          case Left(LoginError.UnknownRole(role)) =>
+            showMessage(s"Application Error: ruolo '$role' non riconosciuto.")
 
     usernameField.onKeyPressed = event =>
       if event.code == KeyCode.Enter then
