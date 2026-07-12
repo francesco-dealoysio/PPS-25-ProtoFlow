@@ -1,4 +1,4 @@
-package pkg.c.data.xmlManagement
+package pkg.b.logic
 
 import pkg.d.util.Util.md5
 
@@ -24,10 +24,11 @@ object Entities:
 
   case class Ruolo(
                     id: String = "",
-                    ruolo: String = ""
+                    ruolo: String = "",
+                    descrizione: String = ""
                   ) {
     def this() =
-      this("","")
+      this("","","")
   }
 
   case class Classifica(
@@ -105,14 +106,17 @@ object DummyData:
     <record>
       <id>1</id>
       <ruolo>admin</ruolo>
+      <descrizione>Attività di amministrazione del sistema</descrizione>
     </record>
     <record>
       <id>2</id>
       <ruolo>oper</ruolo>
+      <descrizione>Attività di protocollazione</descrizione>
     </record>
     <record>
       <id>3</id>
       <ruolo>viewer</ruolo>
+      <descrizione>Ricerca e visualizzazione nel cono di visibilità</descrizione>
     </record>
   </ruoli>
 
