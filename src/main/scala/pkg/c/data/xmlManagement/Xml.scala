@@ -1,10 +1,13 @@
 package pkg.c.data.xmlManagement
 
-import Entities.*
+import pkg.b.logic.Entities.*
+import pkg.b.logic.Account
 import pkg.d.util.Properties.*
 
+import java.io.{File, PrintWriter}
+import scala.jdk.CollectionConverters.*
 import scala.util.{Failure, Success, Try}
-import scala.xml.{Elem, XML}
+import scala.xml.{Elem, Node, PrettyPrinter, XML}
 
 object Xml:
 
@@ -14,6 +17,7 @@ object Xml:
     field.set(obj, value)
     obj
 
+  // cambiare il nome in getRecordsFromXML
   def loadXML(xmlFilePathName: String, classType: Class[?]): Seq[Any] =
     val xmlTry: Try[Elem] = Try(XML.loadFile(xmlFilePathName))
 
@@ -37,25 +41,89 @@ object Xml:
   def writeXML(xmlFilePathName: String, xmlElem: Elem): Unit =
     XML.save(xmlFilePathName, xmlElem, "UTF-8", xmlDecl = true)
 
+  def saveXML(xmlFilePathName: String, xmlElem: Elem): Unit =
+    val pw = {
+      new PrintWriter(new File(xmlFilePathName))
+    }
+    try pw.write(new PrettyPrinter(80, 2).format(xmlElem))
+    finally pw.close()
+
+  //recordToElem
+  def recordToElem[Any](obj: Any): Elem =
+    val fields = obj.getClass.getDeclaredFields
+    val children: Seq[Node] = fields.map { field =>
+      field.setAccessible(true)
+      val value = Option(field.get(obj)).map(_.toString).getOrElse("")
+      scala.xml.Elem(null, field.getName, scala.xml.Null, scala.xml.TopScope, true, scala.xml.Text(value))
+    }
+    scala.xml.Elem(null, "record", scala.xml.Null, scala.xml.TopScope, true, children *)
+
+  def insertElemIntoXML(xmlFilePathName: String, xmlElem: Elem): Unit =
+
+    val xmlTry = Try(XML.loadFile(xmlFilePathName))
+
+    xmlTry match {
+      case Success(root) =>
+        val updatedXml = root match
+          case Elem(_, root.label, _, _, children @ _*) =>
+            root.copy(child = root.child :+ xmlElem)
+            //<accounts>{children ++ xmlElem}</accounts>
+          case other =>
+            println("Unexpected XML structure.")
+            return
+
+        saveXML(xmlFilePathName, updatedXml)
+        println(s"Element appended to $xmlFilePathName")
+
+      case Failure(ex) =>
+        println(s"Error loading XML: ${ex.getMessage}")
+    }
+
+  //removeElemFromXML
+
+/*
+    val people = List(
+      ("Bob", 40, "New York"),
+      ("Clara", 28, "London")
+    )
+
+    val xmlList: Seq[Elem] = people.map(p => createPersonXml(p._1, p._2, p._3))
+
+    // Wrap in a root node
+    val rootXml: Elem = <people>
+      {xmlList}
+    </people>
+*/
+
   @main def tryXml(): Unit =
 
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-    val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
+    val databaseFolder = baseFolder + fs + "database"
+
+    //val elem = recordToElem(Ruolo("5", "Manager", "Compiti di gestione"))
+    val elem = recordToElem(Account().getRecordById("2"))
+    //writeXML(databaseFolder + fs + "testElem.xml", elem)
+    saveXML(databaseFolder + fs + "testElem.xml", elem)
+
+    val pp = PrettyPrinter(80, 2) // width=80, indent=2 spaces
+    println(pp.format(elem))
+
+    insertElemIntoXML(databaseFolder + fs + "test.xml", elem)
+
 /*
-    // test writeXML
-    writeXML(databaseFolder + fs + "accounts.xml", DummyData.accounts)
-    writeXML(databaseFolder + fs + "ruoli.xml", DummyData.ruoli)
-    writeXML(databaseFolder + fs + "classifiche.xml", DummyData.classifiche)
-*/
+    val fs = java.io.File.separator
+    val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
+    val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
+
     // test loadXML
     println("\n\nInizio Test")
     val accounts = loadXML(databaseFolder + fs + "accounts.xml", classOf[Account])
     accounts.foreach(println)
     println("XXXXXXXXXXXXXXXXXXX")
-/*
-    loadXML(databaseFolder + fs + "ruoli.xml", classOf[Ruolo]).foreach(println)
 
+    loadXML(databaseFolder + fs + "ruoli.xml", classOf[Ruolo]).foreach(println)
+/*
     val classifiche = loadXML(databaseFolder + fs + "classifiche.xml", classOf[Classifica])
     classifiche.foreach(println)
 */
@@ -78,3 +146,4 @@ object Xml:
 
     for (record <- accounts)
       println(record.asInstanceOf[Account].cognome)
+*/

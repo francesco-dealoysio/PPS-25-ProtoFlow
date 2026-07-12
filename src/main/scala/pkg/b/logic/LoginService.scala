@@ -1,6 +1,6 @@
 package pkg.b.logic
 
-import pkg.c.data.xmlManagement.Entities.Account
+import Account.*
 import pkg.c.data.xmlManagement.Xml.*
 import pkg.d.util.Properties.*
 import pkg.d.util.Util.md5
@@ -51,19 +51,10 @@ object LoginService:
     )
 
   private def checkCredentials(username: String, password: String): Option[Account] =
-    accounts.find(account =>
-      account.username == username && account.password == md5(password)
-    )
+    accounts.find(account => account.username == username && account.password == md5(password))
 
   private def accounts: Seq[Account] =
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-
-    val databaseFolder =
-      getPropsFileProperty(
-        baseFolder + fs + "protoflow.properties",
-        "database.folder"
-      )
-
-    loadXML(databaseFolder + fs + "accounts.xml", classOf[Account])
-      .map(_.asInstanceOf[Account])
+    val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
+    loadXML(databaseFolder + fs + "accounts.xml", classOf[Account]).map(_.asInstanceOf[Account])

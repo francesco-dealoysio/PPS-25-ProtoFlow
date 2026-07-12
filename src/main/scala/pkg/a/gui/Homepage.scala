@@ -1,7 +1,7 @@
 package pkg.a.gui
 
-import pkg.c.data.xmlManagement.Entities.*
-import pkg.c.data.xmlManagement.Entities.Account
+import pkg.b.logic.Entities.*
+import pkg.b.logic.Account
 
 import java.awt.Toolkit
 import scala.swing.{BorderPanel, Button, Dimension, Label, MainFrame}

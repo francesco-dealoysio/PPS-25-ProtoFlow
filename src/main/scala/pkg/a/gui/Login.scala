@@ -1,12 +1,14 @@
 package pkg.a.gui
 
+import pkg.b.logic.Account
+
 import pkg.d.util.{MyJLabel, MyJTextField, RoundedBorder}
 import pkg.d.util.Util.loadImage
 import pkg.d.util.Util.md5
 
 import pkg.d.util.Properties.*
 import pkg.c.data.xmlManagement.Xml.*
-import pkg.c.data.xmlManagement.Entities.*
+import pkg.b.logic.Entities.*
 
 import scala.swing.*
 import scala.swing.Component

@@ -5,9 +5,10 @@ import pkg.c.data.*
 import pkg.d.util.Properties.{createPropsFile, setPropsFileProperty}
 import pkg.c.data.filesManagement.*
 import pkg.c.data.xmlManagement.Xml.*
-import pkg.c.data.xmlManagement.Entities.*
+import Entities.*
+import pkg.b.logic
 //import pkg.c.data.xmlManagement.DummyData.*
-import pkg.c.data.xmlManagement.DummyData.ruoli
+import DummyData.ruoli
 
 object Init:
 
@@ -94,12 +95,23 @@ object Init:
     createFile(path + fs + "7. Retrospettiva.MD", "")
 
     // Creazione dati fittizi
-    writeXML(databaseFolder + fs + "accounts.xml", pkg.c.data.xmlManagement.DummyData.accounts)
-    writeXML(databaseFolder + fs + "ruoli.xml", pkg.c.data.xmlManagement.DummyData.ruoli)
-    writeXML(databaseFolder + fs + "classifiche.xml", pkg.c.data.xmlManagement.DummyData.classifiche)
-    writeXML(databaseFolder + fs + "registrazioni" + fs + "richieste.xml", pkg.c.data.xmlManagement.DummyData.registrazioni)
-    writeXML(databaseFolder + fs + "registrazioni" + fs + "rifiutate.xml", pkg.c.data.xmlManagement.DummyData.registrazioni)
-    writeXML(databaseFolder + fs + "registrazioni" + fs + "accettate.xml", pkg.c.data.xmlManagement.DummyData.registrazioni)
+    if (Files.notExists(Paths.get(databaseFolder + fs + "accounts.xml")))
+      writeXML(databaseFolder + fs + "accounts.xml", logic.DummyData.accounts)
+
+    if (Files.notExists(Paths.get(databaseFolder + fs + "ruoli.xml")))
+      writeXML(databaseFolder + fs + "ruoli.xml", logic.DummyData.ruoli)
+
+    if (Files.notExists(Paths.get(databaseFolder + fs + "classifiche.xml")))
+      writeXML(databaseFolder + fs + "classifiche.xml", logic.DummyData.classifiche)
+
+    if (Files.notExists(Paths.get(databaseFolder + fs + "richieste.xml")))
+      writeXML(databaseFolder + fs + "registrazioni" + fs + "richieste.xml", logic.DummyData.registrazioni)
+
+    if (Files.notExists(Paths.get(databaseFolder + fs + "rifiutate.xml")))
+      writeXML(databaseFolder + fs + "registrazioni" + fs + "rifiutate.xml", logic.DummyData.registrazioni)
+
+    if (Files.notExists(Paths.get(databaseFolder + fs + "accettate.xml")))
+      writeXML(databaseFolder + fs + "registrazioni" + fs + "accettate.xml", logic.DummyData.registrazioni)
 
   @main def tryInit: Unit =
     init

@@ -1,6 +1,5 @@
 package pkg.a.gui
 
-
 import pkg.c.data.generalStructures.Role
 import pkg.c.data.guiStructures.{HomePageConfig, HomePageViewModel, MenuAction}
 import scalafx.geometry.Pos

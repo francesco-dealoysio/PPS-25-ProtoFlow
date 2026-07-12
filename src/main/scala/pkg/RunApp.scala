@@ -31,6 +31,7 @@ object RunApp extends JFXApp3:
     
     val navigator = AppNavigator(stage)
     navigator.showLogin()
+    //navigator.showRoleAddView()
     
     stage.show()
   }

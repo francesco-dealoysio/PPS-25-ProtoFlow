@@ -1,11 +1,10 @@
 package pkg.b.logic
 
+import scala.xml.Elem
 import pkg.d.util.Util.md5
 
-import scala.xml.Elem
-
 object Entities:
-
+/*
   case class Account(
                       id: String = "",
                       cognome: String = "",
@@ -21,7 +20,7 @@ object Entities:
     def this() =
       this("", "", "", "", "", "", "", "", "", "")
   }
-
+*/
   case class Ruolo(
                     id: String = "",
                     ruolo: String = "",

@@ -1,6 +1,6 @@
 package pkg.a.gui
 
-import pkg.a.gui.{HomePageView, LoginView, RegistrationView}
+import pkg.a.gui.{HomePageView, LoginView, RegistrationView, RoleAddView}
 import pkg.c.data.generalStructures.Role
 import pkg.c.data.guiStructures.{HomePageConfig, HomePageViewModel, RegistrationViewModel}
 import scalafx.application.JFXApp3
@@ -61,6 +61,20 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
 
     addStylesheet(scene, "/homepages.css")
     stage.scene = scene
+
+  def showRoleAddView(): Unit =
+    
+    stage.title = "Aggiunta Ruolo"
+    stage.width = 1100
+    stage.height = 700
+    stage.resizable = true
+
+    val scene = new Scene(800, 600):
+      root = RoleAddView()
+
+    addStylesheet(scene, "/homepages.css")
+    stage.scene = scene
+
 
   private def roleFrom(role: String): Role =
     role.toLowerCase match

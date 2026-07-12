@@ -1,0 +1,64 @@
+<accounts>
+  <record>
+    <id>1</id>
+    <cognome>de aloysio</cognome>
+    <nome>francesco</nome>
+    <email>francesco.dealoysio@studio.unibo.it</email>
+    <telefono>06/11111111</telefono>
+    <ruolo>viewer</ruolo>
+    <area>presidenza</area>
+    <incarico>presidente</incarico>
+    <username>francesco</username>
+    <password>8f04a464e3660e912e8abaf8aefaa2fe</password>
+  </record>
+  <record>
+    <id>2</id>
+    <cognome>testa</cognome>
+    <nome>thomas</nome>
+    <email>thomas.testa@studio.unibo.it</email>
+    <telefono>0547/1111111</telefono>
+    <ruolo>oper</ruolo>
+    <area>amministrazione</area>
+    <incarico>tesoriere</incarico>
+    <username>tommy</username>
+    <password>c380b0f52732254a94dfbbd38c59a339</password>
+  </record>
+  <record>
+    <fs>\</fs>
+    <baseFolder>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\protoflow
+    </baseFolder>
+    <databaseFolder>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\protoflow\database
+    </databaseFolder>
+    <id>2</id>
+    <cognome>testa</cognome>
+    <nome>thomas</nome>
+    <email>thomas.testa@studio.unibo.it</email>
+    <telefono>0547/1111111</telefono>
+    <ruolo>oper</ruolo>
+    <area>amministrazione</area>
+    <incarico>tesoriere</incarico>
+    <username>tommy</username>
+    <password>c380b0f52732254a94dfbbd38c59a339</password>
+  </record>
+  <record>
+    <fs>\</fs>
+    <baseFolder>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\protoflow
+    </baseFolder>
+    <databaseFolder>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\protoflow\database
+    </databaseFolder>
+    <id>2</id>
+    <cognome>testa</cognome>
+    <nome>thomas</nome>
+    <email>thomas.testa@studio.unibo.it</email>
+    <telefono>0547/1111111</telefono>
+    <ruolo>oper</ruolo>
+    <area>amministrazione</area>
+    <incarico>tesoriere</incarico>
+    <username>tommy</username>
+    <password>c380b0f52732254a94dfbbd38c59a339</password>
+  </record>
+</accounts>
