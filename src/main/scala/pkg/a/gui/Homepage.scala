@@ -1,6 +1,6 @@
 package pkg.a.gui
 
-import pkg.b.logic.Entities.*
+//import pkg.b.logic.Entities.*
 import pkg.b.logic.Account
 
 import java.awt.Toolkit

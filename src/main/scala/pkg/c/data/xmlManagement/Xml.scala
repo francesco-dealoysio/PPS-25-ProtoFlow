@@ -1,6 +1,6 @@
 package pkg.c.data.xmlManagement
 
-import pkg.b.logic.Entities.*
+//import pkg.b.logic.Entities.*
 import pkg.b.logic.Account
 import pkg.d.util.Properties.*
 
@@ -12,7 +12,7 @@ import java.nio.file.{Files, Paths, StandardOpenOption}
 import java.nio.charset.StandardCharsets
 
 object Xml:
-
+/*
   // Thomas
   private def emptyXml: Elem =
     <registrationRequests></registrationRequests>
@@ -34,8 +34,8 @@ object Xml:
 
   // Thomas
   def findById(id: String): Option[RegistrationRequest] =
-    findAll().find(_.id == id)  
-    
+    findAll().find(_.id == id)
+
   // Thomas
   private def saveAll(requests: List[RegistrationRequest]): Unit =
     val xml =
@@ -44,8 +44,10 @@ object Xml:
       </registrationRequests>
 
     saveXml(xml)
+ */
+
   def createEmptyXmlFile(xmlFilePathName: String, rootTagName: String): Unit =
-    
+
     if !rootTagName.matches("^[A-Za-z_][A-Za-z0-9._-]*$") then
       throw new IllegalArgumentException(s"Invalid XML tag name: '$rootTagName'")
 
@@ -76,7 +78,7 @@ object Xml:
       case e: Exception =>
         println(s"Errore in recordUpdate: ${e.getMessage}")
         obj
-  
+
   def getRecordFromXML(xmlFilePathName: String, classType: Class[?]): Seq[Any] =
     val xmlTry: Try[Elem] = Try(XML.loadFile(xmlFilePathName))
     xmlTry match
@@ -113,7 +115,7 @@ object Xml:
     }
     scala.xml.Elem(null, "record", scala.xml.Null, scala.xml.TopScope, true, children *)
 
-    def insertElemIntoXML(xmlFilePathName: String, obj: Any): Unit =
+  def insertElemIntoXML(xmlFilePathName: String, obj: Any): Unit =
     val xmlElem = recordToElem(obj)
     val xmlTry = Try(XML.loadFile(xmlFilePathName))
 

@@ -5,7 +5,7 @@ import pkg.c.data.*
 import pkg.d.util.Properties.{createPropsFile, setPropsFileProperty}
 import pkg.c.data.filesManagement.*
 import pkg.c.data.xmlManagement.Xml.*
-import Entities.*
+//import Entities.*
 import pkg.b.logic
 //import pkg.c.data.xmlManagement.DummyData.*
 import DummyData.ruoli

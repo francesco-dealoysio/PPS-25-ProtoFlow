@@ -8,7 +8,7 @@ import pkg.d.util.Util.md5
 
 import pkg.d.util.Properties.*
 import pkg.c.data.xmlManagement.Xml.*
-import pkg.b.logic.Entities.*
+//import pkg.b.logic.Entities.*
 
 import scala.swing.*
 import scala.swing.Component

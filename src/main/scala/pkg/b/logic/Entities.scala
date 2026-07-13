@@ -3,8 +3,8 @@ package pkg.b.logic
 import scala.xml.Elem
 import pkg.d.util.Util.md5
 
-object Entities:
 /*
+object Entities:
   case class Account(
                       id: String = "",
                       cognome: String = "",
@@ -21,6 +21,8 @@ object Entities:
       this("", "", "", "", "", "", "", "", "", "")
   }
 */
+  
+/*
   case class Ruolo(
                     id: String = "",
                     ruolo: String = "",
@@ -55,7 +57,7 @@ object Entities:
     def this() =
       this("", "", "", "", "", "", "", "", "", "", "", "")
   }
-
+*/
 object DummyData:
 
   private val passwd1 = md5("topolino")
