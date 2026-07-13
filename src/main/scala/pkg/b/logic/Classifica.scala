@@ -54,13 +54,16 @@ case class Classifica(
         println(s"Errore in getRecordByFilter: ${e.getMessage}")
         NONE
 
-  override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Unit =
-    try
+  override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    var result = false
+    try 
       insertElemIntoXML(xmlFilePathName, obj)
+      result = true
     catch
       case e: Exception =>
         println(s"Errore in recordInsert: ${e.getMessage}")
-
+    result
+  
   override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Unit =
     try
       updateElemOfXML(xmlFilePathName, obj)

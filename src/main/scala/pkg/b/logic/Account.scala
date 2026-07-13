@@ -68,7 +68,7 @@ case class Account(
         println(s"Errore in getRecordById: ${e.getMessage}")
         new Account
 
-  //
+  // FARE
   override def getRecordsByFilter(condition: Boolean, xmlFilePathName: String = defaultXmlFilePathName): Int =
     val NONE = 0
     try
@@ -79,12 +79,21 @@ case class Account(
         println(s"Errore in getRecordByFilter: ${e.getMessage}")
         NONE
 
-  override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Unit =
+  override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    var result = false
     try
-      insertElemIntoXML(xmlFilePathName, obj)
+      val account = obj.asInstanceOf[Account]
+      val idExists = searchFieldValue(xmlFilePathName, "id", account.getId)
+      val usernameExists = searchFieldValue(xmlFilePathName, "username", account.getUsername)
+      if !(idExists || usernameExists) then {
+        insertElemIntoXML(xmlFilePathName, obj)
+        result = true
+      } else
+        println(s"Errore in recordInsert: valori duplicati (id o username)")
     catch
       case e: Exception =>
         println(s"Errore in recordInsert: ${e.getMessage}")
+    result
 
   override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Unit =
     try

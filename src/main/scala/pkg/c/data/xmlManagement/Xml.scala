@@ -6,6 +6,7 @@ import pkg.d.util.Properties.*
 
 import scala.jdk.CollectionConverters.*
 import scala.util.{Failure, Success, Try}
+import scala.xml._
 import scala.xml.{Elem, Node, PrettyPrinter, XML}
 import java.io.{File, PrintWriter}
 import java.nio.file.{Files, Paths, StandardOpenOption}
@@ -115,23 +116,25 @@ object Xml:
     }
     scala.xml.Elem(null, "record", scala.xml.Null, scala.xml.TopScope, true, children *)
 
-  def insertElemIntoXML(xmlFilePathName: String, obj: Any): Unit =
+  def insertElemIntoXML(xmlFilePathName: String, obj: Any): Boolean =
+    var result = false
     val xmlElem = recordToElem(obj)
     val xmlTry = Try(XML.loadFile(xmlFilePathName))
 
-    xmlTry match {
+    xmlTry match
       case Success(root) =>
         val updatedXml = root match
           case Elem(_, root.label, _, _, children@_*) =>
             root.copy(child = root.child :+ xmlElem)
           case other =>
             println("Unexpected XML structure.")
-            return
+            return false
         saveXML(xmlFilePathName, updatedXml)
         println(s"Element appended to $xmlFilePathName")
+        result = true
       case Failure(ex) =>
         println(s"Error loading XML: ${ex.getMessage}")
-    }
+    result
 
   def updateElemOfXML(xmlFilePathName: String, obj: Any): Unit =
     val id = obj.getClass.getDeclaredField("id")
@@ -170,12 +173,11 @@ object Xml:
     var result = false
     xmlTry match
       case Success(root) =>
-        val updatedXml = root match
-          case Elem(_, root.label, _, _, children@_*) =>
-            root.copy(child = (root \ "record").filter(rec => (rec \ fieldName).text.trim == fieldValue))
-            result = (root.child.length > 0)
-          case other =>
-            println("Unexpected XML structure.")
+        root match
+        case Elem(_, _, _, _, children@_*) =>
+          result = (root \\ fieldName).exists(_.text.trim == fieldValue)
+        case other =>
+          println("Unexpected XML structure.")
       case Failure(ex) =>
         println(s"Error loading XML: ${ex.getMessage}")
       result
