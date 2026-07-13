@@ -143,7 +143,8 @@ object Xml:
     else
       println(s"Record with id: ${id} not found.")
 
-  def removeElemFromXML(xmlFilePathName: String, id: String): Unit =
+  def removeElemFromXML(xmlFilePathName: String, id: String): Boolean =
+    var result = false
     val xmlTry = Try(XML.loadFile(xmlFilePathName))
 
     if (searchFieldValue(xmlFilePathName, "id", id)) then
@@ -154,13 +155,15 @@ object Xml:
               root.copy(child = (root \ "record").filterNot(rec => (rec \ "id").text.trim == id))
             case other =>
               println("Unexpected XML structure.")
-              return
+              return false
             saveXML(xmlFilePathName, updatedXml)
             println("Record removed successfully.")
+            result = true
         case Failure(ex) =>
           println(s"Error loading XML: ${ex.getMessage}")
     else
       println(s"Record with id: ${id} not found.")
+    result
 
   def searchFieldValue(xmlFilePathName: String, fieldName: String, fieldValue: String): Boolean =
     val xmlTry = Try(XML.loadFile(xmlFilePathName))

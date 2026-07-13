@@ -93,12 +93,13 @@ case class Account(
       case e: Exception =>
         println(s"Errore in recordUpdate: ${e.getMessage}")
 
-  override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Unit =
+  override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       removeElemFromXML(xmlFilePathName, id)
     catch
       case e: Exception =>
         println(s"Errore in recordDelete: ${e.getMessage}")
+        false
 
 @main def tryAccount: Unit =
   println("Tested in AccountTest.scala")

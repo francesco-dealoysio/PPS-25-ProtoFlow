@@ -5,6 +5,6 @@ trait Entity:
   def getRecords(xmlFilePathName: String): Seq[Any]
   def recordInsert(obj: Any, xmlFilePathName: String): Unit
   def recordUpdate(obj: Any, xmlFilePathName: String): Unit
-  def recordDelete(id: String, xmlFilePathName: String): Unit
+  def recordDelete(id: String, xmlFilePathName: String): Boolean
   def getRecordsByFilter(condition: Boolean, xmlFilePathName: String): Int
   def xmlFile: String
