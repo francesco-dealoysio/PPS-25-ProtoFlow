@@ -5,7 +5,6 @@ import pkg.c.data.xmlManagement.Xml.*
 import pkg.d.util.Util.md5
 import pkg.d.util.Properties.*
 
-
 case class Account(
                  private var id: String = "",
                  private var cognome: String = "",
@@ -52,29 +51,53 @@ case class Account(
   override def xmlFile = "accounts.xml"
 
   override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Account] =
+    try
       getRecordFromXML(xmlFilePathName, classOf[Account])
       .map(r => r.asInstanceOf[Account])
+    catch
+      case e: Exception =>
+        println(s"Errore in getRecords: ${e.getMessage}")
+        Seq.empty[Account]
 
   override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Account =
-    getRecordFromXML(xmlFilePathName, classOf[Account])
-      .map(a => a.asInstanceOf[Account]).filter(_.id == id).head
+    try
+      getRecordFromXML(xmlFilePathName, classOf[Account])
+        .map(a => a.asInstanceOf[Account]).filter(_.id == id).head
+    catch
+      case e: Exception =>
+        println(s"Errore in getRecordById: ${e.getMessage}")
+        new Account
 
   override def getRecordsByFilter(condition: Boolean, xmlFilePathName: String = defaultXmlFilePathName): Int =
-    getRecordFromXML(xmlFilePathName, classOf[Account])
-      //.map(a => a.asInstanceOf[Account]).count(a => a.ruolo == "viewer" && a.nome == "francesco")
-      .map(a => a.asInstanceOf[Account]).count(a => a.ruolo == "viewer")
+    val NONE = 0
+    try
+      getRecordFromXML(xmlFilePathName, classOf[Account])
+        .map(a => a.asInstanceOf[Account]).count(a => a.ruolo == "viewer")
+    catch
+      case e: Exception =>
+        println(s"Errore in getRecordByFilter: ${e.getMessage}")
+        NONE
 
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Unit =
-    insertElemIntoXML(xmlFilePathName, obj)
+    try
+      insertElemIntoXML(xmlFilePathName, obj)
+    catch
+      case e: Exception =>
+        println(s"Errore in recordInsert: ${e.getMessage}")
 
   override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Unit =
-    updateElemOfXML(xmlFilePathName, obj)
+    try
+      updateElemOfXML(xmlFilePathName, obj)
+    catch
+      case e: Exception =>
+        println(s"Errore in recordUpdate: ${e.getMessage}")
 
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Unit =
-    removeElemFromXML(xmlFilePathName, id)
+    try
+      removeElemFromXML(xmlFilePathName, id)
+    catch
+      case e: Exception =>
+        println(s"Errore in recordDelete: ${e.getMessage}")
 
 @main def tryEntity: Unit =
-
-  Account().recordInsert(Account().getRecordById("3"))
-  //Account().recordDelete("5")
-  //println(Account().getRecordsByFilter(true))
+  println("Tested in AccountTest.scala")

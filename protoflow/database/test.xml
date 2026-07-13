@@ -1,14 +1,2 @@
-<test_records>
-  <record>
-    <id>1</id>
-    <cognome>de aloysio</cognome>
-    <nome>francesco</nome>
-    <email>francesco.dealoysio@studio.unibo.it</email>
-    <telefono>06/11111111</telefono>
-    <ruolo>admin</ruolo>
-    <area>presidenza</area>
-    <incarico>presidente</incarico>
-    <username>frank</username>
-    <password>8f04a464e3660e912e8abaf8aefaa2fe</password>
-  </record>
-</test_records>
+<?xml version="1.0" encoding="UTF-8"?>
+<test_records/>

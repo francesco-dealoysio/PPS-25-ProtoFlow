@@ -7,16 +7,45 @@ import pkg.d.util.Properties.*
 import scala.jdk.CollectionConverters.*
 import scala.util.{Failure, Success, Try}
 import scala.xml.{Elem, Node, PrettyPrinter, XML}
-
 import java.io.{File, PrintWriter}
 import java.nio.file.{Files, Paths, StandardOpenOption}
 import java.nio.charset.StandardCharsets
 
-
 object Xml:
 
-  def creatEmptyXmlFile(xmlFilePathName: String, rootTagName: String): Unit =
+  // Thomas
+  private def emptyXml: Elem =
+    <registrationRequests></registrationRequests>
 
+  // Thomas
+  private def loadXml(): Elem =
+    val file = File(filePath)
+
+    if file.exists() then
+      XML.loadFile(file)
+    else
+      saveXml(emptyXml)
+      emptyXml
+
+  // Thomas
+  def findAll(): List[RegistrationRequest] =
+    val xml = loadXml()
+    (xml \ "request").toList.map(fromXml)
+
+  // Thomas
+  def findById(id: String): Option[RegistrationRequest] =
+    findAll().find(_.id == id)  
+    
+  // Thomas
+  private def saveAll(requests: List[RegistrationRequest]): Unit =
+    val xml =
+      <registrationRequests>
+        {requests.map(toXml)}
+      </registrationRequests>
+
+    saveXml(xml)
+  def createEmptyXmlFile(xmlFilePathName: String, rootTagName: String): Unit =
+    
     if !rootTagName.matches("^[A-Za-z_][A-Za-z0-9._-]*$") then
       throw new IllegalArgumentException(s"Invalid XML tag name: '$rootTagName'")
 
@@ -28,41 +57,53 @@ object Xml:
     Files.write(path, xmlString.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
     println(s"XML file created at: $xmlFilePathName")
 
+  def cleanXmlFile(xmlFilePathName: String): Unit =
+    val xmlTry: Try[Elem] = Try(XML.loadFile(xmlFilePathName))
+    xmlTry match
+      case Success(xmlData) =>
+        val cleanedXml = xmlData.copy(child = Nil)
+        saveXML(xmlFilePathName, cleanedXml)
+      case Failure(ex) =>
+        println(s"Error loading XML: ${ex.getMessage}")
 
   private def recordUpdate[Any](obj: Any, fieldName: String, value: String): Any =
-    val field = obj.getClass.getDeclaredField(fieldName)
-    field.setAccessible(true)
-    field.set(obj, value)
-    obj
-
+    try
+      val field = obj.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(obj, value)
+      obj
+    catch
+      case e: Exception =>
+        println(s"Errore in recordUpdate: ${e.getMessage}")
+        obj
+  
   def getRecordFromXML(xmlFilePathName: String, classType: Class[?]): Seq[Any] =
     val xmlTry: Try[Elem] = Try(XML.loadFile(xmlFilePathName))
-
     xmlTry match
       case Success(xmlData) =>
         (xmlData \\ "record").flatMap { node =>
-
           val constructor = classType.getDeclaredConstructor()
           var record = constructor.newInstance()
-
           val fieldsMap = node.child.collect { case e: Elem => e.label -> e.text.trim }.toMap
+          val result =
           fieldsMap.foreach { case (k, v) => record = recordUpdate(record, s"$k", s"$v") }
-
           for i <- node yield record
-
         }
       case Failure(ex) =>
         println(s"Error loading XML: ${ex.getMessage}")
         Seq.empty
 
+  // ???
   def writeXML(xmlFilePathName: String, xmlElem: Elem): Unit =
     XML.save(xmlFilePathName, xmlElem, "UTF-8", xmlDecl = true)
 
+  // ???
   def saveXML(xmlFilePathName: String, xmlElem: Elem): Unit =
     val pw = new PrintWriter(new File(xmlFilePathName))
     try pw.write(new PrettyPrinter(80, 2).format(xmlElem))
     finally pw.close()
 
+  // ???
   private def recordToElem(obj: Any): Elem =
     val fields = obj.getClass.getDeclaredFields
     val children: Seq[Node] = fields.map { field =>
@@ -72,24 +113,20 @@ object Xml:
     }
     scala.xml.Elem(null, "record", scala.xml.Null, scala.xml.TopScope, true, children *)
 
-  def insertElemIntoXML(xmlFilePathName: String, obj: Any): Unit =
+    def insertElemIntoXML(xmlFilePathName: String, obj: Any): Unit =
     val xmlElem = recordToElem(obj)
     val xmlTry = Try(XML.loadFile(xmlFilePathName))
 
     xmlTry match {
-
       case Success(root) =>
-
         val updatedXml = root match
-          case Elem(_, root.label, _, _, children @ _*) =>
+          case Elem(_, root.label, _, _, children@_*) =>
             root.copy(child = root.child :+ xmlElem)
           case other =>
             println("Unexpected XML structure.")
             return
-
         saveXML(xmlFilePathName, updatedXml)
         println(s"Element appended to $xmlFilePathName")
-
       case Failure(ex) =>
         println(s"Error loading XML: ${ex.getMessage}")
     }
@@ -97,30 +134,46 @@ object Xml:
   def updateElemOfXML(xmlFilePathName: String, obj: Any): Unit =
     val id = obj.getClass.getDeclaredField("id")
     id.setAccessible(true)
-    removeElemFromXML(xmlFilePathName, id.get(obj).toString)
-    insertElemIntoXML(xmlFilePathName, obj)
+    val readId = id.get(obj).toString
+    if searchFieldValue(xmlFilePathName, "id", readId) then
+      removeElemFromXML(xmlFilePathName, id.get(obj).toString)
+      insertElemIntoXML(xmlFilePathName, obj)
+    else
+      println(s"Record with id: ${id} not found.")
 
   def removeElemFromXML(xmlFilePathName: String, id: String): Unit =
-
     val xmlTry = Try(XML.loadFile(xmlFilePathName))
 
-    xmlTry match {
+    if (searchFieldValue(xmlFilePathName, "id", id)) then
+      xmlTry match
+        case Success(root) =>
+          val updatedXml = root match
+            case Elem(_, root.label, _, _, children @ _*) =>
+              root.copy(child = (root \ "record").filterNot(rec => (rec \ "id").text.trim == id))
+            case other =>
+              println("Unexpected XML structure.")
+              return
+            saveXML(xmlFilePathName, updatedXml)
+            println("Record removed successfully.")
+        case Failure(ex) =>
+          println(s"Error loading XML: ${ex.getMessage}")
+    else
+      println(s"Record with id: ${id} not found.")
 
+  def searchFieldValue(xmlFilePathName: String, fieldName: String, fieldValue: String): Boolean =
+    val xmlTry = Try(XML.loadFile(xmlFilePathName))
+    var result = false
+    xmlTry match
       case Success(root) =>
-
         val updatedXml = root match
-          case Elem(_, root.label, _, _, children @ _*) =>
-            root.copy(child = (root \ "record").filterNot(rec => (rec \ "id").text.trim == id))
+          case Elem(_, root.label, _, _, children@_*) =>
+            root.copy(child = (root \ "record").filter(rec => (rec \ fieldName).text.trim == fieldValue))
+            result = (root.child.length > 0)
           case other =>
             println("Unexpected XML structure.")
-            return
-
-          saveXML(xmlFilePathName, updatedXml)
-          println("Record removed successfully.")
-
       case Failure(ex) =>
         println(s"Error loading XML: ${ex.getMessage}")
-    }
+      result
 
   @main def tryXml(): Unit =
 
@@ -141,7 +194,7 @@ object Xml:
     account3.setRuolo("paperino")
     updateElemOfXML(databaseFolder + fs + "accounts.xml", account3)
 
-    creatEmptyXmlFile(databaseFolder + fs + "nuovo.xml", "libri")
+    createEmptyXmlFile(databaseFolder + fs + "nuovo.xml", "libri")
     insertElemIntoXML(databaseFolder + fs + "nuovo.xml", account3)
 
     //writeXML(databaseFolder + fs + "testElem.xml", elem)

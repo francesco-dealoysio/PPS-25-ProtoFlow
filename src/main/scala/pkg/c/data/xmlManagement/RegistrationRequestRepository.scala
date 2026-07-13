@@ -11,9 +11,11 @@ class RegistrationRequestRepository(
                                      private val filePath: String = "registration_requests.xml"
                                    ):
 
+  // si
   private def emptyXml: Elem =
     <registrationRequests></registrationRequests>
 
+  // si 
   private def loadXml(): Elem =
     val file = File(filePath)
 
@@ -23,9 +25,11 @@ class RegistrationRequestRepository(
       saveXml(emptyXml)
       emptyXml
 
+  // no -> saveXML
   private def saveXml(xml: Elem): Unit =
     XML.save(filePath, xml, "UTF-8", xmlDecl = true)
 
+  // no -> recordToElem
   private def toXml(request: RegistrationRequest): Node =
     <request>
       <id>{request.id}</id>
@@ -40,6 +44,7 @@ class RegistrationRequestRepository(
       <status>{request.status.toString}</status>
     </request>
 
+  // si temp
   private def fromXml(node: Node): RegistrationRequest =
     RegistrationRequest(
       id = (node \ "id").text,
@@ -54,6 +59,7 @@ class RegistrationRequestRepository(
       status = RegistrationRequestStatus.valueOf((node \ "status").text)
     )
 
+  // si temp
   private def saveAll(requests: List[RegistrationRequest]): Unit =
     val xml =
       <registrationRequests>
@@ -62,18 +68,22 @@ class RegistrationRequestRepository(
 
     saveXml(xml)
 
+  // no -> insertElemIntoXML
   def save(request: RegistrationRequest): RegistrationRequest =
     val requests = findAll()
     saveAll(requests :+ request)
     request
 
+  // si 
   def findAll(): List[RegistrationRequest] =
     val xml = loadXml()
     (xml \ "request").toList.map(fromXml)
 
+  // si
   def findById(id: String): Option[RegistrationRequest] =
     findAll().find(_.id == id)
-
+    
+  // no -> xml, ma logica
   def findPending(): List[RegistrationRequest] =
     findAll().filter(_.status == RegistrationRequestStatus.Pending)
 
