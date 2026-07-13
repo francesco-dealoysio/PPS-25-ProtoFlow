@@ -106,10 +106,10 @@ object Login extends SimpleSwingApplication {
         val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
         val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
 
-        val accounts = loadXML(databaseFolder + fs + "accounts.xml", classOf[Account])
-        val found = accounts.map(a => a.asInstanceOf[Account]).filter(_.username == username)
+        val accounts = getRecordFromXML(databaseFolder + fs + "accounts.xml", classOf[Account])
+        val found = accounts.map(a => a.asInstanceOf[Account]).filter(_.getUsername == username)
 
-        if (found != Nil && found(0).password == md5(password))
+        if (found != Nil && found(0).getPassword == md5(password))
           result = found(0)
 
         result
@@ -188,7 +188,7 @@ object Login extends SimpleSwingApplication {
             val obj = checkCredentials(username, password)
             if (obj != null) then
               val account = obj.asInstanceOf[Account]
-              val role = account.ruolo
+              val role = account.getRuolo
               val home = new Homepage(account)
               if (home != null) then
                 home.visible = true

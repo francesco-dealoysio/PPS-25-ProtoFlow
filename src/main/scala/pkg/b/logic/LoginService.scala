@@ -26,11 +26,11 @@ object LoginService:
       Left(LoginError.EmptyCredentials)
     else
       checkCredentials(cleanUsername, cleanPassword) match
-        case Some(account) if validRoles.contains(account.ruolo) =>
+        case Some(account) if validRoles.contains(account.getRuolo) =>
           Right(toLoggedUser(account))
 
         case Some(account) =>
-          Left(LoginError.UnknownRole(account.ruolo))
+          Left(LoginError.UnknownRole(account.getRuolo))
 
         case None =>
           Left(LoginError.InvalidCredentials)
@@ -40,21 +40,21 @@ object LoginService:
 
   private def toLoggedUser(account: Account): LoggedUser =
     val fullName =
-      s"${account.nome} ${account.cognome}".trim match
-        case "" => account.username
+      s"${account.getNome} ${account.getCognome}".trim match
+        case "" => account.getUsername
         case name => name
 
     LoggedUser(
-      username = account.username,
+      username = account.getUsername,
       fullName = fullName,
-      role = account.ruolo
+      role = account.getRuolo
     )
 
   private def checkCredentials(username: String, password: String): Option[Account] =
-    accounts.find(account => account.username == username && account.password == md5(password))
+    accounts.find(account => account.getUsername == username && account.getPassword == md5(password))
 
   private def accounts: Seq[Account] =
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
     val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
-    loadXML(databaseFolder + fs + "accounts.xml", classOf[Account]).map(_.asInstanceOf[Account])
+    getRecordFromXML(databaseFolder + fs + "accounts.xml", classOf[Account]).map(_.asInstanceOf[Account])

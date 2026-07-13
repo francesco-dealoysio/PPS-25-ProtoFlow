@@ -1,11 +1,4 @@
 <record>
-  <fs>\</fs>
-  <baseFolder>
-    C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\protoflow
-  </baseFolder>
-  <databaseFolder>
-    C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\protoflow\database
-  </databaseFolder>
   <id>2</id>
   <cognome>testa</cognome>
   <nome>thomas</nome>

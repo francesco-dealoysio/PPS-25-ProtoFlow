@@ -4,12 +4,30 @@ import pkg.b.logic.Entities.*
 import pkg.b.logic.Account
 import pkg.d.util.Properties.*
 
-import java.io.{File, PrintWriter}
 import scala.jdk.CollectionConverters.*
 import scala.util.{Failure, Success, Try}
 import scala.xml.{Elem, Node, PrettyPrinter, XML}
 
+import java.io.{File, PrintWriter}
+import java.nio.file.{Files, Paths, StandardOpenOption}
+import java.nio.charset.StandardCharsets
+
+
 object Xml:
+
+  def creatEmptyXmlFile(xmlFilePathName: String, rootTagName: String): Unit =
+
+    if !rootTagName.matches("^[A-Za-z_][A-Za-z0-9._-]*$") then
+      throw new IllegalArgumentException(s"Invalid XML tag name: '$rootTagName'")
+
+    val xmlContent: Elem = Elem(null, rootTagName, scala.xml.Null, scala.xml.TopScope, minimizeEmpty = true)
+    val prettyPrinter = PrettyPrinter(80, 2)
+    val xmlString = """<?xml version="1.0" encoding="UTF-8"?>""" + "\n" + prettyPrinter.format(xmlContent)
+    val path = Paths.get(xmlFilePathName)
+
+    Files.write(path, xmlString.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+    println(s"XML file created at: $xmlFilePathName")
+
 
   private def recordUpdate[Any](obj: Any, fieldName: String, value: String): Any =
     val field = obj.getClass.getDeclaredField(fieldName)
@@ -17,8 +35,7 @@ object Xml:
     field.set(obj, value)
     obj
 
-  // cambiare il nome in getRecordsFromXML
-  def loadXML(xmlFilePathName: String, classType: Class[?]): Seq[Any] =
+  def getRecordFromXML(xmlFilePathName: String, classType: Class[?]): Seq[Any] =
     val xmlTry: Try[Elem] = Try(XML.loadFile(xmlFilePathName))
 
     xmlTry match
@@ -42,14 +59,11 @@ object Xml:
     XML.save(xmlFilePathName, xmlElem, "UTF-8", xmlDecl = true)
 
   def saveXML(xmlFilePathName: String, xmlElem: Elem): Unit =
-    val pw = {
-      new PrintWriter(new File(xmlFilePathName))
-    }
+    val pw = new PrintWriter(new File(xmlFilePathName))
     try pw.write(new PrettyPrinter(80, 2).format(xmlElem))
     finally pw.close()
 
-  //recordToElem
-  def recordToElem[Any](obj: Any): Elem =
+  private def recordToElem(obj: Any): Elem =
     val fields = obj.getClass.getDeclaredFields
     val children: Seq[Node] = fields.map { field =>
       field.setAccessible(true)
@@ -58,16 +72,17 @@ object Xml:
     }
     scala.xml.Elem(null, "record", scala.xml.Null, scala.xml.TopScope, true, children *)
 
-  def insertElemIntoXML(xmlFilePathName: String, xmlElem: Elem): Unit =
-
+  def insertElemIntoXML(xmlFilePathName: String, obj: Any): Unit =
+    val xmlElem = recordToElem(obj)
     val xmlTry = Try(XML.loadFile(xmlFilePathName))
 
     xmlTry match {
+
       case Success(root) =>
+
         val updatedXml = root match
           case Elem(_, root.label, _, _, children @ _*) =>
             root.copy(child = root.child :+ xmlElem)
-            //<accounts>{children ++ xmlElem}</accounts>
           case other =>
             println("Unexpected XML structure.")
             return
@@ -79,21 +94,33 @@ object Xml:
         println(s"Error loading XML: ${ex.getMessage}")
     }
 
-  //removeElemFromXML
+  def updateElemOfXML(xmlFilePathName: String, obj: Any): Unit =
+    val id = obj.getClass.getDeclaredField("id")
+    id.setAccessible(true)
+    removeElemFromXML(xmlFilePathName, id.get(obj).toString)
+    insertElemIntoXML(xmlFilePathName, obj)
 
-/*
-    val people = List(
-      ("Bob", 40, "New York"),
-      ("Clara", 28, "London")
-    )
+  def removeElemFromXML(xmlFilePathName: String, id: String): Unit =
 
-    val xmlList: Seq[Elem] = people.map(p => createPersonXml(p._1, p._2, p._3))
+    val xmlTry = Try(XML.loadFile(xmlFilePathName))
 
-    // Wrap in a root node
-    val rootXml: Elem = <people>
-      {xmlList}
-    </people>
-*/
+    xmlTry match {
+
+      case Success(root) =>
+
+        val updatedXml = root match
+          case Elem(_, root.label, _, _, children @ _*) =>
+            root.copy(child = (root \ "record").filterNot(rec => (rec \ "id").text.trim == id))
+          case other =>
+            println("Unexpected XML structure.")
+            return
+
+          saveXML(xmlFilePathName, updatedXml)
+          println("Record removed successfully.")
+
+      case Failure(ex) =>
+        println(s"Error loading XML: ${ex.getMessage}")
+    }
 
   @main def tryXml(): Unit =
 
@@ -101,16 +128,25 @@ object Xml:
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
     val databaseFolder = baseFolder + fs + "database"
 
-    //val elem = recordToElem(Ruolo("5", "Manager", "Compiti di gestione"))
-    val elem = recordToElem(Account().getRecordById("2"))
-    //writeXML(databaseFolder + fs + "testElem.xml", elem)
-    saveXML(databaseFolder + fs + "testElem.xml", elem)
-
-    val pp = PrettyPrinter(80, 2) // width=80, indent=2 spaces
+    //val record = recordToElem(Ruolo("5", "Manager", "Compiti di gestione"))
+    val record = Account().getRecordById("2")
+    val elem = recordToElem(record)
+    val pp = PrettyPrinter(80, 2)
     println(pp.format(elem))
 
-    insertElemIntoXML(databaseFolder + fs + "test.xml", elem)
+    val account1 = Account().getRecordById("1")
+    val account3 = Account().getRecordById("3")
+    println(account1)
+    println(account3.getRuolo)
+    account3.setRuolo("paperino")
+    updateElemOfXML(databaseFolder + fs + "accounts.xml", account3)
 
+    creatEmptyXmlFile(databaseFolder + fs + "nuovo.xml", "libri")
+    insertElemIntoXML(databaseFolder + fs + "nuovo.xml", account3)
+
+    //writeXML(databaseFolder + fs + "testElem.xml", elem)
+    //saveXML(databaseFolder + fs + "testElem.xml", elem)
+    //insertElemIntoXML(databaseFolder + fs + "test.xml", elem)
 /*
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"

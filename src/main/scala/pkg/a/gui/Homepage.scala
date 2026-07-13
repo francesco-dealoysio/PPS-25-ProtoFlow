@@ -12,13 +12,13 @@ class Homepage(account: Account) extends MainFrame {
   private val screenSize: Dimension = Toolkit.getDefaultToolkit.getScreenSize
   preferredSize = screenSize
 
-  val role = account.ruolo match
+  val role = account.getRuolo match
     case "admin"  => "Administrator"
     case "oper"   => "Operator"
     case "viewer" => "Viewer"
     case _        => "Unknown role"
 
-  val label = new Label("Hello " + account.nome + " " + account.cognome + " this is your " + role + " Homepage!")
+  val label = new Label("Hello " + account.getNome + " " + account.getCognome + " this is your " + role + " Homepage!")
   val closeButton = new Button("Close")
 
   contents = new BorderPanel {
