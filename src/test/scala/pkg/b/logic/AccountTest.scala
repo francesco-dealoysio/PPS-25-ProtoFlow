@@ -2,8 +2,8 @@ package pkg.b.logic
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.c.data.xmlManagement.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, searchFieldValue}
-import pkg.d.util.Properties.getPropsFileProperty
+import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, searchFieldValue}
+import pkg.c.data.Properties.getPropsFileProperty
 import pkg.d.util.Util.md5
 
 class AccountTest:
@@ -107,17 +107,23 @@ class AccountTest:
 
   @Test
   def testRecordInsertDuplicateId: Unit =
+    cleanXmlFile(xmlFilePathName)
     Account().recordInsert(account1, xmlFilePathName)
-    val record = Account().getRecordById("1", xmlFilePathName)
-    assertEquals(record, account1)
-    assertTrue(false)
+    Account().recordInsert(account2, xmlFilePathName)
+    Account().recordInsert(account3, xmlFilePathName)
+    val record = account1.copy()
+    record.setUsername("sconosciuto")
+    assertFalse(Account().recordInsert(record, xmlFilePathName))
 
   @Test
   def testRecordInsertDuplicateUsername: Unit =
+    cleanXmlFile(xmlFilePathName)
     Account().recordInsert(account1, xmlFilePathName)
-    val record = Account().getRecordById("1", xmlFilePathName)
-    assertEquals(record, account1)
-    assertTrue(false)
+    Account().recordInsert(account2, xmlFilePathName)
+    Account().recordInsert(account3, xmlFilePathName)
+    val record = account1.copy()
+    record.setId("100")
+    assertFalse(Account().recordInsert(record, xmlFilePathName))
 
   @Test
   def testGetRecordUpdateInexistentXmlFile: Unit =
@@ -174,23 +180,29 @@ class AccountTest:
     Account().recordInsert(account3, xmlFilePathName)
     val record = Account().getRecordById("1", xmlFilePathName)
     assertEquals(record.getId, "1")
-    Account().recordDelete(record.getId, xmlFilePathName)
+    assertTrue(Account().recordDelete(record.getId, xmlFilePathName))
     assertEquals(Account().getRecordById(record.getId, xmlFilePathName), empty)
 
   @Test
   def testGetRecordDeleteInesistentXmlFile: Unit =
-    Account().recordInsert(account1, "path inesistente")
-    val record = Account().getRecordById("1", xmlFilePathName)
-    assertNotEquals(record, account1)
-    assertTrue(false)
+    val record = account1.copy()
+    assertFalse(Account().recordDelete(record.getId, "path inesistente"))
 
   @Test
   def testGetRecordDeleteEmptyXmlFile: Unit =
-    assertTrue(false)
+    cleanXmlFile(xmlFilePathName)
+    val record = account1.copy()
+    assertFalse(Account().recordDelete(record.getId, xmlFilePathName))
 
   @Test
   def testGetRecordDeleteInesistentId: Unit =
-    assertTrue(false)
+    cleanXmlFile(xmlFilePathName)
+    Account().recordInsert(account1, xmlFilePathName)
+    Account().recordInsert(account2, xmlFilePathName)
+    Account().recordInsert(account3, xmlFilePathName)
+    val record = account1.copy()
+    record.setId("100")
+    assertFalse(Account().recordDelete(record.getId, xmlFilePathName))
 
 
 
