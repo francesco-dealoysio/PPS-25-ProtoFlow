@@ -4,48 +4,48 @@ import pkg.b.logic.Entity
 import pkg.c.data.Xml.*
 import pkg.c.data.Properties.*
 
-case class Registrazione(
+case class Registration(
                     private var id: String = "",
-                    private var cognome: String = "",
-                    private var nome: String = "",
+                    private var surname: String = "",
+                    private var name: String = "",
                     private var email: String = "",
-                    private var telefono: String = "",
-                    private var ruolo: String = "",
+                    private var phone: String = "",
+                    private var role: String = "",
                     private var area: String = "",
-                    private var incarico: String = "",
-                    private var data: String = "", // date
-                    private var stato: String = "", // state
-                    private var esito: String = "", // result
-                    private var motivazione: String = "" // motivation
+                    private var assignment: String = "",
+                    private var date: String = "",
+                    private var state: String = "",
+                    private var result: String = "",
+                    private var motivation: String = ""
                   ) extends Entity:
   def this() =
     this("", "", "", "", "", "", "", "", "", "", "", "")
   
   def setId(value: String): Unit = id = value
-  def setCognome(value: String): Unit = cognome = value
-  def setNome(value: String): Unit = nome = value
+  def setCognome(value: String): Unit = surname = value
+  def setNome(value: String): Unit = name = value
   def setEmail(value: String): Unit = email = value
-  def setTelefono(value: String): Unit = telefono = value
-  def setRuolo(value: String): Unit = ruolo = value
+  def setTelefono(value: String): Unit = phone = value
+  def setRuolo(value: String): Unit = role = value
   def setArea(value: String): Unit = area = value
-  def setIncarico(value: String): Unit = incarico = value
-  def setData(value: String): Unit = data = value
-  def setStato(value: String): Unit = stato = value
-  def setEsito(value: String): Unit = esito = value
-  def setMotivazione(value: String): Unit = motivazione = value
+  def setAssignment(value: String): Unit = assignment = value
+  def setData(value: String): Unit = date = value
+  def setStato(value: String): Unit = state = value
+  def setEsito(value: String): Unit = result = value
+  def setMotivazione(value: String): Unit = motivation = value
 
   def getId: String = id
-  def getCognome: String = cognome
-  def getNome: String = nome
+  def getCognome: String = surname
+  def getNome: String = name
   def getEmail: String = email
-  def getTelefono: String = telefono
-  def getRuolo: String = ruolo
+  def getTelefono: String = phone
+  def getRuolo: String = role
   def getArea: String = area
-  def getIncarico: String = incarico
-  def getData: String = data
-  def getStato: String = stato
-  def getEsito: String = esito
-  def getMotivazione: String = motivazione
+  def getAssignment: String = assignment
+  def getData: String = date
+  def getStato: String = state
+  def getEsito: String = result
+  def getMotivazione: String = motivation
 
   def defaultXmlFilePathName: String =
     val fs = java.io.File.separator
@@ -53,32 +53,32 @@ case class Registrazione(
     val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
     databaseFolder + fs + xmlFile
 
-  override def xmlFile = "richieste.xml"
+  override def xmlFile = "registrations.xml"
 
-  override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Registrazione] =
+  override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Registration] =
     try
-      getRecordFromXML(xmlFilePathName, classOf[Registrazione])
-        .map(r => r.asInstanceOf[Registrazione])
+      getRecordFromXML(xmlFilePathName, classOf[Registration])
+        .map(r => r.asInstanceOf[Registration])
     catch
       case e: Exception =>
         println(s"Errore in getRecords: ${e.getMessage}")
-        Seq.empty[Registrazione]
+        Seq.empty[Registration]
 
-  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Registrazione =
+  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Registration =
     try
-      getRecordFromXML(xmlFilePathName, classOf[Registrazione])
-        .map(a => a.asInstanceOf[Registrazione]).filter(_.id == id).head
+      getRecordFromXML(xmlFilePathName, classOf[Registration])
+        .map(a => a.asInstanceOf[Registration]).filter(_.id == id).head
     catch
       case e: Exception =>
         println(s"Errore in getRecordById: ${e.getMessage}")
-        new Registrazione
+        new Registration
 
   //
   override def getRecordsByFilter(condition: Boolean, xmlFilePathName: String = defaultXmlFilePathName): Int =
     val NONE = 0
     try
-      getRecordFromXML(xmlFilePathName, classOf[Registrazione])
-        .map(a => a.asInstanceOf[Registrazione]).count(a => a.ruolo == "viewer")
+      getRecordFromXML(xmlFilePathName, classOf[Registration])
+        .map(a => a.asInstanceOf[Registration]).count(a => a.role == "viewer")
     catch
       case e: Exception =>
         println(s"Errore in getRecordByFilter: ${e.getMessage}")
@@ -110,5 +110,5 @@ case class Registrazione(
         println(s"Errore in recordDelete: ${e.getMessage}")
         false
 
-@main def tryRegistrazione: Unit =
-  println("Tested in RegistrazioneTest.scala")
+@main def tryRegistration: Unit =
+  println("Tested in RegistrationTest.scala")

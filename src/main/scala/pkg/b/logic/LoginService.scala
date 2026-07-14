@@ -26,11 +26,11 @@ object LoginService:
       Left(LoginError.EmptyCredentials)
     else
       checkCredentials(cleanUsername, cleanPassword) match
-        case Some(account) if validRoles.contains(account.getRuolo) =>
+        case Some(account) if validRoles.contains(account.getRole) =>
           Right(toLoggedUser(account))
 
         case Some(account) =>
-          Left(LoginError.UnknownRole(account.getRuolo))
+          Left(LoginError.UnknownRole(account.getRole))
 
         case None =>
           Left(LoginError.InvalidCredentials)
@@ -40,14 +40,14 @@ object LoginService:
 
   private def toLoggedUser(account: Account): LoggedUser =
     val fullName =
-      s"${account.getNome} ${account.getCognome}".trim match
+      s"${account.getName} ${account.getSurname}".trim match
         case "" => account.getUsername
         case name => name
 
     LoggedUser(
       username = account.getUsername,
       fullName = fullName,
-      role = account.getRuolo
+      role = account.getRole
     )
 
   private def checkCredentials(username: String, password: String): Option[Account] =

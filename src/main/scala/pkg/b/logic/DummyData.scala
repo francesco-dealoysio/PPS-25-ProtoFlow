@@ -12,108 +12,108 @@ object DummyData:
   val accounts: Elem = <accounts>
     <record>
       <id>1</id>
-      <cognome>de aloysio</cognome>
-      <nome>francesco</nome>
+      <surname>de aloysio</surname>
+      <name>francesco</name>
       <email>francesco.dealoysio@studio.unibo.it</email>
-      <telefono>06/11111111</telefono>
-      <ruolo>admin</ruolo>
+      <phone>06/11111111</phone>
+      <role>admin</role>
       <area>presidenza</area>
-      <incarico>presidente</incarico>
+      <assignment>presidente</assignment>
       <username>frank</username>
       <password>{md5("topolino")}</password>
     </record>
     <record>
       <id>2</id>
-      <cognome>testa</cognome>
-      <nome>thomas</nome>
+      <surname>testa</surname>
+      <name>thomas</name>
       <email>thomas.testa@studio.unibo.it</email>
-      <telefono>0547/1111111</telefono>
-      <ruolo>oper</ruolo>
+      <phone>0547/1111111</phone>
+      <role>oper</role>
       <area>amministrazione</area>
-      <incarico>tesoriere</incarico>
+      <assignment>tesoriere</assignment>
       <username>tommy</username>
       <password>{passwd2}</password>
     </record>
     <record>
       <id>3</id>
-      <cognome>pisu</cognome>
-      <nome>roberto</nome>
+      <surname>pisu</surname>
+      <name>roberto</name>
       <email>roberto.pisu@studio.unibo.it</email>
-      <telefono>0547/2222222</telefono>
-      <ruolo>viewer</ruolo>
+      <phone>0547/2222222</phone>
+      <role>viewer</role>
       <area>personale</area>
-      <incarico>capo ufficio</incarico>
+      <assignment>capo ufficio</assignment>
       <username>robby</username>
       <password>{passwd3}</password>
     </record>
   </accounts>
 
-  val ruoli: Elem = <ruoli>
+  val roles: Elem = <roles>
     <record>
       <id>1</id>
-      <ruolo>admin</ruolo>
-      <descrizione>Attività di amministrazione del sistema</descrizione>
+      <role>admin</role>
+      <description>Attività di amministrazione del sistema</description>
     </record>
     <record>
       <id>2</id>
-      <ruolo>oper</ruolo>
-      <descrizione>Attività di protocollazione</descrizione>
+      <role>oper</role>
+      <description>Attività di protocollazione</description>
     </record>
     <record>
       <id>3</id>
-      <ruolo>viewer</ruolo>
-      <descrizione>Ricerca e visualizzazione nel cono di visibilità</descrizione>
+      <role>viewer</role>
+      <description>Ricerca e visualizzazione nel cono di visibilità</description>
     </record>
-  </ruoli>
+  </roles>
 
-  val classifiche: Elem = <classifiche>
+  val classifications: Elem = <classifications>
     <record>
       <id>1</id>
-      <classifica>presidenza</classifica>
+      <classification>presidenza</classification>
     </record>
     <record>
       <id>2</id>
-      <classifica>segreteria</classifica>
+      <classification>segreteria</classification>
     </record>
     <record>
       <id>3</id>
-      <classifica>amministrazione</classifica>
+      <classification>amministrazione</classification>
     </record>
     <record>
       <id>4</id>
-      <classifica>personale</classifica>
+      <classification>personale</classification>
     </record>
     <record>
       <id>5</id>
-      <classifica>materiali</classifica>
+      <classification>materiali</classification>
     </record>
     <record>
       <id>6</id>
-      <classifica>infrastrutture</classifica>
+      <classification>infrastrutture</classification>
     </record>
     <record>
       <id>7</id>
-      <classifica>addestramento</classifica>
+      <classification>addestramento</classification>
     </record>
     <record>
       <id>8</id>
-      <classifica>informatica</classifica>
+      <classification>informatica</classification>
     </record>
-  </classifiche>
+  </classifications>
 
-  val registrazioni: Elem = <registrazioni>
+  val registrations: Elem = <registrations>
     <record>
       <id>1</id>
-      <cognome>rossi</cognome>
-      <nome>mario</nome>
+      <surname>rossi</surname>
+      <name>mario</name>
       <email>mario.rossi@alice.it</email>
-      <telefono>06/1234567</telefono>
-      <ruolo>viewer</ruolo>
+      <phone>06/1234567</phone>
+      <role>viewer</role>
       <area>personale</area>
-      <incarico>addetto</incarico>
-      <data>06/07/2026</data>
-      <stato>evadere</stato>
-      <esito></esito>
-      <motivazione></motivazione>
+      <assignment>addetto</assignment>
+      <date>06/07/2026</date>
+      <state>evadere</state>
+      <result></result>
+      <motivation></motivation>
     </record>
-  </registrazioni>
+  </registrations>

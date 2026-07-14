@@ -4,18 +4,21 @@ import pkg.b.logic.Entity
 import pkg.c.data.Xml.*
 import pkg.c.data.Properties.*
 
-case class Classifica(
-                  private var id: String = "",
-                  private var classifica: String = "" // classification
+case class Role(
+                private var id: String = "",
+                private var role: String = "",
+                private var description: String = ""
                 ) extends Entity:
   def this() =
-    this("","")
+    this("","","")
 
   def setId(value: String): Unit = id = value
-  def setClassifica(value: String): Unit = classifica = value
+  def setRole(value: String): Unit = role = value
+  def setDescription(value: String): Unit = description = value
 
   def getId: String = id
-  def getClassifica: String = classifica
+  def getRole: String = role
+  def getDescription: String = description
 
   def defaultXmlFilePathName: String =
     val fs = java.io.File.separator
@@ -23,32 +26,32 @@ case class Classifica(
     val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
     databaseFolder + fs + xmlFile
 
-  override def xmlFile = "classifiche.xml"
+  override def xmlFile = "roles.xml"
 
-  override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Classifica] =
+  override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Role] =
     try
-      getRecordFromXML(xmlFilePathName, classOf[Classifica])
-        .map(r => r.asInstanceOf[Classifica])
+      getRecordFromXML(xmlFilePathName, classOf[Role])
+        .map(r => r.asInstanceOf[Role])
     catch
       case e: Exception =>
         println(s"Errore in getRecords: ${e.getMessage}")
-        Seq.empty[Classifica]
+        Seq.empty[Role]
 
-  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Classifica =
+  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Role =
     try
-      getRecordFromXML(xmlFilePathName, classOf[Classifica])
-        .map(a => a.asInstanceOf[Classifica]).filter(_.id == id).head
+      getRecordFromXML(xmlFilePathName, classOf[Role])
+        .map(a => a.asInstanceOf[Role]).filter(_.id == id).head
     catch
       case e: Exception =>
         println(s"Errore in getRecordById: ${e.getMessage}")
-        new Classifica
+        new Role
 
   // DA FARE
   override def getRecordsByFilter(condition: Boolean, xmlFilePathName: String = defaultXmlFilePathName): Int =
     val NONE = 0
     try
-      getRecordFromXML(xmlFilePathName, classOf[Classifica])
-        .map(a => a.asInstanceOf[Classifica]).count(a => a.classifica == "amministrazione")
+      getRecordFromXML(xmlFilePathName, classOf[Role])
+        .map(a => a.asInstanceOf[Role]).count(a => a.role == "viewer")
     catch
       case e: Exception =>
         println(s"Errore in getRecordByFilter: ${e.getMessage}")
@@ -56,14 +59,14 @@ case class Classifica(
 
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
-    try 
+    try
       insertElemIntoXML(xmlFilePathName, obj)
       result = true
     catch
       case e: Exception =>
         println(s"Errore in recordInsert: ${e.getMessage}")
     result
-  
+
   override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       updateElemOfXML(xmlFilePathName, obj)
@@ -71,7 +74,7 @@ case class Classifica(
       case e: Exception =>
         println(s"Errore in recordUpdate: ${e.getMessage}")
         false
-        
+
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       removeElemFromXML(xmlFilePathName, id)
@@ -80,5 +83,5 @@ case class Classifica(
         println(s"Errore in recordDelete: ${e.getMessage}")
         false
 
-@main def tryClassifica: Unit =
-  println("Tested in ClassificaTest.scala")
+@main def tryRole: Unit =
+    println("Tested in RoleTest.scala")

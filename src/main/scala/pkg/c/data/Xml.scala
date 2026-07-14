@@ -199,8 +199,8 @@ object Xml:
     val account1 = Account().getRecordById("1")
     val account3 = Account().getRecordById("3")
     println(account1)
-    println(account3.getRuolo)
-    account3.setRuolo("paperino")
+    println(account3.getRole)
+    account3.setRole("paperino")
     updateElemOfXML(databaseFolder + fs + "accounts.xml", account3)
 
     createEmptyXmlFile(databaseFolder + fs + "nuovo.xml", "libri")

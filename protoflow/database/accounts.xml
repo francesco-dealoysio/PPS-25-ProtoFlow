@@ -1,38 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
 <accounts>
-  <record>
-    <id>1</id>
-    <cognome>de aloysio</cognome>
-    <nome>francesco</nome>
-    <email>francesco.dealoysio@studio.unibo.it</email>
-    <telefono>06/11111111</telefono>
-    <ruolo>admin</ruolo>
-    <area>presidenza</area>
-    <incarico>presidente</incarico>
-    <username>frank</username>
-    <password>8f04a464e3660e912e8abaf8aefaa2fe</password>
-  </record>
-  <record>
-    <id>2</id>
-    <cognome>testa</cognome>
-    <nome>thomas</nome>
-    <email>thomas.testa@studio.unibo.it</email>
-    <telefono>0547/1111111</telefono>
-    <ruolo>oper</ruolo>
-    <area>amministrazione</area>
-    <incarico>tesoriere</incarico>
-    <username>tommy</username>
-    <password>c380b0f52732254a94dfbbd38c59a339</password>
-  </record>
-  <record>
-    <id>3</id>
-    <cognome>pisu</cognome>
-    <nome>roberto</nome>
-    <email>roberto.pisu@studio.unibo.it</email>
-    <telefono>0547/2222222</telefono>
-    <ruolo>paperino</ruolo>
-    <area>personale</area>
-    <incarico>capo ufficio</incarico>
-    <username>robby</username>
-    <password>4985b646b98460468e94d7d620af5e49</password>
-  </record>
-</accounts>
+    <record>
+      <id>1</id>
+      <surname>de aloysio</surname>
+      <name>francesco</name>
+      <email>francesco.dealoysio@studio.unibo.it</email>
+      <phone>06/11111111</phone>
+      <role>admin</role>
+      <area>presidenza</area>
+      <assignment>presidente</assignment>
+      <username>frank</username>
+      <password>8f04a464e3660e912e8abaf8aefaa2fe</password>
+    </record>
+    <record>
+      <id>2</id>
+      <surname>testa</surname>
+      <name>thomas</name>
+      <email>thomas.testa@studio.unibo.it</email>
+      <phone>0547/1111111</phone>
+      <role>oper</role>
+      <area>amministrazione</area>
+      <assignment>tesoriere</assignment>
+      <username>tommy</username>
+      <password>c380b0f52732254a94dfbbd38c59a339</password>
+    </record>
+    <record>
+      <id>3</id>
+      <surname>pisu</surname>
+      <name>roberto</name>
+      <email>roberto.pisu@studio.unibo.it</email>
+      <phone>0547/2222222</phone>
+      <role>viewer</role>
+      <area>personale</area>
+      <assignment>capo ufficio</assignment>
+      <username>robby</username>
+      <password>4985b646b98460468e94d7d620af5e49</password>
+    </record>
+  </accounts>

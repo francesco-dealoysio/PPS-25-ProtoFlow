@@ -188,7 +188,7 @@ object Login extends SimpleSwingApplication {
             val obj = checkCredentials(username, password)
             if (obj != null) then
               val account = obj.asInstanceOf[Account]
-              val role = account.getRuolo
+              val role = account.getRole
               val home = new Homepage(account)
               if (home != null) then
                 home.visible = true

@@ -95,20 +95,20 @@ object Init:
     if (Files.notExists(Paths.get(databaseFolder + fs + "accounts.xml")))
       writeXML(databaseFolder + fs + "accounts.xml", accounts)
 
-    if (Files.notExists(Paths.get(databaseFolder + fs + "ruoli.xml")))
-      writeXML(databaseFolder + fs + "ruoli.xml", ruoli)
+    if (Files.notExists(Paths.get(databaseFolder + fs + "roles.xml")))
+      writeXML(databaseFolder + fs + "roles.xml", roles)
 
-    if (Files.notExists(Paths.get(databaseFolder + fs + "classifiche.xml")))
-      writeXML(databaseFolder + fs + "classifiche.xml", classifiche)
+    if (Files.notExists(Paths.get(databaseFolder + fs + "classifications.xml")))
+      writeXML(databaseFolder + fs + "classications.xml", classifications)
 
-    if (Files.notExists(Paths.get(databaseFolder + fs + "richieste.xml")))
-      writeXML(databaseFolder + fs + "registrazioni" + fs + "richieste.xml", registrazioni)
+    if (Files.notExists(Paths.get(databaseFolder + fs + "registrations" + fs + "requests.xml")))
+      writeXML(databaseFolder + fs + "registrations" + fs + "requests.xml", registrations)
 
-    if (Files.notExists(Paths.get(databaseFolder + fs + "rifiutate.xml")))
-      writeXML(databaseFolder + fs + "registrazioni" + fs + "rifiutate.xml", registrazioni)
+    if (Files.notExists(Paths.get(databaseFolder + fs + "registrations" + fs + "refused.xml")))
+      writeXML(databaseFolder + fs + "registrations" + fs + "refused.xml", registrations)
 
-    if (Files.notExists(Paths.get(databaseFolder + fs + "accettate.xml")))
-      writeXML(databaseFolder + fs + "registrazioni" + fs + "accettate.xml", registrazioni)
+    if (Files.notExists(Paths.get(databaseFolder + fs + "registrations" + fs + "accepted.xml")))
+      writeXML(databaseFolder + fs + "registrations" + fs + "approved.xml", registrations)
 
   @main def tryInit: Unit =
     init

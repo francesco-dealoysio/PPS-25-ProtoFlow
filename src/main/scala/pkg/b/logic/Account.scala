@@ -7,13 +7,13 @@ import pkg.c.data.Properties.*
 
 case class Account(
                  private var id: String = "",
-                 private var cognome: String = "", // surmname
-                 private var nome: String = "", // name
+                 private var surname: String = "",
+                 private var name: String = "",
                  private var email: String = "",
-                 private var telefono: String = "", //  phone
-                 private var ruolo: String = "",   // role
-                 private var area: String = "",  // area
-                 private var incarico: String = "", // assignment
+                 private var phone: String = "",
+                 private var role: String = "",
+                 private var area: String = "",
+                 private var assignment: String = "",
                  private var username: String = "",
                  private var password: String = ""
                ) extends Entity:
@@ -21,24 +21,24 @@ case class Account(
     this("", "", "", "", "", "", "", "", "", "")
 
   def setId(value: String): Unit = id = value
-  def setCognome(value: String): Unit = cognome = value
-  def setNome(value: String): Unit = nome = value
+  def setSurname(value: String): Unit = surname = value
+  def setName(value: String): Unit = name = value
   def setEmail(value: String): Unit = email = value
-  def setTelefono(value: String): Unit = telefono = value
-  def setRuolo(value: String): Unit = ruolo = value
+  def setPhone(value: String): Unit = phone = value
+  def setRole(value: String): Unit = role = value
   def setArea(value: String): Unit = area = value
-  def setIncarico(value: String): Unit = incarico = value
+  def setAssignment(value: String): Unit = assignment = value
   def setUsername(value: String): Unit = username = value
   def setPassword(value: String): Unit = password = md5(value)
 
   def getId: String = id
-  def getCognome: String = cognome
-  def getNome: String = nome
+  def getSurname: String = surname
+  def getName: String = name
   def getEmail: String = email
-  def getTelefono: String = telefono
-  def getRuolo: String = ruolo
+  def getPhone: String = phone
+  def getRole: String = role
   def getArea: String = area
-  def getIncarico: String = incarico
+  def getAssignment: String = assignment
   def getUsername: String = username
   def getPassword: String = password
 

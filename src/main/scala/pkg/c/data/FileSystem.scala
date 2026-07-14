@@ -41,7 +41,7 @@ object FileSystem:
     val baseDir = getCurrentDirectory
     val structure = Seq(
       baseDir.resolve("protoflow/database"),
-      baseDir.resolve("protoflow/database/registrazioni"),
+      baseDir.resolve("protoflow/database/registrations"),
       baseDir.resolve("protoflow/log"),
       baseDir.resolve("protoflow/archivio/presidenza"),
       baseDir.resolve("protoflow/archivio/segreteria"),

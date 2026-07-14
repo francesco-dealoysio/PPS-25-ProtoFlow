@@ -128,24 +128,24 @@ class AccountTest:
   @Test
   def testGetRecordUpdateInexistentXmlFile: Unit =
     Account().recordInsert(account1, xmlFilePathName)
-    assertEquals(Account().getRecordById("1", xmlFilePathName).getTelefono, "06/11111111")
+    assertEquals(Account().getRecordById("1", xmlFilePathName).getPhone, "06/11111111")
     val record = Account().getRecordById("1")
-    record.setTelefono("06/12345678")
+    record.setPhone("06/12345678")
     Account().recordUpdate(record, "path inesistente")
-    assertNotEquals(Account().getRecordById("1", xmlFilePathName).getTelefono, "06/12345678")
+    assertNotEquals(Account().getRecordById("1", xmlFilePathName).getPhone, "06/12345678")
 
   @Test
   def testGetRecordUpdateEmptyXmlFile: Unit =
     cleanXmlFile(xmlFilePathName)
     val record = account1.copy()
-    record.setTelefono("06/12345678")
+    record.setPhone("06/12345678")
     Account().recordUpdate(record, xmlFilePathName)
-    assertNotEquals(Account().getRecordById("1", xmlFilePathName).getTelefono, "06/12345678")
+    assertNotEquals(Account().getRecordById("1", xmlFilePathName).getPhone, "06/12345678")
 
   @Test
   def testGetRecordUpdateInexistentId: Unit =
     val record = Account().getRecordById("1", xmlFilePathName)
-    record.setTelefono("06/87654321")
+    record.setPhone("06/87654321")
     record.setId("?")
     Account().recordUpdate(record, xmlFilePathName)
     val recordUpdated = Account().getRecordById("?", xmlFilePathName)
@@ -166,11 +166,11 @@ class AccountTest:
   @Test
   def testGetRecordUpdate: Unit =
     Account().recordInsert(account1, xmlFilePathName)
-    assertEquals("06/11111111", Account().getRecordById("1", xmlFilePathName).getTelefono)
+    assertEquals("06/11111111", Account().getRecordById("1", xmlFilePathName).getPhone)
     val record = Account().getRecordById("1")
-    record.setTelefono("06/12345678")
+    record.setPhone("06/12345678")
     Account().recordUpdate(record, xmlFilePathName)
-    assertEquals(Account().getRecordById("1", xmlFilePathName).getTelefono, "06/12345678")
+    assertEquals(Account().getRecordById("1", xmlFilePathName).getPhone, "06/12345678")
 
   @Test
   def testGetRecordDelete: Unit =
