@@ -2,13 +2,10 @@ package pkg.b.logic
 
 import java.nio.file.{Files, Paths}
 import pkg.c.data.*
-import Properties.{createPropsFile, setPropsFileProperty}
-//import pkg.c.data.filesManagement.*
+import pkg.c.data.FileSystem.*
+import pkg.c.data.Properties.*
 import Xml.*
-//import Entities.*
-import pkg.b.logic
-//import pkg.c.data.xmlManagement.DummyData.*
-import DummyData.ruoli
+import DummyData.*
 
 object Init:
 
@@ -96,22 +93,22 @@ object Init:
 
     // Creazione dati fittizi
     if (Files.notExists(Paths.get(databaseFolder + fs + "accounts.xml")))
-      writeXML(databaseFolder + fs + "accounts.xml", logic.DummyData.accounts)
+      writeXML(databaseFolder + fs + "accounts.xml", accounts)
 
     if (Files.notExists(Paths.get(databaseFolder + fs + "ruoli.xml")))
-      writeXML(databaseFolder + fs + "ruoli.xml", logic.DummyData.ruoli)
+      writeXML(databaseFolder + fs + "ruoli.xml", ruoli)
 
     if (Files.notExists(Paths.get(databaseFolder + fs + "classifiche.xml")))
-      writeXML(databaseFolder + fs + "classifiche.xml", logic.DummyData.classifiche)
+      writeXML(databaseFolder + fs + "classifiche.xml", classifiche)
 
     if (Files.notExists(Paths.get(databaseFolder + fs + "richieste.xml")))
-      writeXML(databaseFolder + fs + "registrazioni" + fs + "richieste.xml", logic.DummyData.registrazioni)
+      writeXML(databaseFolder + fs + "registrazioni" + fs + "richieste.xml", registrazioni)
 
     if (Files.notExists(Paths.get(databaseFolder + fs + "rifiutate.xml")))
-      writeXML(databaseFolder + fs + "registrazioni" + fs + "rifiutate.xml", logic.DummyData.registrazioni)
+      writeXML(databaseFolder + fs + "registrazioni" + fs + "rifiutate.xml", registrazioni)
 
     if (Files.notExists(Paths.get(databaseFolder + fs + "accettate.xml")))
-      writeXML(databaseFolder + fs + "registrazioni" + fs + "accettate.xml", logic.DummyData.registrazioni)
+      writeXML(databaseFolder + fs + "registrazioni" + fs + "accettate.xml", registrazioni)
 
   @main def tryInit: Unit =
     init

@@ -6,8 +6,8 @@ import pkg.c.data.Properties.*
 
 case class Ruolo(
                 private var id: String = "",
-                private var ruolo: String = "",
-                private var descrizione: String = ""
+                private var ruolo: String = "", // role
+                private var descrizione: String = "" // description
                 ) extends Entity:
   def this() =
     this("","","")
@@ -84,4 +84,4 @@ case class Ruolo(
         false
 
 @main def tryRuolo: Unit =
-  println("Tested in RuoloTest.scala")
+    println("Tested in RuoloTest.scala")

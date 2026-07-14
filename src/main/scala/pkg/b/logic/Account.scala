@@ -7,13 +7,13 @@ import pkg.c.data.Properties.*
 
 case class Account(
                  private var id: String = "",
-                 private var cognome: String = "",
-                 private var nome: String = "",
+                 private var cognome: String = "", // surmname
+                 private var nome: String = "", // name
                  private var email: String = "",
-                 private var telefono: String = "",
-                 private var ruolo: String = "",
-                 private var area: String = "",
-                 private var incarico: String = "",
+                 private var telefono: String = "", //  phone
+                 private var ruolo: String = "",   // role
+                 private var area: String = "",  // area
+                 private var incarico: String = "", // assignment
                  private var username: String = "",
                  private var password: String = ""
                ) extends Entity:
@@ -75,15 +75,26 @@ case class Account(
         new Account
 
   // FARE
-  override def getRecordsByFilter(condition: Boolean, xmlFilePathName: String = defaultXmlFilePathName): Int =
+  override def getRecordsByFilter(predicate: Boolean, xmlFilePathName: String = defaultXmlFilePathName): Int =
     val NONE = 0
     try
-      getRecordFromXML(xmlFilePathName, classOf[Account])
-        .map(a => a.asInstanceOf[Account]).count(a => a.ruolo == "viewer")
+
+      val words = List("Scala", "Java", "Kotlin", "JavaScript")
+      val startsWithJ: String => Boolean = _.startsWith("J")
+      println(s"Words starting with J: ${filterItems(words, startsWithJ)}")
+      10
+
+      //getRecordFromXML(xmlFilePathName, classOf[Account])
+        //.map(a => a.asInstanceOf[Account]).count(a => a.ruolo == "viewer")
     catch
       case e: Exception =>
         println(s"Errore in getRecordByFilter: ${e.getMessage}")
         NONE
+
+  // Generic higher-order function
+  def filterItems[T](items: List[T], predicate: T => Boolean): List[T] = {
+    items.filter(predicate)
+  }
 
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
@@ -91,10 +102,10 @@ case class Account(
       val account = obj.asInstanceOf[Account]
       val id = account.id
       val username = account.username
-      if !(idExists(id, xmlFilePathName) || usernameExists(username, xmlFilePathName)) then {
+      if !(idExists(id, xmlFilePathName) || usernameExists(username, xmlFilePathName)) then
         insertElemIntoXML(xmlFilePathName, obj)
         result = true
-      } else
+      else
         println(s"Errore in recordInsert: valori duplicati (id o username)")
     catch
       case e: Exception =>
@@ -102,12 +113,21 @@ case class Account(
     result
 
   override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    var result = false
     try
-      updateElemOfXML(xmlFilePathName, obj)
+      val account = obj.asInstanceOf[Account]
+      val id = account.id
+      val username = account.username
+      // todo mettere prima a punto getRecordsByFilter
+      if true then
+        updateElemOfXML(xmlFilePathName, obj)
+        result = true
+      else
+        println(s"Errore in recordInsert: valori duplicati (id o username)")
     catch
       case e: Exception =>
         println(s"Errore in recordUpdate: ${e.getMessage}")
-        false
+    result
 
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
@@ -119,3 +139,5 @@ case class Account(
 
 @main def tryAccount: Unit =
   println("Tested in AccountTest.scala")
+  Account().getRecordsByFilter(true, "pippo")
+

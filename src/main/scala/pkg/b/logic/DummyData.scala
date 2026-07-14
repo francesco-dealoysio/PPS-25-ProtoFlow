@@ -3,61 +3,6 @@ package pkg.b.logic
 import scala.xml.Elem
 import pkg.d.util.Util.md5
 
-/*
-object Entities:
-  case class Account(
-                      id: String = "",
-                      cognome: String = "",
-                      nome: String = "",
-                      email: String = "",
-                      telefono: String = "",
-                      ruolo: String = "",
-                      area: String = "",
-                      incarico: String = "",
-                      username: String = "",
-                      password: String = ""
-                    ) {
-    def this() =
-      this("", "", "", "", "", "", "", "", "", "")
-  }
-*/
-  
-/*
-  case class Ruolo(
-                    id: String = "",
-                    ruolo: String = "",
-                    descrizione: String = ""
-                  ) {
-    def this() =
-      this("","","")
-  }
-
-  case class Classifica(
-                         id: String = "",
-                         classifica: String = ""
-                       ) {
-    def this() =
-      this("","")
-  }
-
-  case class Registrazione (
-                              id: String = "",
-                              cognome: String = "",
-                              nome: String = "",
-                              email: String = "",
-                              telefono: String = "",
-                              ruolo: String = "",
-                              area: String = "",
-                              incarico: String = "",
-                              data: String = "",
-                              stato: String = "",
-                              esito: String = "",
-                              motivazione: String = ""
-                            ) {
-    def this() =
-      this("", "", "", "", "", "", "", "", "", "", "", "")
-  }
-*/
 object DummyData:
 
   private val passwd1 = md5("topolino")

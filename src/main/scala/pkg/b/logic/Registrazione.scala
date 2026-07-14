@@ -13,10 +13,10 @@ case class Registrazione(
                     private var ruolo: String = "",
                     private var area: String = "",
                     private var incarico: String = "",
-                    private var data: String = "",
-                    private var stato: String = "",
-                    private var esito: String = "",
-                    private var motivazione: String = ""
+                    private var data: String = "", // date
+                    private var stato: String = "", // state
+                    private var esito: String = "", // result
+                    private var motivazione: String = "" // motivation
                   ) extends Entity:
   def this() =
     this("", "", "", "", "", "", "", "", "", "", "", "")

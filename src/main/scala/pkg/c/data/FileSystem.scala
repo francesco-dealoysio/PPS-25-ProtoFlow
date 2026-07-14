@@ -4,7 +4,7 @@ import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path, Paths}
 
-object FileSystem
+object FileSystem:
 
   def createDirectory(dirPath: String): Unit =
     val path = Paths.get(dirPath)
@@ -61,8 +61,7 @@ object FileSystem
         case ex: IOException =>
           System.err.println(s"Errore nella creazione di $dir: ${ex.getMessage}")
     }
-
-
+  
   @main def tryFileSystem: Unit =
 
     println("")

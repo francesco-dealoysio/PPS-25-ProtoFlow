@@ -6,7 +6,7 @@ import pkg.c.data.Properties.*
 
 case class Classifica(
                   private var id: String = "",
-                  private var classifica: String = ""
+                  private var classifica: String = "" // classification
                 ) extends Entity:
   def this() =
     this("","")
