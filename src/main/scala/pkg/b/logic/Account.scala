@@ -1,9 +1,9 @@
 package pkg.b.logic
 
 import pkg.b.logic.Entity
-import pkg.c.data.xmlManagement.Xml.*
+import pkg.c.data.Xml.*
 import pkg.d.util.Util.md5
-import pkg.d.util.Properties.*
+import pkg.c.data.Properties.*
 
 case class Account(
                  private var id: String = "",
@@ -48,6 +48,12 @@ case class Account(
     val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
     databaseFolder + fs + xmlFile
 
+  def idExists(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    searchFieldValue(xmlFilePathName, "id", id)
+
+  def usernameExists(username: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    searchFieldValue(xmlFilePathName, "username", username)
+
   override def xmlFile = "accounts.xml"
 
   override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Account] =
@@ -83,9 +89,9 @@ case class Account(
     var result = false
     try
       val account = obj.asInstanceOf[Account]
-      val idExists = searchFieldValue(xmlFilePathName, "id", account.getId)
-      val usernameExists = searchFieldValue(xmlFilePathName, "username", account.getUsername)
-      if !(idExists || usernameExists) then {
+      val id = account.id
+      val username = account.username
+      if !(idExists(id, xmlFilePathName) || usernameExists(username, xmlFilePathName)) then {
         insertElemIntoXML(xmlFilePathName, obj)
         result = true
       } else
@@ -95,12 +101,13 @@ case class Account(
         println(s"Errore in recordInsert: ${e.getMessage}")
     result
 
-  override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Unit =
+  override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       updateElemOfXML(xmlFilePathName, obj)
     catch
       case e: Exception =>
         println(s"Errore in recordUpdate: ${e.getMessage}")
+        false
 
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try

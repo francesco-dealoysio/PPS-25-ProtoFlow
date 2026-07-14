@@ -1,8 +1,8 @@
 package pkg.b.logic
 
 import pkg.b.logic.Entity
-import pkg.c.data.xmlManagement.Xml.*
-import pkg.d.util.Properties.*
+import pkg.c.data.Xml.*
+import pkg.c.data.Properties.*
 
 case class Classifica(
                   private var id: String = "",
@@ -64,13 +64,14 @@ case class Classifica(
         println(s"Errore in recordInsert: ${e.getMessage}")
     result
   
-  override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Unit =
+  override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       updateElemOfXML(xmlFilePathName, obj)
     catch
       case e: Exception =>
         println(s"Errore in recordUpdate: ${e.getMessage}")
-
+        false
+        
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       removeElemFromXML(xmlFilePathName, id)

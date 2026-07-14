@@ -1,16 +1,15 @@
-package pkg.c.data.xmlManagement
+package pkg.c.data
 
 //import pkg.b.logic.Entities.*
 import pkg.b.logic.Account
-import pkg.d.util.Properties.*
+import Properties.*
 
+import java.io.{File, PrintWriter}
+import java.nio.charset.StandardCharsets
+import java.nio.file.{Files, Paths, StandardOpenOption}
 import scala.jdk.CollectionConverters.*
 import scala.util.{Failure, Success, Try}
-import scala.xml._
-import scala.xml.{Elem, Node, PrettyPrinter, XML}
-import java.io.{File, PrintWriter}
-import java.nio.file.{Files, Paths, StandardOpenOption}
-import java.nio.charset.StandardCharsets
+import scala.xml.*
 
 object Xml:
 /*
@@ -136,15 +135,18 @@ object Xml:
         println(s"Error loading XML: ${ex.getMessage}")
     result
 
-  def updateElemOfXML(xmlFilePathName: String, obj: Any): Unit =
+  def updateElemOfXML(xmlFilePathName: String, obj: Any): Boolean =
+    var result = false
     val id = obj.getClass.getDeclaredField("id")
     id.setAccessible(true)
     val readId = id.get(obj).toString
     if searchFieldValue(xmlFilePathName, "id", readId) then
       removeElemFromXML(xmlFilePathName, id.get(obj).toString)
       insertElemIntoXML(xmlFilePathName, obj)
+      result = true
     else
       println(s"Record with id: ${id} not found.")
+    result
 
   def removeElemFromXML(xmlFilePathName: String, id: String): Boolean =
     var result = false

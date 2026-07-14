@@ -6,8 +6,8 @@ import pkg.d.util.{MyJLabel, MyJTextField, RoundedBorder}
 import pkg.d.util.Util.loadImage
 import pkg.d.util.Util.md5
 
-import pkg.d.util.Properties.*
-import pkg.c.data.xmlManagement.Xml.*
+import pkg.c.data.Properties.*
+import pkg.c.data.Xml.*
 //import pkg.b.logic.Entities.*
 
 import scala.swing.*

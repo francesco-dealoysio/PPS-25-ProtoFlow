@@ -1,8 +1,8 @@
 package pkg.b.logic
 
 import Account.*
-import pkg.c.data.xmlManagement.Xml.*
-import pkg.d.util.Properties.*
+import pkg.c.data.Xml.*
+import pkg.c.data.Properties.*
 import pkg.d.util.Util.md5
 
 object LoginService:
