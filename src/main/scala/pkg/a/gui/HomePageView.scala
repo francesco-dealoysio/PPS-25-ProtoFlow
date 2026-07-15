@@ -1,28 +1,11 @@
 package pkg.a.gui
 
-import pkg.c.data.guiStructures.{
-  HomePageConfig,
-  HomePageViewModel,
-  MenuAction
-}
-
+import pkg.b.logic.Classification
+import pkg.c.data.guiStructures.{HomePageConfig, HomePageViewModel, MenuAction}
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Pos
-import scalafx.scene.control.{
-  Button,
-  Label,
-  TableColumn,
-  TableView
-}
-import scalafx.scene.layout.{
-  BorderPane,
-  HBox,
-  Pane,
-  Priority,
-  Region,
-  StackPane,
-  VBox
-}
+import scalafx.scene.control.{Button, Label, TableColumn, TableView}
+import scalafx.scene.layout.{BorderPane, HBox, Pane, Priority, Region, StackPane, VBox}
 
 object HomePageView:
 
@@ -131,12 +114,23 @@ object HomePageView:
             println("Apertura Aggiunta Classifica"),
 
           onEdit = selected =>
-            println(
-              s"Modifica classifica: ${selected.getId}"
-            ),
+            showClassificationEdit(selected),
 
           onExit = () =>
             showDashboard()
+        )
+      )
+
+    def showClassificationEdit(selected: Classification): Unit =
+      contentArea.children = Seq(
+        ClassificationEditView(
+          selectedClassification = selected,
+
+          onSaved = () =>
+            showClassificationManagement(),
+
+          onExit = () =>
+            showClassificationManagement()
         )
       )
 
@@ -151,7 +145,7 @@ object HomePageView:
             showDashboard()
         )
       )
-    
+
 
     val buttons =
       config.menuItems.map: item =>

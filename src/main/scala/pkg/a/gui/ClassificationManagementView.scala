@@ -98,8 +98,10 @@ object ClassificationManagementView:
 
         text = "Descrizione"
 
-        cellValueFactory = _ =>
-          StringProperty("")
+        cellValueFactory = cell =>
+          StringProperty(
+            cell.value.getDescription
+          )
 
     table.columns ++= Seq(
       classificationColumn,
