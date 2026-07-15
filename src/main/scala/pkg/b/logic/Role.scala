@@ -46,16 +46,17 @@ case class Role(
         println(s"Errore in getRecordById: ${e.getMessage}")
         new Role
 
-  // DA FARE
-  override def getRecordsByFilter(condition: Boolean, xmlFilePathName: String = defaultXmlFilePathName): Int =
-    val NONE = 0
+  // TESTARE
+
+  override def getRecordsByFilter[Role](predicate: Role => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Role]): Seq[Role] =
     try
-      getRecordFromXML(xmlFilePathName, classOf[Role])
-        .map(a => a.asInstanceOf[Role]).count(a => a.role == "viewer")
+      getRecordFromXML(xmlFilePathName, classType: Class[Role])
+        .map(o => o.asInstanceOf[Role]).filter(predicate)
     catch
       case e: Exception =>
         println(s"Errore in getRecordByFilter: ${e.getMessage}")
-        NONE
+        Seq.empty[Role]
+
 
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false

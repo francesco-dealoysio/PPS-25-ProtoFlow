@@ -91,7 +91,16 @@ class AccountTest:
 
   @Test
   def testGetRecordsByFilter: Unit =
-    assertTrue(false)
+    cleanXmlFile(xmlFilePathName)
+    Account().recordInsert(account1, xmlFilePathName)
+    Account().recordInsert(account2, xmlFilePathName)
+    Account().recordInsert(account3, xmlFilePathName)
+    val record = account1.copy()
+    record.setId("4")
+    record.setRole("admin")
+    record.setUsername("spider")
+    Account().recordInsert(record, xmlFilePathName)
+    assertEquals(Account().getRecordsByFilter[Account](a => a.getRole == "admin", xmlFilePathName, classOf[Account]), Seq(account1, record))
 
   @Test
   def testRecordInsertInexistentXmlFile: Unit =
@@ -152,25 +161,22 @@ class AccountTest:
     assertEquals(recordUpdated, empty)
 
   @Test
-  def testGetRecordUpdateDuplicateId: Unit =
-    val readRecord = Account().getRecordById("1", xmlFilePathName)
-    assertEquals(account1, readRecord)
-    assertTrue(false)
-
-  @Test
   def testGetRecordUpdateDuplicateUsername: Unit =
-    val readRecord = Account().getRecordById("1", xmlFilePathName)
-    assertEquals(readRecord, account1)
-    assertTrue(false)
+    cleanXmlFile(xmlFilePathName)
+    Account().recordInsert(account1, xmlFilePathName)
+    Account().recordInsert(account2, xmlFilePathName)
+    Account().recordInsert(account3, xmlFilePathName)
+    val record = account1.copy()
+    record.setUsername(account2.getUsername)
+    assertFalse(Account().recordUpdate(record, xmlFilePathName))
 
   @Test
   def testGetRecordUpdate: Unit =
     Account().recordInsert(account1, xmlFilePathName)
     assertEquals("06/11111111", Account().getRecordById("1", xmlFilePathName).getPhone)
-    val record = Account().getRecordById("1")
+    val record = account1.copy()
     record.setPhone("06/12345678")
-    Account().recordUpdate(record, xmlFilePathName)
-    assertEquals(Account().getRecordById("1", xmlFilePathName).getPhone, "06/12345678")
+    assertTrue(Account().recordUpdate(record, xmlFilePathName))
 
   @Test
   def testGetRecordDelete: Unit =

@@ -65,36 +65,24 @@ case class Account(
         println(s"Errore in getRecords: ${e.getMessage}")
         Seq.empty[Account]
 
+  // TESTARE
+  override def getRecordsByFilter[Account](predicate: Account => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Account]): Seq[Account] =
+    try
+      getRecordFromXML(xmlFilePathName, classType)
+        .map(_.asInstanceOf[Account]).filter(predicate)
+    catch
+      case e: Exception =>
+        println(s"Errore in getRecordByFilter: ${e.getMessage}")
+        Seq.empty[Account]
+
   override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Account =
     try
       getRecordFromXML(xmlFilePathName, classOf[Account])
-        .map(a => a.asInstanceOf[Account]).filter(_.id == id).head
+        .map(o => o.asInstanceOf[Account]).filter(_.id == id).head
     catch
       case e: Exception =>
         println(s"Errore in getRecordById: ${e.getMessage}")
         new Account
-
-  // FARE
-  override def getRecordsByFilter(predicate: Boolean, xmlFilePathName: String = defaultXmlFilePathName): Int =
-    val NONE = 0
-    try
-
-      val words = List("Scala", "Java", "Kotlin", "JavaScript")
-      val startsWithJ: String => Boolean = _.startsWith("J")
-      println(s"Words starting with J: ${filterItems(words, startsWithJ)}")
-      10
-
-      //getRecordFromXML(xmlFilePathName, classOf[Account])
-        //.map(a => a.asInstanceOf[Account]).count(a => a.ruolo == "viewer")
-    catch
-      case e: Exception =>
-        println(s"Errore in getRecordByFilter: ${e.getMessage}")
-        NONE
-
-  // Generic higher-order function
-  def filterItems[T](items: List[T], predicate: T => Boolean): List[T] = {
-    items.filter(predicate)
-  }
 
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
@@ -118,12 +106,12 @@ case class Account(
       val account = obj.asInstanceOf[Account]
       val id = account.id
       val username = account.username
-      // todo mettere prima a punto getRecordsByFilter
-      if true then
+      val  found = countRecordsByFilter[Account](a => a.id != id && a.username == username, xmlFilePathName, classOf[Account])
+      if (found == 0) then
         updateElemOfXML(xmlFilePathName, obj)
         result = true
       else
-        println(s"Errore in recordInsert: valori duplicati (id o username)")
+        println(s"Errore in recordInsert: valori duplicati (username)")
     catch
       case e: Exception =>
         println(s"Errore in recordUpdate: ${e.getMessage}")
@@ -139,5 +127,3 @@ case class Account(
 
 @main def tryAccount: Unit =
   println("Tested in AccountTest.scala")
-  Account().getRecordsByFilter(true, "pippo")
-

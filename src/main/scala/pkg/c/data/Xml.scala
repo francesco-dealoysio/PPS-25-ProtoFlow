@@ -14,6 +14,19 @@ import scala.xml.*
 object Xml:
 /*
   // Thomas
+  private def loadXml(xmlFilePathName: String): Elem =
+    val file = File(xmlFilePathName)
+    //if file.exists() then
+    if Files.exists(xmlFilePathName) then
+      XML.loadFile(xmlFilePathName)
+    else
+      //saveXml(emptyXml)
+      //emptyXml
+      Elem.null
+      
+ */
+/*
+  // Thomas
   private def emptyXml: Elem =
     <registrationRequests></registrationRequests>
 
@@ -176,7 +189,8 @@ object Xml:
     xmlTry match
       case Success(root) =>
         root match
-        case Elem(_, _, _, _, children@_*) =>
+        //case Elem(_, _, _, _, children@_*) =>
+        case Elem(_, _, _, _, children*) =>
           result = (root \\ fieldName).exists(_.text.trim == fieldValue)
         case other =>
           println("Unexpected XML structure.")
@@ -184,6 +198,15 @@ object Xml:
         println(s"Error loading XML: ${ex.getMessage}")
       result
 
+  def countRecordsByFilter[T](predicate: T => Boolean, xmlFilePathName: String, classType: Class[T]): Int =
+    try
+      getRecordFromXML(xmlFilePathName, classType)
+        .map(_.asInstanceOf[T]).count(predicate)
+    catch
+      case e: Exception =>
+        println(s"Errore in countRecordsByFilter: ${e.getMessage}")
+        0
+  
   @main def tryXml(): Unit =
 
     val fs = java.io.File.separator

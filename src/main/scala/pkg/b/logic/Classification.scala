@@ -44,15 +44,15 @@ case class Classification(
         new Classification
 
   // DA FARE
-  override def getRecordsByFilter(condition: Boolean, xmlFilePathName: String = defaultXmlFilePathName): Int =
-    val NONE = 0
+  override def getRecordsByFilter[Classification](predicate: Classification => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Classification]): Seq[Classification] =
     try
-      getRecordFromXML(xmlFilePathName, classOf[Classification])
-        .map(a => a.asInstanceOf[Classification]).count(a => a.classification == "amministrazione")
+      getRecordFromXML(xmlFilePathName, classType)
+        .map(o => o.asInstanceOf[Classification]).filter(predicate)
     catch
       case e: Exception =>
         println(s"Errore in getRecordByFilter: ${e.getMessage}")
-        NONE
+        Seq.empty[Classification]
+
 
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
