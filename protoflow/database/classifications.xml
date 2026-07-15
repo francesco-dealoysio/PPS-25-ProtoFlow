@@ -1,0 +1,51 @@
+<classifications>
+  <record>
+    <id>1</id>
+    <classification>presidenza</classification>
+    <description>
+      Documenti relativi alla presidenza e agli organi di vertice
+    </description>
+  </record>
+  <record>
+    <id>2</id>
+    <classification>segreteria</classification>
+    <description>
+      Documenti relativi alla gestione della segreteria e affari generali
+    </description>
+  </record>
+  <record>
+    <id>3</id>
+    <classification>amministrazione</classification>
+    <description>
+      Documentazione amministrativa, contabile e finanziaria
+    </description>
+  </record>
+  <record>
+    <id>4</id>
+    <classification>personale</classification>
+    <description>
+      Documenti relativi alla gestione delle risorse umane e del personale
+    </description>
+  </record>
+  <record>
+    <id>5</id>
+    <classification>materiali</classification>
+    <description>
+      Documentazione relativa alla gestione di beni, acquisti e materiali
+    </description>
+  </record>
+  <record>
+    <id>6</id>
+    <classification>infrastrutture</classification>
+    <description>
+      Documenti relativi alla gestione, manutenzione e sicurezza degli immobili
+    </description>
+  </record>
+  <record>
+    <id>7</id>
+    <classification>addestramento</classification>
+    <description>
+      Documentazione relativa a corsi, formazione e addestramento
+    </description>
+  </record>
+</classifications>

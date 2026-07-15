@@ -6,7 +6,8 @@ import pkg.c.data.Properties.*
 
 case class Classification(
                           private var id: String = "",
-                          private var classification: String = ""
+                          private var classification: String = "",
+                          private var description: String = ""
                          ) extends Entity:
   def this() =
     this("","")
@@ -16,6 +17,7 @@ case class Classification(
 
   def getId: String = id
   def getClassification: String = classification
+  def getDescription: String = description
 
   def defaultXmlFilePathName: String =
     val fs = java.io.File.separator
