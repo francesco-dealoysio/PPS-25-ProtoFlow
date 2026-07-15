@@ -90,8 +90,7 @@ case class Account(
       val id = record.id
       val username = record.username
       if !(idExists(id, xmlFilePathName) || usernameExists(username, xmlFilePathName)) then
-        insertElemIntoXML(xmlFilePathName, obj)
-        result = true
+        result = insertElemIntoXML(xmlFilePathName, obj)
       else
         println(s"Errore in recordInsert: valori duplicati (id o username)")
     catch
@@ -107,8 +106,7 @@ case class Account(
       val username = record.username
       val  found = countRecordsByFilter[Account](a => a.id != id && a.username == username, xmlFilePathName, classOf[Account])
       if (found == 0) then
-        updateElemOfXML(xmlFilePathName, obj)
-        result = true
+        result = updateElemOfXML(xmlFilePathName, obj)
       else
         println(s"Errore in recordInsert: valori duplicati (username)")
     catch

@@ -68,8 +68,7 @@ case class Role(
       val id = record.id
       val role = record.role
       if !(idExists(id, xmlFilePathName) || roleExists(role, xmlFilePathName)) then
-        insertElemIntoXML(xmlFilePathName, obj)
-        result = true
+        result = insertElemIntoXML(xmlFilePathName, obj)
       else
         println(s"Errore in recordInsert: valori duplicati (id o ruolo)")
     catch
@@ -85,8 +84,7 @@ case class Role(
       val role = record.role
       val  found = countRecordsByFilter[Role](a => a.id != id && a.role == role, xmlFilePathName, classOf[Role])
       if (found == 0) then
-        updateElemOfXML(xmlFilePathName, obj)
-        result = true
+        result = updateElemOfXML(xmlFilePathName, obj)
       else
         println(s"Errore in recordUpdate: valori duplicati (ruolo)")
     catch

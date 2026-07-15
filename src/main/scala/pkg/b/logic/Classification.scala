@@ -67,8 +67,7 @@ case class Classification(
       val id = record.id
       val classification = record.classification
       if !(idExists(id, xmlFilePathName) || classificationExists(classification, xmlFilePathName)) then
-        insertElemIntoXML(xmlFilePathName, obj)
-        result = true
+        result = insertElemIntoXML(xmlFilePathName, obj)
       else
         println(s"Errore in recordInsert: valori duplicati (id o classification)")
     catch
@@ -84,8 +83,7 @@ case class Classification(
       val classification = record.classification
       val  found = countRecordsByFilter[Classification](a => a.id != id && a.classification == classification, xmlFilePathName, classOf[Classification])
       if (found == 0) then
-        updateElemOfXML(xmlFilePathName, obj)
-        result = true
+        result = updateElemOfXML(xmlFilePathName, obj)
       else
         println(s"Errore in recordInsert: valori duplicati (classifica)")
     catch

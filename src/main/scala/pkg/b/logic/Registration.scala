@@ -22,36 +22,39 @@ case class Registration(
     this("", "", "", "", "", "", "", "", "", "", "", "")
   
   def setId(value: String): Unit = id = value
-  def setCognome(value: String): Unit = surname = value
-  def setNome(value: String): Unit = name = value
+  def setSurname(value: String): Unit = surname = value
+  def setName(value: String): Unit = name = value
   def setEmail(value: String): Unit = email = value
-  def setTelefono(value: String): Unit = phone = value
-  def setRuolo(value: String): Unit = role = value
+  def setPhone(value: String): Unit = phone = value
+  def setRole(value: String): Unit = role = value
   def setArea(value: String): Unit = area = value
   def setAssignment(value: String): Unit = assignment = value
-  def setData(value: String): Unit = date = value
-  def setStato(value: String): Unit = state = value
-  def setEsito(value: String): Unit = result = value
-  def setMotivazione(value: String): Unit = motivation = value
+  def setDate(value: String): Unit = date = value
+  def setState(value: String): Unit = state = value
+  def setResult(value: String): Unit = result = value
+  def setMotivation(value: String): Unit = motivation = value
 
   def getId: String = id
-  def getCognome: String = surname
-  def getNome: String = name
+  def getSurname: String = surname
+  def getName: String = name
   def getEmail: String = email
-  def getTelefono: String = phone
-  def getRuolo: String = role
+  def getPhone: String = phone
+  def getRole: String = role
   def getArea: String = area
   def getAssignment: String = assignment
-  def getData: String = date
-  def getStato: String = state
-  def getEsito: String = result
-  def getMotivazione: String = motivation
+  def getDate: String = date
+  def getState: String = state
+  def getResult: String = result
+  def getMotivation: String = motivation
 
   def defaultXmlFilePathName: String =
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
     val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
     databaseFolder + fs + xmlFile
+
+  def idExists(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    searchFieldValue(xmlFilePathName, "id", id)
 
   override def xmlFile = "registrations.xml"
 
@@ -87,8 +90,12 @@ case class Registration(
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
-      insertElemIntoXML(xmlFilePathName, obj)
-      result = true
+      val record = obj.asInstanceOf[Registration]
+      val id = record.id
+      if !idExists(id, xmlFilePathName) then
+        result = insertElemIntoXML(xmlFilePathName, obj)
+      else
+        println(s"Errore in recordInsert: valori duplicati (id)")
     catch
       case e: Exception =>
         println(s"Errore in recordInsert: ${e.getMessage}")
@@ -101,7 +108,7 @@ case class Registration(
       case e: Exception =>
         println(s"Errore in recordUpdate: ${e.getMessage}")
         false
-
+    
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       removeElemFromXML(xmlFilePathName, id)

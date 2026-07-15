@@ -206,7 +206,7 @@ object Xml:
       case e: Exception =>
         println(s"Errore in countRecordsByFilter: ${e.getMessage}")
         0
-  
+
   @main def tryXml(): Unit =
 
     val fs = java.io.File.separator
