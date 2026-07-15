@@ -65,7 +65,6 @@ case class Account(
         println(s"Errore in getRecords: ${e.getMessage}")
         Seq.empty[Account]
 
-  // TESTARE
   override def getRecordsByFilter[Account](predicate: Account => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Account]): Seq[Account] =
     try
       getRecordFromXML(xmlFilePathName, classType)
@@ -87,9 +86,9 @@ case class Account(
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
-      val account = obj.asInstanceOf[Account]
-      val id = account.id
-      val username = account.username
+      val record = obj.asInstanceOf[Account]
+      val id = record.id
+      val username = record.username
       if !(idExists(id, xmlFilePathName) || usernameExists(username, xmlFilePathName)) then
         insertElemIntoXML(xmlFilePathName, obj)
         result = true
@@ -103,9 +102,9 @@ case class Account(
   override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
-      val account = obj.asInstanceOf[Account]
-      val id = account.id
-      val username = account.username
+      val record = obj.asInstanceOf[Account]
+      val id = record.id
+      val username = record.username
       val  found = countRecordsByFilter[Account](a => a.id != id && a.username == username, xmlFilePathName, classOf[Account])
       if (found == 0) then
         updateElemOfXML(xmlFilePathName, obj)

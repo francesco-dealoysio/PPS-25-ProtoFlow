@@ -96,7 +96,12 @@ class RegistrationTest:
 
   @Test
   def testGetRecordsByFilter: Unit =
-    assertTrue(false)
+    cleanXmlFile(xmlFilePathName)
+    Registration().recordInsert(registration1, xmlFilePathName)
+    Registration().recordInsert(registration2, xmlFilePathName)
+    Registration().recordInsert(registration3, xmlFilePathName)
+    val sequence = Seq(registration1, registration3)
+    assertEquals(Registration().getRecordsByFilter[Registration](a => a.getArea == "segreteria", xmlFilePathName, classOf[Registration]), sequence)
 
   @Test
   def testRecordInsertInexistentXmlFile: Unit =
@@ -149,13 +154,7 @@ class RegistrationTest:
     Registration().recordUpdate(record, xmlFilePathName)
     val recordUpdated = Registration().getRecordById("?", xmlFilePathName)
     assertEquals(recordUpdated, empty)
-
-  @Test
-  def testGetRecordUpdateDuplicateId: Unit =
-    val readRecord = Registration().getRecordById("1", xmlFilePathName)
-    assertEquals(registration1, readRecord)
-    assertTrue(false)
-
+  
   @Test
   def testGetRecordUpdateDuplicateUsername: Unit =
     val readRecord = Registration().getRecordById("1", xmlFilePathName)
@@ -184,18 +183,24 @@ class RegistrationTest:
 
   @Test
   def testGetRecordDeleteInesistentXmlFile: Unit =
-    Registration().recordInsert(registration1, "path inesistente")
-    val record = Registration().getRecordById("1", xmlFilePathName)
-    assertNotEquals(record, registration1)
-    assertTrue(false)
+    val record = registration1.copy()
+    assertFalse(Registration().recordDelete(record.getId, "path inesistente"))
 
   @Test
   def testGetRecordDeleteEmptyXmlFile: Unit =
-    assertTrue(false)
+    cleanXmlFile(xmlFilePathName)
+    val record = registration1.copy()
+    assertFalse(Registration().recordDelete(record.getId, xmlFilePathName))
 
   @Test
   def testGetRecordDeleteInesistentId: Unit =
-    assertTrue(false)
+    cleanXmlFile(xmlFilePathName)
+    Account().recordInsert(registration1, xmlFilePathName)
+    Account().recordInsert(registration2, xmlFilePathName)
+    Account().recordInsert(registration3, xmlFilePathName)
+    val record = registration1.copy()
+    record.setId("100")
+    assertFalse(Account().recordDelete(record.getId, xmlFilePathName))
 
 
 

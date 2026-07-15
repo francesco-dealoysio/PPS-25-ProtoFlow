@@ -26,6 +26,12 @@ case class Role(
     val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
     databaseFolder + fs + xmlFile
 
+  def idExists(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    searchFieldValue(xmlFilePathName, "id", id)
+
+  def roleExists(role: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    searchFieldValue(xmlFilePathName, "role", role)
+
   override def xmlFile = "roles.xml"
 
   override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Role] =
@@ -45,36 +51,49 @@ case class Role(
       case e: Exception =>
         println(s"Errore in getRecordById: ${e.getMessage}")
         new Role
-
-  // TESTARE
-
+  
   override def getRecordsByFilter[Role](predicate: Role => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Role]): Seq[Role] =
     try
-      getRecordFromXML(xmlFilePathName, classType: Class[Role])
-        .map(o => o.asInstanceOf[Role]).filter(predicate)
+      getRecordFromXML(xmlFilePathName, classType)
+        .map(_.asInstanceOf[Role]).filter(predicate)
     catch
       case e: Exception =>
         println(s"Errore in getRecordByFilter: ${e.getMessage}")
         Seq.empty[Role]
 
-
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
-      insertElemIntoXML(xmlFilePathName, obj)
-      result = true
+      val record = obj.asInstanceOf[Role]
+      val id = record.id
+      val role = record.role
+      if !(idExists(id, xmlFilePathName) || roleExists(role, xmlFilePathName)) then
+        insertElemIntoXML(xmlFilePathName, obj)
+        result = true
+      else
+        println(s"Errore in recordInsert: valori duplicati (id o username)")
     catch
       case e: Exception =>
         println(s"Errore in recordInsert: ${e.getMessage}")
     result
 
   override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    var result = false
     try
-      updateElemOfXML(xmlFilePathName, obj)
+      val record = obj.asInstanceOf[Role]
+      val id = record.id
+      val role = record.role
+      val  found = countRecordsByFilter[Role](a => a.id != id && a.role == role, xmlFilePathName, classOf[Role])
+      if (found == 0) then
+        updateElemOfXML(xmlFilePathName, obj)
+        result = true
+      else
+        println(s"Errore in recordUpdate: valori duplicati (ruolo)")
     catch
       case e: Exception =>
         println(s"Errore in recordUpdate: ${e.getMessage}")
         false
+    result
 
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
