@@ -71,7 +71,7 @@ case class Role(
         insertElemIntoXML(xmlFilePathName, obj)
         result = true
       else
-        println(s"Errore in recordInsert: valori duplicati (id o username)")
+        println(s"Errore in recordInsert: valori duplicati (id o ruolo)")
     catch
       case e: Exception =>
         println(s"Errore in recordInsert: ${e.getMessage}")

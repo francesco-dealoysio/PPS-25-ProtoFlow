@@ -23,6 +23,12 @@ case class Classification(
     val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
     databaseFolder + fs + xmlFile
 
+  def idExists(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    searchFieldValue(xmlFilePathName, "id", id)
+
+  def classificationExists(classification: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    searchFieldValue(xmlFilePathName, "classification", classification)
+
   override def xmlFile = "classifications.xml"
 
   override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Classification] =
@@ -56,22 +62,38 @@ case class Classification(
 
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
-    try 
-      insertElemIntoXML(xmlFilePathName, obj)
-      result = true
+    try
+      val record = obj.asInstanceOf[Classification]
+      val id = record.id
+      val classification = record.classification
+      if !(idExists(id, xmlFilePathName) || classificationExists(classification, xmlFilePathName)) then
+        insertElemIntoXML(xmlFilePathName, obj)
+        result = true
+      else
+        println(s"Errore in recordInsert: valori duplicati (id o classification)")
     catch
       case e: Exception =>
         println(s"Errore in recordInsert: ${e.getMessage}")
     result
   
   override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    var result = false
     try
-      updateElemOfXML(xmlFilePathName, obj)
+      val record = obj.asInstanceOf[Classification]
+      val id = record.id
+      val classification = record.classification
+      val  found = countRecordsByFilter[Classification](a => a.id != id && a.classification == classification, xmlFilePathName, classOf[Classification])
+      if (found == 0) then
+        updateElemOfXML(xmlFilePathName, obj)
+        result = true
+      else
+        println(s"Errore in recordInsert: valori duplicati (classifica)")
     catch
       case e: Exception =>
         println(s"Errore in recordUpdate: ${e.getMessage}")
         false
-        
+    result
+
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       removeElemFromXML(xmlFilePathName, id)
