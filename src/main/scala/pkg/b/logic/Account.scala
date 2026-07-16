@@ -42,18 +42,6 @@ case class Account(
   def getUsername: String = username
   def getPassword: String = password
 
-  def defaultXmlFilePathName: String =
-    val fs = java.io.File.separator
-    val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-    val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
-    databaseFolder + fs + xmlFile
-
-  def idExists(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
-    searchFieldValue(xmlFilePathName, "id", id)
-
-  def usernameExists(username: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
-    searchFieldValue(xmlFilePathName, "username", username)
-
   override def xmlFile = "accounts.xml"
 
   override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Account] =
@@ -89,7 +77,8 @@ case class Account(
       val record = obj.asInstanceOf[Account]
       val id = record.id
       val username = record.username
-      if !(idExists(id, xmlFilePathName) || usernameExists(username, xmlFilePathName)) then
+      //if !(idExists(id, xmlFilePathName) || usernameExists(username, xmlFilePathName)) then
+      if !(fieldExists("id", id, xmlFilePathName) || fieldExists("username", username, xmlFilePathName)) then
         result = insertElemIntoXML(xmlFilePathName, obj)
       else
         println(s"Errore in recordInsert: valori duplicati (id o username)")

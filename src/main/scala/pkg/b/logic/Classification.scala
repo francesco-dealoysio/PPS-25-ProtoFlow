@@ -17,18 +17,6 @@ case class Classification(
   def getId: String = id
   def getClassification: String = classification
 
-  def defaultXmlFilePathName: String =
-    val fs = java.io.File.separator
-    val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-    val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
-    databaseFolder + fs + xmlFile
-
-  def idExists(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
-    searchFieldValue(xmlFilePathName, "id", id)
-
-  def classificationExists(classification: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
-    searchFieldValue(xmlFilePathName, "classification", classification)
-
   override def xmlFile = "classifications.xml"
 
   override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Classification] =
@@ -49,7 +37,6 @@ case class Classification(
         println(s"Errore in getRecordById: ${e.getMessage}")
         new Classification
 
-  // DA FARE
   override def getRecordsByFilter[Classification](predicate: Classification => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Classification]): Seq[Classification] =
     try
       getRecordFromXML(xmlFilePathName, classType)
@@ -58,15 +45,14 @@ case class Classification(
       case e: Exception =>
         println(s"Errore in getRecordByFilter: ${e.getMessage}")
         Seq.empty[Classification]
-
-
+  
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
       val record = obj.asInstanceOf[Classification]
       val id = record.id
       val classification = record.classification
-      if !(idExists(id, xmlFilePathName) || classificationExists(classification, xmlFilePathName)) then
+      if !(fieldExists("id", id, xmlFilePathName) || fieldExists("classification", classification, xmlFilePathName)) then
         result = insertElemIntoXML(xmlFilePathName, obj)
       else
         println(s"Errore in recordInsert: valori duplicati (id o classification)")

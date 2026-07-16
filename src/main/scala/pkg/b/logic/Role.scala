@@ -20,18 +20,6 @@ case class Role(
   def getRole: String = role
   def getDescription: String = description
 
-  def defaultXmlFilePathName: String =
-    val fs = java.io.File.separator
-    val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-    val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
-    databaseFolder + fs + xmlFile
-
-  def idExists(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
-    searchFieldValue(xmlFilePathName, "id", id)
-
-  def roleExists(role: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
-    searchFieldValue(xmlFilePathName, "role", role)
-
   override def xmlFile = "roles.xml"
 
   override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Role] =
@@ -67,7 +55,7 @@ case class Role(
       val record = obj.asInstanceOf[Role]
       val id = record.id
       val role = record.role
-      if !(idExists(id, xmlFilePathName) || roleExists(role, xmlFilePathName)) then
+      if !(fieldExists("id", id, xmlFilePathName) || fieldExists("role", role, xmlFilePathName)) then
         result = insertElemIntoXML(xmlFilePathName, obj)
       else
         println(s"Errore in recordInsert: valori duplicati (id o ruolo)")

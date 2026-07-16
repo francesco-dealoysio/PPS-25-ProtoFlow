@@ -47,15 +47,6 @@ case class Registration(
   def getResult: String = result
   def getMotivation: String = motivation
 
-  def defaultXmlFilePathName: String =
-    val fs = java.io.File.separator
-    val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-    val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
-    databaseFolder + fs + xmlFile
-
-  def idExists(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
-    searchFieldValue(xmlFilePathName, "id", id)
-
   override def xmlFile = "registrations.xml"
 
   override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Registration] =
@@ -75,9 +66,7 @@ case class Registration(
       case e: Exception =>
         println(s"Errore in getRecordById: ${e.getMessage}")
         new Registration
-
-  // TESTARE
-
+  
   override def getRecordsByFilter[Registration](predicate: Registration => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Registration]): Seq[Registration] =
     try
       getRecordFromXML(xmlFilePathName, classType)
@@ -92,7 +81,7 @@ case class Registration(
     try
       val record = obj.asInstanceOf[Registration]
       val id = record.id
-      if !idExists(id, xmlFilePathName) then
+      if !fieldExists("id", id, xmlFilePathName) then
         result = insertElemIntoXML(xmlFilePathName, obj)
       else
         println(s"Errore in recordInsert: valori duplicati (id)")
