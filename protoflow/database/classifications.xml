@@ -42,10 +42,13 @@
     </description>
   </record>
   <record>
-    <id>7</id>
+    <id>8</id>
+    <classification>Informatica</classification>
+    <description>Documenti informatici</description>
+  </record>
+  <record>
+    <id>9</id>
     <classification>addestramento</classification>
-    <description>
-      Documentazione relativa a corsi, formazione e addestramento, prova modifica
-    </description>
+    <description>documenti relativi all'addestramento</description>
   </record>
 </classifications>

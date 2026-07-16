@@ -111,7 +111,7 @@ object HomePageView:
       contentArea.children = Seq(
         ClassificationManagementView(
           onAdd = () =>
-            println("Apertura Aggiunta Classifica"),
+            showClassificationAdd(),
 
           onEdit = selected =>
             showClassificationEdit(selected),
@@ -126,6 +126,17 @@ object HomePageView:
         ClassificationEditView(
           selectedClassification = selected,
 
+          onSaved = () =>
+            showClassificationManagement(),
+
+          onExit = () =>
+            showClassificationManagement()
+        )
+      )
+
+    def showClassificationAdd(): Unit =
+      contentArea.children = Seq(
+        ClassificationAddView(
           onSaved = () =>
             showClassificationManagement(),
 
