@@ -3,7 +3,6 @@ package pkg.b.logic
 import pkg.b.logic.Entity
 import pkg.c.data.Xml.*
 import pkg.d.util.Util.md5
-import pkg.c.data.Properties.*
 
 case class Account(
                  private var id: String = "",
@@ -77,7 +76,6 @@ case class Account(
       val record = obj.asInstanceOf[Account]
       val id = record.id
       val username = record.username
-      //if !(idExists(id, xmlFilePathName) || usernameExists(username, xmlFilePathName)) then
       if !(fieldExists("id", id, xmlFilePathName) || fieldExists("username", username, xmlFilePathName)) then
         result = insertElemIntoXML(xmlFilePathName, obj)
       else

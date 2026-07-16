@@ -2,7 +2,6 @@ package pkg.b.logic
 
 import pkg.b.logic.Entity
 import pkg.c.data.Xml.*
-import pkg.c.data.Properties.*
 
 case class Registration(
                     private var id: String = "",
@@ -66,7 +65,7 @@ case class Registration(
       case e: Exception =>
         println(s"Errore in getRecordById: ${e.getMessage}")
         new Registration
-  
+
   override def getRecordsByFilter[Registration](predicate: Registration => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Registration]): Seq[Registration] =
     try
       getRecordFromXML(xmlFilePathName, classType)

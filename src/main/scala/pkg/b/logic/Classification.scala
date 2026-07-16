@@ -2,7 +2,6 @@ package pkg.b.logic
 
 import pkg.b.logic.Entity
 import pkg.c.data.Xml.*
-import pkg.c.data.Properties.*
 
 case class Classification(
                           private var id: String = "",
@@ -45,7 +44,7 @@ case class Classification(
       case e: Exception =>
         println(s"Errore in getRecordByFilter: ${e.getMessage}")
         Seq.empty[Classification]
-  
+
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try

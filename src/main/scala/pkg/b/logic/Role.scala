@@ -2,7 +2,6 @@ package pkg.b.logic
 
 import pkg.b.logic.Entity
 import pkg.c.data.Xml.*
-import pkg.c.data.Properties.*
 
 case class Role(
                 private var id: String = "",

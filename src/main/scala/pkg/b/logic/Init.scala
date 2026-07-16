@@ -101,6 +101,9 @@ object Init:
     if (Files.notExists(Paths.get(databaseFolder + fs + "classifications.xml")))
       writeXML(databaseFolder + fs + "classications.xml", classifications)
 
+    if (Files.notExists(Paths.get(databaseFolder + fs + "registrations.xml")))
+      writeXML(databaseFolder + fs + "registrations.xml", registrations)
+/*
     if (Files.notExists(Paths.get(databaseFolder + fs + "registrations" + fs + "requests.xml")))
       writeXML(databaseFolder + fs + "registrations" + fs + "requests.xml", registrations)
 
@@ -109,6 +112,6 @@ object Init:
 
     if (Files.notExists(Paths.get(databaseFolder + fs + "registrations" + fs + "accepted.xml")))
       writeXML(databaseFolder + fs + "registrations" + fs + "approved.xml", registrations)
-
+*/
   @main def tryInit: Unit =
     init
