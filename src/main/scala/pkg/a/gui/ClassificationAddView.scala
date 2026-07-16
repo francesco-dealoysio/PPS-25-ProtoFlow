@@ -2,7 +2,7 @@ package pkg.a.gui
 
 import pkg.b.logic.Classification
 
-import scalafx.Includes.*
+import pkg.c.data.guiStructures.ClassificationViewModel
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
@@ -18,8 +18,9 @@ object ClassificationAddView:
      * Oggetto del livello logic.
      * La view non accede direttamente al package data.
      */
-    val classificationLogic =
-      new Classification()
+    val classificationLogic = new Classification()
+
+    val viewModel = new ClassificationViewModel()
 
     /*
      * Campi inizialmente vuoti, come richiesto dalla US 19.
@@ -66,10 +67,7 @@ object ClassificationAddView:
         maxWidth = Double.MaxValue
         styleClass += "classifications-message"
 
-    def showResult(
-                    message: String,
-                    success: Boolean
-                  ): Unit =
+    def showResult(message: String, success: Boolean): Unit =
       resultMessage.text = message
       resultMessage.visible = true
       resultMessage.managed = true
@@ -106,9 +104,7 @@ object ClassificationAddView:
         "form-field-error"
       )
 
-    def showClassificationError(
-                                 message: String
-                               ): Unit =
+    def showClassificationError(message: String): Unit =
       classificationError.text = message
       classificationError.visible = true
       classificationError.managed = true
@@ -120,9 +116,7 @@ object ClassificationAddView:
         classificationField.styleClass +=
           "form-field-error"
 
-    def showDescriptionError(
-                              message: String
-                            ): Unit =
+    def showDescriptionError(message: String): Unit =
       descriptionError.text = message
       descriptionError.visible = true
       descriptionError.managed = true
@@ -134,71 +128,38 @@ object ClassificationAddView:
         descriptionArea.styleClass +=
           "form-field-error"
 
-    /*
-     * Controlli richiesti dalla user story:
-     * - obbligatorietà;
-     * - univocità della classifica.
-     */
     def validateForm(): Boolean =
       clearErrors()
 
-      val classificationValue =
-        classificationField.text.value.trim
-
-      val descriptionValue =
-        descriptionArea.text.value.trim
-
-      var valid =
-        true
-
-      if classificationValue.isEmpty then
-        showClassificationError(
-          "Il campo Classifica è obbligatorio."
+      val errors =
+        viewModel.validate(classification = currentClassification(),
+          existingClassifications = classificationLogic.getRecords()
         )
-        valid = false
 
-      if descriptionValue.isEmpty then
-        showDescriptionError(
-          "Il campo Descrizione è obbligatorio."
-        )
-        valid = false
+      errors.foreach:
+        case ClassificationViewModel.ClassificationRequiredError =>
+          showClassificationError(ClassificationViewModel.ClassificationRequiredError)
 
-      /*
-       * La verifica viene fatta sui record
-       * realmente letti da classifications.xml.
-       */
-      if classificationValue.nonEmpty then
-        val duplicate =
-          classificationLogic
-            .getRecords()
-            .exists: record =>
-              record
-                .getClassification
-                .trim
-                .equalsIgnoreCase(classificationValue)
+        case ClassificationViewModel.DescriptionRequiredError =>
+          showDescriptionError(ClassificationViewModel.DescriptionRequiredError)
 
-        if duplicate then
-          showClassificationError(
-            "Esiste già una classifica con questo nome."
-          )
-          valid = false
+        case ClassificationViewModel.DuplicateClassificationError =>
+          showClassificationError(ClassificationViewModel.DuplicateClassificationError)
 
-      valid
+        case _ => ()
 
-    /*
-     * Genera il nuovo identificativo basandosi
-     * sui record realmente presenti nell'XML.
-     */
+      errors.isEmpty
+
+
     def nextId(): String =
-      val maximumId =
-        classificationLogic
-          .getRecords()
-          .flatMap: record =>
-            record.getId.toIntOption
-          .maxOption
-          .getOrElse(0)
+      viewModel.nextId(classificationLogic.getRecords())
 
-      (maximumId + 1).toString
+
+    def currentClassification(): Classification =
+      Classification(
+        classification = classificationField.text.value,
+        description = descriptionArea.text.value
+      )
 
     /*
      * Reset dell'aggiunta: i campi devono tornare vuoti.
@@ -217,54 +178,36 @@ object ClassificationAddView:
 
         onAction = _ =>
           if validateForm() then
+            val existingClassifications = classificationLogic.getRecords()
+
             val newClassification =
               Classification(
-                id = nextId(),
-                classification =
-                  classificationField.text.value.trim,
-                description =
-                  descriptionArea.text.value.trim
+                id = viewModel.nextId(existingClassifications),
+                classification = classificationField.text.value.trim,
+                description = descriptionArea.text.value.trim
               )
 
-            /*
-             * Inserimento reale tramite Classification,
-             * che richiama Xml.insertElemIntoXML.
-             */
-            val saved =
-              classificationLogic.recordInsert(
-                newClassification
-              )
+            val saved = classificationLogic.recordInsert(newClassification)
 
             if saved then
               showResult(
-                "Classifica aggiunta correttamente.",
+                "Classifica inserita correttamente.",
                 success = true
               )
-
-              /*
-               * Ritorna alla gestione classifiche.
-               * La gestione rileggerà classifications.xml.
-               */
               onSaved()
             else
               showResult(
-                "Non è stato possibile salvare la classifica.",
+                "Errore durante l'inserimento della classifica.",
                 success = false
               )
 
-    val resetButton =
-      new Button("Reset"):
-
+    val resetButton = new Button("Reset"):
         styleClass += "secondary-button"
-
         onAction = _ =>
           resetForm()
 
-    val closeButton =
-      new Button("Chiudi"):
-
+    val closeButton = new Button("Chiudi"):
         styleClass += "secondary-button"
-
         onAction = _ =>
           onExit()
 
@@ -293,7 +236,7 @@ object ClassificationAddView:
 
         add(classificationError, 1, 1)
 
-        add(new Label("Descrizione *"): 
+        add(new Label("Descrizione *"):
           styleClass += "form-label",0,2)
 
         add(descriptionArea, 1, 2)

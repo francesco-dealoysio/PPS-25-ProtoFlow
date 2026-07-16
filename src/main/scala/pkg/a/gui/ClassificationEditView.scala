@@ -1,7 +1,7 @@
 package pkg.a.gui
 
 import pkg.b.logic.Classification
-
+import pkg.c.data.guiStructures.ClassificationViewModel
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
@@ -15,6 +15,7 @@ object ClassificationEditView:
            ): BorderPane =
 
     val classificationLogic = new Classification()
+    val viewModel = ClassificationViewModel()
 
     /*
      * Conserviamo i valori originari.
@@ -133,6 +134,14 @@ object ClassificationEditView:
         descriptionArea.styleClass +=
           "form-field-error"
 
+
+    def currentClassification(): Classification =
+      Classification(
+        id = selectedClassification.getId,
+        classification = classificationField.text.value.trim,
+        description = descriptionArea.text.value.trim
+      )
+
     /*
      * Controlla obbligatorietà e univocità.
      *
@@ -142,117 +151,60 @@ object ClassificationEditView:
     def validateForm(): Boolean =
       clearErrors()
 
-      val classificationValue = classificationField.text.value.trim
-
-      val descriptionValue = descriptionArea.text.value.trim
-
-      var valid = true
-
-      if classificationValue.isEmpty then
-        showClassificationError(
-          "Il campo Classifica è obbligatorio."
+      val errors =
+        viewModel.validate(
+          classification = currentClassification(),
+          existingClassifications = classificationLogic.getRecords(),
+          currentClassificationId =
+            Some(selectedClassification.getId)
         )
 
-        valid = false
-
-      if descriptionValue.isEmpty then
-        showDescriptionError(
-          "Il campo Descrizione è obbligatorio."
-        )
-
-        valid = false
-
-      if classificationValue.nonEmpty then
-        val duplicate =
-          classificationLogic
-            .getRecords()
-            .exists: record =>
-              record.getId != selectedClassification.getId &&
-                record
-                  .getClassification
-                  .trim
-                  .equalsIgnoreCase(
-                    classificationValue
-                  )
-
-        if duplicate then
+      errors.foreach:
+        case ClassificationViewModel.ClassificationRequiredError =>
           showClassificationError(
-            "Esiste già una classifica con questo nome."
+            ClassificationViewModel.ClassificationRequiredError
           )
 
-          valid = false
+        case ClassificationViewModel.DescriptionRequiredError =>
+          showDescriptionError(
+            ClassificationViewModel.DescriptionRequiredError
+          )
 
-      valid
+        case ClassificationViewModel.DuplicateClassificationError =>
+          showClassificationError(
+            ClassificationViewModel.DuplicateClassificationError
+          )
 
-    val saveButton =
-      new Button("Salva"):
+        case _ => ()
+
+      errors.isEmpty
+
+    val saveButton = new Button("Salva"):
 
         styleClass += "primary-button"
 
         onAction = _ =>
           if validateForm() then
-            val classificationValue =
-              classificationField.text.value.trim
+            val classificationToUpdate = currentClassification()
+            classificationToUpdate.setClassification(classificationToUpdate.getClassification.trim)
+            classificationToUpdate.setDescription(classificationToUpdate.getDescription.trim)
 
-            val descriptionValue =
-              descriptionArea.text.value.trim
+            val updated =
+              classificationLogic.recordUpdate(classificationToUpdate)
 
-            val confirmation =
-              new Alert(
-                Alert.AlertType.Confirmation
-              ):
+            if updated then
+              showResult(
+                "Classifica modificata correttamente.",
+                success = true
+              )
+              onSaved()
+            else
+              showResult(
+                "Errore durante la modifica della classifica.",
+                success = false
+              )
 
-                title =
-                  "Conferma modifica"
-
-                headerText =
-                  "Confermi il salvataggio delle modifiche?"
-
-                contentText =
-                  s"""Classifica: $classificationValue
-                     |Descrizione: $descriptionValue""".stripMargin
-
-            confirmation.showAndWait() match
-              case Some(ButtonType.OK) =>
-                /*
-                 * Creiamo un nuovo oggetto mantenendo
-                 * l'id della classifica selezionata.
-                 */
-                val updatedClassification =
-                  Classification(
-                    selectedClassification.getId,
-                    classificationValue,
-                    descriptionValue
-                  )
-
-                val updated =
-                  classificationLogic.recordUpdate(
-                    updatedClassification
-                  )
-
-                if updated then
-                  showResult(
-                    "Classifica modificata correttamente.",
-                    success = true
-                  )
-
-                  /*
-                   * Tornando alla gestione, la tabella
-                   * viene ricreata e rilegge l'XML.
-                   */
-                  onSaved()
-                else
-                  showResult(
-                    "Non è stato possibile modificare la classifica.",
-                    success = false
-                  )
-
-              case _ =>
-                ()
-
-    val resetButton =
-      new Button("Reset"):
-
+    val resetButton = new Button("Reset"):
         styleClass += "secondary-button"
 
         onAction = _ =>
@@ -264,9 +216,7 @@ object ClassificationEditView:
 
           clearErrors()
 
-    val closeButton =
-      new Button("Chiudi"):
-
+    val closeButton = new Button("Chiudi"):
         styleClass += "secondary-button"
 
         onAction = _ =>

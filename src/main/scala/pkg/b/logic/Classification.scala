@@ -58,7 +58,7 @@ case class Classification(
 
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
-    try 
+    try
       insertElemIntoXML(xmlFilePathName, obj)
       result = true
     catch
