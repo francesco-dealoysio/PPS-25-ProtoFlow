@@ -1,0 +1,40 @@
+
+LocalDateTime...............: 2026-07-17 01:01:22
+Exception occurred in method: recordUpdate
+Class.......................: pkg.b.logic.Account
+Line number.................: 93
+
+LocalDateTime...............: 2026-07-17 01:02:00
+Exception occurred in method: recordUpdate
+Class.......................: pkg.b.logic.Account
+Line number.................: 93
+
+LocalDateTime...............: 2026-07-17 01:06:17
+Exception occurred in method: recordUpdate
+Class.......................: pkg.b.logic.Account
+Line number.................: 93
+
+LocalDateTime...............: 2026-07-17 01:09:24
+Exception occurred in method: recordUpdate
+Class.......................: pkg.b.logic.Account
+Line number.................: 93
+
+LocalDateTime...............: 2026-07-17 01:09:24
+Exception occurred in method: recordUpdate
+Class.......................: pkg.b.logic.Account
+Line number.................: 93
+
+LocalDateTime...............: 2026-07-17 01:09:24
+Exception occurred in method: recordUpdate
+Class.......................: pkg.b.logic.Account
+Line number.................: 93
+
+LocalDateTime...............: 2026-07-17 01:09:24
+Exception occurred in method: recordUpdate
+Class.......................: pkg.b.logic.Account
+Line number.................: 93
+
+LocalDateTime...............: 2026-07-17 01:09:24
+Exception occurred in method: recordUpdate
+Class.......................: pkg.b.logic.Account
+Line number.................: 93

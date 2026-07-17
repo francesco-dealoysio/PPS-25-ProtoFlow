@@ -1,0 +1,39 @@
+// in Util.scala  
+
+def logWrite(ex: Exception): Unit =
+    import java.time.LocalDateTime
+    import java.time.format.DateTimeFormatter
+    import java.io.FileWriter
+    val nowLocal = LocalDateTime.now()
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    val topElement = ex.getStackTrace.headOption
+    topElement match
+      case Some(ste) =>
+        val dataLog = "\n" +
+          s"LocalDateTime...............: ${nowLocal.format(formatter)}\n" +
+          s"Exception occurred in method: ${ste.getMethodName}\n" +
+          s"Class.......................: ${ste.getClassName}\n" +
+          s"Line number.................: ${ste.getLineNumber}\n"
+        println(dataLog)
+
+        import pkg.c.data.Properties.*
+        val xmlFile = "error.log"
+        val fs = java.io.File.separator
+        val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
+        val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
+        val xmlFilePathName = databaseFolder + fs + xmlFile
+
+        val fw = new FileWriter(xmlFilePathName, true) // true = append mode
+        try fw.write(dataLog)
+        finally if (fw != null) fw.close()
+      case None =>
+        println("No stack trace available.")
+
+
+// error log in Account.scala
+      try
+        throw new RuntimeException("Something went wrong")
+      catch
+        case e: Exception =>
+          pkg.d.util.Util.logWrite(e)
+// end error log
