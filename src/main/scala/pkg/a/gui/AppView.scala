@@ -1,7 +1,7 @@
 package pkg.a.gui
 
 import scalafx.geometry.Pos
-import scalafx.scene.control.{Button, Label}
+import scalafx.scene.control.{Alert, Button, ButtonType, Label}
 import scalafx.scene.layout.{HBox, VBox}
 
 trait AppView:
@@ -14,7 +14,7 @@ trait AppView:
         successStyle = successStyle,
         errorStyle = errorStyle
       )
-    
+
     def show(message: String, success: Boolean): Unit =
       showMessage(
         label = label,
@@ -24,6 +24,16 @@ trait AppView:
         errorStyle = errorStyle
       )
 
+  protected def askConfirmation(titleText: String, header: String, content: String): Boolean =
+    val dialog =
+      new Alert(Alert.AlertType.Confirmation):
+        title = titleText
+        headerText = header
+        contentText = content
+
+    dialog
+      .showAndWait()
+      .contains(ButtonType.OK)
 
   protected def createResultMessage(baseStyle: String, successStyle: String, errorStyle: String): ResultMessage =
     ResultMessage(

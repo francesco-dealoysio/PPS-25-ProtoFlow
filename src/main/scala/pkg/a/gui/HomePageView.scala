@@ -2,12 +2,11 @@ package pkg.a.gui
 
 import pkg.b.logic.Classification
 import pkg.c.data.guiStructures.{HomePageConfig, HomePageViewModel, MenuAction}
-import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, Label, TableColumn, TableView}
 import scalafx.scene.layout.{BorderPane, HBox, Pane, Priority, Region, StackPane, VBox}
 
-object HomePageView:
+object HomePageView extends AppView:
 
   def apply(
              config: HomePageConfig,
@@ -57,31 +56,19 @@ object HomePageView:
   /**
    * Crea l'intestazione della homepage.
    */
-  private def createHeader(
-                            config: HomePageConfig,
-                            currentUser: String
-                          ): HBox =
+  private def createHeader(config: HomePageConfig, currentUser: String): HBox =
     new HBox:
       alignment = Pos.CenterLeft
       styleClass += "app-header"
 
       children = Seq(
-        new Label("☰"):
-          styleClass += "app-logo",
-
-        new Label(config.applicationTitle):
-          styleClass += "app-title",
+        fieldLabel(text = "☰", styleName = "app-logo"),
+        fieldLabel(text = config.applicationTitle, styleName = "app-title"),
 
         new Region:
-          HBox.setHgrow(
-            this,
-            Priority.Always
-          ),
-          new Label(
-            s"$currentUser\n${config.roleDescription}"
-          ):
-            styleClass += "user-info"
-          )
+          HBox.setHgrow(this, Priority.Always),
+          fieldLabel(text = s"$currentUser\n${config.roleDescription}", styleName = "user-info")
+      )
 
   /**
    * Crea la sidebar e gestisce l'apertura
@@ -167,24 +154,32 @@ object HomePageView:
           styleClass += "sidebar-button"
 
           onAction = _ =>
-            viewModel.select(
-              item.action
-            )
-
             item.action match
+              case MenuAction.Logout =>
+                val confirmed =
+                  askConfirmation(
+                    titleText = "Conferma logout",
+                    header = "Vuoi uscire da ProtoFlow?",
+                    content = "La sessione corrente verrà terminata."
+                  )
+                if confirmed then
+                  viewModel.select(MenuAction.Logout)
+                  onLogout()
+
               case MenuAction.Dashboard =>
                 showDashboard()
 
               case MenuAction.Registrazioni =>
+                viewModel.select(MenuAction.Registrazioni)
                 showRegistrationRequests()
 
               case MenuAction.Classifiche =>
+                viewModel.select(MenuAction.Classifiche)
                 showClassificationManagement()
 
-              case MenuAction.Logout =>
-                onLogout()
-
               case other =>
+                viewModel.select(other)
+
                 contentArea.children = Seq(
                   contentFor(other)
                 )
@@ -197,19 +192,16 @@ object HomePageView:
   /**
    * Crea il piè di pagina.
    */
-  private def createFooter(
-                            currentUser: String,
-                            config: HomePageConfig
-                          ): HBox =
+  private def createFooter(currentUser: String, config: HomePageConfig): HBox =
     new HBox:
       alignment = Pos.CenterRight
       styleClass += "app-footer"
 
       children = Seq(
-        new Label(
-          s"👤 $currentUser (${config.roleDescription})    Data e ora dinamici"
-        ):
-          styleClass += "footer-user-info"
+        fieldLabel(
+          text = s"👤 $currentUser (${config.roleDescription})    Data e ora dinamici",
+          styleName = "footer-user-info"
+        )
       )
 
   /**
@@ -274,23 +266,18 @@ object HomePageView:
       styleClass += "placeholder-container"
 
       children = Seq(
-        new Label(title):
-          styleClass += "placeholder-title"
+        fieldLabel(text = title, styleName = "placeholder-title")
       )
 
   /**
    * Dashboard iniziale.
    */
   private def dashboardContent(): VBox =
-    val title =
-      new Label("Dashboard"):
-        styleClass += "page-title"
-
     new VBox:
       styleClass += "dashboard-container"
 
       children = Seq(
-        title,
+        fieldLabel(text = "Dashboard", styleName = "page-title"),
         createCards(),
         createDocumentsTable()
       )
@@ -331,146 +318,36 @@ object HomePageView:
   /**
    * Singola card statistica.
    */
-  private def statCard(
-                        title: String,
-                        value: String,
-                        subtitle: String
-                      ): VBox =
+  private def statCard(title: String, value: String, subtitle: String): VBox =
     new VBox:
       prefWidth = 190
       styleClass += "stat-card"
-
       children = Seq(
-        new Label(title):
-          styleClass += "stat-card-title",
+        fieldLabel(text = title, styleName = "stat-card-title"),
+        fieldLabel(text = value, styleName = "stat-card-value"),
+        fieldLabel(text = subtitle, styleName = "stat-card-subtitle")
+      )
 
-        new Label(value):
-          styleClass += "stat-card-value",
-  
-        new Label(subtitle):
-          styleClass += "stat-card-subtitle"
-        )
 
   /**
    * Tabella dei documenti recenti.
    */
-  private def createDocumentsTable():
-  TableView[DocumentRow] =
+  private def createDocumentsTable(): TableView[Unit] =
+    new TableView[Unit]:
+      styleClass += "documents-table"
+      this.placeholder = fieldLabel("Nessun documento disponibile", "table-placeholder")
 
-    val table =
-      new TableView[DocumentRow]():
+      // Generiamo la sequenza di colonne ScalaFX
+      val colList = Seq(
+        "Protocollo",
+        "Oggetto",
+        "Mittente",
+        "Categoria",
+        "Stato",
+        "Data"
+      ).map: title =>
+        new TableColumn[Unit, String]:
+          text = title
 
-        styleClass +=
-          "documents-table"
-
-    val protocolColumn =
-      new TableColumn[
-        DocumentRow,
-        String
-      ]("Protocollo")
-
-    protocolColumn.cellValueFactory =
-      _.value.protocolloProperty
-
-    val subjectColumn =
-      new TableColumn[
-        DocumentRow,
-        String
-      ]("Oggetto")
-
-    subjectColumn.cellValueFactory =
-      _.value.oggettoProperty
-
-    val senderColumn =
-      new TableColumn[
-        DocumentRow,
-        String
-      ]("Mittente")
-
-    senderColumn.cellValueFactory =
-      _.value.mittenteProperty
-
-    val categoryColumn =
-      new TableColumn[
-        DocumentRow,
-        String
-      ]("Categoria")
-
-    categoryColumn.cellValueFactory =
-      _.value.categoriaProperty
-
-    val statusColumn =
-      new TableColumn[
-        DocumentRow,
-        String
-      ]("Stato")
-
-    statusColumn.cellValueFactory =
-      _.value.statoProperty
-
-    val dateColumn =
-      new TableColumn[
-        DocumentRow,
-        String
-      ]("Data")
-
-    dateColumn.cellValueFactory =
-      _.value.dataProperty
-
-    table.columns ++= Seq(
-      protocolColumn,
-      subjectColumn,
-      senderColumn,
-      categoryColumn,
-      statusColumn,
-      dateColumn
-    )
-
-    table.items = ObservableBuffer(
-      DocumentRow(
-        "2026/000123",
-        "Richiesta occupazione suolo pubblico",
-        "Mario Rossi",
-        "Urbanistica",
-        "Registrato",
-        "15/06/2026"
-      ),
-
-      DocumentRow(
-        "2026/000122",
-        "Richiesta ferie personale",
-        "Anna Bianchi",
-        "Personale",
-        "In Carico",
-        "15/06/2026"
-      ),
-
-      DocumentRow(
-        "2026/000121",
-        "Preventivo fornitura materiali",
-        "Edilizia Verdi S.r.l.",
-        "Amministrazione",
-        "Registrato",
-        "14/06/2026"
-      ),
-
-      DocumentRow(
-        "2026/000120",
-        "Circolare interna n. 45",
-        "Segreteria Generale",
-        "Segreteria",
-        "Archiviato",
-        "14/06/2026"
-      ),
-
-      DocumentRow(
-        "2026/000119",
-        "Fattura n. 123/PA",
-        "Studio Alfa",
-        "Finanziario",
-        "Registrato",
-        "13/06/2026"
-      )
-    )
-
-    table
+      // Per evitare il problema dei tipi, estraiamo i delegati JavaFX nativi (.map(_.delegate))
+      columns ++= colList.map(_.delegate)

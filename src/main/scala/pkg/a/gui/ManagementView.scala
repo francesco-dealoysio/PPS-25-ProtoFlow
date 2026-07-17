@@ -2,7 +2,6 @@ package pkg.a.gui
 
 import scalafx.geometry.Insets
 import scalafx.scene.Node
-import scalafx.scene.control.{Alert, ButtonType}
 import scalafx.scene.layout.{BorderPane, Priority, VBox}
 
 trait ManagementView extends AppView:
@@ -28,14 +27,3 @@ trait ManagementView extends AppView:
     new BorderPane:
       styleClass += rootStyle
       center = content
-
-  protected def askConfirmation(titleText: String, header: String, content: String): Boolean =
-    val dialog =
-      new Alert(Alert.AlertType.Confirmation):
-        title = titleText
-        headerText = header
-        contentText = content
-
-    dialog
-      .showAndWait()
-      .contains(ButtonType.OK)
