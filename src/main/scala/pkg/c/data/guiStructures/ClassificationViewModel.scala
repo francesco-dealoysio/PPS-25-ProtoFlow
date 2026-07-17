@@ -3,14 +3,11 @@ package pkg.c.data.guiStructures
 import pkg.b.logic.Classification
 
 object ClassificationViewModel:
-  val ClassificationRequiredError =
-    "Il campo Classifica è obbligatorio."
+  val ClassificationRequiredError = "Il campo Classifica è obbligatorio."
 
-  val DescriptionRequiredError =
-    "Il campo Descrizione è obbligatorio."
+  val DescriptionRequiredError = "Il campo Descrizione è obbligatorio."
 
-  val DuplicateClassificationError =
-    "Esiste già una classifica con questo nome."
+  val DuplicateClassificationError = "Esiste già una classifica con questo nome."
 
 class ClassificationViewModel:
   import ClassificationViewModel.*

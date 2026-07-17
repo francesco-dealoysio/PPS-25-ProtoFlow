@@ -5,12 +5,9 @@ import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, ComboBox, Label, TextArea, TextField}
 import scalafx.scene.layout.{BorderPane, GridPane, HBox, Priority, Region, VBox}
-//import pkg.b.logic.RegistrationRequestService
-//import pkg.c.data.xmlManagement.RegistrationRequestRepository
 import pkg.b.logic.RegistrationRequestService
-import pkg.c.data.guiStructures.RegistrationRequest
 
-object RegistrationView:
+object RegistrationView extends FormView:
 
   def apply(
              viewModel: RegistrationViewModel,
@@ -56,12 +53,7 @@ object RegistrationView:
       promptText = "Inserisci incarico"
       styleClass += "form-field"
 
-    val messageArea = new TextArea:
-      editable = false
-      wrapText = true
-      visible.value = false
-      managed.value = false
-      styleClass += "form-message"
+    val resultMessage = messageLabel("form-message")
 
     def currentRequest(): RegistrationRequest =
       RegistrationRequest(
@@ -74,22 +66,7 @@ object RegistrationView:
         assignment = assignmentField.text.value
       )
 
-    def showMessage(message: String, success: Boolean): Unit =
-      messageArea.text.value = message
-      messageArea.visible.value = true
-      messageArea.managed.value = true
-
-      messageArea.styleClass.removeAll(
-        "form-message-success",
-        "form-message-error"
-      )
-
-      if success then
-        messageArea.styleClass += "form-message-success"
-      else
-        messageArea.styleClass += "form-message-error"
-
-    def resetForm(): Unit =
+    def clearFields(): Unit =
       nameField.clear()
       surnameField.clear()
       emailField.clear()
@@ -99,81 +76,90 @@ object RegistrationView:
       roleCombo.selectionModel.value.clearSelection()
       areaCombo.selectionModel.value.clearSelection()
 
-      messageArea.clear()
-      messageArea.visible.value = false
-      messageArea.managed.value = false
+      nameField.requestFocus()
 
-      messageArea.styleClass.removeAll(
-        "form-message-success",
-        "form-message-error"
-      )
+    def resetForm(): Unit =
+      clearFields()
+      clearMessage(resultMessage, successStyle = "form-message-success", errorStyle = "form-message-error")
 
-    val submitButton = new Button("Invio richiesta"):
-      styleClass += "primary-button"
-      onAction = _ =>
-        val request = currentRequest()
-        val errors = viewModel.validate(request)
+    def submitRequest(): Unit =
+      val request = currentRequest()
+      val errors = viewModel.validate(request)
 
-        if errors.isEmpty then
-          service.submitRequest(
-            name = request.name,
-            surname = request.surname,
-            email = request.email,
-            phone = request.phone,
-            requestedRole = request.requestedRole,
-            requestedArea = request.requestedArea,
-            assignment = request.assignment
-          ) match
-            case Right(_) =>
-              showMessage("Richiesta presa in carico e salvata correttamente.", success = true)
-              resetForm()
+      if errors.nonEmpty then
+        showMessage(
+          label = resultMessage,
+          message =
+            errors.mkString(
+              "Errori riscontrati:\n- ",
+              "\n- ",
+              ""
+            ),
+          success = false,
+          successStyle = "form-message-success",
+          errorStyle = "form-message-error"
+        )
+      else
+        service.submitRequest(
+          name = request.name,
+          surname = request.surname,
+          email = request.email,
+          phone = request.phone,
+          requestedRole = request.requestedRole,
+          requestedArea = request.requestedArea,
+          assignment = request.assignment
+        ) match
+          case Right(_) =>
+            clearFields()
 
-            case Left(error) =>
-              showMessage(error, success = false)
-        else
-          showMessage(
-            errors.mkString("Errori riscontrati:\n- ", "\n- ", ""),
-            success = false
-          )
+            showMessage(
+              resultMessage,
+              "Richiesta presa in carico e salvata correttamente.",
+              success = true,
+              "form-message-success",
+              "form-message-error"
+            )
 
-    val resetButton = new Button("Reset"):
-      styleClass += "secondary-button"
-      onAction = _ => resetForm()
+          case Left(error) =>
+            showMessage(
+              resultMessage,
+              error,
+              success = false,
+              "form-message-success",
+              "form-message-error"
+            )
 
-    val exitButton = new Button("Annulla"):
-      styleClass += "secondary-button"
-      onAction = _ => onExit()
+    val submit = primaryButton("Invio richiesta", () => submitRequest())
+    val reset = resetButton(() => resetForm())
+    val exit = closeButton(onExit = onExit, text = "Annulla")
 
     val formGrid = new GridPane:
       hgap = 18
       vgap = 14
       styleClass += "registration-grid"
 
-      add(formLabel("Nome *"), 0, 0)
+      add(fieldLabel("Nome *"), 0, 0)
       add(nameField, 0, 1)
 
-      add(formLabel("Cognome *"), 1, 0)
+      add(fieldLabel("Cognome *"), 1, 0)
       add(surnameField, 1, 1)
 
-      add(formLabel("Indirizzo email *"), 0, 2)
+      add(fieldLabel("Indirizzo email *"), 0, 2)
       add(emailField, 0, 3)
 
-      add(formLabel("Telefono"), 1, 2)
+      add(fieldLabel("Telefono"), 1, 2)
       add(phoneField, 1, 3)
 
-      add(formLabel("Ruolo richiesto *"), 0, 4)
+      add(fieldLabel("Ruolo richiesto *"), 0, 4)
       add(roleCombo, 0, 5)
 
-      add(formLabel("Area/Settore di appartenenza *"), 1, 4)
+      add(fieldLabel("Area/Settore di appartenenza *"), 1, 4)
       add(areaCombo, 1, 5)
 
-      add(formLabel("Incarico *"), 0, 6)
+      add(fieldLabel("Incarico *"), 0, 6)
       add(assignmentField, 0, 7)
 
-    val buttonsBox = new HBox:
-      alignment = Pos.CenterRight
-      spacing = 12
-      children = Seq(exitButton, resetButton, submitButton)
+    val buttonsBox = actionBar(exit, reset, submit)
 
     val card = new VBox:
       maxWidth = Double.MaxValue
@@ -187,14 +173,10 @@ object RegistrationView:
           styleClass += "registration-subtitle"
         ,
         formGrid,
-        messageArea,
+        resultMessage,
         buttonsBox
       )
 
     new BorderPane:
       styleClass += "registration-root"
       center = card
-
-  private def formLabel(text: String): Label =
-    new Label(text):
-      styleClass += "form-label"

@@ -9,7 +9,7 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
 
-object ClassificationManagementView:
+object ClassificationManagementView extends ManagementView:
 
   def apply(
              onAdd: () => Unit = () => (),
@@ -17,57 +17,30 @@ object ClassificationManagementView:
              onExit: () => Unit = () => ()
            ): BorderPane =
 
-    /*
-     * Oggetto del livello logic.
-     */
     val classificationLogic = new Classification()
-
-    /*
-     * Dati mostrati nella tabella.
-     */
     val classifications = ObservableBuffer.empty[Classification]
 
-    /*
-     * Messaggio informativo o di errore.
-     */
-    val messageLabel =
-      new Label:
-        visible = false
-        managed = false
-        wrapText = true
-        maxWidth = Double.MaxValue
-        styleClass += "classifications-message"
 
-    def showMessage(message: String, success: Boolean): Unit =
-      messageLabel.text = message
-      messageLabel.visible = true
-      messageLabel.managed = true
+    val resultMessage = messageLabel("classifications-message")
+    val successMessageStyle = "classifications-message-success"
+    val errorMessageStyle = "classifications-message-error"
 
-      messageLabel.styleClass.removeAll(
-        "classifications-message-success",
-        "classifications-message-error"
+    def showResult(message: String, success: Boolean): Unit =
+      showMessage(
+        label = resultMessage,
+        message = message,
+        success = success,
+        successStyle = successMessageStyle,
+        errorStyle = errorMessageStyle
       )
 
-      messageLabel.styleClass +=
-        (if success then
-          "classifications-message-success"
-        else
-          "classifications-message-error")
-
-    def clearMessage(): Unit =
-
-      messageLabel.text = ""
-      messageLabel.visible = false
-      messageLabel.managed = false
-
-      messageLabel.styleClass.removeAll(
-        "classifications-message-success",
-        "classifications-message-error"
+    def clearResult(): Unit =
+      clearMessage(
+        resultMessage,
+        successMessageStyle,
+        errorMessageStyle
       )
 
-    /*
-     * Tabella principale.
-     */
     val table = new TableView[Classification](classifications):
 
         columnResizePolicy = TableView.ConstrainedResizePolicy
@@ -79,25 +52,16 @@ object ClassificationManagementView:
 
         styleClass += "classifications-table"
 
-    /*
-     * Colonna Classifica.
-     */
     val classificationColumn = new TableColumn[Classification, String]:
-
         text = "Classifica"
-
         cellValueFactory = cell =>
           StringProperty(
             cell.value.getClassification
           )
 
-    /*
-     * Colonna Descrizione
-     */
+
     val descriptionColumn = new TableColumn[Classification, String]:
-
         text = "Descrizione"
-
         cellValueFactory = cell =>
           StringProperty(
             cell.value.getDescription
@@ -108,9 +72,7 @@ object ClassificationManagementView:
       descriptionColumn
     )
 
-    /*
-     * Recupera la riga selezionata.
-     */
+
     def selectedClassification(): Option[Classification] =
         Option(
           table.selectionModel.value
@@ -118,13 +80,8 @@ object ClassificationManagementView:
             .value
         )
 
-    /*
-     * Legge i record dal file XML.
-     */
     def loadClassifications(): Unit =
-
-      clearMessage()
-
+      clearResult()
       try
         val loaded =
           classificationLogic
@@ -141,211 +98,127 @@ object ClassificationManagementView:
           .clearSelection()
 
         if loaded.isEmpty then
-          showMessage(
-            "Non sono presenti classifiche nel sistema.",
-            success = true
-          )
+          showResult("Non sono presenti classifiche nel sistema.", success = true)
 
       catch
         case exception: Exception =>
-
           classifications.clear()
+          showResult("Errore durante il caricamento delle classifiche.", success = false)
 
-          showMessage(
-            "Errore durante il caricamento delle classifiche.",
+    def deleteSelectedClassification(): Unit =
+      selectedClassification() match
+        case None =>
+          showResult(
+            "Seleziona una classifica da eliminare.",
             success = false
           )
 
-    /*
-     * Pulisce il messaggio quando viene selezionata una nuova riga.
-     */
+        case Some(selected) =>
+          val confirmed =
+            askConfirmation(
+              titleText = "Eliminazione classifica",
+              header =
+                "Confermi l'eliminazione della classifica selezionata?",
+              content =
+                s"""Classifica: ${selected.getClassification}
+                   |Codice: ${selected.getId}
+                   |
+                   |L'operazione non può essere annullata.""".stripMargin
+            )
+
+          if confirmed then
+            val deleted =
+              classificationLogic.recordDelete(
+                selected.getId
+              )
+
+            if deleted then
+              loadClassifications()
+
+              showResult(
+                s"La classifica '${selected.getClassification}' è stata eliminata correttamente.",
+                success = true
+              )
+            else
+              showResult(
+                "Non è stato possibile eliminare la classifica.",
+                success = false
+              )
+
+     // Pulisce il messaggio quando viene selezionata una nuova riga.
     table.selectionModel.value
       .selectedItem
       .onChange:
         (_, _, selected) =>
 
           if selected != null then
-            clearMessage()
+            clearResult()
 
-    /*
-     * Aggiunta: verrà collegata alla relativa view.
-     */
-    val addButton =
-      new Button("Aggiunta"):
 
-        styleClass += "primary-button"
+    val addButton = primaryButton(text = "Aggiunta", action = () =>
+      clearResult()
+      onAdd())
 
-        onAction = _ =>
-          clearMessage()
-          onAdd()
-
-    /*
-     * Modifica: passa alla callback il vero oggetto
-     * Classification selezionato.
-     */
-    val editButton = new Button("Modifica"):
-
-        styleClass += "secondary-button"
-
-        disable <==
-          table.selectionModel.value
-            .selectedItem
-            .isNull
-
-        onAction = _ =>
-
+    val editButton =
+      secondaryButton(
+        text = "Modifica",
+        action = () =>
           selectedClassification() match
-
             case Some(selected) =>
-              clearMessage()
+              clearResult()
               onEdit(selected)
 
             case None =>
-              showMessage(
+              showResult(
                 "Seleziona una classifica da modificare.",
                 success = false
               )
+      )
 
-    /*
-     * Eliminazione dal file XML.
-     */
+    editButton.disable <==
+      table.selectionModel.value
+        .selectedItem
+        .isNull
+
+
     val deleteButton = new Button("Eliminazione"):
+      styleClass += "danger-button"
+      onAction = _ =>
+        deleteSelectedClassification()
 
-        styleClass += "danger-button"
+    deleteButton.disable <==
+      table.selectionModel.value
+        .selectedItem
+        .isNull
 
-        disable <==
-          table.selectionModel.value
-            .selectedItem
-            .isNull
 
-        onAction = _ =>
+    val exitButton = closeButton(onExit)
 
-          selectedClassification() match
 
-            case None =>
-              showMessage(
-                "Seleziona una classifica da eliminare.",
-                success = false
-              )
-
-            case Some(selected) =>
-
-              /*
-               * Popup di conferma.
-               */
-              val confirmation =
-                new Alert(
-                  Alert.AlertType.Confirmation
-                ):
-
-                  title =
-                    "Eliminazione Classifica"
-
-                  headerText =
-                    "Confermi l'eliminazione della classifica selezionata?"
-
-                  contentText =
-                    s"""Classifica: ${selected.getClassification}
-                       |Codice: ${selected.getId}
-                       |
-                       |L'operazione non può essere annullata.""".stripMargin
-
-              confirmation.showAndWait() match
-
-                case Some(ButtonType.OK) =>
-
-                  /*
-                   * recordDelete richiama internamente
-                   * Xml.removeElemFromXML.
-                   */
-                  val deleted =
-                    classificationLogic.recordDelete(
-                      selected.getId
-                    )
-
-                  if deleted then
-
-                    /*
-                     * Non togliamo soltanto la riga
-                     * dall'ObservableBuffer:
-                     * rileggiamo il file XML aggiornato.
-                     */
-                    loadClassifications()
-
-                    showMessage(
-                      s"La classifica '${selected.getClassification}' è stata eliminata correttamente.",
-                      success = true
-                    )
-
-                  else
-                    showMessage(
-                      "Non è stato possibile eliminare la classifica.",
-                      success = false
-                    )
-
-                case _ =>
-                  ()
-
-    /*
-     * Chiusura della sezione e ritorno alla dashboard.
-     */
-    val closeButton =
-      new Button("Chiudi"):
-
-        styleClass += "secondary-button"
-
-        onAction = _ =>
-          onExit()
-
-    /*
-     * Menu richiesto dalla user story.
-     */
     val navigationMenu =
       new HBox:
-
         spacing = 12
         alignment = Pos.CenterLeft
         styleClass += "classifications-toolbar"
-
         children = Seq(
           addButton,
           editButton,
           deleteButton
         )
 
-    /*
-     * Pulsante in fondo alla pagina.
-     */
-    val bottomActions =
-      new HBox:
 
-        alignment = Pos.CenterRight
+     // Pulsante in fondo alla pagina.
+    val bottomActions = actionBar(exitButton)
 
-        children = Seq(
-          closeButton
-        )
 
-    /*
-     * Titolo e sottotitolo.
-     */
-    val titleBox =
-      new VBox:
+    val header =
+      titleBox(
+        titleText = "Gestione Classifiche",
+        subtitleText = "Visualizza e seleziona le classifiche utilizzate per la catalogazione dei documenti.",
+        titleStyle = "classifications-title",
+        subtitleStyle = "classifications-subtitle"
+      )
 
-        spacing = 5
-
-        children = Seq(
-          new Label("Gestione Classifiche"):
-            styleClass += "classifications-title",
-
-          new Label(
-            "Visualizza e seleziona le classifiche utilizzate per la catalogazione dei documenti."
-          ):
-            styleClass += "classifications-subtitle"
-          )
-
-    /*
-     * Layout centrale.
-     */
     val content =
       new VBox:
 
@@ -358,17 +231,14 @@ object ClassificationManagementView:
         )
 
         children = Seq(
-          titleBox,
+          header,
           navigationMenu,
           table,
-          messageLabel,
+          resultMessage,
           bottomActions
         )
 
-    /*
-     * Prima lettura dal file XML.
-     */
-    loadClassifications()
+    loadClassifications() // Prima lettura dal file XML.
 
     new BorderPane:
       styleClass +=

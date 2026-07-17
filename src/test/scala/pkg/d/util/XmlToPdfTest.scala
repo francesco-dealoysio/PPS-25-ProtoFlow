@@ -7,54 +7,143 @@ import java.nio.file.{Files, Path, Paths}
 
 class XmlToPdfTest extends AnyFunSuite:
 
-  private val testFolder: Path =
-    Paths.get(
-      System.getProperty("user.dir"),
-      "target",
-      "xml-to-pdf-test"
+  private val projectFolder: Path = Paths.get(System.getProperty("user.dir"))
+  private val testFolder: Path = projectFolder.resolve("target/xml-to-pdf-test")
+  private val printsFolder: Path = projectFolder.resolve("protoflow/prints")
+  private val xmlPath: Path = testFolder.resolve("test-accounts.xml")
+  private val listPdfPath: Path = printsFolder.resolve("test-accounts-list.pdf")
+  private val detailsPdfPath: Path = printsFolder.resolve("test-account-details.pdf")
+
+  test("printList genera il PDF con l'elenco degli account"):
+    prepareTestXml()
+    Files.deleteIfExists(listPdfPath)
+
+    val result =
+      XmlToPdf.printList(
+        xmlPath = xmlPath.toString,
+        pdfFileName = "test-accounts-list.pdf",
+        title = "Elenco account di test"
+      )
+
+    assert(result)
+    assert(Files.exists(listPdfPath))
+    assert(Files.isRegularFile(listPdfPath))
+    assert(Files.size(listPdfPath) > 0)
+
+    println()
+    println("PDF elenco account creato in:")
+    println(listPdfPath.toAbsolutePath)
+
+  test("printDetails genera il PDF con la scheda di un account"):
+    prepareTestXml()
+    Files.deleteIfExists(detailsPdfPath)
+
+    val result =
+      XmlToPdf.printDetails(
+        xmlPath = xmlPath.toString,
+        recordId = "2",
+        pdfFileName = "test-account-details.pdf",
+        title = "Scheda account di test"
+      )
+
+    assert(result)
+    assert(Files.exists(detailsPdfPath))
+    assert(Files.isRegularFile(detailsPdfPath))
+    assert(Files.size(detailsPdfPath) > 0)
+
+    println()
+    println("PDF scheda account creato in:")
+    println(detailsPdfPath.toAbsolutePath)
+
+  test("printDetails restituisce false se l'account non esiste"):
+    prepareTestXml()
+
+    val missingPdfPath = printsFolder.resolve("missing-account.pdf")
+
+    Files.deleteIfExists(missingPdfPath)
+
+    val result =
+      XmlToPdf.printDetails(
+        xmlPath = xmlPath.toString,
+        recordId = "999",
+        pdfFileName = "missing-account.pdf",
+        title = "Account inesistente"
+      )
+
+    assert(!result)
+    assert(!Files.exists(missingPdfPath))
+
+  test("printList restituisce false se non sono presenti account"):
+    Files.createDirectories(testFolder)
+
+    val emptyXmlPath = testFolder.resolve("empty-accounts.xml")
+
+    Files.writeString(
+      emptyXmlPath,
+      "<accounts></accounts>",
+      StandardCharsets.UTF_8
     )
 
-  private val xmlPath: Path =
-    testFolder.resolve("test-classifications.xml")
+    val emptyPdfPath = printsFolder.resolve("empty-accounts.pdf")
 
-  private val printsFolder: Path =
-    Paths.get(
-      System.getProperty("user.dir"),
-      "src",
-      "main",
-      "resources",
-      "prints"
-    )
+    Files.deleteIfExists(emptyPdfPath)
 
-  private val pdfPath: Path =
-    printsFolder.resolve("test-classifications.pdf")
+    val result =
+      XmlToPdf.printList(
+        xmlPath = emptyXmlPath.toString,
+        pdfFileName = "empty-accounts.pdf",
+        title = "Elenco account vuoto"
+      )
 
-  test("deve generare un PDF visibile nella cartella resources prints"):
+    assert(!result)
+    assert(!Files.exists(emptyPdfPath))
 
+  private def prepareTestXml(): Unit =
     Files.createDirectories(testFolder)
     Files.createDirectories(printsFolder)
 
     val xmlContent =
       """
-        |<classifications>
+        |<accounts>
         |  <record>
         |    <id>1</id>
-        |    <classification>Amministrazione</classification>
-        |    <description>Documenti amministrativi</description>
+        |    <name>Mario</name>
+        |    <surname>Rossi</surname>
+        |    <username>mario.rossi</username>
+        |    <password>password1</password>
+        |    <email>mario.rossi@example.it</email>
+        |    <phone>3331111111</phone>
+        |    <role>admin</role>
+        |    <area>Amministrazione</area>
+        |    <assignment>Responsabile</assignment>
         |  </record>
         |
         |  <record>
         |    <id>2</id>
-        |    <classification>Personale</classification>
-        |    <description>Gestione del personale</description>
+        |    <name>Anna</name>
+        |    <surname>Bianchi</surname>
+        |    <username>anna.bianchi</username>
+        |    <password>password2</password>
+        |    <email>anna.bianchi@example.it</email>
+        |    <phone>3332222222</phone>
+        |    <role>oper</role>
+        |    <area>Protocollo</area>
+        |    <assignment>Operatrice</assignment>
         |  </record>
         |
         |  <record>
         |    <id>3</id>
-        |    <classification>Informatica</classification>
-        |    <description>Gestione dei servizi informatici</description>
+        |    <name>Luca</name>
+        |    <surname>Verdi</surname>
+        |    <username>luca.verdi</username>
+        |    <password>password3</password>
+        |    <email>luca.verdi@example.it</email>
+        |    <phone>3333333333</phone>
+        |    <role>viewer</role>
+        |    <area>Archivio</area>
+        |    <assignment>Consultazione</assignment>
         |  </record>
-        |</classifications>
+        |</accounts>
         |""".stripMargin
 
     Files.writeString(
@@ -62,25 +151,3 @@ class XmlToPdfTest extends AnyFunSuite:
       xmlContent,
       StandardCharsets.UTF_8
     )
-
-    /*
-     * Elimina il PDF precedente, in modo da verificare
-     * che sia realmente il test a ricrearlo.
-     */
-    Files.deleteIfExists(pdfPath)
-
-    val result =
-      XmlToPdf.print(
-        xmlPath = xmlPath.toString,
-        pdfFileName = "test-classifications.pdf",
-        title = "Test stampa classifiche"
-      )
-
-    assert(result)
-    assert(Files.exists(pdfPath))
-    assert(Files.isRegularFile(pdfPath))
-    assert(Files.size(pdfPath) > 0)
-
-    println()
-    println("PDF di test creato correttamente:")
-    println(pdfPath.toAbsolutePath)

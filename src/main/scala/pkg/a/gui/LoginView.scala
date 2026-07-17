@@ -8,10 +8,9 @@ import scalafx.scene.control.{Button, Label, PasswordField, TextField}
 import scalafx.scene.input.KeyCode
 import scalafx.scene.layout.{BorderPane, HBox, Region, StackPane, VBox}
 
-object LoginView:
+object LoginView extends FormView:
 
-  def apply(
-             onLoginSuccess: LoggedUser => Unit,
+  def apply(onLoginSuccess: LoggedUser => Unit,
              onRegistrationRequest: () => Unit
            ): BorderPane =
 
@@ -25,26 +24,21 @@ object LoginView:
       promptText = "Inserisci password"
       styleClass += "form-field"
 
-    val messageLabel = new Label:
-      visible = false
-      managed = false
-      wrapText = true
-      styleClass ++= Seq("login-message", "login-message-error")
+    val resultMessage = messageLabel("login-message")
 
-    def showMessage(message: String): Unit =
-      messageLabel.text = message
-      messageLabel.visible = true
-      messageLabel.managed = true
-
-    def clearMessage(): Unit =
-      messageLabel.text = ""
-      messageLabel.visible = false
-      messageLabel.managed = false
+    def showLoginError(message: String): Unit =
+      showMessage(
+        label = resultMessage,
+        message = message,
+        success = false,
+        successStyle = "login-message-success",
+        errorStyle = "login-message-error"
+      )
 
     def clearFields(): Unit =
       usernameField.clear()
       passwordField.clear()
-      clearMessage()
+      clearMessage(resultMessage, successStyle = "login-message-success", errorStyle = "login-message-error")
       usernameField.requestFocus()
 
     def access(): Unit =
@@ -52,7 +46,7 @@ object LoginView:
       val password = passwordField.text.value.trim
 
       if username.isEmpty || password.isEmpty then
-        showMessage("Inserisci username e password.")
+        showLoginError("Inserisci username e password.")
         usernameField.requestFocus()
       else
         LoginService.login(username, password) match
@@ -60,16 +54,16 @@ object LoginView:
             onLoginSuccess(user)
 
           case Left(LoginError.EmptyCredentials) =>
-            showMessage("Inserisci username e password.")
+            showLoginError("Inserisci username e password.")
             usernameField.requestFocus()
 
           case Left(LoginError.InvalidCredentials) =>
-            showMessage("Accesso negato. Username o password non corretti.")
+            showLoginError("Accesso negato. Username o password non corretti.")
             passwordField.clear()
             passwordField.requestFocus()
 
           case Left(LoginError.UnknownRole(role)) =>
-            showMessage(s"Application Error: ruolo '$role' non riconosciuto.")
+            showLoginError(s"Application Error: ruolo '$role' non riconosciuto.")
 
     usernameField.onKeyPressed = event =>
       if event.code == KeyCode.Enter then
@@ -104,7 +98,7 @@ object LoginView:
       alignment = Pos.CenterLeft
       maxWidth = 220
       children = Seq(
-        formLabel("Username *"),
+        fieldLabel("Username *"),
         usernameField
       )
 
@@ -113,7 +107,7 @@ object LoginView:
       alignment = Pos.CenterLeft
       maxWidth = 220
       children = Seq(
-        formLabel("Password *"),
+        fieldLabel("Password *"),
         passwordField
       )
 
@@ -125,14 +119,8 @@ object LoginView:
         passwordBox
       )
 
-    val clearButton = new Button("Pulisci"):
-      styleClass += "secondary-button"
-      onAction = _ => clearFields()
-
-    val accessButton = new Button("Accedi"):
-      styleClass += "primary-button"
-      defaultButton = true
-      onAction = _ => access()
+    val clearButton = resetButton(onReset = () => clearFields(), text = "Pulisci")
+    val accessButton = primaryButton("Accedi", () => access())
 
     val buttonsBox = new HBox:
       alignment = Pos.Center
@@ -152,7 +140,7 @@ object LoginView:
       children = Seq(
         header,
         formBox,
-        messageLabel,
+        resultMessage,
         buttonsBox,
         new Region:
           minHeight = 6
@@ -163,7 +151,3 @@ object LoginView:
     new BorderPane:
       styleClass += "registration-root"
       center = card
-
-  private def formLabel(text: String): Label =
-    new Label(text):
-      styleClass += "form-label"
