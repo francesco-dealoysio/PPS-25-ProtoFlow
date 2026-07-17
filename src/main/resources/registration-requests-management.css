@@ -1,6 +1,5 @@
 .requests-management-root {
     -fx-background-color: #f4f6f8;
-    -fx-font-family: "Arial";
 }
 
 .requests-title {
@@ -91,43 +90,4 @@
     -fx-background-color: #ffebee;
     -fx-border-color: #ef9a9a;
     -fx-text-fill: #b71c1c;
-}
-
-.primary-button {
-    -fx-background-color: #1976d2;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-padding: 9px 18px;
-    -fx-background-radius: 5px;
-    -fx-cursor: hand;
-}
-
-.primary-button:hover {
-    -fx-background-color: #1565c0;
-}
-
-.secondary-button {
-    -fx-background-color: #e7ebef;
-    -fx-text-fill: #263238;
-    -fx-font-weight: bold;
-    -fx-padding: 9px 18px;
-    -fx-background-radius: 5px;
-    -fx-cursor: hand;
-}
-
-.secondary-button:hover {
-    -fx-background-color: #d5dce2;
-}
-
-.danger-button {
-    -fx-background-color: #c62828;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-padding: 9px 18px;
-    -fx-background-radius: 5px;
-    -fx-cursor: hand;
-}
-
-.danger-button:hover {
-    -fx-background-color: #b71c1c;
 }

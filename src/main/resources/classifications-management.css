@@ -1,0 +1,97 @@
+.classifications-management-root {
+    -fx-background-color: #f4f6f8;
+    -fx-font-family: "Arial";
+}
+
+.classifications-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #243447;
+}
+
+.classifications-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #667788;
+}
+
+.classifications-toolbar {
+    -fx-background-color: white;
+    -fx-padding: 14px;
+    -fx-spacing: 12px;
+    -fx-border-color: #dfe5eb;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.classifications-table {
+    -fx-background-color: white;
+    -fx-border-color: #dfe5eb;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.classifications-table .column-header-background {
+    -fx-background-color: #edf2f7;
+}
+
+.classifications-table .column-header {
+    -fx-background-color: transparent;
+    -fx-padding: 10px 8px;
+}
+
+.classifications-table .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #334155;
+}
+
+.classifications-table .table-row-cell {
+    -fx-cell-size: 40px;
+}
+
+.classifications-table .table-row-cell:selected {
+    -fx-background-color: #dbeafe;
+}
+
+.classifications-table .table-row-cell:selected .text {
+    -fx-fill: #1e3a5f;
+}
+
+.classifications-message {
+    -fx-padding: 10px 14px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+
+.classifications-message-success {
+    -fx-background-color: #e8f5e9;
+    -fx-border-color: #81c784;
+    -fx-text-fill: #256029;
+}
+
+.classifications-message-error {
+    -fx-background-color: #ffebee;
+    -fx-border-color: #ef9a9a;
+    -fx-text-fill: #b71c1c;
+}
+
+.classification-description-area {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 6px;
+}
+
+.classification-description-area:focused {
+    -fx-border-color: #2563eb;
+}
+
+.field-error {
+    -fx-text-fill: #b91c1c;
+    -fx-font-size: 12px;
+}
+
+.form-field-error {
+    -fx-border-color: #dc2626;
+    -fx-border-width: 1.5px;
+}

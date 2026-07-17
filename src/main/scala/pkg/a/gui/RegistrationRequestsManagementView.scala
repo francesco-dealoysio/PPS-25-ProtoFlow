@@ -6,13 +6,13 @@ import pkg.c.data.xmlManagement.RegistrationRequestRepository
 import scalafx.Includes.jfxMultipleSelectionModel2sfx
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
-import scalafx.geometry.{Insets, Pos}
+import scalafx.geometry.Insets
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
 
 import java.time.format.DateTimeFormatter
 
-object RegistrationRequestsManagementView:
+object RegistrationRequestsManagementView extends ManagementView:
 
   private val dateFormatter =
     DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
@@ -24,39 +24,26 @@ object RegistrationRequestsManagementView:
     val repository = new RegistrationRequestRepository()
     val service = new RegistrationRequestService(repository)
 
-    val requests =
-      ObservableBuffer.empty[RegistrationRequest]
+    val requests = ObservableBuffer.empty[RegistrationRequest]
 
-    val messageLabel = new Label:
-      visible = false
-      managed = false
-      wrapText = true
-      maxWidth = Double.MaxValue
-      styleClass += "requests-message"
+    val resultMessage = messageLabel("requests-message")
+    val successMessageStyle = "requests-message-success"
+    val errorMessageStyle = "requests-message-error"
 
-    def showMessage(message: String, success: Boolean): Unit =
-      messageLabel.text = message
-      messageLabel.visible = true
-      messageLabel.managed = true
-
-      messageLabel.styleClass.removeAll(
-        "requests-message-success",
-        "requests-message-error"
+    def showResult(message: String, success: Boolean): Unit =
+      showMessage(
+        label = resultMessage,
+        message = message,
+        success = success,
+        successStyle = successMessageStyle,
+        errorStyle = errorMessageStyle
       )
 
-      if success then
-        messageLabel.styleClass += "requests-message-success"
-      else
-        messageLabel.styleClass += "requests-message-error"
-
-    def clearMessage(): Unit =
-      messageLabel.text = ""
-      messageLabel.visible = false
-      messageLabel.managed = false
-
-      messageLabel.styleClass.removeAll(
-        "requests-message-success",
-        "requests-message-error"
+    def clearResult(): Unit =
+      clearMessage(
+        resultMessage,
+        successMessageStyle,
+        errorMessageStyle
       )
 
     val table = new TableView[RegistrationRequest](requests):
@@ -171,7 +158,7 @@ object RegistrationRequestsManagementView:
         Option(selectedRequest) match
           case Some(request) =>
             showDetails(request)
-            clearMessage()
+            clearResult()
 
           case None =>
             clearDetails()
@@ -220,127 +207,97 @@ object RegistrationRequestsManagementView:
       Option(table.selectionModel.value.selectedItem.value)
 
     def loadPendingRequests(): Unit =
-      clearMessage()
+      clearResult()
       clearDetails()
 
       val pending = service.getPendingRequests
-
       requests.clear()
       requests ++= pending.sortBy(_.requestDate)
-
       table.selectionModel.value.clearSelection()
-
       if pending.isEmpty then
-        showMessage(
+        showResult(
           "Non sono presenti richieste di registrazione da elaborare.",
           success = true
         )
 
-    val refreshButton = new Button("Aggiorna"):
-      styleClass += "secondary-button"
+    def approveSelectedRequest(): Unit =
+      selectedRequest() match
+        case None =>
+          showResult(
+            "Seleziona una richiesta da approvare.",
+            success = false
+          )
 
-      onAction = _ =>
-        loadPendingRequests()
-
-    val approveButton = new Button("Approva"):
-      styleClass += "primary-button"
-
-      onAction = _ =>
-        selectedRequest() match
-          case None =>
-            showMessage(
-              "Seleziona una richiesta da approvare.",
-              success = false
+        case Some(request) =>
+          val confirmed =
+            askConfirmation(
+              titleText = "Conferma approvazione",
+              header = "Approvare la richiesta selezionata?",
+              content =
+                s"""${request.name} ${request.surname}
+                   |${request.email}
+                   |Ruolo: ${request.requestedRole}""".stripMargin
             )
 
-          case Some(request) =>
-            val confirmation = new Alert(Alert.AlertType.Confirmation):
-              title = "Conferma approvazione"
-              headerText = "Approvare la richiesta selezionata?"
-              contentText =
-                s"${request.name} ${request.surname}\n" +
-                  s"${request.email}\n" +
-                  s"Ruolo: ${request.requestedRole}"
+          if confirmed then
+            service.approveRequest(request.id) match
+              case Right(_) =>
+                loadPendingRequests()
+                showResult(
+                  "Richiesta approvata correttamente.",
+                  success = true
+                )
 
-            confirmation.showAndWait() match
-              case Some(ButtonType.OK) =>
-                service.approveRequest(request.id) match
-                  case Right(_) =>
-                    loadPendingRequests()
-                    showMessage(
-                      "Richiesta approvata correttamente.",
-                      success = true
-                    )
+              case Left(error) =>
+                showResult(error, success = false)
 
-                  case Left(error) =>
-                    showMessage(error, success = false)
+    def rejectSelectedRequest(): Unit =
+      selectedRequest() match
+        case None =>
+          showResult(
+            "Seleziona una richiesta da rifiutare.",
+            success = false
+          )
 
-              case _ =>
-                ()
+        case Some(request) =>
+          val confirmed =
+            askConfirmation(
+              titleText = "Conferma rifiuto",
+              header = "Rifiutare la richiesta selezionata?",
+              content =
+                s"""${request.name} ${request.surname}
+                   |${request.email}""".stripMargin
+            )
+
+          if confirmed then
+            service.rejectRequest(request.id) match
+              case Right(_) =>
+                loadPendingRequests()
+                showResult(
+                  "Richiesta rifiutata correttamente.",
+                  success = true
+                )
+
+              case Left(error) =>
+                showResult(error, success = false)
+
+    val refreshButton = secondaryButton(text = "Aggiorna", action = () => loadPendingRequests())
+    val approveButton = primaryButton(text = "Approva", action = () => approveSelectedRequest())
 
     val rejectButton = new Button("Rifiuta"):
       styleClass += "danger-button"
+      onAction = _ => rejectSelectedRequest()
 
-      onAction = _ =>
-        selectedRequest() match
-          case None =>
-            showMessage(
-              "Seleziona una richiesta da rifiutare.",
-              success = false
-            )
+    val exitButton = closeButton(onExit)
 
-          case Some(request) =>
-            val confirmation = new Alert(Alert.AlertType.Confirmation):
-              title = "Conferma rifiuto"
-              headerText = "Rifiutare la richiesta selezionata?"
-              contentText =
-                s"${request.name} ${request.surname}\n" +
-                  s"${request.email}"
+    val actionsBox = actionBar(exitButton, refreshButton, rejectButton, approveButton)
 
-            confirmation.showAndWait() match
-              case Some(ButtonType.OK) =>
-                service.rejectRequest(request.id) match
-                  case Right(_) =>
-                    loadPendingRequests()
-                    showMessage(
-                      "Richiesta rifiutata correttamente.",
-                      success = true
-                    )
-
-                  case Left(error) =>
-                    showMessage(error, success = false)
-
-              case _ =>
-                ()
-
-    val closeButton = new Button("Chiudi"):
-      styleClass += "secondary-button"
-      onAction = _ => onExit()
-
-    val actionsBox = new HBox:
-      spacing = 12
-      alignment = Pos.CenterRight
-      children = Seq(
-        closeButton,
-        refreshButton,
-        rejectButton,
-        approveButton
-      )
-
-    val titleBox = new VBox:
-      spacing = 5
-
-      children = Seq(
-        {
-          val l = new Label("Gestione richieste registrazione")
-          l.styleClass += "requests-title"
-          l
-        },
-        {
-          val l = new Label("Visualizza e gestisci...")
-          l.styleClass += "requests-subtitle"
-          l
-        }
+    val header =
+      titleBox(
+        titleText = "Gestione richieste registrazione",
+        subtitleText = "Visualizza e gestisci le richieste di registrazione.",
+        titleStyle = "requests-title",
+        subtitleStyle = "requests-subtitle"
       )
 
     val detailsCard = new VBox:
@@ -359,10 +316,10 @@ object RegistrationRequestsManagementView:
       VBox.setVgrow(table, Priority.Always)
 
       children = Seq(
-        titleBox,
+        header,
         table,
         detailsCard,
-        messageLabel,
+        resultMessage,
         actionsBox
       )
 

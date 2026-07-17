@@ -1,0 +1,81 @@
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+
+/* bottoni */
+
+.primary-button {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-padding: 9px 18px;
+    -fx-background-radius: 5px;
+
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.primary-button:pressed {
+    -fx-background-color: #1e40af;
+}
+
+
+.secondary-button {
+    -fx-background-color: #f3f4f6;
+    -fx-text-fill: #374151;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-border-color: #d1d5db;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+
+    -fx-padding: 9px 18px;
+    -fx-background-radius: 5px;
+
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #e5e7eb;
+}
+
+.secondary-button:pressed {
+    -fx-background-color: #d1d5db;
+}
+
+
+.danger-button {
+    -fx-background-color: #c62828;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-padding: 9px 18px;
+    -fx-background-radius: 5px;
+
+    -fx-cursor: hand;
+}
+
+.danger-button:hover {
+    -fx-background-color: #b71c1c;
+}
+
+.danger-button:pressed {
+    -fx-background-color: #991b1b;
+}
+
+/* Stato comune dei pulsanti disabilitati. */
+
+.primary-button:disabled,
+.secondary-button:disabled,
+.danger-button:disabled {
+    -fx-opacity: 0.55;
+    -fx-cursor: default;
+}

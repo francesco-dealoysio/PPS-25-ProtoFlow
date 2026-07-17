@@ -43,31 +43,6 @@
     -fx-border-color: #2563eb;
 }
 
-.primary-button {
-    -fx-background-color: #2563eb;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-padding: 9 18 9 18;
-    -fx-background-radius: 5;
-}
-
-.primary-button:hover {
-    -fx-background-color: #1d4ed8;
-}
-
-.secondary-button {
-    -fx-background-color: #ffffff;
-    -fx-text-fill: #374151;
-    -fx-border-color: #d1d5db;
-    -fx-padding: 9 18 9 18;
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
-}
-
-.secondary-button:hover {
-    -fx-background-color: #f3f4f6;
-}
-
 .form-message {
     -fx-pref-height: 90;
     -fx-background-radius: 5;
