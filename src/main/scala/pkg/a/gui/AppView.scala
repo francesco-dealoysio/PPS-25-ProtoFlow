@@ -6,6 +6,32 @@ import scalafx.scene.layout.{HBox, VBox}
 
 trait AppView:
 
+  protected case class ResultMessage(label: Label, successStyle: String, errorStyle: String):
+
+    def clear(): Unit =
+      clearMessage(
+        label = label,
+        successStyle = successStyle,
+        errorStyle = errorStyle
+      )
+    
+    def show(message: String, success: Boolean): Unit =
+      showMessage(
+        label = label,
+        message = message,
+        success = success,
+        successStyle = successStyle,
+        errorStyle = errorStyle
+      )
+
+
+  protected def createResultMessage(baseStyle: String, successStyle: String, errorStyle: String): ResultMessage =
+    ResultMessage(
+      label = messageLabel(baseStyle),
+      successStyle = successStyle,
+      errorStyle = errorStyle
+    )
+
   protected def closeButton(onExit: () => Unit, text: String = "Chiudi"): Button =
     new Button(text):
       styleClass += "secondary-button"
@@ -51,6 +77,11 @@ trait AppView:
   protected def secondaryButton(text: String, action: () => Unit): Button =
     new Button(text):
       styleClass += "secondary-button"
+      onAction = _ => action()
+
+  protected def dangerButton(text: String, action: () => Unit): Button =
+    new Button(text):
+      styleClass += "danger-button"
       onAction = _ => action()
 
   protected def titleBox(titleText: String, subtitleText: String, titleStyle: String, subtitleStyle: String): VBox =

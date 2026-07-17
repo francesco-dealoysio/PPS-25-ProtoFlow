@@ -1,8 +1,33 @@
 package pkg.a.gui
 
+import scalafx.geometry.Insets
+import scalafx.scene.Node
 import scalafx.scene.control.{Alert, ButtonType}
+import scalafx.scene.layout.{BorderPane, Priority, VBox}
 
 trait ManagementView extends AppView:
+
+  protected def managementPage(
+                                rootStyle: String,
+                                pageChildren: Seq[Node],
+                                growNode: Option[Node] = None,
+                                spacingValue: Double = 18,
+                                paddingValue: Insets = Insets(20)
+                              ): BorderPane =
+
+    val content =
+      new VBox:
+        spacing = spacingValue
+        padding = paddingValue
+
+        growNode.foreach: node =>
+          VBox.setVgrow(node, Priority.Always)
+
+        children = pageChildren
+
+    new BorderPane:
+      styleClass += rootStyle
+      center = content
 
   protected def askConfirmation(titleText: String, header: String, content: String): Boolean =
     val dialog =

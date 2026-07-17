@@ -2,9 +2,8 @@ package pkg.a.gui
 
 import pkg.c.data.guiStructures.{RegistrationRequest, RegistrationViewModel}
 import scalafx.collections.ObservableBuffer
-import scalafx.geometry.Pos
-import scalafx.scene.control.{Button, ComboBox, Label, TextArea, TextField}
-import scalafx.scene.layout.{BorderPane, GridPane, HBox, Priority, Region, VBox}
+import scalafx.scene.control.{Button, ComboBox, TextField}
+import scalafx.scene.layout.{BorderPane, GridPane}
 import pkg.b.logic.RegistrationRequestService
 
 object RegistrationView extends FormView:
@@ -161,22 +160,14 @@ object RegistrationView extends FormView:
 
     val buttonsBox = actionBar(exit, reset, submit)
 
-    val card = new VBox:
-      maxWidth = Double.MaxValue
-      maxHeight = Double.MaxValue
-      styleClass += "registration-card"
-      children = Seq(
-        new Label("Registrazione"):
-          styleClass += "registration-title"
-        ,
-        new Label("Compila il modulo per richiedere l'accreditamento al sistema ProtoFlow."):
-          styleClass += "registration-subtitle"
-        ,
-        formGrid,
-        resultMessage,
-        buttonsBox
-      )
-
-    new BorderPane:
-      styleClass += "registration-root"
-      center = card
+    formPage(
+      titleText = "Registrazione",
+      subtitleText = "Compila il modulo per richiedere l'accreditamento al sistema ProtoFlow.",
+      titleStyle = "registration-title",
+      subtitleStyle = "registration-subtitle",
+      rootStyle = "registration-root",
+      contentStyle = Some("registration-card"),
+      form = formGrid,
+      resultMessage = resultMessage,
+      actions = buttonsBox
+    )

@@ -67,7 +67,8 @@ trait FormView extends AppView:
                           rootStyle: String,
                           form: GridPane,
                           resultMessage: Label,
-                          actions: HBox
+                          actions: HBox,
+                          contentStyle: Option[String] = None
                         ): BorderPane =
 
     val header =

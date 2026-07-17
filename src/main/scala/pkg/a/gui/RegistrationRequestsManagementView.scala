@@ -26,25 +26,13 @@ object RegistrationRequestsManagementView extends ManagementView:
 
     val requests = ObservableBuffer.empty[RegistrationRequest]
 
-    val resultMessage = messageLabel("requests-message")
-    val successMessageStyle = "requests-message-success"
-    val errorMessageStyle = "requests-message-error"
-
-    def showResult(message: String, success: Boolean): Unit =
-      showMessage(
-        label = resultMessage,
-        message = message,
-        success = success,
-        successStyle = successMessageStyle,
-        errorStyle = errorMessageStyle
+    val result =
+      createResultMessage(
+        baseStyle = "requests-message",
+        successStyle = "requests-message-success",
+        errorStyle = "requests-message-error"
       )
 
-    def clearResult(): Unit =
-      clearMessage(
-        resultMessage,
-        successMessageStyle,
-        errorMessageStyle
-      )
 
     val table = new TableView[RegistrationRequest](requests):
       columnResizePolicy = TableView.ConstrainedResizePolicy
@@ -53,55 +41,23 @@ object RegistrationRequestsManagementView extends ManagementView:
       )
       styleClass += "requests-table"
 
-    val nameColumn = new TableColumn[RegistrationRequest, String]:
-      text = "Nome"
-      prefWidth = 110
-      cellValueFactory = cell =>
-        StringProperty(cell.value.name)
+    def stringColumn(title: String, colWidth: Double)(value: RegistrationRequest => String): TableColumn[RegistrationRequest, String] =
+      new TableColumn[RegistrationRequest, String]:
+        text = title
+        prefWidth = colWidth
+        cellValueFactory = cell =>
+          StringProperty(value(cell.value))
 
-    val surnameColumn = new TableColumn[RegistrationRequest, String]:
-      text = "Cognome"
-      prefWidth = 120
-      cellValueFactory = cell =>
-        StringProperty(cell.value.surname)
-
-    val emailColumn = new TableColumn[RegistrationRequest, String]:
-      text = "Email"
-      prefWidth = 210
-      cellValueFactory = cell =>
-        StringProperty(cell.value.email)
-
-    val roleColumn = new TableColumn[RegistrationRequest, String]:
-      text = "Ruolo richiesto"
-      prefWidth = 150
-      cellValueFactory = cell =>
-        StringProperty(cell.value.requestedRole)
-
-    val areaColumn = new TableColumn[RegistrationRequest, String]:
-      text = "Area"
-      prefWidth = 140
-      cellValueFactory = cell =>
-        StringProperty(cell.value.requestedArea)
-
-    val assignmentColumn = new TableColumn[RegistrationRequest, String]:
-      text = "Incarico"
-      prefWidth = 140
-      cellValueFactory = cell =>
-        StringProperty(cell.value.assignment)
-
-    val dateColumn = new TableColumn[RegistrationRequest, String]:
-      text = "Data richiesta"
-      prefWidth = 150
-      cellValueFactory = cell =>
-        StringProperty(
-          cell.value.requestDate.format(dateFormatter)
-        )
-
-    val statusColumn = new TableColumn[RegistrationRequest, String]:
-      text = "Stato"
-      prefWidth = 100
-      cellValueFactory = cell =>
-        StringProperty(cell.value.status.toString)
+    val nameColumn = stringColumn("Nome", 110)(_.name)
+    val surnameColumn = stringColumn("Cognome", 120)(_.surname)
+    val emailColumn = stringColumn("Email", 210)(_.email)
+    val roleColumn = stringColumn("Ruolo richiesto", 150)(_.requestedRole)
+    val areaColumn = stringColumn("Area", 140)(_.requestedArea)
+    val assignmentColumn = stringColumn("Incarico", 140)(_.assignment)
+    val dateColumn = stringColumn("Data richiesta", 150):
+        _.requestDate.format(dateFormatter)
+    val statusColumn = stringColumn("Stato", 100):
+        _.status.toString
 
     table.columns ++= Seq(
       nameColumn,
@@ -114,42 +70,48 @@ object RegistrationRequestsManagementView extends ManagementView:
       statusColumn
     )
 
-    val idValue = detailValue("-")
-    val nameValue = detailValue("-")
-    val surnameValue = detailValue("-")
-    val emailValue = detailValue("-")
-    val phoneValue = detailValue("-")
-    val roleValue = detailValue("-")
-    val areaValue = detailValue("-")
-    val assignmentValue = detailValue("-")
-    val dateValue = detailValue("-")
-    val statusValue = detailValue("-")
+    val idValue = detailValue()
+    val nameValue = detailValue()
+    val surnameValue = detailValue()
+    val emailValue = detailValue()
+    val phoneValue = detailValue()
+    val roleValue = detailValue()
+    val areaValue = detailValue()
+    val assignmentValue = detailValue()
+    val dateValue = detailValue()
+    val statusValue = detailValue()
+
+    val detailValues = Seq(
+      idValue,
+      nameValue,
+      surnameValue,
+      emailValue,
+      phoneValue,
+      roleValue,
+      areaValue,
+      assignmentValue,
+      dateValue,
+      statusValue
+    )
 
     def clearDetails(): Unit =
-      idValue.text = "-"
-      nameValue.text = "-"
-      surnameValue.text = "-"
-      emailValue.text = "-"
-      phoneValue.text = "-"
-      roleValue.text = "-"
-      areaValue.text = "-"
-      assignmentValue.text = "-"
-      dateValue.text = "-"
-      statusValue.text = "-"
+      detailValues.foreach(_.text = "-")
+
+    def valueOrDash(value: String): String =
+      Option(value)
+        .map(_.trim)
+        .filter(_.nonEmpty)
+        .getOrElse("-")
 
     def showDetails(request: RegistrationRequest): Unit =
-      idValue.text = request.id
-      nameValue.text = request.name
-      surnameValue.text = request.surname
-      emailValue.text = request.email
-
-      phoneValue.text =
-        if request.phone.trim.nonEmpty then request.phone
-        else "-"
-
-      roleValue.text = request.requestedRole
-      areaValue.text = request.requestedArea
-      assignmentValue.text = request.assignment
+      idValue.text = valueOrDash(request.id)
+      nameValue.text = valueOrDash(request.name)
+      surnameValue.text = valueOrDash(request.surname)
+      emailValue.text = valueOrDash(request.email)
+      phoneValue.text = valueOrDash(request.phone)
+      roleValue.text = valueOrDash(request.requestedRole)
+      areaValue.text = valueOrDash(request.requestedArea)
+      assignmentValue.text = valueOrDash(request.assignment)
       dateValue.text = request.requestDate.format(dateFormatter)
       statusValue.text = request.status.toString
 
@@ -158,7 +120,7 @@ object RegistrationRequestsManagementView extends ManagementView:
         Option(selectedRequest) match
           case Some(request) =>
             showDetails(request)
-            clearResult()
+            result.clear()
 
           case None =>
             clearDetails()
@@ -207,7 +169,7 @@ object RegistrationRequestsManagementView extends ManagementView:
       Option(table.selectionModel.value.selectedItem.value)
 
     def loadPendingRequests(): Unit =
-      clearResult()
+      result.clear()
       clearDetails()
 
       val pending = service.getPendingRequests
@@ -215,18 +177,12 @@ object RegistrationRequestsManagementView extends ManagementView:
       requests ++= pending.sortBy(_.requestDate)
       table.selectionModel.value.clearSelection()
       if pending.isEmpty then
-        showResult(
-          "Non sono presenti richieste di registrazione da elaborare.",
-          success = true
-        )
+        result.show("Non sono presenti richieste di registrazione da elaborare.", success = true)
 
     def approveSelectedRequest(): Unit =
       selectedRequest() match
         case None =>
-          showResult(
-            "Seleziona una richiesta da approvare.",
-            success = false
-          )
+          result.show("Seleziona una richiesta da approvare.", success = false)
 
         case Some(request) =>
           val confirmed =
@@ -243,21 +199,15 @@ object RegistrationRequestsManagementView extends ManagementView:
             service.approveRequest(request.id) match
               case Right(_) =>
                 loadPendingRequests()
-                showResult(
-                  "Richiesta approvata correttamente.",
-                  success = true
-                )
+                result.show("Richiesta approvata correttamente.", success = true)
 
               case Left(error) =>
-                showResult(error, success = false)
+                result.show(error, success = false)
 
     def rejectSelectedRequest(): Unit =
       selectedRequest() match
         case None =>
-          showResult(
-            "Seleziona una richiesta da rifiutare.",
-            success = false
-          )
+          result.show("Seleziona una richiesta da rifiutare.", success = false)
 
         case Some(request) =>
           val confirmed =
@@ -273,23 +223,15 @@ object RegistrationRequestsManagementView extends ManagementView:
             service.rejectRequest(request.id) match
               case Right(_) =>
                 loadPendingRequests()
-                showResult(
-                  "Richiesta rifiutata correttamente.",
-                  success = true
-                )
+                result.show("Richiesta rifiutata correttamente.", success = true)
 
               case Left(error) =>
-                showResult(error, success = false)
+                result.show(error, success = false)
 
-    val refreshButton = secondaryButton(text = "Aggiorna", action = () => loadPendingRequests())
-    val approveButton = primaryButton(text = "Approva", action = () => approveSelectedRequest())
-
-    val rejectButton = new Button("Rifiuta"):
-      styleClass += "danger-button"
-      onAction = _ => rejectSelectedRequest()
-
+    val refreshButton = secondaryButton("Aggiorna",() => loadPendingRequests())
+    val approveButton = primaryButton("Approva",() => approveSelectedRequest())
+    val rejectButton = dangerButton("Rifiuta", () => rejectSelectedRequest())
     val exitButton = closeButton(onExit)
-
     val actionsBox = actionBar(exitButton, refreshButton, rejectButton, approveButton)
 
     val header =
@@ -310,31 +252,20 @@ object RegistrationRequestsManagementView extends ManagementView:
           detailsGrid
       )
 
-    val content = new VBox:
-      spacing = 18
-      padding = Insets(20)
-      VBox.setVgrow(table, Priority.Always)
-
-      children = Seq(
-        header,
-        table,
-        detailsCard,
-        resultMessage,
-        actionsBox
-      )
-
     loadPendingRequests()
 
-    new BorderPane:
-      styleClass += "requests-management-root"
-      center = content
+    managementPage(
+      rootStyle = "requests-management-root",
+      growNode = Some(table),
+      pageChildren = Seq(header, table, detailsCard, result.label, actionsBox)
+    )
 
   private def detailLabel(text: String): Label =
     new Label(text):
       styleClass += "request-detail-label"
 
-  private def detailValue(text: String): Label =
-    new Label(text):
+  private def detailValue(initialText: String = "-"): Label =
+    new Label(initialText):
       wrapText = true
       maxWidth = Double.MaxValue
       styleClass += "request-detail-value"

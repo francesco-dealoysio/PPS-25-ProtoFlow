@@ -6,7 +6,7 @@ import scalafx.Includes.jfxKeyEvent2sfx
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, Label, PasswordField, TextField}
 import scalafx.scene.input.KeyCode
-import scalafx.scene.layout.{BorderPane, HBox, Region, StackPane, VBox}
+import scalafx.scene.layout.{BorderPane, Region, StackPane, VBox}
 
 object LoginView extends FormView:
 
@@ -24,13 +24,9 @@ object LoginView extends FormView:
       promptText = "Inserisci password"
       styleClass += "form-field"
 
-    val resultMessage = messageLabel("login-message")
-
-    def showLoginError(message: String): Unit =
-      showMessage(
-        label = resultMessage,
-        message = message,
-        success = false,
+    val result =
+      createResultMessage(
+        baseStyle = "login-message",
         successStyle = "login-message-success",
         errorStyle = "login-message-error"
       )
@@ -38,7 +34,7 @@ object LoginView extends FormView:
     def clearFields(): Unit =
       usernameField.clear()
       passwordField.clear()
-      clearMessage(resultMessage, successStyle = "login-message-success", errorStyle = "login-message-error")
+      result.clear()
       usernameField.requestFocus()
 
     def access(): Unit =
@@ -46,7 +42,7 @@ object LoginView extends FormView:
       val password = passwordField.text.value.trim
 
       if username.isEmpty || password.isEmpty then
-        showLoginError("Inserisci username e password.")
+        result.show("Inserisci username e password.", false)
         usernameField.requestFocus()
       else
         LoginService.login(username, password) match
@@ -54,16 +50,16 @@ object LoginView extends FormView:
             onLoginSuccess(user)
 
           case Left(LoginError.EmptyCredentials) =>
-            showLoginError("Inserisci username e password.")
+            result.show("Inserisci username e password.", false)
             usernameField.requestFocus()
 
           case Left(LoginError.InvalidCredentials) =>
-            showLoginError("Accesso negato. Username o password non corretti.")
+            result.show("Accesso negato. Username o password non corretti.", false)
             passwordField.clear()
             passwordField.requestFocus()
 
           case Left(LoginError.UnknownRole(role)) =>
-            showLoginError(s"Application Error: ruolo '$role' non riconosciuto.")
+            result.show(s"Application Error: ruolo '$role' non riconosciuto.", false)
 
     usernameField.onKeyPressed = event =>
       if event.code == KeyCode.Enter then
@@ -82,16 +78,19 @@ object LoginView extends FormView:
       children = new Label("PF"):
         styleClass += "login-logo-text"
 
-    val title = new Label("ProtoFlow"):
-      styleClass += "registration-title"
-
-    val subtitle = new Label("Enterprise Document Protocol System"):
-      styleClass += "registration-subtitle"
+    val titleSection =
+      titleBox(
+        titleText = "ProtoFlow",
+        subtitleText = "Enterprise Document Protocol System",
+        titleStyle = "registration-title",
+        subtitleStyle = "registration-subtitle"
+      )
+    titleSection.alignment = Pos.Center
 
     val header = new VBox:
       alignment = Pos.Center
       spacing = 10
-      children = Seq(logo, title, subtitle)
+      children = Seq(logo, titleSection)
 
     val usernameBox = new VBox:
       spacing = 6
@@ -119,18 +118,14 @@ object LoginView extends FormView:
         passwordBox
       )
 
-    val clearButton = resetButton(onReset = () => clearFields(), text = "Pulisci")
+    val clearButton = resetButton(() => clearFields(), "Pulisci")
     val accessButton = primaryButton("Accedi", () => access())
 
-    val buttonsBox = new HBox:
-      alignment = Pos.Center
-      spacing = 12
-      children = Seq(clearButton, accessButton)
+    val buttonsBox = actionBar(clearButton, accessButton)
+    buttonsBox.alignment = Pos.Center
 
-    val registrationButton = new Button("Richiedi registrazione"):
-      maxWidth = 220
-      styleClass += "secondary-button"
-      onAction = _ => onRegistrationRequest()
+    val registrationButton = secondaryButton("Richiedi registrazione", () => onRegistrationRequest())
+    registrationButton.maxWidth = 220
 
     val card = new VBox:
       alignment = Pos.Center
@@ -140,7 +135,7 @@ object LoginView extends FormView:
       children = Seq(
         header,
         formBox,
-        resultMessage,
+        result.label,
         buttonsBox,
         new Region:
           minHeight = 6

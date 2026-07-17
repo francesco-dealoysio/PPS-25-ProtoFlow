@@ -5,7 +5,7 @@ import pkg.b.logic.Classification
 import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
-import scalafx.geometry.{Insets, Pos}
+import scalafx.geometry.Pos
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
 
@@ -20,36 +20,19 @@ object ClassificationManagementView extends ManagementView:
     val classificationLogic = new Classification()
     val classifications = ObservableBuffer.empty[Classification]
 
-
-    val resultMessage = messageLabel("classifications-message")
-    val successMessageStyle = "classifications-message-success"
-    val errorMessageStyle = "classifications-message-error"
-
-    def showResult(message: String, success: Boolean): Unit =
-      showMessage(
-        label = resultMessage,
-        message = message,
-        success = success,
-        successStyle = successMessageStyle,
-        errorStyle = errorMessageStyle
-      )
-
-    def clearResult(): Unit =
-      clearMessage(
-        resultMessage,
-        successMessageStyle,
-        errorMessageStyle
+    val result =
+      createResultMessage(
+        baseStyle = "classifications-message",
+        successStyle = "classifications-message-success",
+        errorStyle = "classifications-message-error"
       )
 
     val table = new TableView[Classification](classifications):
-
         columnResizePolicy = TableView.ConstrainedResizePolicy
-
         placeholder =
           new Label(
             "Non sono presenti classifiche nel sistema."
           )
-
         styleClass += "classifications-table"
 
     val classificationColumn = new TableColumn[Classification, String]:
@@ -58,7 +41,6 @@ object ClassificationManagementView extends ManagementView:
           StringProperty(
             cell.value.getClassification
           )
-
 
     val descriptionColumn = new TableColumn[Classification, String]:
         text = "Descrizione"
@@ -72,7 +54,6 @@ object ClassificationManagementView extends ManagementView:
       descriptionColumn
     )
 
-
     def selectedClassification(): Option[Classification] =
         Option(
           table.selectionModel.value
@@ -81,7 +62,7 @@ object ClassificationManagementView extends ManagementView:
         )
 
     def loadClassifications(): Unit =
-      clearResult()
+      result.clear()
       try
         val loaded =
           classificationLogic
@@ -98,20 +79,17 @@ object ClassificationManagementView extends ManagementView:
           .clearSelection()
 
         if loaded.isEmpty then
-          showResult("Non sono presenti classifiche nel sistema.", success = true)
+          result.show("Non sono presenti classifiche nel sistema.", success = true)
 
       catch
         case exception: Exception =>
           classifications.clear()
-          showResult("Errore durante il caricamento delle classifiche.", success = false)
+          result.show("Errore durante il caricamento delle classifiche.", success = false)
 
     def deleteSelectedClassification(): Unit =
       selectedClassification() match
         case None =>
-          showResult(
-            "Seleziona una classifica da eliminare.",
-            success = false
-          )
+          result.show("Seleziona una classifica da eliminare.", success = false)
 
         case Some(selected) =>
           val confirmed =
@@ -135,15 +113,9 @@ object ClassificationManagementView extends ManagementView:
             if deleted then
               loadClassifications()
 
-              showResult(
-                s"La classifica '${selected.getClassification}' è stata eliminata correttamente.",
-                success = true
-              )
+              result.show(s"La classifica '${selected.getClassification}' è stata eliminata correttamente.", success = true)
             else
-              showResult(
-                "Non è stato possibile eliminare la classifica.",
-                success = false
-              )
+              result.show("Non è stato possibile eliminare la classifica.", success = false)
 
      // Pulisce il messaggio quando viene selezionata una nuova riga.
     table.selectionModel.value
@@ -152,11 +124,11 @@ object ClassificationManagementView extends ManagementView:
         (_, _, selected) =>
 
           if selected != null then
-            clearResult()
+            result.clear()
 
 
     val addButton = primaryButton(text = "Aggiunta", action = () =>
-      clearResult()
+      result.clear()
       onAdd())
 
     val editButton =
@@ -165,14 +137,11 @@ object ClassificationManagementView extends ManagementView:
         action = () =>
           selectedClassification() match
             case Some(selected) =>
-              clearResult()
+              result.clear()
               onEdit(selected)
 
             case None =>
-              showResult(
-                "Seleziona una classifica da modificare.",
-                success = false
-              )
+              result.show("Seleziona una classifica da modificare.", success = false)
       )
 
     editButton.disable <==
@@ -180,20 +149,14 @@ object ClassificationManagementView extends ManagementView:
         .selectedItem
         .isNull
 
-
-    val deleteButton = new Button("Eliminazione"):
-      styleClass += "danger-button"
-      onAction = _ =>
-        deleteSelectedClassification()
+    val deleteButton = dangerButton(text = "Eliminazione", action = () => deleteSelectedClassification())
 
     deleteButton.disable <==
       table.selectionModel.value
         .selectedItem
         .isNull
 
-
     val exitButton = closeButton(onExit)
-
 
     val navigationMenu =
       new HBox:
@@ -206,10 +169,8 @@ object ClassificationManagementView extends ManagementView:
           deleteButton
         )
 
-
      // Pulsante in fondo alla pagina.
     val bottomActions = actionBar(exitButton)
-
 
     val header =
       titleBox(
@@ -219,29 +180,10 @@ object ClassificationManagementView extends ManagementView:
         subtitleStyle = "classifications-subtitle"
       )
 
-    val content =
-      new VBox:
-
-        spacing = 18
-        padding = Insets(20)
-
-        VBox.setVgrow(
-          table,
-          Priority.Always
-        )
-
-        children = Seq(
-          header,
-          navigationMenu,
-          table,
-          resultMessage,
-          bottomActions
-        )
-
     loadClassifications() // Prima lettura dal file XML.
 
-    new BorderPane:
-      styleClass +=
-        "classifications-management-root"
-
-      center = content
+    managementPage(
+      rootStyle = "classifications-management-root",
+      growNode = Some(table),
+      pageChildren = Seq(header, navigationMenu, table, result.label, bottomActions)
+    )
