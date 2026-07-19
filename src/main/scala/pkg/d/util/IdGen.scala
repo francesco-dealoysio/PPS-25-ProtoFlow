@@ -33,5 +33,5 @@ object IdGen:
     else
       None
 
-@main def tryIdGen: Unit =
-  println(IdGen(inIdsFilePathName("errorId")))
+  @main def tryIdGen: Unit =
+    println(IdGen(inIdsFilePathName("errorlogId")))

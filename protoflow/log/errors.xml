@@ -1,173 +1,422 @@
 <errors>
   <record>
-    <id>16</id>
+    <id>152</id>
     <date>2026-07-19</date>
-    <time>13:29:16</time>
-    <class>pkg.b.logic.Account</class>
-    <method>recordUpdate</method>
-    <line>92</line>
-    <message>Something went wrong!</message>
-  </record>
-  <record>
-    <id>17</id>
-    <date>2026-07-19</date>
-    <time>13:29:16</time>
-    <class>pkg.b.logic.Account</class>
-    <method>recordUpdate</method>
-    <line>92</line>
-    <message>Something went wrong!</message>
-  </record>
-  <record>
-    <id>18</id>
-    <date>2026-07-19</date>
-    <time>13:29:16</time>
-    <class>pkg.b.logic.Account</class>
-    <method>recordUpdate</method>
-    <line>92</line>
-    <message>Something went wrong!</message>
-  </record>
-  <record>
-    <id>19</id>
-    <date>2026-07-19</date>
-    <time>13:29:16</time>
-    <class>pkg.b.logic.Account</class>
-    <method>recordUpdate</method>
-    <line>92</line>
-    <message>Something went wrong!</message>
-  </record>
-  <record>
-    <id>20</id>
-    <date>2026-07-19</date>
-    <time>13:29:16</time>
-    <class>pkg.b.logic.Account</class>
-    <method>recordUpdate</method>
-    <line>92</line>
-    <message>Something went wrong!</message>
-  </record>
-  <record>
-    <id>21</id>
-    <date>2026-07-19</date>
-    <time>15:06:15</time>
-    <class>pkg.d.util.Util</class>
-    <method>riskyFunction</method>
-    <line>138</line>
-    <message>Something went wrong!</message>
-  </record>
-  <record>
-    <id>22</id>
-    <date>2026-07-19</date>
-    <time>15:11:24</time>
-    <class>pkg.d.util.Util</class>
-    <method>riskyFunction</method>
-    <line>138</line>
-    <message>Something went wrong!</message>
-  </record>
-  <record>
-    <id>23</id>
-    <date>2026-07-19</date>
-    <time>15:13:28</time>
-    <class>pkg.d.util.Util</class>
-    <method>riskyFunction</method>
-    <line>138</line>
-    <message>Something went wrong!</message>
-  </record>
-  <record>
-    <id>24</id>
-    <date>2026-07-19</date>
-    <time>15:13:55</time>
-    <class>pkg.d.util.Util</class>
-    <method>riskyFunction</method>
-    <line>138</line>
-    <message>Something went wrong!</message>
-  </record>
-  <record>
-    <id>25</id>
-    <date>2026-07-19</date>
-    <time>15:21:14</time>
+    <time>20:19:54</time>
     <class>scala.collection.immutable.Nil</class>
     <method>head</method>
     <line>663</line>
     <message>head of empty list</message>
   </record>
   <record>
-    <id>26</id>
+    <id>153</id>
     <date>2026-07-19</date>
-    <time>15:21:14</time>
+    <time>20:19:54</time>
     <class>scala.collection.immutable.Nil</class>
     <method>head</method>
     <line>663</line>
     <message>head of empty list</message>
   </record>
   <record>
-    <id>27</id>
+    <id>154</id>
     <date>2026-07-19</date>
-    <time>15:21:14</time>
+    <time>20:19:54</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>155</id>
+    <date>2026-07-19</date>
+    <time>20:19:54</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>156</id>
+    <date>2026-07-19</date>
+    <time>20:19:54</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>157</id>
+    <date>2026-07-19</date>
+    <time>20:19:54</time>
     <class>scala.collection.immutable.Nil</class>
     <method>head</method>
     <line>663</line>
     <message>head of empty list</message>
   </record>
   <record>
-    <id>28</id>
+    <id>158</id>
     <date>2026-07-19</date>
-    <time>15:21:14</time>
+    <time>20:19:54</time>
     <class>scala.collection.immutable.Nil</class>
     <method>head</method>
     <line>663</line>
     <message>head of empty list</message>
   </record>
   <record>
-    <id>29</id>
+    <id>159</id>
     <date>2026-07-19</date>
-    <time>15:21:14</time>
+    <time>20:19:54</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>160</id>
+    <date>2026-07-19</date>
+    <time>20:19:54</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>161</id>
+    <date>2026-07-19</date>
+    <time>20:19:54</time>
     <class>scala.collection.immutable.Nil</class>
     <method>head</method>
     <line>663</line>
     <message>head of empty list</message>
   </record>
   <record>
-    <id>30</id>
+    <id>162</id>
     <date>2026-07-19</date>
-    <time>15:21:14</time>
+    <time>20:19:54</time>
     <class>scala.collection.immutable.Nil</class>
     <method>head</method>
     <line>663</line>
     <message>head of empty list</message>
   </record>
   <record>
-    <id>31</id>
+    <id>163</id>
     <date>2026-07-19</date>
-    <time>15:21:14</time>
+    <time>20:19:54</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>164</id>
+    <date>2026-07-19</date>
+    <time>20:19:54</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>165</id>
+    <date>2026-07-19</date>
+    <time>20:19:54</time>
     <class>pkg.b.logic.Account</class>
     <method>recordInsert</method>
     <line>87</line>
     <message>Valori duplicati (id o username)!</message>
   </record>
   <record>
-    <id>32</id>
+    <id>166</id>
     <date>2026-07-19</date>
-    <time>15:21:14</time>
+    <time>20:19:54</time>
     <class>scala.collection.immutable.Nil</class>
     <method>head</method>
     <line>663</line>
     <message>head of empty list</message>
   </record>
   <record>
-    <id>33</id>
+    <id>167</id>
     <date>2026-07-19</date>
-    <time>15:21:14</time>
+    <time>20:19:54</time>
     <class>pkg.b.logic.Account</class>
     <method>recordInsert</method>
     <line>87</line>
     <message>Valori duplicati (id o username)!</message>
   </record>
   <record>
-    <id>34</id>
+    <id>168</id>
     <date>2026-07-19</date>
-    <time>15:21:14</time>
+    <time>20:19:54</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>169</id>
+    <date>2026-07-19</date>
+    <time>20:19:54</time>
     <class>pkg.b.logic.Account</class>
     <method>recordUpdate</method>
     <line>105</line>
     <message>Valori duplicati (username)!</message>
+  </record>
+  <record>
+    <id>170</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>171</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>172</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>173</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>174</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>175</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>176</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>177</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>178</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>179</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>180</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>181</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>182</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>183</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>184</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>185</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>186</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>187</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>188</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>189</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>190</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
+  </record>
+  <record>
+    <id>191</id>
+    <date>2026-07-19</date>
+    <time>20:19:55</time>
+    <class>java.io.FileInputStream</class>
+    <method>open0</method>
+    <line>-2</line>
+    <message>
+      C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\path inesistente (Impossibile trovare il file specificato)
+    </message>
   </record>
 </errors>

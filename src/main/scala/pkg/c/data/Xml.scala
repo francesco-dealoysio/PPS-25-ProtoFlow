@@ -2,6 +2,7 @@ package pkg.c.data
 
 //import pkg.b.logic.Entities.*
 import pkg.b.logic.Account
+import pkg.d.util.Logger.*
 import Properties.*
 
 import java.io.{File, PrintWriter}
@@ -79,8 +80,22 @@ object Xml:
         val cleanedXml = xmlData.copy(child = Nil)
         saveXML(xmlFilePathName, cleanedXml)
       case Failure(ex) =>
-        println(s"Error loading XML: ${ex.getMessage}")
+        logger(ex match { case e: Exception => e })
+        //println(s"Error loading XML: ${ex.getMessage}")
 
+  private def recordUpdate(obj: AnyRef, fieldName: String, value: String): AnyRef =
+    try
+      val field = obj.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(obj, value)
+      obj
+    catch
+      case e: Exception =>
+        logger(e)
+        //println(s"Errore in recordUpdate sul campo '$fieldName': ${e.getMessage}")
+        obj
+
+/*
   private def recordUpdate[Any](obj: Any, fieldName: String, value: String): Any =
     try
       val field = obj.getClass.getDeclaredField(fieldName)
@@ -91,7 +106,34 @@ object Xml:
       case e: Exception =>
         println(s"Errore in recordUpdate: ${e.getMessage}")
         obj
+*/
 
+  def getRecordFromXML(xmlFilePathName: String, classType: Class[?]): Seq[AnyRef] =
+    val xmlTry: Try[Elem] = Try(XML.loadFile(xmlFilePathName))
+
+    xmlTry match
+      case Success(xmlData) =>
+        (xmlData \\ "record").flatMap { node =>
+          try
+            val constructor = classType.getDeclaredConstructor()
+            constructor.setAccessible(true)
+
+            var record = constructor.newInstance().asInstanceOf[AnyRef]
+            val fieldsMap = node.child.collect { case e: Elem => e.label -> e.text.trim }.toMap
+
+            fieldsMap.foreach { case (k, v) => record = recordUpdate(record, k, v) }
+            Some(record)
+          catch
+            case e: Exception =>
+              println(s"Errore nella lettura del record: ${e.getMessage}")
+              None
+        }
+      case Failure(ex) =>
+        logger(ex match { case e: Exception => e })
+        println (s"Error loading XML: ${ex.getMessage}")
+        Seq.empty
+
+/*
   def getRecordFromXML(xmlFilePathName: String, classType: Class[?]): Seq[Any] =
     val xmlTry: Try[Elem] = Try(XML.loadFile(xmlFilePathName))
     xmlTry match
@@ -107,6 +149,7 @@ object Xml:
       case Failure(ex) =>
         println(s"Error loading XML: ${ex.getMessage}")
         Seq.empty
+*/
 
   // ???
   def writeXML(xmlFilePathName: String, xmlElem: Elem): Unit =
@@ -145,6 +188,7 @@ object Xml:
         println(s"Element appended to $xmlFilePathName")
         result = true
       case Failure(ex) =>
+        logger(ex match { case e: Exception => e })
         println(s"Error loading XML: ${ex.getMessage}")
     result
 
@@ -178,6 +222,7 @@ object Xml:
             println("Record removed successfully.")
             result = true
         case Failure(ex) =>
+          logger(ex match { case e: Exception => e })
           println(s"Error loading XML: ${ex.getMessage}")
     else
       println(s"Record with id: ${id} not found.")
@@ -195,6 +240,7 @@ object Xml:
         case other =>
           println("Unexpected XML structure.")
       case Failure(ex) =>
+        logger(ex match { case e: Exception => e })
         println(s"Error loading XML: ${ex.getMessage}")
       result
 

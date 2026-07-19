@@ -22,9 +22,12 @@ trait Entity:
 
   protected def countRecordsByFilter[T](predicate: T => Boolean, xmlFilePathName: String, classType: Class[T]): Int =
     import pkg.c.data.Xml.getRecordFromXML
+    import pkg.d.util.Logger.*
+
     try
       getRecordFromXML(xmlFilePathName, classType)
         .map(_.asInstanceOf[T]).count(predicate)
     catch
       case e: Exception =>
+        logger(e)
         println(s"Errore in countRecordsByFilter: ${e.getMessage}"); 0
