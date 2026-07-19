@@ -1,0 +1,173 @@
+<errors>
+  <record>
+    <id>16</id>
+    <date>2026-07-19</date>
+    <time>13:29:16</time>
+    <class>pkg.b.logic.Account</class>
+    <method>recordUpdate</method>
+    <line>92</line>
+    <message>Something went wrong!</message>
+  </record>
+  <record>
+    <id>17</id>
+    <date>2026-07-19</date>
+    <time>13:29:16</time>
+    <class>pkg.b.logic.Account</class>
+    <method>recordUpdate</method>
+    <line>92</line>
+    <message>Something went wrong!</message>
+  </record>
+  <record>
+    <id>18</id>
+    <date>2026-07-19</date>
+    <time>13:29:16</time>
+    <class>pkg.b.logic.Account</class>
+    <method>recordUpdate</method>
+    <line>92</line>
+    <message>Something went wrong!</message>
+  </record>
+  <record>
+    <id>19</id>
+    <date>2026-07-19</date>
+    <time>13:29:16</time>
+    <class>pkg.b.logic.Account</class>
+    <method>recordUpdate</method>
+    <line>92</line>
+    <message>Something went wrong!</message>
+  </record>
+  <record>
+    <id>20</id>
+    <date>2026-07-19</date>
+    <time>13:29:16</time>
+    <class>pkg.b.logic.Account</class>
+    <method>recordUpdate</method>
+    <line>92</line>
+    <message>Something went wrong!</message>
+  </record>
+  <record>
+    <id>21</id>
+    <date>2026-07-19</date>
+    <time>15:06:15</time>
+    <class>pkg.d.util.Util</class>
+    <method>riskyFunction</method>
+    <line>138</line>
+    <message>Something went wrong!</message>
+  </record>
+  <record>
+    <id>22</id>
+    <date>2026-07-19</date>
+    <time>15:11:24</time>
+    <class>pkg.d.util.Util</class>
+    <method>riskyFunction</method>
+    <line>138</line>
+    <message>Something went wrong!</message>
+  </record>
+  <record>
+    <id>23</id>
+    <date>2026-07-19</date>
+    <time>15:13:28</time>
+    <class>pkg.d.util.Util</class>
+    <method>riskyFunction</method>
+    <line>138</line>
+    <message>Something went wrong!</message>
+  </record>
+  <record>
+    <id>24</id>
+    <date>2026-07-19</date>
+    <time>15:13:55</time>
+    <class>pkg.d.util.Util</class>
+    <method>riskyFunction</method>
+    <line>138</line>
+    <message>Something went wrong!</message>
+  </record>
+  <record>
+    <id>25</id>
+    <date>2026-07-19</date>
+    <time>15:21:14</time>
+    <class>scala.collection.immutable.Nil</class>
+    <method>head</method>
+    <line>663</line>
+    <message>head of empty list</message>
+  </record>
+  <record>
+    <id>26</id>
+    <date>2026-07-19</date>
+    <time>15:21:14</time>
+    <class>scala.collection.immutable.Nil</class>
+    <method>head</method>
+    <line>663</line>
+    <message>head of empty list</message>
+  </record>
+  <record>
+    <id>27</id>
+    <date>2026-07-19</date>
+    <time>15:21:14</time>
+    <class>scala.collection.immutable.Nil</class>
+    <method>head</method>
+    <line>663</line>
+    <message>head of empty list</message>
+  </record>
+  <record>
+    <id>28</id>
+    <date>2026-07-19</date>
+    <time>15:21:14</time>
+    <class>scala.collection.immutable.Nil</class>
+    <method>head</method>
+    <line>663</line>
+    <message>head of empty list</message>
+  </record>
+  <record>
+    <id>29</id>
+    <date>2026-07-19</date>
+    <time>15:21:14</time>
+    <class>scala.collection.immutable.Nil</class>
+    <method>head</method>
+    <line>663</line>
+    <message>head of empty list</message>
+  </record>
+  <record>
+    <id>30</id>
+    <date>2026-07-19</date>
+    <time>15:21:14</time>
+    <class>scala.collection.immutable.Nil</class>
+    <method>head</method>
+    <line>663</line>
+    <message>head of empty list</message>
+  </record>
+  <record>
+    <id>31</id>
+    <date>2026-07-19</date>
+    <time>15:21:14</time>
+    <class>pkg.b.logic.Account</class>
+    <method>recordInsert</method>
+    <line>87</line>
+    <message>Valori duplicati (id o username)!</message>
+  </record>
+  <record>
+    <id>32</id>
+    <date>2026-07-19</date>
+    <time>15:21:14</time>
+    <class>scala.collection.immutable.Nil</class>
+    <method>head</method>
+    <line>663</line>
+    <message>head of empty list</message>
+  </record>
+  <record>
+    <id>33</id>
+    <date>2026-07-19</date>
+    <time>15:21:14</time>
+    <class>pkg.b.logic.Account</class>
+    <method>recordInsert</method>
+    <line>87</line>
+    <message>Valori duplicati (id o username)!</message>
+  </record>
+  <record>
+    <id>34</id>
+    <date>2026-07-19</date>
+    <time>15:21:14</time>
+    <class>pkg.b.logic.Account</class>
+    <method>recordUpdate</method>
+    <line>105</line>
+    <message>Valori duplicati (username)!</message>
+  </record>
+</errors>

@@ -41,11 +41,12 @@ object FileSystem:
     val baseDir = getCurrentDirectory
     val structure = Seq(
       baseDir.resolve("protoflow/database"),
+      baseDir.resolve("protoflow/ids"),
       baseDir.resolve("protoflow/log"),
-      baseDir.resolve("protoflow/archivio/presidenza"),
-      baseDir.resolve("protoflow/archivio/segreteria"),
-      baseDir.resolve("protoflow/archivio/amministrazione"),
-      baseDir.resolve("protoflow/archivio/personale"),
+      baseDir.resolve("protoflow/archive/presidenza"),
+      baseDir.resolve("protoflow/archive/segreteria"),
+      baseDir.resolve("protoflow/archive/amministrazione"),
+      baseDir.resolve("protoflow/archive/personale"),
     )
   
     structure.foreach { dir =>

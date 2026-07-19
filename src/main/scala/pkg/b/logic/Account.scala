@@ -2,6 +2,8 @@ package pkg.b.logic
 
 import pkg.b.logic.Entity
 import pkg.c.data.Xml.*
+import pkg.d.util.Util.*
+import pkg.d.util.Logger.*
 import pkg.d.util.Util.md5
 
 case class Account(
@@ -49,7 +51,8 @@ case class Account(
       .map(r => r.asInstanceOf[Account])
     catch
       case e: Exception =>
-        println(s"Errore in getRecords: ${e.getMessage}")
+        logger(e)
+        //println(s"Errore in getRecords: ${e.getMessage}")
         Seq.empty[Account]
 
   override def getRecordsByFilter[Account](predicate: Account => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Account]): Seq[Account] =
@@ -58,7 +61,8 @@ case class Account(
         .map(_.asInstanceOf[Account]).filter(predicate)
     catch
       case e: Exception =>
-        println(s"Errore in getRecordByFilter: ${e.getMessage}")
+        logger(e)
+        //println(s"Errore in getRecordByFilter: ${e.getMessage}")
         Seq.empty[Account]
 
   override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Account =
@@ -67,7 +71,8 @@ case class Account(
         .map(o => o.asInstanceOf[Account]).filter(_.id == id).head
     catch
       case e: Exception =>
-        println(s"Errore in getRecordById: ${e.getMessage}")
+        logger(e)
+        //println(s"Errore in getRecordById: ${e.getMessage}")
         new Account
 
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
@@ -79,10 +84,12 @@ case class Account(
       if !(fieldExists("id", id, xmlFilePathName) || fieldExists("username", username, xmlFilePathName)) then
         result = insertElemIntoXML(xmlFilePathName, obj)
       else
-        println(s"Errore in recordInsert: valori duplicati (id o username)")
+        throw new RuntimeException("Valori duplicati (id o username)!")
+        //println(s"Errore in recordInsert: valori duplicati (id o username)")
     catch
       case e: Exception =>
-        println(s"Errore in recordInsert: ${e.getMessage}")
+        logger(e)
+        //println(s"Errore in recordInsert: ${e.getMessage}")
     result
 
   override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
@@ -91,14 +98,16 @@ case class Account(
       val record = obj.asInstanceOf[Account]
       val id = record.id
       val username = record.username
-      val  found = countRecordsByFilter[Account](a => a.id != id && a.username == username, xmlFilePathName, classOf[Account])
+      val found = countRecordsByFilter[Account](a => a.id != id && a.username == username, xmlFilePathName, classOf[Account])
       if (found == 0) then
         result = updateElemOfXML(xmlFilePathName, obj)
       else
-        println(s"Errore in recordInsert: valori duplicati (username)")
+        throw new RuntimeException("Valori duplicati (username)!")
+        //println(s"Errore in recordInsert: valori duplicati (username)")
     catch
       case e: Exception =>
-        println(s"Errore in recordUpdate: ${e.getMessage}")
+        logger(e)
+        //println(s"Errore in recordUpdate: ${e.getMessage}")
     result
 
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
@@ -106,7 +115,8 @@ case class Account(
       removeElemFromXML(xmlFilePathName, id)
     catch
       case e: Exception =>
-        println(s"Errore in recordDelete: ${e.getMessage}")
+        logger(e)
+        //println(s"Errore in recordDelete: ${e.getMessage}")
         false
 
 @main def tryAccount: Unit =
