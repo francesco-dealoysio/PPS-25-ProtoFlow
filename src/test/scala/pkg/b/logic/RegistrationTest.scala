@@ -3,60 +3,72 @@ package pkg.b.logic
 import org.junit.*
 import org.junit.Assert.*
 import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, searchFieldValue}
-import pkg.c.data.Properties.getPropsFileProperty
 import pkg.d.util.Util.inTestFilePathName
+
+import java.nio.file.{Files, Paths}
 
 class RegistrationTest:
 
+  private var xmlFilePathName: String = _
+  private var registration1: Registration = _
+  private var registration2: Registration = _
+  private var registration3: Registration = _
+  private var empty: Registration = _
+
   @Before
-  val xmlFilePathName = inTestFilePathName("test.xml")
-  createEmptyXmlFile(xmlFilePathName, "test_records")
-  val empty = new Registration
+  def setUp(): Unit =
+    xmlFilePathName = inTestFilePathName("test.xml")
+    createEmptyXmlFile(xmlFilePathName, "test_records")
+    empty = new Registration
 
-  val registration1 = Registration(
-    "1",
-    "neri",
-    "paolo",
-    "paolo.neri@gmail.com",
-    "06/11111111",
-    "admin",
-    "segreteria",
-    "segretario",
-    "13/07/2026",
-    "",
-    "",
-    ""
-  )
+    registration1 = Registration(
+      "1",
+      "neri",
+      "paolo",
+      "paolo.neri@gmail.com",
+      "06/11111111",
+      "admin",
+      "segreteria",
+      "segretario",
+      "13/07/2026",
+      "",
+      "",
+      ""
+    )
 
-  val registration2 = Registration(
-    "2",
-    "rossi",
-    "mario",
-    "mario.rossi@gmail.com",
-    "06/22222222",
-    "oper",
-    "amministrazione",
-    "contabile",
-    "05/06/2026",
-    "",
-    "",
-    ""
-  )
+    registration2 = Registration(
+      "2",
+      "rossi",
+      "mario",
+      "mario.rossi@gmail.com",
+      "06/22222222",
+      "oper",
+      "amministrazione",
+      "contabile",
+      "05/06/2026",
+      "",
+      "",
+      ""
+    )
 
-  val registration3 = Registration(
-    "3",
-    "bianchi",
-    "giovanni",
-    "giovanni.bianchi@gmail.com",
-    "06/33333333",
-    "viewer",
-    "segreteria",
-    "assistente",
-    "condor",
-    "",
-    "",
-    ""
-  )
+    registration3 = Registration(
+      "3",
+      "bianchi",
+      "giovanni",
+      "giovanni.bianchi@gmail.com",
+      "06/33333333",
+      "viewer",
+      "segreteria",
+      "assistente",
+      "condor",
+      "",
+      "",
+      ""
+    )
+
+  @After
+  def tearDown(): Unit =
+    Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =
@@ -148,7 +160,6 @@ class RegistrationTest:
     val record = registration1.copy()
     record.setPhone("06/12345678")
     assertTrue(Registration().recordUpdate(record, xmlFilePathName))
-
 
   @Test
   def testRecordDelete: Unit =

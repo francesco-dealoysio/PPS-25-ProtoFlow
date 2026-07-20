@@ -8,14 +8,10 @@ trait Entity:
   def recordInsert(obj: Any, xmlFilePathName: String): Boolean
   def recordUpdate(obj: Any, xmlFilePathName: String): Boolean
   def recordDelete(id: String, xmlFilePathName: String): Boolean
-
-
+  
   protected def defaultXmlFilePathName: String =
-    import pkg.c.data.Properties.*
-    val fs = java.io.File.separator
-    val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-    val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
-    databaseFolder + fs + xmlFile
+    import pkg.d.util.Util.*
+    inDatabaseFilePathName(xmlFile)
 
   protected def fieldExists(fieldName: String, fieldValue: String, xmlFilePathName: String): Boolean =
     import pkg.c.data.Xml.searchFieldValue

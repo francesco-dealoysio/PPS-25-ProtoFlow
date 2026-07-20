@@ -1,10 +1,8 @@
 package pkg.c.data
 
-//import pkg.b.logic.Entities.*
 import pkg.b.logic.Account
 import pkg.d.util.Logger.*
 import Properties.*
-
 import java.io.{File, PrintWriter}
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths, StandardOpenOption}
@@ -92,21 +90,7 @@ object Xml:
     catch
       case e: Exception =>
         logger(e)
-        //println(s"Errore in recordUpdate sul campo '$fieldName': ${e.getMessage}")
         obj
-
-/*
-  private def recordUpdate[Any](obj: Any, fieldName: String, value: String): Any =
-    try
-      val field = obj.getClass.getDeclaredField(fieldName)
-      field.setAccessible(true)
-      field.set(obj, value)
-      obj
-    catch
-      case e: Exception =>
-        println(s"Errore in recordUpdate: ${e.getMessage}")
-        obj
-*/
 
   def getRecordFromXML(xmlFilePathName: String, classType: Class[?]): Seq[AnyRef] =
     val xmlTry: Try[Elem] = Try(XML.loadFile(xmlFilePathName))
@@ -125,32 +109,15 @@ object Xml:
             Some(record)
           catch
             case e: Exception =>
-              println(s"Errore nella lettura del record: ${e.getMessage}")
+              logger(e)
+              //println(s"Errore nella lettura del record: ${e.getMessage}")
               None
         }
       case Failure(ex) =>
         logger(ex match { case e: Exception => e })
         println (s"Error loading XML: ${ex.getMessage}")
         Seq.empty
-
-/*
-  def getRecordFromXML(xmlFilePathName: String, classType: Class[?]): Seq[Any] =
-    val xmlTry: Try[Elem] = Try(XML.loadFile(xmlFilePathName))
-    xmlTry match
-      case Success(xmlData) =>
-        (xmlData \\ "record").flatMap { node =>
-          val constructor = classType.getDeclaredConstructor()
-          var record = constructor.newInstance()
-          val fieldsMap = node.child.collect { case e: Elem => e.label -> e.text.trim }.toMap
-          val result =
-          fieldsMap.foreach { case (k, v) => record = recordUpdate(record, s"$k", s"$v") }
-          for i <- node yield record
-        }
-      case Failure(ex) =>
-        println(s"Error loading XML: ${ex.getMessage}")
-        Seq.empty
-*/
-
+  
   // ???
   def writeXML(xmlFilePathName: String, xmlElem: Elem): Unit =
     XML.save(xmlFilePathName, xmlElem, "UTF-8", xmlDecl = true)

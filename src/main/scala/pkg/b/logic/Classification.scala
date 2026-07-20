@@ -2,6 +2,7 @@ package pkg.b.logic
 
 import pkg.b.logic.Entity
 import pkg.c.data.Xml.*
+import pkg.d.util.Logger.*
 
 case class Classification(
                           private var id: String = "",
@@ -27,7 +28,7 @@ case class Classification(
         .map(r => r.asInstanceOf[Classification])
     catch
       case e: Exception =>
-        println(s"Errore in getRecords: ${e.getMessage}")
+        logger(e)
         Seq.empty[Classification]
 
   override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Classification =
@@ -36,7 +37,7 @@ case class Classification(
         .map(a => a.asInstanceOf[Classification]).filter(_.id == id).head
     catch
       case e: Exception =>
-        println(s"Errore in getRecordById: ${e.getMessage}")
+        logger(e)
         new Classification
 
   override def getRecordsByFilter[Classification](predicate: Classification => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Classification]): Seq[Classification] =
@@ -45,7 +46,7 @@ case class Classification(
         .map(o => o.asInstanceOf[Classification]).filter(predicate)
     catch
       case e: Exception =>
-        println(s"Errore in getRecordByFilter: ${e.getMessage}")
+        logger(e)
         Seq.empty[Classification]
 
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
@@ -57,10 +58,10 @@ case class Classification(
       if !(fieldExists("id", id, xmlFilePathName) || fieldExists("classification", classification, xmlFilePathName)) then
         result = insertElemIntoXML(xmlFilePathName, obj)
       else
-        println(s"Errore in recordInsert: valori duplicati (id o classification)")
+        throw new RuntimeException("Valori duplicati (id o classifica)!")
     catch
       case e: Exception =>
-        println(s"Errore in recordInsert: ${e.getMessage}")
+        logger(e)
     result
   
   override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
@@ -73,10 +74,10 @@ case class Classification(
       if (found == 0) then
         result = updateElemOfXML(xmlFilePathName, obj)
       else
-        println(s"Errore in recordInsert: valori duplicati (classifica)")
+        throw new RuntimeException("Valori duplicati (classifica)!")
     catch
       case e: Exception =>
-        println(s"Errore in recordUpdate: ${e.getMessage}")
+        logger(e)
         false
     result
 
@@ -85,8 +86,8 @@ case class Classification(
       removeElemFromXML(xmlFilePathName, id)
     catch
       case e: Exception =>
-        println(s"Errore in recordDelete: ${e.getMessage}")
+        logger(e)
         false
 
 @main def tryClassifica: Unit =
-  println("Tested in ClassificaTest.scala")
+  println("Tested in ClassificationTest.scala")

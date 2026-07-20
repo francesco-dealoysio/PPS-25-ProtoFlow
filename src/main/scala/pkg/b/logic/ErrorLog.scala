@@ -3,7 +3,6 @@ package pkg.b.logic
 import pkg.b.logic.Entity
 import pkg.c.data.Xml.*
 import pkg.d.util.IdGen
-import pkg.d.util.Util.*
 import pkg.d.util.Logger.*
 
 case class ErrorLog(
@@ -45,7 +44,7 @@ case class ErrorLog(
         .map(r => r.asInstanceOf[ErrorLog])
     catch
       case e: Exception =>
-        println(s"Errore in getRecords: ${e.getMessage}")
+        logger(e)
         Seq.empty[ErrorLog]
 
   override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): ErrorLog =
@@ -54,7 +53,7 @@ case class ErrorLog(
         .map(a => a.asInstanceOf[ErrorLog]).filter(_.id == id).head
     catch
       case e: Exception =>
-        println(s"Errore in getRecordById: ${e.getMessage}")
+        logger(e)
         new ErrorLog
 
   override def getRecordsByFilter[ErrorLog](predicate: ErrorLog => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[ErrorLog]): Seq[ErrorLog] =
@@ -63,7 +62,7 @@ case class ErrorLog(
         .map(o => o.asInstanceOf[ErrorLog]).filter(predicate)
     catch
       case e: Exception =>
-        println(s"Errore in getRecordByFilter: ${e.getMessage}")
+        logger(e)
         Seq.empty[ErrorLog]
 
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
@@ -71,15 +70,13 @@ case class ErrorLog(
     try
       val record = obj.asInstanceOf[ErrorLog]
       val id = record.id
-      //val id = IdGen(inIdsFilePathName("errorlogid"))
       if !fieldExists("id", id, xmlFilePathName) then
         result = insertElemIntoXML(xmlFilePathName, obj)
       else
-        println(s"Errore in recordInsert: valori duplicati (id)")
+        throw new RuntimeException("Valori duplicati (id)!")
     catch
       case e: Exception =>
         logger(e)
-        println(s"Errore in recordInsert: ${e.getMessage}")
     result
 
   override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
@@ -87,7 +84,7 @@ case class ErrorLog(
       updateElemOfXML(xmlFilePathName, obj)
     catch
       case e: Exception =>
-        println(s"Errore in recordUpdate: ${e.getMessage}")
+        logger(e)
         false
 
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
@@ -95,8 +92,8 @@ case class ErrorLog(
       removeElemFromXML(xmlFilePathName, id)
     catch
       case e: Exception =>
-        println(s"Errore in recordDelete: ${e.getMessage}")
+        logger(e)
         false
 
 @main def tryErrorLog: Unit =
-  println("Tested in ErrorTest.scala")
+  println("Tested in ErrorLogTest.scala")

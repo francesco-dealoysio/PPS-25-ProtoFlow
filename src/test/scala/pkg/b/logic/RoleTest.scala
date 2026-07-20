@@ -6,30 +6,43 @@ import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, sear
 import pkg.c.data.Properties.getPropsFileProperty
 import pkg.d.util.Util.{inTestFilePathName, md5}
 
+import java.nio.file.{Files, Paths}
+
 class RoleTest:
 
+  private var xmlFilePathName: String = _
+  private var role1: Role = _
+  private var role2: Role = _
+  private var role3: Role = _
+  private var empty: Role = _
+
   @Before
-  val xmlFilePathName = inTestFilePathName("test.xml")
-  createEmptyXmlFile(xmlFilePathName, "test_records")
-  val empty = new Role
-  
-  val role1 = Role(
-    "1",
-    "admin",
-    "Amministrazione"
-  )
-  
-  val role2 = Role(
-    "2",
-    "oper",
-    "Protocollazione"
-  )
-  
-  val role3 = Role(
-    "3",
-    "viewer",
-    "Visualizzazione"
-  )
+  def setUp(): Unit =
+    xmlFilePathName = inTestFilePathName("test.xml")
+    createEmptyXmlFile(xmlFilePathName, "test_records")
+    empty = new Role
+
+    role1 = Role(
+      "1",
+      "admin",
+      "Amministrazione"
+    )
+
+    role2 = Role(
+      "2",
+      "oper",
+      "Protocollazione"
+    )
+
+    role3 = Role(
+      "3",
+      "viewer",
+      "Visualizzazione"
+    )
+
+  @After
+  def tearDown(): Unit =
+    Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =

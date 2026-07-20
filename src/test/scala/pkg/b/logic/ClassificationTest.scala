@@ -2,31 +2,43 @@ package pkg.b.logic
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, searchFieldValue}
-import pkg.c.data.Properties.getPropsFileProperty
+import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
 import pkg.d.util.Util.inTestFilePathName
+
+import java.nio.file.{Files, Paths}
 
 class ClassificationTest:
 
+  private var xmlFilePathName: String = _
+  private var classification1: Classification = _
+  private var classification2: Classification = _
+  private var classification3: Classification = _
+  private var empty: Classification = _
+
   @Before
-  val xmlFilePathName = inTestFilePathName("test.xml")
-  createEmptyXmlFile(xmlFilePathName, "test_records")
-  val empty = new Classification
+  def setUp(): Unit =
+    xmlFilePathName = inTestFilePathName("test.xml")
+    createEmptyXmlFile(xmlFilePathName, "test_records")
+    empty = new Classification
 
-  val classification1 = Classification(
-    "1",
-    "amministrazione"
-  )
+    classification1 = Classification(
+      "1",
+      "amministrazione"
+    )
 
-  val classification2 = Classification(
-    "2",
-    "personale"
-  )
+    classification2 = Classification(
+      "2",
+      "personale"
+    )
 
-  val classification3 = Classification(
-    "3",
-    "segreteria"
-  )
+    classification3 = Classification(
+      "3",
+      "segreteria"
+    )
+
+  @After
+  def tearDown(): Unit =
+    Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =
