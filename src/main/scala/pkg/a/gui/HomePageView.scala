@@ -1,6 +1,6 @@
 package pkg.a.gui
 
-import pkg.b.logic.Classification
+import pkg.b.logic.{Account, Classification}
 import pkg.c.data.guiStructures.{HomePageConfig, HomePageViewModel, MenuAction}
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Pos
@@ -145,6 +145,62 @@ object HomePageView:
         )
       )
 
+    /* Gestione account*/
+
+    def showAccountManagement(): Unit =
+      contentArea.children = Seq(
+        AccountManagementView(
+          onAdd = () =>
+            showAccountAdd(),
+
+          onEdit = selected =>
+            showAccountEdit(selected),
+
+          onDelete = selected =>
+            showAccountDelete(selected),
+
+          onExit = () =>
+            showDashboard()
+        )
+      )
+
+    def showAccountAdd(): Unit =
+      contentArea.children = Seq(
+        AccountAddView(
+          onSaved = () =>
+            showAccountManagement(),
+
+          onExit = () =>
+            showAccountManagement()
+        )
+      )
+
+    def showAccountEdit(selected: Account): Unit =
+      contentArea.children = Seq(
+        AccountEditView(
+          selectedAccount = selected,
+
+          onSaved = () =>
+            showAccountManagement(),
+
+          onExit = () =>
+            showAccountManagement()
+        )
+      )
+
+    def showAccountDelete(selected: Account): Unit =
+      contentArea.children = Seq(
+        AccountDeleteView(
+          selectedAccount = selected,
+
+          onDeleted = () =>
+            showAccountManagement(),
+
+          onExit = () =>
+            showAccountManagement()
+        )
+      )
+
     /**
      * Mostra la gestione delle richieste di registrazione
      * mantenendo visibili header, sidebar e footer.
@@ -183,6 +239,9 @@ object HomePageView:
 
               case MenuAction.Logout =>
                 onLogout()
+                
+              case MenuAction.AccountUtenti =>
+                showAccountManagement()
 
               case other =>
                 contentArea.children = Seq(

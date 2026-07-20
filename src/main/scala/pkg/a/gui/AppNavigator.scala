@@ -105,7 +105,8 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
       scene,
       "/homepages.css",
       "/registration-requests-management.css",
-      "/classifications-management.css"
+      "/classifications-management.css",
+      "/accounts-management.css"
     )
 
     stage.scene = scene

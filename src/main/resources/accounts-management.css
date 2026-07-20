@@ -1,0 +1,88 @@
+.accounts-management-root {
+    -fx-background-color: #f4f6f8;
+    -fx-font-family: "Arial";
+}
+
+.accounts-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #243447;
+}
+
+.accounts-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #667788;
+}
+
+.accounts-toolbar {
+    -fx-background-color: white;
+    -fx-padding: 14px;
+    -fx-spacing: 12px;
+    -fx-border-color: #dfe5eb;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.accounts-table {
+    -fx-background-color: white;
+    -fx-border-color: #dfe5eb;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.accounts-table .column-header-background {
+    -fx-background-color: #edf2f7;
+}
+
+.accounts-table .column-header {
+    -fx-background-color: transparent;
+    -fx-padding: 10px 8px;
+}
+
+.accounts-table .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #334155;
+}
+
+.accounts-table .table-row-cell {
+    -fx-cell-size: 40px;
+}
+
+.accounts-table .table-row-cell:selected {
+    -fx-background-color: #dbeafe;
+}
+
+.accounts-table .table-row-cell:selected .text {
+    -fx-fill: #1e3a5f;
+}
+
+.accounts-message {
+    -fx-padding: 10px 14px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+
+.accounts-message-success {
+    -fx-background-color: #e8f5e9;
+    -fx-border-color: #81c784;
+    -fx-text-fill: #256029;
+}
+
+.accounts-message-error {
+    -fx-background-color: #ffebee;
+    -fx-border-color: #ef9a9a;
+    -fx-text-fill: #b71c1c;
+}
+
+.accounts-detail-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dfe5eb;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 20px;
+}
+
+.accounts-detail-value {
+    -fx-font-weight: bold;
+    -fx-text-fill: #243447;
+}
