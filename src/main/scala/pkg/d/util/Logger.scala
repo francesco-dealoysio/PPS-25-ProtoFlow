@@ -18,6 +18,7 @@ object Logger:
         errorLog.setMethod(ste.getMethodName.stripSuffix("$1"))
         errorLog.setLine(ste.getLineNumber.toString)
         errorLog.setMessage(ex.getMessage)
+        errorLog.setStack(indent(ex.getStackTrace))
     errorLog
 
   def logger(ex: Exception, console: Boolean = false): Unit =
@@ -31,3 +32,9 @@ object Logger:
           println(something)
         case _ =>
           println(s"Errore in ${methodName}: ${ex.getMessage}")
+
+  private def indent(stackTrace: Array[StackTraceElement]): String =
+    stackTrace
+      .map(elem => s"at $elem".indent(6)).mkString("")
+      //.map(elem => " ".repeat(6) + s"at $elem").mkString("\n")
+

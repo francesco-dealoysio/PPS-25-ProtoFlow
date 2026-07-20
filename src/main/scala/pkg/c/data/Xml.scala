@@ -67,7 +67,7 @@ object Xml:
 
     val xmlContent: Elem = Elem(null, rootTagName, scala.xml.Null, scala.xml.TopScope, minimizeEmpty = true)
     val prettyPrinter = PrettyPrinter(80, 2)
-    val xmlString = """<?xml version="1.0" encoding="UTF-8"?>""" + "\n" + prettyPrinter.format(xmlContent)
+    val xmlString = """<?xml version='1.0' encoding='UTF-8'?>""" + "\n" + prettyPrinter.format(xmlContent)
     val path = Paths.get(xmlFilePathName)
 
     Files.write(path, xmlString.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)

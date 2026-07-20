@@ -13,7 +13,8 @@ case class ErrorLog(
                    private var `class`: String = "",
                    private var method: String = "",
                    private var line: String = "",
-                   private var message: String = ""
+                   private var message: String = "",
+                   private var stack: String = ""
                  ) extends Entity:
   def this() =
     this("", "", "", "", "", "", "")
@@ -25,6 +26,7 @@ case class ErrorLog(
   def setMethod(value: String): Unit = method = value
   def setLine(value: String): Unit = line = value
   def setMessage(value: String): Unit = message = value
+  def setStack(value: String): Unit = stack = value
 
   def getId: String = id
   def getDate: String = date
@@ -33,6 +35,7 @@ case class ErrorLog(
   def getMethod: String = method
   def getLine: String = line
   def getMessage: String = message
+  def getStrack: String = stack
 
   override def xmlFile = "errors.xml"
 

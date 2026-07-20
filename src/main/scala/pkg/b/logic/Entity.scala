@@ -9,6 +9,7 @@ trait Entity:
   def recordUpdate(obj: Any, xmlFilePathName: String): Boolean
   def recordDelete(id: String, xmlFilePathName: String): Boolean
 
+
   protected def defaultXmlFilePathName: String =
     import pkg.c.data.Properties.*
     val fs = java.io.File.separator

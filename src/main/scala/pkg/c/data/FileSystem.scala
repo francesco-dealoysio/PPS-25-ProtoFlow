@@ -43,6 +43,7 @@ object FileSystem:
       baseDir.resolve("protoflow/database"),
       baseDir.resolve("protoflow/ids"),
       baseDir.resolve("protoflow/log"),
+      baseDir.resolve("protoflow/test"),
       baseDir.resolve("protoflow/archive/presidenza"),
       baseDir.resolve("protoflow/archive/segreteria"),
       baseDir.resolve("protoflow/archive/amministrazione"),

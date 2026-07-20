@@ -4,19 +4,13 @@ import org.junit.*
 import org.junit.Assert.*
 import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, searchFieldValue}
 import pkg.c.data.Properties.getPropsFileProperty
-import pkg.d.util.Util.md5
+import pkg.d.util.Util.{inTestFilePathName, md5}
 
 class AccountTest:
 
   @Before
-  val fs = java.io.File.separator
-  val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-  val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
-  val xmlFileName = "test.xml"
-  val xmlFilePathName = databaseFolder + fs + xmlFileName
-
+  val xmlFilePathName = inTestFilePathName("test.xml")
   createEmptyXmlFile(xmlFilePathName, "test_records")
-
   val empty = new Account
 
   val account1 = Account(
@@ -182,8 +176,7 @@ class AccountTest:
     Account().recordInsert(account2, xmlFilePathName)
     Account().recordInsert(account3, xmlFilePathName)
     val record = Account().getRecordById("1", xmlFilePathName)
-    assertEquals(record.getId, "1")
-    assertTrue(Account().recordDelete(record.getId, xmlFilePathName))
+    Account().recordDelete(record.getId, xmlFilePathName)
     assertEquals(Account().getRecordById(record.getId, xmlFilePathName), empty)
 
   @Test

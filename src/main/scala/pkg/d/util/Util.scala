@@ -48,7 +48,7 @@ object Util:
     import java.time.{LocalDateTime, ZoneId}
     import java.time.format.DateTimeFormatter
     LocalDateTime.now(ZoneId.of("Europe/Rome"))
-      .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+      .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS"))
 
   def localDate: String =
     import java.time.{LocalDate, ZoneId}
@@ -60,7 +60,7 @@ object Util:
     import java.time.{LocalTime, ZoneId}
     import java.time.format.DateTimeFormatter
     LocalTime.now(ZoneId.of("Europe/Rome"))
-      .format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+      .format(DateTimeFormatter.ofPattern("HH:mm:ss.SS"))
 
   def inDatabaseFilePathName(fileName: String): String =
     inFolderFilePathName("database", fileName )
@@ -73,6 +73,9 @@ object Util:
 
   def inIdsFilePathName(fileName: String) =
     inFolderFilePathName("ids", fileName )
+    
+  def inTestFilePathName(fileName: String) =
+    inFolderFilePathName("test", fileName )
 
   def inFolderFilePathName(folder: String, fileName: String): String =
     import pkg.c.data.Properties.getPropsFileProperty
