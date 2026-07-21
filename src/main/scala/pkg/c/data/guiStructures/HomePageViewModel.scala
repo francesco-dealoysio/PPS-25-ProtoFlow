@@ -1,6 +1,24 @@
 package pkg.c.data.guiStructures
 
-class HomePageViewModel(val config: HomePageConfig):
+enum MenuAction:
+  case Dashboard
+  case Profilo
+  case VisualizzazioneProtocollazioni
+  case PreseInCarico
+  case Protocollo
+  case Archiviazione
+  case Statistiche
+  case Log
+  case ControlloGestione
+  case Registrazioni
+  case AccountUtenti
+  case Ruoli
+  case Classifiche
+  case Logout
+
+case class MenuItem(label: String, action: MenuAction)
+
+class HomePageViewModel:
 
   private var selectedSection: MenuAction = MenuAction.Dashboard
 

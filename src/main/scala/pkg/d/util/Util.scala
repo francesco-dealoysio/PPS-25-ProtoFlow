@@ -20,6 +20,7 @@ object Util:
             println("Failed to decode image (unsupported format or corrupted file).")
             null
         catch
+          
           case e: IOException =>
             println(s"Error reading image: ${e.getMessage}")
             null

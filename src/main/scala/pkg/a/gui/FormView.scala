@@ -2,7 +2,7 @@ package pkg.a.gui
 
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Node
-import scalafx.scene.control.{Button, Label}
+import scalafx.scene.control.{Button, Label, TextInputControl}
 import scalafx.scene.layout.*
 
 trait FormView extends AppView:
@@ -58,6 +58,17 @@ trait FormView extends AppView:
 
   protected def resetButton(onReset: () => Unit, text: String = "Reset"): Button =
     secondaryButton(text, onReset)
+
+  protected def showMappedErrors(errors: Seq[String])(mapping: PartialFunction[String, (TextInputControl, Label)]): Boolean =
+    errors.foreach: error =>
+      mapping.lift(error).foreach:
+        case (field, errorLabel) =>
+          showFieldError(
+            field,
+            errorLabel,
+            error
+          )
+    errors.isEmpty
 
   protected def formPage(
                           titleText: String,

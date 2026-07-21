@@ -3,19 +3,14 @@ package pkg.a.gui
 import pkg.b.logic.LoginService.LoggedUser
 import pkg.c.data.generalStructures.Role
 import pkg.c.data.guiStructures.{
-  HomePageConfig,
   HomePageViewModel,
   RegistrationViewModel
 }
-
 import scalafx.application.JFXApp3
 import scalafx.scene.Scene
 
 class AppNavigator(stage: JFXApp3.PrimaryStage):
 
-  /**
-   * Mostra la schermata di login.
-   */
   def showLogin(): Unit =
     stage.title = "ProtoFlow - Login"
     stage.width = 460
@@ -38,10 +33,7 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
 
     stage.scene = scene
 
-  /*
-   * Mostra la schermata autonoma per la richiesta
-   * di registrazione.
-   */
+
   private def showRegistration(): Unit =
     stage.title = "ProtoFlow - Registrazione"
     stage.width = 900
@@ -63,22 +55,11 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
 
     stage.scene = scene
 
-  /**
-   * Mostra la homepage dell'utente autenticato.
-   *
-   * Le viste di gestione richieste e classifiche
-   * vengono inserite successivamente nel contentArea
-   * della stessa HomePageView.
-   */
+
   private def showHome(user: LoggedUser): Unit =
-    val role =
-      roleFrom(user.role)
-
-    val config =
-      HomePageConfig.forRole(role)
-
-    val viewModel =
-      HomePageViewModel(config)
+    val role = roleFrom(user.role)
+    val homePage = HomePage.forRole(role)
+    val viewModel = new HomePageViewModel
 
     stage.title = "ProtoFlow"
     stage.width = 1100
@@ -86,21 +67,13 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
     stage.resizable = true
 
     val scene = new Scene(1100, 700):
-      root = HomePageView(
-        config = config,
+      root = homePage(
         viewModel = viewModel,
         currentUser = user.fullName,
         onLogout = () =>
           showLogin()
       )
 
-    /*
-     * Questi CSS appartengono tutti alla stessa Scene.
-     *
-     * RegistrationRequestsManagementView e
-     * ClassificationManagementView vengono mostrate
-     * dentro il contentArea della homepage.
-     */
     addPageStylesheets(
       scene,
       "/homepages.css",
@@ -110,12 +83,6 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
 
     stage.scene = scene
 
-  /**
-   * Schermata autonoma già esistente per l'aggiunta di un ruolo.
-   *
-   * Può restare nel navigator perché sostituisce
-   * completamente la scena corrente.
-   */
   def showRoleAddView(): Unit =
     stage.title = "Aggiunta Ruolo"
     stage.width = 800
@@ -132,9 +99,6 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
 
     stage.scene = scene
 
-  /**
-   * Converte il ruolo ricevuto dal login nel corrispondente enum applicativo.
-   */
   private def roleFrom(role: String): Role =
     role.toLowerCase match
       case "admin" =>
@@ -151,9 +115,6 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
           s"Ruolo non riconosciuto: $other"
         )
 
-  /**
-   * Carica sempre common.css per primo, seguito dai CSS specifici della scena.
-   */
   private def addPageStylesheets(
                                   scene: Scene,
                                   pageStylesheets: String*
@@ -169,9 +130,7 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
         stylesheet
       )
 
-  /**
-   * Aggiunge un foglio di stile solo se la risorsa è stata trovata.
-   */
+
   private def addStylesheet(
                              scene: Scene,
                              path: String

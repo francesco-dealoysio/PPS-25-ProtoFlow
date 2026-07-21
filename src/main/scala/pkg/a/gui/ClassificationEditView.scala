@@ -4,7 +4,6 @@ import pkg.b.logic.Classification
 import pkg.c.data.guiStructures.ClassificationViewModel
 import scalafx.scene.control.{TextArea, TextField}
 import scalafx.scene.layout.BorderPane
-import scalafx.scene.control.*
 
 object ClassificationEditView extends FormView:
 
@@ -80,19 +79,10 @@ object ClassificationEditView extends FormView:
             Some(selectedClassification.getId)
         )
 
-      errors.foreach:
-        case ClassificationViewModel.ClassificationRequiredError =>
-          showFieldError(classificationField, classificationError, ClassificationViewModel.ClassificationRequiredError)
-
-        case ClassificationViewModel.DescriptionRequiredError =>
-          showFieldError(descriptionArea, descriptionError, ClassificationViewModel.DescriptionRequiredError)
-
-        case ClassificationViewModel.DuplicateClassificationError =>
-          showFieldError(classificationField, classificationError, ClassificationViewModel.DuplicateClassificationError)
-
-        case _ => ()
-
-      errors.isEmpty
+      showMappedErrors(errors):
+        case ClassificationViewModel.ClassificationRequiredError |
+             ClassificationViewModel.DuplicateClassificationError => classificationField -> classificationError
+        case ClassificationViewModel.DescriptionRequiredError => descriptionArea -> descriptionError
 
     val save =
       saveButton: () =>

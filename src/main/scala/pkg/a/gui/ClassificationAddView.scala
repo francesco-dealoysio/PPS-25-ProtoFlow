@@ -44,25 +44,11 @@ object ClassificationAddView extends FormView:
 
     def validateForm(): Boolean =
       clearErrors()
-
-      val errors =
-        viewModel.validate(classification = currentClassification(),
-          existingClassifications = classificationLogic.getRecords()
-        )
-
-      errors.foreach:
-        case ClassificationViewModel.ClassificationRequiredError =>
-          showFieldError(classificationField, classificationError, ClassificationViewModel.ClassificationRequiredError)
-
-        case ClassificationViewModel.DescriptionRequiredError =>
-          showFieldError(descriptionArea, descriptionError, ClassificationViewModel.DescriptionRequiredError)
-
-        case ClassificationViewModel.DuplicateClassificationError =>
-          showFieldError(classificationField, classificationError, ClassificationViewModel.DuplicateClassificationError)
-
-        case _ => ()
-
-      errors.isEmpty
+      val errors = viewModel.validate(classification = currentClassification(), existingClassifications = classificationLogic.getRecords())
+      showMappedErrors(errors):
+        case ClassificationViewModel.ClassificationRequiredError |
+             ClassificationViewModel.DuplicateClassificationError => classificationField -> classificationError
+        case ClassificationViewModel.DescriptionRequiredError => descriptionArea -> descriptionError
 
     def currentClassification(id: String = ""): Classification =
       Classification(
@@ -122,8 +108,7 @@ object ClassificationAddView extends FormView:
 
     formPage(
       titleText = "Aggiunta classifica",
-      subtitleText =
-        "Inserisci i dati della nuova classifica.",
+      subtitleText = "Inserisci i dati della nuova classifica.",
       titleStyle = "classifications-title",
       subtitleStyle = "classifications-subtitle",
       rootStyle = "classifications-management-root",

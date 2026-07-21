@@ -70,7 +70,6 @@ trait AppView:
     label.text = ""
     label.visible = false
     label.managed = false
-
     label.styleClass.removeAll(successStyle, errorStyle)
 
   protected def actionBar(buttons: Button*): HBox =
