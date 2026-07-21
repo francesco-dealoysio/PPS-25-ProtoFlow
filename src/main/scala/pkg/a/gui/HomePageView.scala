@@ -39,7 +39,6 @@ object HomePageView extends AppView:
           fieldLabel(s"$currentUser\n${config.roleDescription}", "user-info")
       )
 
-
   private def createSidebar(config: HomePageConfig, viewModel: HomePageViewModel, contentArea: StackPane, onLogout: () => Unit): VBox =
     
     def render(view: Pane): Unit =
@@ -49,22 +48,14 @@ object HomePageView extends AppView:
       viewModel.select(MenuAction.Dashboard)
       render(dashboardContent())
 
-    def showClassificationManagement(): Unit =
-      render(
-        ClassificationManagementView(
-          onAdd = () => showClassificationAdd(),
-          onEdit = selected => showClassificationEdit(selected),
-          onExit = () => showDashboard()
-        )
-      )
-
-    val backToClassifications: () => Unit = () => showClassificationManagement()
-
     def showClassificationEdit(selected: Classification): Unit =
-      render(ClassificationEditView(selected, onSaved = backToClassifications, onExit = backToClassifications))
+      render(ClassificationEditView(selected, onSaved = () => showClassificationManagement(), onExit = () => showClassificationManagement()))
 
     def showClassificationAdd(): Unit =
-      render(ClassificationAddView(onSaved = backToClassifications, onExit = backToClassifications))
+      render(ClassificationAddView(onSaved = () => showClassificationManagement(), onExit = () => showClassificationManagement()))
+
+    def showClassificationManagement(): Unit =
+      render(ClassificationManagementView(onAdd = () => showClassificationAdd(), onEdit = selected => showClassificationEdit(selected), onExit = () => showDashboard()))
 
     def showRegistrationRequests(): Unit =
       render(RegistrationRequestsManagementView(onExit = () => showDashboard()))
@@ -170,14 +161,14 @@ object HomePageView extends AppView:
         fieldLabel(value, "stat-card-value"),
         fieldLabel(subtitle, "stat-card-subtitle")
       )
-  
-  private def createDocumentsTable(): TableView[Unit] =
-    new TableView[Unit]:
-      styleClass += "documents-table"
-      this.placeholder = fieldLabel("Nessun documento disponibile", "table-placeholder")
 
-      // Generiamo la sequenza di colonne ScalaFX
-      val colList: Seq[TableColumn[Unit, String]] = Seq(
+  private def createDocumentsTable(): TableView[Unit] =
+    val table = new TableView[Unit]()
+  
+    table.styleClass += "documents-table"
+    table.placeholder = fieldLabel("Nessun documento disponibile", "table-placeholder")
+    table.columns ++=
+      Seq(
         "Protocollo",
         "Oggetto",
         "Mittente",
@@ -187,6 +178,4 @@ object HomePageView extends AppView:
       ).map: title =>
         new TableColumn[Unit, String]:
           text = title
-
-      // Per evitare il problema dei tipi, estraiamo i delegati JavaFX nativi (.map(_.delegate))
-      columns ++= colList.map(_.delegate)
+    table
