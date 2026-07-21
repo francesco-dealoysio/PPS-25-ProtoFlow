@@ -8,6 +8,7 @@ import scalafx.collections.ObservableBuffer
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
+import pkg.d.util.Logger.*
 
 object ClassificationManagementView extends ManagementView:
 
@@ -103,6 +104,7 @@ object ClassificationManagementView extends ManagementView:
       catch
         case exception: Exception =>
           classifications.clear()
+          logger(exception)
           showResult("Errore durante il caricamento delle classifiche.", success = false)
 
     def deleteSelectedClassification(): Unit =

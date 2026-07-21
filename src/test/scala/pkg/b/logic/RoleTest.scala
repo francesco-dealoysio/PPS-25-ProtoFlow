@@ -5,12 +5,12 @@ import org.junit.Assert.*
 import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, searchFieldValue}
 import pkg.c.data.Properties.getPropsFileProperty
 import pkg.d.util.Util.{inTestFilePathName, md5}
-
 import java.nio.file.{Files, Paths}
 
 class RoleTest:
 
   private var xmlFilePathName: String = _
+  //private val role = Role()
   private var role1: Role = _
   private var role2: Role = _
   private var role3: Role = _
@@ -47,16 +47,22 @@ class RoleTest:
   @Test
   def testGetRecordsInexistentXmlFile: Unit =
     assertEquals(Role().getRecords("path inesistente"), Seq.empty[Role])
+    //assertEquals(Role()._getRecords("path inesistente", classOf[Role]), Seq.empty[Role])
+    assertEquals(Role()._getRecords[Role]("path inesistente"), Seq.empty[Role])
 
   @Test
   def testGetRecordsEmptyXmlFile: Unit =
-    assertEquals(Role().getRecords(xmlFilePathName), Seq.empty[Role])
+    //assertEquals(Role().getRecords(xmlFilePathName), Seq.empty[Role])
+    //assertEquals(Role()._getRecords(xmlFilePathName, classOf[Role]), Seq.empty[Role])
+    assertEquals(Role()._getRecords[Role](xmlFilePathName), Seq.empty[Role])
 
   @Test
   def testGetRecordsFound: Unit =
     Role().recordInsert(role1, xmlFilePathName)
     Role().recordInsert(role2, xmlFilePathName)
-    assertEquals(Role().getRecords(xmlFilePathName), List(role1, role2))
+    //assertEquals(Role().getRecords(xmlFilePathName), List(role1, role2))
+    //assertEquals(Role()._getRecords(xmlFilePathName, classOf[Role]), List(role1, role2))
+    assertEquals(Role()._getRecords[Role](xmlFilePathName), List(role1, role2))
 
   @Test
   def testGetRecordByIdInexistentXmlFile: Unit =

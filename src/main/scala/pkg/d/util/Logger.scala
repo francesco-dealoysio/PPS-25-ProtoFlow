@@ -22,6 +22,11 @@ object Logger:
     errorLog
 
   def logger(ex: Exception, console: Boolean = false): Unit =
+    import java.nio.file.{Files, Paths}
+    import pkg.c.data.Xml.createEmptyXmlFile
+
+    if (Files.notExists(Paths.get(inLogFilePathName("errors.xml"))))
+      createEmptyXmlFile(inLogFilePathName("errors.xml"), "errors")
 
     ErrorLog().recordInsert(getErrorLog(ex), inLogFilePathName("errors.xml"))
 

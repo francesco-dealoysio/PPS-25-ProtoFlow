@@ -110,7 +110,6 @@ object Xml:
           catch
             case e: Exception =>
               logger(e)
-              //println(s"Errore nella lettura del record: ${e.getMessage}")
               None
         }
       case Failure(ex) =>

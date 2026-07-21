@@ -55,16 +55,19 @@ class AccountTest:
   @Test
   def testGetRecordsInexistentXmlFile: Unit =
     assertEquals(Account().getRecords("path inesistente"), Seq.empty[Account])
+    //assertEquals(Account()._getRecords("path inesistente", classOf[Account]), Seq.empty[Account])
 
   @Test
   def testGetRecordsEmptyXmlFile: Unit =
     assertEquals(Account().getRecords(xmlFilePathName), Seq.empty[Account])
+    //assertEquals(Account()._getRecords(xmlFilePathName, classOf[Account]), Seq.empty[Account])
 
   @Test
   def testGetRecordsFound: Unit =
     Account().recordInsert(account1, xmlFilePathName)
     Account().recordInsert(account2, xmlFilePathName)
     assertEquals(Account().getRecords(xmlFilePathName), Seq(account1, account2))
+    //assertEquals(Account()._getRecords(xmlFilePathName, classOf[Account]), Seq(account1, account2))
 
   @Test
   def testGetRecordByIdInexistentXmlFile: Unit =
