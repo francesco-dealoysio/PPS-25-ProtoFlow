@@ -1,5 +1,6 @@
-package pkg.a.gui
+package pkg.a.gui.views
 
+import pkg.a.gui.traits.Form
 import pkg.b.logic.LoginService
 import pkg.b.logic.LoginService.{LoggedUser, LoginError}
 import scalafx.Includes.jfxKeyEvent2sfx
@@ -8,7 +9,7 @@ import scalafx.scene.control.{Button, Label, PasswordField, TextField}
 import scalafx.scene.input.KeyCode
 import scalafx.scene.layout.{BorderPane, Region, StackPane, VBox}
 
-object LoginView extends FormView:
+object Login$ extends Form:
 
   def apply(onLoginSuccess: LoggedUser => Unit,
              onRegistrationRequest: () => Unit

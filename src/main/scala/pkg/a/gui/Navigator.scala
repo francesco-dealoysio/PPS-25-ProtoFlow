@@ -1,11 +1,10 @@
 package pkg.a.gui
 
+import pkg.a.gui.structures.{HomePageViewModel, RegistrationViewModel}
+import pkg.a.gui.traits.HomePage
+import pkg.a.gui.views.{Login$, Registration$, RoleAddView}
 import pkg.b.logic.LoginService.LoggedUser
 import pkg.c.data.generalStructures.Role
-import pkg.c.data.guiStructures.{
-  HomePageViewModel,
-  RegistrationViewModel
-}
 import scalafx.application.JFXApp3
 import scalafx.scene.Scene
 
@@ -18,7 +17,7 @@ class Navigator(stage: JFXApp3.PrimaryStage):
     stage.resizable = false
 
     val scene = new Scene(460, 560):
-      root = LoginView(
+      root = Login$(
         onLoginSuccess = user =>
           showHome(user),
 
@@ -41,7 +40,7 @@ class Navigator(stage: JFXApp3.PrimaryStage):
     stage.resizable = true
 
     val scene = new Scene(900, 650):
-      root = RegistrationView(
+      root = Registration$(
         viewModel = RegistrationViewModel(),
 
         onExit = () =>

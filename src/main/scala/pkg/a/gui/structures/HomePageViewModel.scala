@@ -1,4 +1,4 @@
-package pkg.c.data.guiStructures
+package pkg.a.gui.structures
 
 enum MenuAction:
   case Dashboard

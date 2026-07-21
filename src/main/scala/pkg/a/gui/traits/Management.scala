@@ -1,10 +1,10 @@
-package pkg.a.gui
+package pkg.a.gui.traits
 
 import scalafx.geometry.Insets
 import scalafx.scene.Node
 import scalafx.scene.layout.{BorderPane, Priority, VBox}
 
-trait ManagementView extends AppView:
+trait Management extends Root:
 
   protected def managementPage(
                                 rootStyle: String,

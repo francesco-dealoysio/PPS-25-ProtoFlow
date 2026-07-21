@@ -1,6 +1,7 @@
-package pkg.a.gui
+package pkg.a.gui.views
 
-import pkg.c.data.guiStructures.{MenuAction, MenuItem}
+import pkg.a.gui.structures.{MenuAction, MenuItem}
+import pkg.a.gui.traits.HomePage
 
 object AdminHomePageView extends HomePage:
 

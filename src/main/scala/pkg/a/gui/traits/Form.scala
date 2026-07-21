@@ -1,11 +1,11 @@
-package pkg.a.gui
+package pkg.a.gui.traits
 
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Node
 import scalafx.scene.control.{Button, Label, TextInputControl}
 import scalafx.scene.layout.*
 
-trait FormView extends AppView:
+trait Form extends Root:
 
   protected case class FormRow(label: String, field: Node, errorLabel: Label)
 

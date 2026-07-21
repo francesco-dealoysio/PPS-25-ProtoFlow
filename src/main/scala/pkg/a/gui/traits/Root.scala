@@ -1,10 +1,10 @@
-package pkg.a.gui
+package pkg.a.gui.traits
 
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Alert, Button, ButtonType, Label}
 import scalafx.scene.layout.{HBox, VBox}
 
-trait AppView:
+trait Root:
 
   protected case class ResultMessage(label: Label, successStyle: String, errorStyle: String):
 

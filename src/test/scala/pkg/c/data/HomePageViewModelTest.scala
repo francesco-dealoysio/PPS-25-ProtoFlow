@@ -2,7 +2,7 @@ package pkg.c.data
 
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.OneInstancePerTest
-import pkg.c.data.guiStructures.{HomePageViewModel, MenuAction}
+import pkg.a.gui.structures.{HomePageViewModel, MenuAction}
 
 class HomePageViewModelTest extends AnyFunSuite with OneInstancePerTest:
 

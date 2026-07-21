@@ -1,7 +1,7 @@
 package pkg.c.data.xmlManagement
 
+import pkg.a.gui.structures.RegistrationRequest
 import pkg.c.data.generalStructures.RegistrationRequestStatus
-import pkg.c.data.guiStructures.RegistrationRequest
 
 import java.io.File
 import java.time.LocalDateTime

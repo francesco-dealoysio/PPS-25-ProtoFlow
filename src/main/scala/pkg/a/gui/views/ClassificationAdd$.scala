@@ -1,11 +1,12 @@
-package pkg.a.gui
+package pkg.a.gui.views
 
+import pkg.a.gui.structures.ClassificationViewModel
+import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
-import pkg.c.data.guiStructures.ClassificationViewModel
 import scalafx.scene.control.{TextArea, TextField}
 import scalafx.scene.layout.BorderPane
 
-object ClassificationAddView extends FormView:
+object ClassificationAdd$ extends Form:
 
   def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
 

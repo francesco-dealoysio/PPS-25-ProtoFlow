@@ -1,8 +1,8 @@
 package pkg.c.data
 
 import org.scalatest.funsuite.AnyFunSuite
+import pkg.a.gui.structures.{RegistrationRequest, RegistrationViewModel}
 import pkg.c.data.generalStructures.RegistrationRequestStatus
-import pkg.c.data.guiStructures.{RegistrationRequest, RegistrationViewModel}
 import java.time.LocalDateTime
 
 class RegistrationViewModelTest extends AnyFunSuite:

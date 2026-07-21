@@ -1,7 +1,8 @@
-package pkg.a.gui
+package pkg.a.gui.views
 
+import pkg.a.gui.structures.RegistrationRequest
+import pkg.a.gui.traits.Management
 import pkg.b.logic.RegistrationRequestService
-import pkg.c.data.guiStructures.RegistrationRequest
 import pkg.c.data.xmlManagement.RegistrationRequestRepository
 import scalafx.Includes.jfxMultipleSelectionModel2sfx
 import scalafx.beans.property.StringProperty
@@ -12,7 +13,7 @@ import scalafx.scene.layout.*
 
 import java.time.format.DateTimeFormatter
 
-object RegistrationRequestsManagementView extends ManagementView:
+object RegistrationRequestsManagement$ extends Management:
 
   private val dateFormatter =
     DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")

@@ -1,13 +1,15 @@
-package pkg.a.gui
+package pkg.a.gui.traits
 
+import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
+import pkg.a.gui.views.*
+import pkg.a.gui.traits.HomePage
 import pkg.b.logic.Classification
 import pkg.c.data.generalStructures.Role
-import pkg.c.data.guiStructures.{HomePageViewModel, MenuAction, MenuItem}
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, TableColumn, TableView}
-import scalafx.scene.layout.{BorderPane, HBox, Pane, Priority, Region, StackPane, VBox}
+import scalafx.scene.layout.*
 
-trait HomePage extends AppView:
+trait HomePage extends Root:
 
   protected def pageTitle: String
   protected def roleDescription: String
@@ -67,7 +69,7 @@ trait HomePage extends AppView:
 
     def showClassificationEdit(selected: Classification): Unit =
       render(
-        ClassificationEditView(
+        ClassificationEdit$(
           selectedClassification = selected,
           onSaved = () => showClassificationManagement(),
           onExit = () => showClassificationManagement()
@@ -76,7 +78,7 @@ trait HomePage extends AppView:
 
     def showClassificationAdd(): Unit =
       render(
-        ClassificationAddView(
+        ClassificationAdd$(
           onSaved = () => showClassificationManagement(),
           onExit = () => showClassificationManagement()
         )
@@ -84,7 +86,7 @@ trait HomePage extends AppView:
 
     def showClassificationManagement(): Unit =
       render(
-        ClassificationManagementView(
+        ClassificationManagement$(
           onAdd = () => showClassificationAdd(),
           onEdit = selected => showClassificationEdit(selected),
           onExit = () => showDashboard()
@@ -93,7 +95,7 @@ trait HomePage extends AppView:
 
     def showRegistrationRequests(): Unit =
       render(
-        RegistrationRequestsManagementView(
+        RegistrationRequestsManagement$(
           onExit = () => showDashboard()
         )
       )

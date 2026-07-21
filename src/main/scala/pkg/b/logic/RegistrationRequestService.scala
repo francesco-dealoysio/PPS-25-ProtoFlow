@@ -1,7 +1,7 @@
 package pkg.b.logic
 
+import pkg.a.gui.structures.RegistrationRequest
 import pkg.c.data.generalStructures.RegistrationRequestStatus
-import pkg.c.data.guiStructures.RegistrationRequest
 import pkg.c.data.xmlManagement.RegistrationRequestRepository
 
 import java.time.LocalDateTime

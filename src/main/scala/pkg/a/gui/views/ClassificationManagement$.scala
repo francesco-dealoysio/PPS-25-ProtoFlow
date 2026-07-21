@@ -1,7 +1,7 @@
-package pkg.a.gui
+package pkg.a.gui.views
 
+import pkg.a.gui.traits.Management
 import pkg.b.logic.Classification
-
 import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
@@ -9,7 +9,7 @@ import scalafx.geometry.Pos
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
 
-object ClassificationManagementView extends ManagementView:
+object ClassificationManagement$ extends Management:
 
   def apply(
              onAdd: () => Unit = () => (),

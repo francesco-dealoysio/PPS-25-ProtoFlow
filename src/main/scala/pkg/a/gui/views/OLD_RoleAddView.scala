@@ -1,16 +1,16 @@
-package pkg.a.gui
+package pkg.a.gui.views
 
 import scalafx.application.JFXApp3
 import scalafx.scene.Scene
-import scalafx.scene.image.Image
-import scalafx.scene.paint.Color.*
-import scalafx.scene.layout.{BorderPane, StackPane}
 import scalafx.scene.control.{Button, Label, TextField}
+import scalafx.scene.image.Image
+import scalafx.scene.layout.{BorderPane, StackPane}
 import scalafx.scene.paint.Color
+import scalafx.scene.paint.Color.*
 
 import scala.swing.GridBagPanel
 //import scalafx.scene.shape.Rectangle
-import scalafx.geometry.{Insets}
+import scalafx.geometry.Insets
 import scalafx.scene.layout.*
 
 

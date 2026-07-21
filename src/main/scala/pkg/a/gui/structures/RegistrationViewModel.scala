@@ -1,4 +1,4 @@
-package pkg.c.data.guiStructures
+package pkg.a.gui.structures
 
 class RegistrationViewModel:
   def validate(request: RegistrationRequest): Seq[String] =

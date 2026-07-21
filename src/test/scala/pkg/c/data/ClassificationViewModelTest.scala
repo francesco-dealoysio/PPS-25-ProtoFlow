@@ -1,8 +1,8 @@
 package pkg.c.data
 
 import org.scalatest.funsuite.AnyFunSuite
+import pkg.a.gui.structures.ClassificationViewModel
 import pkg.b.logic.Classification
-import pkg.c.data.guiStructures.ClassificationViewModel
 
 class ClassificationViewModelTest extends AnyFunSuite:
 

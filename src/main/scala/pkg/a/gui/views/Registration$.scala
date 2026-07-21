@@ -1,12 +1,13 @@
-package pkg.a.gui
+package pkg.a.gui.views
 
-import pkg.c.data.guiStructures.{RegistrationRequest, RegistrationViewModel}
+import pkg.a.gui.structures.{RegistrationRequest, RegistrationViewModel}
+import pkg.a.gui.traits.Form
+import pkg.b.logic.RegistrationRequestService
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.{Button, ComboBox, TextField}
 import scalafx.scene.layout.{BorderPane, GridPane}
-import pkg.b.logic.RegistrationRequestService
 
-object RegistrationView extends FormView:
+object Registration$ extends Form:
 
   def apply(
              viewModel: RegistrationViewModel,
