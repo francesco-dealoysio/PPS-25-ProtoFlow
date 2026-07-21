@@ -9,7 +9,7 @@ import pkg.c.data.guiStructures.{
 import scalafx.application.JFXApp3
 import scalafx.scene.Scene
 
-class AppNavigator(stage: JFXApp3.PrimaryStage):
+class Navigator(stage: JFXApp3.PrimaryStage):
 
   def showLogin(): Unit =
     stage.title = "ProtoFlow - Login"

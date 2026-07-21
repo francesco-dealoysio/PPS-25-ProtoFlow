@@ -63,11 +63,7 @@ trait FormView extends AppView:
     errors.foreach: error =>
       mapping.lift(error).foreach:
         case (field, errorLabel) =>
-          showFieldError(
-            field,
-            errorLabel,
-            error
-          )
+          showFieldError(field, errorLabel, error)
     errors.isEmpty
 
   protected def formPage(

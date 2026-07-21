@@ -2,7 +2,7 @@ package pkg
 
 // Entry point to run the application
 import pkg.b.logic.Init
-import pkg.a.gui.AppNavigator
+import pkg.a.gui.Navigator
 import scalafx.application.JFXApp3
 import scalafx.scene.image.Image
 
@@ -28,7 +28,7 @@ object RunApp extends JFXApp3:
     Option(getClass.getResourceAsStream("/img/message.jpg"))
       .foreach(stream => stage.icons.add(new Image(stream)))
     
-    val navigator = AppNavigator(stage)
+    val navigator = Navigator(stage)
     navigator.showLogin()
     //navigator.showRoleAddView()
     

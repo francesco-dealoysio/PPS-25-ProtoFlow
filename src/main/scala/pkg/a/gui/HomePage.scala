@@ -13,8 +13,11 @@ trait HomePage extends AppView:
   protected def roleDescription: String
   protected def menuItems: Seq[MenuItem]
 
-  protected val applicationTitle: String =
-    "ProtoFlow"
+  final def title: String = pageTitle
+  final def role: String = roleDescription
+  final def items: Seq[MenuItem] = menuItems
+
+  protected val applicationTitle: String = "ProtoFlow"
 
   final def apply(
                    viewModel: HomePageViewModel,
