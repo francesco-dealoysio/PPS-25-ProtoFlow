@@ -211,7 +211,8 @@ object Xml:
       result
 
   @main def tryXml(): Unit =
-
+    println
+/*
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
     val databaseFolder = baseFolder + fs + "database"
@@ -231,7 +232,7 @@ object Xml:
 
     createEmptyXmlFile(databaseFolder + fs + "nuovo.xml", "libri")
     insertElemIntoXML(databaseFolder + fs + "nuovo.xml", account3)
-
+*/
     //writeXML(databaseFolder + fs + "testElem.xml", elem)
     //saveXML(databaseFolder + fs + "testElem.xml", elem)
     //insertElemIntoXML(databaseFolder + fs + "test.xml", elem)

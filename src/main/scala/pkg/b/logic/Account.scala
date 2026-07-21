@@ -43,7 +43,7 @@ case class Account(
   def getPassword: String = password
 
   override def xmlFile = "accounts.xml"
-
+/*
   override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Account] =
     try
       getRecordFromXML(xmlFilePathName, classOf[Account])
@@ -52,7 +52,8 @@ case class Account(
       case e: Exception =>
         logger(e)
         Seq.empty[Account]
-
+*/
+/*
   override def getRecordsByFilter[Account](predicate: Account => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Account]): Seq[Account] =
     try
       getRecordFromXML(xmlFilePathName, classType)
@@ -61,7 +62,8 @@ case class Account(
       case e: Exception =>
         logger(e)
         Seq.empty[Account]
-
+*/
+/*
   override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Account =
     try
       getRecordFromXML(xmlFilePathName, classOf[Account])
@@ -70,7 +72,7 @@ case class Account(
       case e: Exception =>
         logger(e)
         new Account
-
+*/
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
@@ -101,7 +103,7 @@ case class Account(
       case e: Exception =>
         logger(e)
     result
-
+/*
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       removeElemFromXML(xmlFilePathName, id)
@@ -109,6 +111,6 @@ case class Account(
       case e: Exception =>
         logger(e)
         false
-
+*/
 @main def tryAccount: Unit =
   println("Tested in AccountTest.scala")

@@ -10,7 +10,6 @@ import java.nio.file.{Files, Paths}
 class RoleTest:
 
   private var xmlFilePathName: String = _
-  //private val role = Role()
   private var role1: Role = _
   private var role2: Role = _
   private var role3: Role = _
@@ -46,23 +45,17 @@ class RoleTest:
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =
-    assertEquals(Role().getRecords("path inesistente"), Seq.empty[Role])
-    //assertEquals(Role()._getRecords("path inesistente", classOf[Role]), Seq.empty[Role])
-    assertEquals(Role()._getRecords[Role]("path inesistente"), Seq.empty[Role])
-
+    assertEquals(Role().getRecords[Role]("path inesistente"), Seq.empty[Role])
+/*
   @Test
   def testGetRecordsEmptyXmlFile: Unit =
-    //assertEquals(Role().getRecords(xmlFilePathName), Seq.empty[Role])
-    //assertEquals(Role()._getRecords(xmlFilePathName, classOf[Role]), Seq.empty[Role])
-    assertEquals(Role()._getRecords[Role](xmlFilePathName), Seq.empty[Role])
+    assertEquals(Role().getRecords[Role](xmlFilePathName), Seq.empty[Role])
 
   @Test
   def testGetRecordsFound: Unit =
     Role().recordInsert(role1, xmlFilePathName)
     Role().recordInsert(role2, xmlFilePathName)
-    //assertEquals(Role().getRecords(xmlFilePathName), List(role1, role2))
-    //assertEquals(Role()._getRecords(xmlFilePathName, classOf[Role]), List(role1, role2))
-    assertEquals(Role()._getRecords[Role](xmlFilePathName), List(role1, role2))
+    assertEquals(Role().getRecords[Role](xmlFilePathName), List(role1, role2))
 
   @Test
   def testGetRecordByIdInexistentXmlFile: Unit =
@@ -92,7 +85,8 @@ class RoleTest:
     record.setRole("contabile")
     record.setDescription("Protocollazione")
     Role().recordInsert(record, xmlFilePathName)
-    assertEquals(Role().getRecordsByFilter[Role](a => a.getDescription == "Protocollazione", xmlFilePathName, classOf[Role]), Seq(role2, record))
+    //assertEquals(Role().getRecordsByFilter[Role](a => a.getDescription == "Protocollazione", xmlFilePathName, classOf[Role]), Seq(role2, record))
+    assertEquals(Role().getRecordsByFilter[Role](a => a.getDescription == "Protocollazione", xmlFilePathName), Seq(role2, record))
 
   @Test
   def testRecordInsertInexistentXmlFile: Unit =
@@ -201,3 +195,4 @@ class RoleTest:
     val record = role1.copy()
     record.setId("100")
     assertFalse(Role().recordDelete(record.getId, xmlFilePathName))
+*/

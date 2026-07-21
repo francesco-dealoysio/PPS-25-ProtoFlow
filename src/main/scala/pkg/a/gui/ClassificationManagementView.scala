@@ -86,7 +86,7 @@ object ClassificationManagementView extends ManagementView:
       try
         val loaded =
           classificationLogic
-            .getRecords()
+            .getRecords[Classification]()
             .sortBy: classification =>
               classification
                 .getId

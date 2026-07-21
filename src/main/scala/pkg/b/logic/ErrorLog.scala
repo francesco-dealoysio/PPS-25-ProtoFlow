@@ -40,7 +40,7 @@ case class ErrorLog(
   def getStrack: String = stack
 
   override def xmlFile = "errors.xml"
-
+/*
   override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[ErrorLog] =
     try
       getRecordFromXML(xmlFilePathName, classOf[ErrorLog])
@@ -49,16 +49,8 @@ case class ErrorLog(
       case e: Exception =>
         logger(e)
         Seq.empty[ErrorLog]
-
-  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): ErrorLog =
-    try
-      getRecordFromXML(xmlFilePathName, classOf[ErrorLog])
-        .map(a => a.asInstanceOf[ErrorLog]).filter(_.id == id).head
-    catch
-      case e: Exception =>
-        logger(e)
-        new ErrorLog
-
+*/
+/*
   override def getRecordsByFilter[ErrorLog](predicate: ErrorLog => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[ErrorLog]): Seq[ErrorLog] =
     try
       getRecordFromXML(xmlFilePathName, classType)
@@ -67,7 +59,17 @@ case class ErrorLog(
       case e: Exception =>
         logger(e)
         Seq.empty[ErrorLog]
-
+*/
+/*
+  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): ErrorLog =
+    try
+      getRecordFromXML(xmlFilePathName, classOf[ErrorLog])
+        .map(a => a.asInstanceOf[ErrorLog]).filter(_.id == id).head
+    catch
+      case e: Exception =>
+        logger(e)
+        new ErrorLog
+*/
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
@@ -89,7 +91,7 @@ case class ErrorLog(
       case e: Exception =>
         logger(e)
         false
-
+/*
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       removeElemFromXML(xmlFilePathName, id)
@@ -97,6 +99,6 @@ case class ErrorLog(
       case e: Exception =>
         logger(e)
         false
-
+*/
 @main def tryErrorLog: Unit =
   println("Tested in ErrorLogTest.scala")

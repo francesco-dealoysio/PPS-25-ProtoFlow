@@ -21,7 +21,7 @@ case class Classification(
   def getDescription: String = description // ??
 
   override def xmlFile = "classifications.xml"
-
+/*
   override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Classification] =
     try
       getRecordFromXML(xmlFilePathName, classOf[Classification])
@@ -30,16 +30,8 @@ case class Classification(
       case e: Exception =>
         logger(e)
         Seq.empty[Classification]
-
-  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Classification =
-    try
-      getRecordFromXML(xmlFilePathName, classOf[Classification])
-        .map(a => a.asInstanceOf[Classification]).filter(_.id == id).head
-    catch
-      case e: Exception =>
-        logger(e)
-        new Classification
-
+*/
+/*
   override def getRecordsByFilter[Classification](predicate: Classification => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Classification]): Seq[Classification] =
     try
       getRecordFromXML(xmlFilePathName, classType)
@@ -48,7 +40,17 @@ case class Classification(
       case e: Exception =>
         logger(e)
         Seq.empty[Classification]
-
+*/
+/*
+  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Classification =
+    try
+      getRecordFromXML(xmlFilePathName, classOf[Classification])
+        .map(a => a.asInstanceOf[Classification]).filter(_.id == id).head
+    catch
+      case e: Exception =>
+        logger(e)
+        new Classification
+*/
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
@@ -80,7 +82,7 @@ case class Classification(
         logger(e)
         false
     result
-
+/*
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       removeElemFromXML(xmlFilePathName, id)
@@ -88,6 +90,6 @@ case class Classification(
       case e: Exception =>
         logger(e)
         false
-
+*/
 @main def tryClassifica: Unit =
   println("Tested in ClassificationTest.scala")

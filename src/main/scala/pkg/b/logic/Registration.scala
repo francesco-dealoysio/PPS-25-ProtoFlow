@@ -48,7 +48,7 @@ case class Registration(
   def getMotivation: String = motivation
 
   override def xmlFile = "registrations.xml"
-
+/*
   override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Registration] =
     try
       getRecordFromXML(xmlFilePathName, classOf[Registration])
@@ -57,16 +57,8 @@ case class Registration(
       case e: Exception =>
         logger(e)
         Seq.empty[Registration]
-
-  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Registration =
-    try
-      getRecordFromXML(xmlFilePathName, classOf[Registration])
-        .map(a => a.asInstanceOf[Registration]).filter(_.id == id).head
-    catch
-      case e: Exception =>
-        logger(e)
-        new Registration
-
+*/
+/*
   override def getRecordsByFilter[Registration](predicate: Registration => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Registration]): Seq[Registration] =
     try
       getRecordFromXML(xmlFilePathName, classType)
@@ -75,7 +67,17 @@ case class Registration(
       case e: Exception =>
         logger(e)
         Seq.empty[Registration]
-
+*/
+/*
+  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Registration =
+    try
+      getRecordFromXML(xmlFilePathName, classOf[Registration])
+        .map(a => a.asInstanceOf[Registration]).filter(_.id == id).head
+    catch
+      case e: Exception =>
+        logger(e)
+        new Registration
+*/
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
@@ -97,7 +99,7 @@ case class Registration(
       case e: Exception =>
         logger(e)
         false
-    
+/*
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       removeElemFromXML(xmlFilePathName, id)
@@ -105,6 +107,6 @@ case class Registration(
       case e: Exception =>
         logger(e)
         false
-
+*/
 @main def tryRegistration: Unit =
   println("Tested in RegistrationTest.scala")
