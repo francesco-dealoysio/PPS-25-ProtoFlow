@@ -2,6 +2,7 @@ package pkg.b.logic
 
 import pkg.b.logic.Entity
 import pkg.c.data.Xml.*
+import pkg.d.util.Logger.*
 
 case class Classification(
                           private var id: String = "",
@@ -9,44 +10,47 @@ case class Classification(
                           private var description: String = ""
                          ) extends Entity:
   def this() =
-    this("","","")
+    this("","","") // ??
 
   def setId(value: String): Unit = id = value
   def setClassification(value: String): Unit = classification = value
-  def setDescription(value: String): Unit = description = value
+  def setDescription(value: String): Unit = description = value // ??
+
   def getId: String = id
   def getClassification: String = classification
-  def getDescription: String = description
+  def getDescription: String = description // ??
 
   override def xmlFile = "classifications.xml"
-
+/*
   override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Classification] =
     try
       getRecordFromXML(xmlFilePathName, classOf[Classification])
         .map(r => r.asInstanceOf[Classification])
     catch
       case e: Exception =>
-        println(s"Errore in getRecords: ${e.getMessage}")
+        logger(e)
         Seq.empty[Classification]
-
-  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Classification =
-    try
-      getRecordFromXML(xmlFilePathName, classOf[Classification])
-        .map(a => a.asInstanceOf[Classification]).filter(_.id == id).head
-    catch
-      case e: Exception =>
-        println(s"Errore in getRecordById: ${e.getMessage}")
-        new Classification
-
+*/
+/*
   override def getRecordsByFilter[Classification](predicate: Classification => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Classification]): Seq[Classification] =
     try
       getRecordFromXML(xmlFilePathName, classType)
         .map(o => o.asInstanceOf[Classification]).filter(predicate)
     catch
       case e: Exception =>
-        println(s"Errore in getRecordByFilter: ${e.getMessage}")
+        logger(e)
         Seq.empty[Classification]
-
+*/
+/*
+  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Classification =
+    try
+      getRecordFromXML(xmlFilePathName, classOf[Classification])
+        .map(a => a.asInstanceOf[Classification]).filter(_.id == id).head
+    catch
+      case e: Exception =>
+        logger(e)
+        new Classification
+*/
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
@@ -56,10 +60,10 @@ case class Classification(
       if !(fieldExists("id", id, xmlFilePathName) || fieldExists("classification", classification, xmlFilePathName)) then
         result = insertElemIntoXML(xmlFilePathName, obj)
       else
-        println(s"Errore in recordInsert: valori duplicati (id o classification)")
+        throw new RuntimeException("Valori duplicati (id o classifica)!")
     catch
       case e: Exception =>
-        println(s"Errore in recordInsert: ${e.getMessage}")
+        logger(e)
     result
   
   override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
@@ -72,20 +76,20 @@ case class Classification(
       if (found == 0) then
         result = updateElemOfXML(xmlFilePathName, obj)
       else
-        println(s"Errore in recordInsert: valori duplicati (classifica)")
+        throw new RuntimeException("Valori duplicati (classifica)!")
     catch
       case e: Exception =>
-        println(s"Errore in recordUpdate: ${e.getMessage}")
+        logger(e)
         false
     result
-
+/*
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       removeElemFromXML(xmlFilePathName, id)
     catch
       case e: Exception =>
-        println(s"Errore in recordDelete: ${e.getMessage}")
+        logger(e)
         false
-
+*/
 @main def tryClassifica: Unit =
-  println("Tested in ClassificaTest.scala")
+  println("Tested in ClassificationTest.scala")

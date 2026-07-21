@@ -8,6 +8,7 @@ import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Pos
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
+import pkg.d.util.Logger.*
 
 object ClassificationManagement$ extends Management:
 
@@ -66,7 +67,7 @@ object ClassificationManagement$ extends Management:
       try
         val loaded =
           classificationLogic
-            .getRecords()
+            .getRecords[Classification]()
             .sortBy: classification =>
               classification
                 .getId
@@ -85,6 +86,8 @@ object ClassificationManagement$ extends Management:
         case exception: Exception =>
           classifications.clear()
           result.show("Errore durante il caricamento delle classifiche.", success = false)
+          logger(exception)
+          showResult("Errore durante il caricamento delle classifiche.", success = false)
 
     def deleteSelectedClassification(): Unit =
       selectedClassification() match

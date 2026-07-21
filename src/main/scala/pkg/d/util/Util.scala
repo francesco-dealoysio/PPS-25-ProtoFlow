@@ -1,6 +1,10 @@
 package pkg.d.util
 
+import pkg.b.logic.ErrorLog
+
 import java.awt.image.BufferedImage
+import pkg.b.logic.ErrorLog.*
+
 
 object Util:
 
@@ -37,18 +41,54 @@ object Util:
     import scala.util.Try
 
     require(text != null, "Input text cannot be null")
-
-    // Get MD5 digest instance
     val md = MessageDigest.getInstance("MD5")
-
-    // Compute digest as byte array
     val digestBytes = md.digest(text.getBytes("UTF-8"))
-
-    // Convert bytes to hex string
     digestBytes.map("%02x".format(_)).mkString
 
-  @main def tryUtil: Unit =
+  def localDateTime: String =
+    import java.time.{LocalDateTime, ZoneId}
+    import java.time.format.DateTimeFormatter
+    LocalDateTime.now(ZoneId.of("Europe/Rome"))
+      .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS"))
 
+  def localDate: String =
+    import java.time.{LocalDate, ZoneId}
+    import java.time.format.DateTimeFormatter
+    LocalDate.now(ZoneId.of("Europe/Rome"))
+      .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+  def localTime: String =
+    import java.time.{LocalTime, ZoneId}
+    import java.time.format.DateTimeFormatter
+    LocalTime.now(ZoneId.of("Europe/Rome"))
+      .format(DateTimeFormatter.ofPattern("HH:mm:ss.SS"))
+
+  def inDatabaseFilePathName(fileName: String): String =
+    inFolderFilePathName("database", fileName )
+
+  def inArchiveFilePathName(fileName: String) =
+    inFolderFilePathName("archive", fileName )
+
+  def inLogFilePathName(fileName: String) =
+    inFolderFilePathName("log", fileName )
+
+  def inIdsFilePathName(fileName: String) =
+    inFolderFilePathName("ids", fileName )
+    
+  def inTestFilePathName(fileName: String) =
+    inFolderFilePathName("test", fileName )
+
+  def inFolderFilePathName(folder: String, fileName: String): String =
+    import pkg.c.data.Properties.getPropsFileProperty
+    val fs = java.io.File.separator
+    val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
+    getPropsFileProperty(baseFolder + fs + "protoflow.properties", folder + ".folder") + fs + fileName
+
+  @main def tryUtil: Unit =
+    import pkg.b.logic.ErrorLog.*
+    import pkg.d.util.Util.*
+    import pkg.d.util.Logger.*
+    
     // test loadImage
     print("\nTest loadImage:\n\t")
     val image = loadImage("img/message.jpg")
@@ -57,3 +97,24 @@ object Util:
     println("\nTest md5:")
     println("\t" + md5(""))
     println("\t" + md5("topolino"))
+
+    // test local Date and Time
+    println("\nTest date and time:")
+    println("\tDate and Time: " + localDateTime)
+    println("\tDate: " + localDate)
+    println("\tTime: " + localTime)
+
+    // test inDatabaseFilePathName
+    println("\nTest inDatabaseFilePathName")
+    println("\tPath of " + "\"error.log\": \n\t" + inDatabaseFilePathName("error.log") + "\n")
+    println("\tPath of " + "\"protocols.xml\": \n\t" + inArchiveFilePathName("protocols.xml") + "\n")
+
+    // test Logger
+    def riskyFunction(): Unit =
+      try
+        throw new RuntimeException("Something went wrong!")
+      catch
+        case e: Exception =>
+          logger(e, true)
+
+    riskyFunction()
