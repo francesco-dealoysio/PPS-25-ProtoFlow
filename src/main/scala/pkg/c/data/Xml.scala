@@ -1,9 +1,8 @@
 package pkg.c.data
 
-//import pkg.b.logic.Entities.*
 import pkg.b.logic.Account
+import pkg.d.util.Logger.*
 import Properties.*
-
 import java.io.{File, PrintWriter}
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths, StandardOpenOption}
@@ -66,7 +65,7 @@ object Xml:
 
     val xmlContent: Elem = Elem(null, rootTagName, scala.xml.Null, scala.xml.TopScope, minimizeEmpty = true)
     val prettyPrinter = PrettyPrinter(80, 2)
-    val xmlString = """<?xml version="1.0" encoding="UTF-8"?>""" + "\n" + prettyPrinter.format(xmlContent)
+    val xmlString = """<?xml version='1.0' encoding='UTF-8'?>""" + "\n" + prettyPrinter.format(xmlContent)
     val path = Paths.get(xmlFilePathName)
 
     Files.write(path, xmlString.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
@@ -79,9 +78,10 @@ object Xml:
         val cleanedXml = xmlData.copy(child = Nil)
         saveXML(xmlFilePathName, cleanedXml)
       case Failure(ex) =>
-        println(s"Error loading XML: ${ex.getMessage}")
+        logger(ex match { case e: Exception => e })
+        //println(s"Error loading XML: ${ex.getMessage}")
 
-  private def recordUpdate[Any](obj: Any, fieldName: String, value: String): Any =
+  private def recordUpdate(obj: AnyRef, fieldName: String, value: String): AnyRef =
     try
       val field = obj.getClass.getDeclaredField(fieldName)
       field.setAccessible(true)
@@ -89,25 +89,34 @@ object Xml:
       obj
     catch
       case e: Exception =>
-        println(s"Errore in recordUpdate: ${e.getMessage}")
+        logger(e)
         obj
 
-  def getRecordFromXML(xmlFilePathName: String, classType: Class[?]): Seq[Any] =
+  def getRecordFromXML(xmlFilePathName: String, classType: Class[?]): Seq[AnyRef] =
     val xmlTry: Try[Elem] = Try(XML.loadFile(xmlFilePathName))
+
     xmlTry match
       case Success(xmlData) =>
         (xmlData \\ "record").flatMap { node =>
-          val constructor = classType.getDeclaredConstructor()
-          var record = constructor.newInstance()
-          val fieldsMap = node.child.collect { case e: Elem => e.label -> e.text.trim }.toMap
-          val result =
-          fieldsMap.foreach { case (k, v) => record = recordUpdate(record, s"$k", s"$v") }
-          for i <- node yield record
+          try
+            val constructor = classType.getDeclaredConstructor()
+            constructor.setAccessible(true)
+
+            var record = constructor.newInstance().asInstanceOf[AnyRef]
+            val fieldsMap = node.child.collect { case e: Elem => e.label -> e.text.trim }.toMap
+
+            fieldsMap.foreach { case (k, v) => record = recordUpdate(record, k, v) }
+            Some(record)
+          catch
+            case e: Exception =>
+              logger(e)
+              None
         }
       case Failure(ex) =>
-        println(s"Error loading XML: ${ex.getMessage}")
+        logger(ex match { case e: Exception => e })
+        println (s"Error loading XML: ${ex.getMessage}")
         Seq.empty
-
+  
   // ???
   def writeXML(xmlFilePathName: String, xmlElem: Elem): Unit =
     XML.save(xmlFilePathName, xmlElem, "UTF-8", xmlDecl = true)
@@ -145,6 +154,7 @@ object Xml:
         println(s"Element appended to $xmlFilePathName")
         result = true
       case Failure(ex) =>
+        logger(ex match { case e: Exception => e })
         println(s"Error loading XML: ${ex.getMessage}")
     result
 
@@ -178,6 +188,7 @@ object Xml:
             println("Record removed successfully.")
             result = true
         case Failure(ex) =>
+          logger(ex match { case e: Exception => e })
           println(s"Error loading XML: ${ex.getMessage}")
     else
       println(s"Record with id: ${id} not found.")
@@ -195,11 +206,13 @@ object Xml:
         case other =>
           println("Unexpected XML structure.")
       case Failure(ex) =>
+        logger(ex match { case e: Exception => e })
         println(s"Error loading XML: ${ex.getMessage}")
       result
 
   @main def tryXml(): Unit =
-
+    println
+/*
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
     val databaseFolder = baseFolder + fs + "database"
@@ -219,7 +232,7 @@ object Xml:
 
     createEmptyXmlFile(databaseFolder + fs + "nuovo.xml", "libri")
     insertElemIntoXML(databaseFolder + fs + "nuovo.xml", account3)
-
+*/
     //writeXML(databaseFolder + fs + "testElem.xml", elem)
     //saveXML(databaseFolder + fs + "testElem.xml", elem)
     //insertElemIntoXML(databaseFolder + fs + "test.xml", elem)

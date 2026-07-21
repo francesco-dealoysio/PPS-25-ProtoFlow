@@ -1,165 +1,58 @@
 package pkg.c.data
 
 import org.scalatest.funsuite.AnyFunSuite
+import pkg.a.gui.structures.ClassificationViewModel
 import pkg.b.logic.Classification
-import pkg.c.data.guiStructures.ClassificationViewModel
 
 class ClassificationViewModelTest extends AnyFunSuite:
 
   private val viewModel = ClassificationViewModel()
+  
+  test("validazione form: caso valido e campo vuoto/spazi"):
+    assertValid(validForm())
+    assertInvalid(validForm().copy(classification = "   "))(ClassificationViewModel.ClassificationRequiredError)
+    assertInvalid(validForm().copy(description = ""))(ClassificationViewModel.DescriptionRequiredError)
 
-  test("una classifica completa e corretta deve essere valida"):
-    val classificationToValidate = validForm()
+  test("validazione form: errori multipli quando tutto è vuoto"):
+    assertInvalid(Classification())(
+      ClassificationViewModel.ClassificationRequiredError,
+      ClassificationViewModel.DescriptionRequiredError
+    )
 
-    val errors = viewModel.validate(classificationToValidate, existingClassifications)
+  test("gestione duplicati: rileva duplicati (anche con spazi e case-insensitive)"):
+    assertInvalid(validForm().copy(classification = "Amministrazione"))(ClassificationViewModel.DuplicateClassificationError)
+    assertInvalid(validForm().copy(classification = "  amministrazione  "))(ClassificationViewModel.DuplicateClassificationError)
 
+  test("gestione duplicati in modifica: permette se stesso, blocca altri"):
+    val updated = Classification(classification = "Amministrazione", description = "Descrizione")
+    assertValid(updated, currentId = Some("1"))
+    assertInvalid(updated.copy(classification = "Personale"), currentId = Some("1"))(ClassificationViewModel.DuplicateClassificationError)
+
+  test("nextId calcola il nuovo id numerico incrementale o fallback a 1"):
+    val validSeq = Seq(
+      Classification(id = "1", classification = "A", description = "D"),
+      Classification(id = "4", classification = "P", description = "D")
+    )
+    val invalidSeq = Seq(Classification(id = "abc", classification = "A", description = "D"))
+
+    assert(viewModel.nextId(Seq.empty) == "1")
+    assert(viewModel.nextId(validSeq) == "5")
+    assert(viewModel.nextId(invalidSeq) == "1")
+  
+  // Test Helpers
+  private def assertValid(classification: Classification, currentId: Option[String] = None): Unit =
+    val errors = viewModel.validate(classification, existingClassifications, currentId)
     assert(errors.isEmpty)
-    assert(viewModel.isValid(classificationToValidate, existingClassifications))
+    assert(viewModel.isValid(classification, existingClassifications, currentId))
 
-  test("il campo Classifica è obbligatorio"):
-    val classificationToValidate = validForm().copy(classification = "")
-
-    val errors = viewModel.validate(classificationToValidate, existingClassifications)
-
-    assert(errors.contains(ClassificationViewModel.ClassificationRequiredError))
-    assert(!viewModel.isValid(classificationToValidate, existingClassifications))
-
-  test("il campo Classifica contenente solo spazi non è valido"):
-    val classificationToValidate = validForm().copy(classification = "   ")
-
-    val errors = viewModel.validate(classificationToValidate, existingClassifications)
-
-    assert(errors.contains(ClassificationViewModel.ClassificationRequiredError))
-    assert(!viewModel.isValid(classificationToValidate, existingClassifications))
-
-  test("il campo Descrizione è obbligatorio"):
-    val classificationToValidate = validForm().copy(description = "")
-
-    val errors = viewModel.validate(classificationToValidate, existingClassifications)
-
-    assert(errors.contains(ClassificationViewModel.DescriptionRequiredError))
-    assert(!viewModel.isValid(classificationToValidate, existingClassifications))
-
-  test("il campo Descrizione contenente solo spazi non è valido"):
-    val classificationToValidate = validForm().copy(description = "   ")
-
-    val errors = viewModel.validate(classificationToValidate, existingClassifications)
-
-    assert(errors.contains(ClassificationViewModel.DescriptionRequiredError))
-    assert(!viewModel.isValid(classificationToValidate, existingClassifications))
-
-  test("se Classifica e Descrizione sono vuote vengono restituiti entrambi gli errori"):
-    val classificationToValidate = Classification()
-
-    val errors = viewModel.validate(classificationToValidate, existingClassifications)
-
-    assert(errors.size == 2)
-    assert(errors.contains(ClassificationViewModel.ClassificationRequiredError))
-    assert(errors.contains(ClassificationViewModel.DescriptionRequiredError))
-    assert(!viewModel.isValid(classificationToValidate, existingClassifications))
-
-  test("una classifica già esistente non deve essere valida"):
-    val classificationToValidate = validForm().copy(classification = "Amministrazione")
-
-    val errors = viewModel.validate(classificationToValidate, existingClassifications)
-
-    assert(errors.contains(ClassificationViewModel.DuplicateClassificationError))
-    assert(!viewModel.isValid(classificationToValidate, existingClassifications))
-
-  test("il controllo dei duplicati ignora maiuscole e minuscole"):
-    val classificationToValidate = validForm().copy(classification = "AMMINISTRAZIONE")
-
-    val errors = viewModel.validate(classificationToValidate, existingClassifications)
-
-    assert(errors.contains(ClassificationViewModel.DuplicateClassificationError))
-
-  test("il controllo dei duplicati ignora gli spazi iniziali e finali"):
-    val classificationToValidate = validForm().copy(classification = "  Amministrazione  ")
-
-    val errors = viewModel.validate(classificationToValidate, existingClassifications)
-
-    assert(errors.contains(ClassificationViewModel.DuplicateClassificationError))
-
-  test("durante la modifica la classifica non deve essere considerata duplicata di se stessa"):
-    val classificationToValidate = Classification(
-      classification = "Amministrazione",
-      description = "Gestione amministrativa aggiornata"
-    )
-
-    val errors = viewModel.validate(
-      classification = classificationToValidate,
-      existingClassifications = existingClassifications,
-      currentClassificationId = Some("1")
-    )
-
-    assert(errors.isEmpty)
-    assert(viewModel.isValid(
-      classification = classificationToValidate,
-      existingClassifications = existingClassifications,
-      currentClassificationId = Some("1")
-    ))
-
-  test("durante la modifica il nome di un'altra classifica deve essere considerato duplicato"):
-    val classificationToValidate = Classification(
-      classification = "Personale",
-      description = "Descrizione aggiornata"
-    )
-
-    val errors = viewModel.validate(
-      classification = classificationToValidate,
-      existingClassifications = existingClassifications,
-      currentClassificationId = Some("1")
-    )
-
-    assert(errors.contains(ClassificationViewModel.DuplicateClassificationError))
-    assert(!viewModel.isValid(
-      classification = classificationToValidate,
-      existingClassifications = existingClassifications,
-      currentClassificationId = Some("1")
-    ))
-
-  test("nextId restituisce 1 quando non esistono classifiche"):
-    val id = viewModel.nextId(Seq.empty)
-
-    assert(id == "1")
-
-  test("nextId restituisce l'identificativo successivo a quello massimo"):
-    val classifications = Seq(
-      Classification(id = "1", classification = "Amministrazione", description = "Gestione amministrativa"),
-      Classification(id = "4", classification = "Personale", description = "Gestione del personale"),
-      Classification(id = "2", classification = "Informatica", description = "Gestione informatica")
-    )
-
-    val id = viewModel.nextId(classifications)
-
-    assert(id == "5")
-
-  test("nextId ignora gli identificativi non numerici"):
-    val classifications = Seq(
-      Classification(id = "1", classification = "Amministrazione", description = "Gestione amministrativa"),
-      Classification(id = "abc", classification = "Personale", description = "Gestione del personale"),
-      Classification(id = "5", classification = "Informatica", description = "Gestione informatica")
-    )
-
-    val id = viewModel.nextId(classifications)
-
-    assert(id == "6")
-
-  test("nextId restituisce 1 quando tutti gli identificativi non sono numerici"):
-    val classifications = Seq(
-      Classification(id = "abc", classification = "Amministrazione", description = "Gestione amministrativa"),
-      Classification(id = "xyz", classification = "Personale", description = "Gestione del personale")
-    )
-
-    val id = viewModel.nextId(classifications)
-
-    assert(id == "1")
+  private def assertInvalid(classification: Classification, currentId: Option[String] = None)(expectedErrors: String*): Unit =
+    val errors: Seq[String] = viewModel.validate(classification, existingClassifications, currentId)
+    assert(errors.size == expectedErrors.size)
+    expectedErrors.foreach(err => assert(errors.contains(err)))
+    assert(!viewModel.isValid(classification, existingClassifications, currentId))
 
   private def validForm(): Classification =
-    Classification(
-      classification = "Informatica",
-      description = "Gestione dei servizi informatici"
-    )
+    Classification(classification = "Informatica", description = "Gestione servizi")
 
   private def existingClassifications: Seq[Classification] =
     Seq(

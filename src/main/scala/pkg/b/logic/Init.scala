@@ -4,6 +4,8 @@ import java.nio.file.{Files, Paths}
 import pkg.c.data.*
 import pkg.c.data.FileSystem.*
 import pkg.c.data.Properties.*
+import pkg.d.util.Util.*
+import pkg.d.util.IdGen
 import Xml.*
 import DummyData.*
 
@@ -18,9 +20,17 @@ object Init:
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
     val databaseFolder = baseFolder + fs + "database"
+    val archiveFolder = baseFolder + fs + "archive"
+    val logFolder = baseFolder + fs + "log"
+    val idFolder = baseFolder + fs + "ids"
+    val testFolder = baseFolder + fs + "test"
     createPropsFile(baseFolder + fs + "protoflow.properties", " ProtoFlow Configuration")
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "base.folder", baseFolder)
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder", databaseFolder)
+    setPropsFileProperty(baseFolder + fs + "protoflow.properties", "archive.folder", archiveFolder)
+    setPropsFileProperty(baseFolder + fs + "protoflow.properties", "log.folder", logFolder)
+    setPropsFileProperty(baseFolder + fs + "protoflow.properties", "ids.folder", idFolder)
+    setPropsFileProperty(baseFolder + fs + "protoflow.properties", "test.folder", testFolder)
 
     // Struttura per la documentazione
     createDirectory("protoflow" + fs + "documentazione")
@@ -99,10 +109,13 @@ object Init:
       writeXML(databaseFolder + fs + "roles.xml", roles)
 
     if (Files.notExists(Paths.get(databaseFolder + fs + "classifications.xml")))
-      writeXML(databaseFolder + fs + "classications.xml", classifications)
+      writeXML(databaseFolder + fs + "classifications.xml", classifications)
 
     if (Files.notExists(Paths.get(databaseFolder + fs + "registrations.xml")))
       writeXML(databaseFolder + fs + "registrations.xml", registrations)
+
+    if (Files.notExists(Paths.get(inLogFilePathName("errors.xml"))))
+      createEmptyXmlFile(inLogFilePathName("errors.xml"), "errors")
 /*
     if (Files.notExists(Paths.get(databaseFolder + fs + "registrations" + fs + "requests.xml")))
       writeXML(databaseFolder + fs + "registrations" + fs + "requests.xml", registrations)
@@ -113,5 +126,12 @@ object Init:
     if (Files.notExists(Paths.get(databaseFolder + fs + "registrations" + fs + "accepted.xml")))
       writeXML(databaseFolder + fs + "registrations" + fs + "approved.xml", registrations)
 */
+    // init ids
+    IdGen(inIdsFilePathName("errorlogId"))
+    IdGen(inIdsFilePathName("accountId"))
+    IdGen(inIdsFilePathName("roleId"))
+    IdGen(inIdsFilePathName("classificationId"))
+    IdGen(inIdsFilePathName("registrationId"))
+
   @main def tryInit: Unit =
     init

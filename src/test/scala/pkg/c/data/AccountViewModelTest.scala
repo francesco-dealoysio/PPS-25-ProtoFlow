@@ -1,8 +1,8 @@
 package pkg.c.data
 
 import org.scalatest.funsuite.AnyFunSuite
+import pkg.a.gui.structures.AccountViewModel
 import pkg.b.logic.Account
-import pkg.c.data.guiStructures.AccountViewModel
 
 class AccountViewModelTest extends AnyFunSuite:
 

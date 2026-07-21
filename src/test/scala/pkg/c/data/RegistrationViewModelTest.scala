@@ -1,93 +1,33 @@
 package pkg.c.data
 
 import org.scalatest.funsuite.AnyFunSuite
+import pkg.a.gui.structures.{RegistrationRequest, RegistrationViewModel}
 import pkg.c.data.generalStructures.RegistrationRequestStatus
-import pkg.c.data.guiStructures.{RegistrationRequest, RegistrationViewModel}
-
 import java.time.LocalDateTime
 
 class RegistrationViewModelTest extends AnyFunSuite:
 
   private val viewModel = RegistrationViewModel()
-
+  
   test("una richiesta di registrazione completa e corretta deve essere valida"):
-    val request = validRequest()
+    assertValid(validRequest())
+    assertValid(validRequest().copy(phone = "")) // Il campo Telefono non è obbligatorio
 
-    val errors = viewModel.validate(request)
-
-    assert(errors.isEmpty)
-    assert(viewModel.isValid(request))
-
-  test("il campo Nome è obbligatorio"):
-    val request = validRequest().copy(name = "")
-
-    val errors = viewModel.validate(request)
-
-    assert(errors.contains("Il campo 'Nome' è obbligatorio."))
-    assert(!viewModel.isValid(request))
-
-  test("il campo Cognome è obbligatorio"):
-    val request = validRequest().copy(surname = "")
-
-    val errors = viewModel.validate(request)
-
-    assert(errors.contains("Il campo 'Cognome' è obbligatorio."))
-    assert(!viewModel.isValid(request))
-
-  test("il campo Indirizzo email è obbligatorio"):
-    val request = validRequest().copy(email = "")
-
-    val errors = viewModel.validate(request)
-
-    assert(errors.contains("Il campo 'Indirizzo email' è obbligatorio."))
-    assert(!viewModel.isValid(request))
+  test("validazione campi obbligatori singoli"):
+    assertInvalid(validRequest().copy(name = ""))("Il campo 'Nome' è obbligatorio.")
+    assertInvalid(validRequest().copy(surname = ""))("Il campo 'Cognome' è obbligatorio.")
+    assertInvalid(validRequest().copy(email = ""))("Il campo 'Indirizzo email' è obbligatorio.")
+    assertInvalid(validRequest().copy(requestedRole = ""))("Il campo 'Ruolo richiesto' è obbligatorio.")
+    assertInvalid(validRequest().copy(requestedArea = ""))("Il campo 'Area/Settore di appartenenza' è obbligatorio.")
+    assertInvalid(validRequest().copy(assignment = ""))("Il campo 'Incarico' è obbligatorio.")
 
   test("l'email deve avere un formato valido"):
-    val request = validRequest().copy(email = "email-non-valida")
-
-    val errors = viewModel.validate(request)
-
-    assert(errors.contains("L'indirizzo email non ha un formato valido."))
-    assert(!viewModel.isValid(request))
-
-  test("il campo Ruolo richiesto è obbligatorio"):
-    val request = validRequest().copy(requestedRole = "")
-
-    val errors = viewModel.validate(request)
-
-    assert(errors.contains("Il campo 'Ruolo richiesto' è obbligatorio."))
-    assert(!viewModel.isValid(request))
-
-  test("il campo Area o Settore di appartenenza è obbligatorio"):
-    val request = validRequest().copy(requestedArea = "")
-
-    val errors = viewModel.validate(request)
-
-    assert(
-      errors.contains(
-        "Il campo 'Area/Settore di appartenenza' è obbligatorio."
-      )
+    assertInvalid(validRequest().copy(email = "email-non-valida"))(
+      "L'indirizzo email non ha un formato valido."
     )
-    assert(!viewModel.isValid(request))
 
-  test("il campo Incarico è obbligatorio"):
-    val request = validRequest().copy(assignment = "")
-
-    val errors = viewModel.validate(request)
-
-    assert(errors.contains("Il campo 'Incarico' è obbligatorio."))
-    assert(!viewModel.isValid(request))
-
-  test("il campo Telefono non è obbligatorio"):
-    val request = validRequest().copy(phone = "")
-
-    val errors = viewModel.validate(request)
-
-    assert(errors.isEmpty)
-    assert(viewModel.isValid(request))
-
-  test("se più campi obbligatori sono vuoti vengono restituiti più errori"):
-    val request = validRequest().copy(
+  test("se più campi obbligatori sono vuoti vengono restituiti tutti gli errori relativi"):
+    val emptyRequest = validRequest().copy(
       name = "",
       surname = "",
       email = "",
@@ -96,19 +36,26 @@ class RegistrationViewModelTest extends AnyFunSuite:
       assignment = ""
     )
 
-    val errors = viewModel.validate(request)
-
-    assert(errors.size == 6)
-    assert(errors.contains("Il campo 'Nome' è obbligatorio."))
-    assert(errors.contains("Il campo 'Cognome' è obbligatorio."))
-    assert(errors.contains("Il campo 'Indirizzo email' è obbligatorio."))
-    assert(errors.contains("Il campo 'Ruolo richiesto' è obbligatorio."))
-    assert(
-      errors.contains(
-        "Il campo 'Area/Settore di appartenenza' è obbligatorio."
-      )
+    assertInvalid(emptyRequest)(
+      "Il campo 'Nome' è obbligatorio.",
+      "Il campo 'Cognome' è obbligatorio.",
+      "Il campo 'Indirizzo email' è obbligatorio.",
+      "Il campo 'Ruolo richiesto' è obbligatorio.",
+      "Il campo 'Area/Settore di appartenenza' è obbligatorio.",
+      "Il campo 'Incarico' è obbligatorio."
     )
-    assert(errors.contains("Il campo 'Incarico' è obbligatorio."))
+  
+  // Test Helpers
+
+  private def assertValid(request: RegistrationRequest): Unit =
+    val errors = viewModel.validate(request)
+    assert(errors.isEmpty)
+    assert(viewModel.isValid(request))
+
+  private def assertInvalid(request: RegistrationRequest)(expectedErrors: String*): Unit =
+    val errors = viewModel.validate(request)
+    assert(errors.size == expectedErrors.size)
+    expectedErrors.foreach(err => assert(errors.contains(err)))
     assert(!viewModel.isValid(request))
 
   private def validRequest(): RegistrationRequest =

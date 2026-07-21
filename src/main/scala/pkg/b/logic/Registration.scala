@@ -2,6 +2,7 @@ package pkg.b.logic
 
 import pkg.b.logic.Entity
 import pkg.c.data.Xml.*
+import pkg.d.util.Logger.*
 
 case class Registration(
                     private var id: String = "",
@@ -47,34 +48,36 @@ case class Registration(
   def getMotivation: String = motivation
 
   override def xmlFile = "registrations.xml"
-
+/*
   override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Registration] =
     try
       getRecordFromXML(xmlFilePathName, classOf[Registration])
         .map(r => r.asInstanceOf[Registration])
     catch
       case e: Exception =>
-        println(s"Errore in getRecords: ${e.getMessage}")
+        logger(e)
         Seq.empty[Registration]
-
-  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Registration =
-    try
-      getRecordFromXML(xmlFilePathName, classOf[Registration])
-        .map(a => a.asInstanceOf[Registration]).filter(_.id == id).head
-    catch
-      case e: Exception =>
-        println(s"Errore in getRecordById: ${e.getMessage}")
-        new Registration
-
+*/
+/*
   override def getRecordsByFilter[Registration](predicate: Registration => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Registration]): Seq[Registration] =
     try
       getRecordFromXML(xmlFilePathName, classType)
         .map(o => o.asInstanceOf[Registration]).filter(predicate)
     catch
       case e: Exception =>
-        println(s"Errore in getRecordByFilter: ${e.getMessage}")
+        logger(e)
         Seq.empty[Registration]
-
+*/
+/*
+  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Registration =
+    try
+      getRecordFromXML(xmlFilePathName, classOf[Registration])
+        .map(a => a.asInstanceOf[Registration]).filter(_.id == id).head
+    catch
+      case e: Exception =>
+        logger(e)
+        new Registration
+*/
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
@@ -83,10 +86,10 @@ case class Registration(
       if !fieldExists("id", id, xmlFilePathName) then
         result = insertElemIntoXML(xmlFilePathName, obj)
       else
-        println(s"Errore in recordInsert: valori duplicati (id)")
+        throw new RuntimeException("Valori duplicati (id)!")
     catch
       case e: Exception =>
-        println(s"Errore in recordInsert: ${e.getMessage}")
+        logger(e)
     result
 
   override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
@@ -94,16 +97,16 @@ case class Registration(
       updateElemOfXML(xmlFilePathName, obj)
     catch
       case e: Exception =>
-        println(s"Errore in recordUpdate: ${e.getMessage}")
+        logger(e)
         false
-    
+/*
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       removeElemFromXML(xmlFilePathName, id)
     catch
       case e: Exception =>
-        println(s"Errore in recordDelete: ${e.getMessage}")
+        logger(e)
         false
-
+*/
 @main def tryRegistration: Unit =
   println("Tested in RegistrationTest.scala")
