@@ -47,6 +47,21 @@ class AccountViewModel:
       )
     ).flatten
 
+  def isValid(
+               account: Account,
+               rawPassword: String,
+               existingAccounts: Seq[Account],
+               currentAccountId: Option[String] = None,
+               requirePassword: Boolean = true
+             ): Boolean =
+    validate(
+      account,
+      rawPassword,
+      existingAccounts,
+      currentAccountId,
+      requirePassword
+    ).isEmpty
+
   def nextId(existingAccounts: Seq[Account]): String =
     val maximumId =
       existingAccounts
