@@ -11,7 +11,7 @@ object Logger:
     val topElement = ex.getStackTrace.headOption
     topElement match
       case Some(ste) =>
-        errorLog.setId(IdGen(inIdsFilePathName("errorlogid")))
+        errorLog.setId(IdGen(inIdsFilePathName("errorlogId")))
         errorLog.setDate(localDate)
         errorLog.setTime(localTime)
         errorLog.setClass(ste.getClassName.stripSuffix("$"))

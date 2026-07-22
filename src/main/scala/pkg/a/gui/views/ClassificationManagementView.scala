@@ -10,7 +10,7 @@ import scalafx.scene.control.*
 import scalafx.scene.layout.*
 import pkg.d.util.Logger.*
 
-object ClassificationManagement$ extends Management:
+object ClassificationManagementView extends Management:
 
   def apply(
              onAdd: () => Unit = () => (),
@@ -87,7 +87,6 @@ object ClassificationManagement$ extends Management:
           classifications.clear()
           result.show("Errore durante il caricamento delle classifiche.", success = false)
           logger(exception)
-          showResult("Errore durante il caricamento delle classifiche.", success = false)
 
     def deleteSelectedClassification(): Unit =
       selectedClassification() match
@@ -108,10 +107,7 @@ object ClassificationManagement$ extends Management:
             )
 
           if confirmed then
-            val deleted =
-              classificationLogic.recordDelete(
-                selected.getId
-              )
+            val deleted = classificationLogic.recordDelete(selected.getId)
 
             if deleted then
               loadClassifications()

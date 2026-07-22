@@ -7,7 +7,7 @@ import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.{Button, ComboBox, TextField}
 import scalafx.scene.layout.{BorderPane, GridPane}
 
-object Registration$ extends Form:
+object RegistrationView extends Form:
 
   def apply(
              viewModel: RegistrationViewModel,
@@ -57,6 +57,7 @@ object Registration$ extends Form:
 
     def currentRequest(): RegistrationRequest =
       RegistrationRequest(
+        id = "",
         name = nameField.text.value,
         surname = surnameField.text.value,
         email = emailField.text.value,

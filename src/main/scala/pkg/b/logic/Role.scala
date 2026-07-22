@@ -91,5 +91,18 @@ case class Role(
         logger(e)
         false
 */
-@main def tryRole: Unit =
-    println("Tested in RoleTest.scala")
+
+object Role:
+
+  val AdminName: String = "admin"
+  val OperatorName: String = "oper"
+  val ViewerName: String = "viewer"
+  val validNames: Set[String] = Set(AdminName, OperatorName, ViewerName)
+
+  def fromName(roleName: String): Role =
+    val normalizedRole = roleName.trim.toLowerCase
+
+    if validNames.contains(normalizedRole) then
+      Role(role = normalizedRole)
+    else
+      throw IllegalArgumentException(s"Ruolo non riconosciuto: $normalizedRole")

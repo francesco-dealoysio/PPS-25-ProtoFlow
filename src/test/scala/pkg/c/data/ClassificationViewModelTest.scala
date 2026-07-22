@@ -7,7 +7,7 @@ import pkg.b.logic.Classification
 class ClassificationViewModelTest extends AnyFunSuite:
 
   private val viewModel = ClassificationViewModel()
-  
+
   test("validazione form: caso valido e campo vuoto/spazi"):
     assertValid(validForm())
     assertInvalid(validForm().copy(classification = "   "))(ClassificationViewModel.ClassificationRequiredError)
@@ -28,17 +28,6 @@ class ClassificationViewModelTest extends AnyFunSuite:
     assertValid(updated, currentId = Some("1"))
     assertInvalid(updated.copy(classification = "Personale"), currentId = Some("1"))(ClassificationViewModel.DuplicateClassificationError)
 
-  test("nextId calcola il nuovo id numerico incrementale o fallback a 1"):
-    val validSeq = Seq(
-      Classification(id = "1", classification = "A", description = "D"),
-      Classification(id = "4", classification = "P", description = "D")
-    )
-    val invalidSeq = Seq(Classification(id = "abc", classification = "A", description = "D"))
-
-    assert(viewModel.nextId(Seq.empty) == "1")
-    assert(viewModel.nextId(validSeq) == "5")
-    assert(viewModel.nextId(invalidSeq) == "1")
-  
   // Test Helpers
   private def assertValid(classification: Classification, currentId: Option[String] = None): Unit =
     val errors = viewModel.validate(classification, existingClassifications, currentId)

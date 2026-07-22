@@ -6,7 +6,7 @@ import pkg.b.logic.Classification
 import scalafx.scene.control.{TextArea, TextField}
 import scalafx.scene.layout.BorderPane
 
-object ClassificationEdit$ extends Form:
+object ClassificationEditView extends Form:
 
   def apply(
              selectedClassification: Classification,

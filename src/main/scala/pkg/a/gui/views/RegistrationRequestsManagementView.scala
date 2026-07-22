@@ -10,10 +10,9 @@ import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Insets
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
-
 import java.time.format.DateTimeFormatter
 
-object RegistrationRequestsManagement$ extends Management:
+object RegistrationRequestsManagementView extends Management:
 
   private val dateFormatter =
     DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
@@ -24,16 +23,13 @@ object RegistrationRequestsManagement$ extends Management:
 
     val repository = new RegistrationRequestRepository()
     val service = new RegistrationRequestService(repository)
-
     val requests = ObservableBuffer.empty[RegistrationRequest]
-
     val result =
       createResultMessage(
         baseStyle = "requests-message",
         successStyle = "requests-message-success",
         errorStyle = "requests-message-error"
       )
-
 
     val table = new TableView[RegistrationRequest](requests):
       columnResizePolicy = TableView.ConstrainedResizePolicy
@@ -49,54 +45,20 @@ object RegistrationRequestsManagement$ extends Management:
         cellValueFactory = cell =>
           StringProperty(value(cell.value))
 
-    val nameColumn = stringColumn("Nome", 110)(_.name)
-    val surnameColumn = stringColumn("Cognome", 120)(_.surname)
-    val emailColumn = stringColumn("Email", 210)(_.email)
-    val roleColumn = stringColumn("Ruolo richiesto", 150)(_.requestedRole)
-    val areaColumn = stringColumn("Area", 140)(_.requestedArea)
-    val assignmentColumn = stringColumn("Incarico", 140)(_.assignment)
-    val dateColumn = stringColumn("Data richiesta", 150):
-        _.requestDate.format(dateFormatter)
-    val statusColumn = stringColumn("Stato", 100):
-        _.status.toString
-
     table.columns ++= Seq(
-      nameColumn,
-      surnameColumn,
-      emailColumn,
-      roleColumn,
-      areaColumn,
-      assignmentColumn,
-      dateColumn,
-      statusColumn
+      stringColumn("Nome", 110)(_.name),
+      stringColumn("Cognome", 120)(_.surname),
+      stringColumn("Email", 210)(_.email),
+      stringColumn("Ruolo richiesto", 150)(_.requestedRole),
+      stringColumn("Area", 140)(_.requestedArea),
+      stringColumn("Incarico", 140)(_.assignment),
+      stringColumn("Data richiesta", 150):
+        _.requestDate.format(dateFormatter),
+      stringColumn("Stato", 100):
+        _.status.toString
     )
 
-    val idValue = detailValue()
-    val nameValue = detailValue()
-    val surnameValue = detailValue()
-    val emailValue = detailValue()
-    val phoneValue = detailValue()
-    val roleValue = detailValue()
-    val areaValue = detailValue()
-    val assignmentValue = detailValue()
-    val dateValue = detailValue()
-    val statusValue = detailValue()
-
-    val detailValues = Seq(
-      idValue,
-      nameValue,
-      surnameValue,
-      emailValue,
-      phoneValue,
-      roleValue,
-      areaValue,
-      assignmentValue,
-      dateValue,
-      statusValue
-    )
-
-    def clearDetails(): Unit =
-      detailValues.foreach(_.text = "-")
+    case class DetailField(title: String, valueLabel: Label, valueOf: RegistrationRequest => String)
 
     def valueOrDash(value: String): String =
       Option(value)
@@ -104,67 +66,55 @@ object RegistrationRequestsManagement$ extends Management:
         .filter(_.nonEmpty)
         .getOrElse("-")
 
+    val idField = DetailField("ID richiesta", detailValue(), request => valueOrDash(request.id))
+    val emailField = DetailField("Email", detailValue(), request => valueOrDash(request.email))
+
+    val detailFields = Seq(
+      idField,
+      DetailField("Nome", detailValue(), request => valueOrDash(request.name)),
+      DetailField("Cognome", detailValue(), request => valueOrDash(request.surname)),
+      emailField,
+      DetailField("Telefono", detailValue(), request => valueOrDash(request.phone)),
+      DetailField("Ruolo richiesto", detailValue(), request => valueOrDash(request.requestedRole)),
+      DetailField("Area richiesta", detailValue(), request => valueOrDash(request.requestedArea)),
+      DetailField("Incarico", detailValue(), request => valueOrDash(request.assignment)),
+      DetailField("Data richiesta", detailValue(), request => request.requestDate.format(dateFormatter)),
+      DetailField("Stato", detailValue(), request => request.status.toString)
+    )
+
+    def clearDetails(): Unit =
+      detailFields.foreach(_.valueLabel.text = "-")
+
     def showDetails(request: RegistrationRequest): Unit =
-      idValue.text = valueOrDash(request.id)
-      nameValue.text = valueOrDash(request.name)
-      surnameValue.text = valueOrDash(request.surname)
-      emailValue.text = valueOrDash(request.email)
-      phoneValue.text = valueOrDash(request.phone)
-      roleValue.text = valueOrDash(request.requestedRole)
-      areaValue.text = valueOrDash(request.requestedArea)
-      assignmentValue.text = valueOrDash(request.assignment)
-      dateValue.text = request.requestDate.format(dateFormatter)
-      statusValue.text = request.status.toString
-
-    table.selectionModel.value.selectedItem.onChange {
-      (_, _, selectedRequest) =>
-        Option(selectedRequest) match
-          case Some(request) =>
-            showDetails(request)
-            result.clear()
-
-          case None =>
-            clearDetails()
-    }
+      detailFields.foreach: field =>
+        field.valueLabel.text = field.valueOf(request)
 
     val detailsGrid = new GridPane:
       hgap = 18
       vgap = 12
       padding = Insets(18)
       styleClass += "request-details-grid"
+      add(detailLabel(idField.title), 0, 0)
+      add(idField.valueLabel, 1, 0, 3, 1)
 
-      add(detailLabel("ID richiesta"), 0, 0)
-      add(idValue, 1, 0, 3, 1)
+      detailFields
+        .drop(1)
+        .grouped(2)
+        .zipWithIndex
+        .foreach:
+          case (fields, rowIndex) =>
+            val row = rowIndex + 1
 
-      add(detailLabel("Nome"), 0, 1)
-      add(nameValue, 1, 1)
+            fields.zipWithIndex.foreach:
+              case (field, columnIndex) =>
+                val labelColumn = columnIndex * 2
+                val valueColumn = labelColumn + 1
 
-      add(detailLabel("Cognome"), 2, 1)
-      add(surnameValue, 3, 1)
+                add(detailLabel(field.title), labelColumn, row)
+                add(field.valueLabel, valueColumn, row)
 
-      add(detailLabel("Email"), 0, 2)
-      add(emailValue, 1, 2)
-
-      add(detailLabel("Telefono"), 2, 2)
-      add(phoneValue, 3, 2)
-
-      add(detailLabel("Ruolo richiesto"), 0, 3)
-      add(roleValue, 1, 3)
-
-      add(detailLabel("Area richiesta"), 2, 3)
-      add(areaValue, 3, 3)
-
-      add(detailLabel("Incarico"), 0, 4)
-      add(assignmentValue, 1, 4)
-
-      add(detailLabel("Data richiesta"), 2, 4)
-      add(dateValue, 3, 4)
-
-      add(detailLabel("Stato"), 0, 5)
-      add(statusValue, 1, 5)
-
-    GridPane.setHgrow(idValue, Priority.Always)
-    GridPane.setHgrow(emailValue, Priority.Always)
+    GridPane.setHgrow(idField.valueLabel, Priority.Always)
+    GridPane.setHgrow(emailField.valueLabel, Priority.Always)
 
     def selectedRequest(): Option[RegistrationRequest] =
       Option(table.selectionModel.value.selectedItem.value)

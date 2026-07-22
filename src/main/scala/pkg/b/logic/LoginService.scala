@@ -1,6 +1,5 @@
 package pkg.b.logic
 
-import Account.*
 import pkg.c.data.Xml.*
 import pkg.c.data.Properties.*
 import pkg.d.util.Util.md5
@@ -12,11 +11,7 @@ object LoginService:
     case InvalidCredentials
     case UnknownRole(role: String)
 
-  case class LoggedUser(
-                         username: String,
-                         fullName: String,
-                         role: String
-                       )
+  case class LoggedUser(username: String, fullName: String, role: Role)
 
   def login(username: String, password: String): Either[LoginError, LoggedUser] =
     val cleanUsername = username.trim
@@ -36,7 +31,7 @@ object LoginService:
           Left(LoginError.InvalidCredentials)
 
   private val validRoles: Set[String] =
-    Set("admin", "oper", "viewer")
+    Role.validNames
 
   private def toLoggedUser(account: Account): LoggedUser =
     val fullName =
@@ -47,7 +42,7 @@ object LoginService:
     LoggedUser(
       username = account.getUsername,
       fullName = fullName,
-      role = account.getRole
+      role = Role.fromName(account.getRole)
     )
 
   private def checkCredentials(username: String, password: String): Option[Account] =
