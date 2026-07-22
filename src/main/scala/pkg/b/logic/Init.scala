@@ -132,6 +132,7 @@ object Init:
     IdGen(inIdsFilePathName("roleId"))
     IdGen(inIdsFilePathName("classificationId"))
     IdGen(inIdsFilePathName("registrationId"))
+    IdGen(inIdsFilePathName("registrationRequestId"))
 
   @main def tryInit: Unit =
     init

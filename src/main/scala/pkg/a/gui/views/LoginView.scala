@@ -9,7 +9,7 @@ import scalafx.scene.control.{Button, Label, PasswordField, TextField}
 import scalafx.scene.input.KeyCode
 import scalafx.scene.layout.{BorderPane, Region, StackPane, VBox}
 
-object Login$ extends Form:
+object LoginView extends Form:
 
   def apply(onLoginSuccess: LoggedUser => Unit,
              onRegistrationRequest: () => Unit

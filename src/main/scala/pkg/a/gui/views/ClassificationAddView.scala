@@ -5,8 +5,10 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
 import scalafx.scene.control.{TextArea, TextField}
 import scalafx.scene.layout.BorderPane
+import pkg.d.util.IdGen
+import pkg.d.util.Util.inIdsFilePathName
 
-object ClassificationAdd$ extends Form:
+object ClassificationAddView extends Form:
 
   def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
@@ -69,7 +71,7 @@ object ClassificationAdd$ extends Form:
       saveButton: () =>
         if validateForm() then
           val existingClassifications = classificationLogic.getRecords()
-          val newClassification = currentClassification(viewModel.nextId(existingClassifications))
+          val newClassification =  currentClassification(IdGen(inIdsFilePathName("classificationId")))
           val saved = classificationLogic.recordInsert(newClassification)
 
           showMessage(

@@ -4,9 +4,7 @@ import pkg.b.logic.Classification
 
 object ClassificationViewModel:
   val ClassificationRequiredError = "Il campo Classifica è obbligatorio."
-
   val DescriptionRequiredError = "Il campo Descrizione è obbligatorio."
-
   val DuplicateClassificationError = "Esiste già una classifica con questo nome."
 
 class ClassificationViewModel:
@@ -43,15 +41,6 @@ class ClassificationViewModel:
       existingClassifications,
       currentClassificationId
     ).isEmpty
-
-  def nextId(existingClassifications: Seq[Classification]): String =
-    val maximumId =
-      existingClassifications
-        .flatMap(_.getId.toIntOption)
-        .maxOption
-        .getOrElse(0)
-
-    (maximumId + 1).toString
 
   private def validateRequired(
                                 errorMessage: String,

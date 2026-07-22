@@ -1,6 +1,6 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
+import pkg.a.gui.structures.{MenuAction, MenuItem}
 import pkg.a.gui.traits.HomePage
 
 object ViewerHomePageView extends HomePage:

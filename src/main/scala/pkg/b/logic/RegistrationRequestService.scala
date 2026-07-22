@@ -3,6 +3,8 @@ package pkg.b.logic
 import pkg.a.gui.structures.RegistrationRequest
 import pkg.c.data.generalStructures.RegistrationRequestStatus
 import pkg.c.data.xmlManagement.RegistrationRequestRepository
+import pkg.d.util.IdGen
+import pkg.d.util.Util.inIdsFilePathName
 
 import java.time.LocalDateTime
 
@@ -31,6 +33,7 @@ class RegistrationRequestService(private val repository: RegistrationRequestRepo
       Left("Email non valida")
     else
       val request = RegistrationRequest(
+        id = IdGen(inIdsFilePathName("registrationRequestId")),
         name = name.trim,
         surname = surname.trim,
         email = email.trim,

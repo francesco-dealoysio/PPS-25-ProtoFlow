@@ -1,12 +1,10 @@
 package pkg.a.gui.structures
 
 import pkg.c.data.generalStructures.RegistrationRequestStatus
-
 import java.time.LocalDateTime
-import java.util.UUID
 
 case class RegistrationRequest(
-                                id: String = UUID.randomUUID().toString,
+                                id: String,
                                 name: String = "",
                                 surname: String = "",
                                 email: String = "",

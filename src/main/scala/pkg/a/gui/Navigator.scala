@@ -2,9 +2,8 @@ package pkg.a.gui
 
 import pkg.a.gui.structures.{HomePageViewModel, RegistrationViewModel}
 import pkg.a.gui.traits.HomePage
-import pkg.a.gui.views.{Login$, Registration$, RoleAddView}
+import pkg.a.gui.views.{LoginView, RegistrationView, RoleAddView}
 import pkg.b.logic.LoginService.LoggedUser
-import pkg.c.data.generalStructures.Role
 import scalafx.application.JFXApp3
 import scalafx.scene.Scene
 
@@ -17,7 +16,7 @@ class Navigator(stage: JFXApp3.PrimaryStage):
     stage.resizable = false
 
     val scene = new Scene(460, 560):
-      root = Login$(
+      root = LoginView(
         onLoginSuccess = user =>
           showHome(user),
 
@@ -25,10 +24,7 @@ class Navigator(stage: JFXApp3.PrimaryStage):
           showRegistration()
       )
 
-    addPageStylesheets(
-      scene,
-      "/login.css"
-    )
+    addPageStylesheets(scene, "/login.css")
 
     stage.scene = scene
 
@@ -40,24 +36,18 @@ class Navigator(stage: JFXApp3.PrimaryStage):
     stage.resizable = true
 
     val scene = new Scene(900, 650):
-      root = Registration$(
+      root = RegistrationView(
         viewModel = RegistrationViewModel(),
 
         onExit = () =>
           showLogin()
       )
-
-    addPageStylesheets(
-      scene,
-      "/registration.css"
-    )
+    addPageStylesheets(scene, "/registration.css")
 
     stage.scene = scene
 
-
   private def showHome(user: LoggedUser): Unit =
-    val role = roleFrom(user.role)
-    val homePage = HomePage.forRole(role)
+    val homePage = HomePage.forRole(user.role)
     val viewModel = new HomePageViewModel
 
     stage.title = "ProtoFlow"
@@ -92,51 +82,16 @@ class Navigator(stage: JFXApp3.PrimaryStage):
     val scene = new Scene(800, 600):
       root = RoleAddView()
 
-    addPageStylesheets(
-      scene,
-      "/homepages.css"
-    )
+    addPageStylesheets(scene, "/homepages.css")
 
     stage.scene = scene
 
-  private def roleFrom(role: String): Role =
-    role.toLowerCase match
-      case "admin" =>
-        Role.Admin
-
-      case "oper" =>
-        Role.Operator
-
-      case "viewer" =>
-        Role.Viewer
-
-      case other =>
-        throw IllegalArgumentException(
-          s"Ruolo non riconosciuto: $other"
-        )
-
-  private def addPageStylesheets(
-                                  scene: Scene,
-                                  pageStylesheets: String*
-                                ): Unit =
-    addStylesheet(
-      scene,
-      "/common.css"
-    )
-
+  private def addPageStylesheets(scene: Scene, pageStylesheets: String*): Unit =
+    addStylesheet(scene, "/common.css")
     pageStylesheets.foreach: stylesheet =>
-      addStylesheet(
-        scene,
-        stylesheet
-      )
+      addStylesheet(scene, stylesheet)
 
-
-  private def addStylesheet(
-                             scene: Scene,
-                             path: String
-                           ): Unit =
+  private def addStylesheet(scene: Scene, path: String): Unit =
     Option(getClass.getResource(path))
       .foreach: css =>
-        scene.stylesheets.add(
-          css.toExternalForm
-        )
+        scene.stylesheets.add(css.toExternalForm)

@@ -2,9 +2,8 @@ package pkg.a.gui.traits
 
 import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
 import pkg.a.gui.views.*
-import pkg.a.gui.traits.HomePage
-import pkg.b.logic.{Account, Classification}
-import pkg.c.data.generalStructures.Role
+import pkg.b.logic.Classification
+import pkg.b.logic.Role
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, TableColumn, TableView}
 import scalafx.scene.layout.*
@@ -19,7 +18,7 @@ trait HomePage extends Root:
   final def role: String = roleDescription
   final def items: Seq[MenuItem] = menuItems
 
-  protected val applicationTitle: String = "ProtoFlow"
+  private val applicationTitle: String = "ProtoFlow"
 
   final def apply(
                    viewModel: HomePageViewModel,
@@ -69,7 +68,7 @@ trait HomePage extends Root:
 
     def showClassificationEdit(selected: Classification): Unit =
       render(
-        ClassificationEdit$(
+        ClassificationEditView(
           selectedClassification = selected,
           onSaved = () => showClassificationManagement(),
           onExit = () => showClassificationManagement()
@@ -78,7 +77,7 @@ trait HomePage extends Root:
 
     def showClassificationAdd(): Unit =
       render(
-        ClassificationAdd$(
+        ClassificationAddView(
           onSaved = () => showClassificationManagement(),
           onExit = () => showClassificationManagement()
         )
@@ -86,7 +85,7 @@ trait HomePage extends Root:
 
     def showClassificationManagement(): Unit =
       render(
-        ClassificationManagement$(
+        ClassificationManagementView(
           onAdd = () => showClassificationAdd(),
           onEdit = selected => showClassificationEdit(selected),
           onExit = () => showDashboard()
@@ -95,7 +94,7 @@ trait HomePage extends Root:
 
     def showRegistrationRequests(): Unit =
       render(
-        RegistrationRequestsManagement$(
+        RegistrationRequestsManagementView(
           onExit = () => showDashboard()
         )
       )
@@ -235,7 +234,7 @@ trait HomePage extends Root:
       styleClass += "placeholder-container"
       children = Seq(fieldLabel(title, "placeholder-title"))
 
-  protected def dashboardContent(): VBox =
+  private def dashboardContent(): VBox =
     new VBox:
       styleClass += "dashboard-container"
       children = Seq(
@@ -282,14 +281,13 @@ trait HomePage extends Root:
 
 
 object HomePage:
-
   def forRole(role: Role): HomePage =
-    role match
-      case Role.Viewer =>
+    role.getRole.toLowerCase match
+      case Role.ViewerName =>
         ViewerHomePageView
-
-      case Role.Operator =>
+      case Role.OperatorName =>
         OperatorHomePageView
-
-      case Role.Admin =>
+      case Role.AdminName =>
         AdminHomePageView
+      case other =>
+        throw IllegalArgumentException(s"Ruolo non riconosciuto: $other")
