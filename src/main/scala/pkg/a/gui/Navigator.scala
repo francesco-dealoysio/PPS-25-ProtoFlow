@@ -48,44 +48,36 @@ class Navigator(stage: JFXApp3.PrimaryStage):
     stage.scene = scene
 
   private def showHome(account: Account): Unit =
-    val homePage = homePageFor(account)
-    val viewModel = new HomePageViewModel
+    homePageFor(account) match
+      case Some(homePage) =>
+        val viewModel = new HomePageViewModel
 
-    stage.title = "ProtoFlow"
-    stage.width = 1100
-    stage.height = 700
-    stage.resizable = true
+        stage.title = "ProtoFlow"
+        stage.width = 1100
+        stage.height = 700
+        stage.resizable = true
 
-    val scene = new Scene(1100, 700):
-      root = homePage(
-        viewModel = viewModel,
-        currentUser = account.getName,
-        onLogout = () =>
-          showLogin()
-      )
+        val scene = new Scene(1100, 700):
+          root = homePage(
+            viewModel = viewModel,
+            currentUser = account.getName,
+            onLogout = () =>
+              showLogin()
+          )
 
-    addPageStylesheets(
-      scene,
-      "/homepages.css",
-      "/registration-requests-management.css",
-      "/classifications-management.css",
-      "/accounts-management.css"
-    )
+        addPageStylesheets(
+          scene,
+          "/homepages.css",
+          "/registration-requests-management.css",
+          "/classifications-management.css",
+          "/accounts-management.css",
+          "/roles-management.css"
+        )
 
-    stage.scene = scene
+        stage.scene = scene
 
-  def showRoleAddView(): Unit =
-    stage.title = "Aggiunta Ruolo"
-    stage.width = 800
-    stage.height = 600
-    stage.resizable = true
-
-    val scene = new Scene(800, 600):
-      root = RoleAddView()
-
-    addPageStylesheets(scene, "/homepages.css")
-
-    stage.scene = scene
+      case None =>
+        showLogin()
 
   private def addPageStylesheets(scene: Scene, pageStylesheets: String*): Unit =
     addStylesheet(scene, "/common.css")
@@ -97,24 +89,22 @@ class Navigator(stage: JFXApp3.PrimaryStage):
       .foreach: css =>
         scene.stylesheets.add(css.toExternalForm)
 
-  private def homePageFor(account: Account): HomePage =
+  private def homePageFor(account: Account): Option[HomePage] =
     loadHomePage(account.getRole)
 
-  private def loadHomePage(roleName: String): HomePage =
+  private def loadHomePage(roleName: String): Option[HomePage] =
     val normalizedRole = roleName.trim.toLowerCase
     val homePageObjectName = "HomePage" + normalizedRole.capitalize + "View"
     val completeClassName = s"pkg.a.gui.views.$homePageObjectName$$"
     try
-      Class
+      Some(
+        Class
         .forName(completeClassName)
         .getField("MODULE$")
         .get(null)
         .asInstanceOf[HomePage]
-
+      )
     catch
       case exception: Exception =>
         logger(exception)
-        throw IllegalArgumentException(
-          s"Nessuna homepage disponibile per il ruolo '$roleName'",
-          exception
-        )
+        None

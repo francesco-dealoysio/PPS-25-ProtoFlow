@@ -2,8 +2,7 @@ package pkg.a.gui.traits
 
 import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
 import pkg.a.gui.views.*
-import pkg.b.logic.{Account, Classification, Role}
-import pkg.d.util.Logger.logger
+import pkg.b.logic.{Account, Classification}
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, TableColumn, TableView}
 import scalafx.scene.layout.*
@@ -126,6 +125,28 @@ trait HomePage extends Root:
         )
       )
 
+    def showRoleManagement(): Unit =
+      render(
+        RoleManagementView(
+          onAdd = () =>
+            showRoleAdd(),
+
+          onExit = () =>
+            showDashboard()
+        )
+      )
+
+    def showRoleAdd(): Unit =
+      render(
+        RoleAddView(
+          onSaved = () =>
+            showRoleManagement(),
+
+          onExit = () =>
+            showRoleManagement()
+        )
+      )
+
     def showAccountDelete(selected: Account): Unit =
       render(
         AccountDelete$(
@@ -171,6 +192,9 @@ trait HomePage extends Root:
 
                   case MenuAction.AccountUtenti =>
                     showAccountManagement()
+
+                  case MenuAction.Ruoli =>
+                    showRoleManagement()
 
                   case other =>
                     render(contentFor(other))

@@ -10,50 +10,25 @@ object ClassificationViewModel:
 class ClassificationViewModel:
   import ClassificationViewModel.*
 
-  def validate(
-                classification: Classification,
-                existingClassifications: Seq[Classification],
-                currentClassificationId: Option[String] = None
-              ): Seq[String] =
+  def validate(classification: Classification, existingClassifications: Seq[Classification], currentClassificationId: Option[String] = None): Seq[String] =
     Seq(
-      validateRequired(
-        ClassificationRequiredError,
-        classification.getClassification
-      ),
-      validateRequired(
-        DescriptionRequiredError,
-        classification.getDescription
-      ),
-      validateUniqueClassification(
-        classification.getClassification,
-        existingClassifications,
-        currentClassificationId
-      )
+      validateRequired(ClassificationRequiredError, classification.getClassification),
+      validateRequired(DescriptionRequiredError, classification.getDescription),
+      validateUniqueClassification(classification.getClassification, existingClassifications, currentClassificationId)
     ).flatten
 
-  def isValid(
-               classification: Classification,
-               existingClassifications: Seq[Classification],
-               currentClassificationId: Option[String] = None
-             ): Boolean =
+  def isValid(classification: Classification, existingClassifications: Seq[Classification], currentClassificationId: Option[String] = None): Boolean =
     validate(
       classification,
       existingClassifications,
       currentClassificationId
     ).isEmpty
 
-  private def validateRequired(
-                                errorMessage: String,
-                                value: String
-                              ): Option[String] =
+  private def validateRequired(errorMessage: String, value: String): Option[String] =
     if value.trim.isEmpty then Some(errorMessage)
     else None
 
-  private def validateUniqueClassification(
-                                            classificationName: String,
-                                            existingClassifications: Seq[Classification],
-                                            currentClassificationId: Option[String]
-                                          ): Option[String] =
+  private def validateUniqueClassification(classificationName: String, existingClassifications: Seq[Classification], currentClassificationId: Option[String]): Option[String] =
     val normalizedName = classificationName.trim
 
     if normalizedName.isEmpty then

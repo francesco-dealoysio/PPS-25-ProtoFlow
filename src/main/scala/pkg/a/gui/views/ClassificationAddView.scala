@@ -7,6 +7,7 @@ import scalafx.scene.control.{TextArea, TextField}
 import scalafx.scene.layout.BorderPane
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
+import scalafx.application.Platform
 
 object ClassificationAddView extends Form:
 
@@ -108,6 +109,10 @@ object ClassificationAddView extends Form:
     )
 
     val exit = closeButton(onExit)
+
+    Platform.runLater {
+      classificationField.requestFocus()
+    }
 
     formPage(
       titleText = "Aggiunta classifica",

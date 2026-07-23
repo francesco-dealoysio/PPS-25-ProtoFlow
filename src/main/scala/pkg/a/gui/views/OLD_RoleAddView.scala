@@ -13,7 +13,7 @@ import scala.swing.GridBagPanel
 import scalafx.geometry.Insets
 import scalafx.scene.layout.*
 
-
+/*
 
 //object RoleAddView extends JFXApp3:
 object RoleAddView:
@@ -72,3 +72,5 @@ object RoleAddView:
 
 @main def tryRoleAddView: Unit =
   println("pippo")
+
+*/

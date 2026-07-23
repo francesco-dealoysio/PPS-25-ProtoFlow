@@ -5,7 +5,6 @@ import pkg.b.logic.Classification
 import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
-import scalafx.geometry.Pos
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
 import pkg.d.util.Logger.*
@@ -30,25 +29,18 @@ object ClassificationManagementView extends Management:
 
     val table = new TableView[Classification](classifications):
         columnResizePolicy = TableView.ConstrainedResizePolicy
-        placeholder =
-          new Label(
-            "Non sono presenti classifiche nel sistema."
-          )
+        placeholder = new Label("Non sono presenti classifiche nel sistema.")
         styleClass += "classifications-table"
 
     val classificationColumn = new TableColumn[Classification, String]:
         text = "Classifica"
         cellValueFactory = cell =>
-          StringProperty(
-            cell.value.getClassification
-          )
+          StringProperty(cell.value.getClassification)
 
     val descriptionColumn = new TableColumn[Classification, String]:
         text = "Descrizione"
         cellValueFactory = cell =>
-          StringProperty(
-            cell.value.getDescription
-          )
+          StringProperty(cell.value.getDescription)
 
     table.columns ++= Seq(
       classificationColumn,
@@ -97,8 +89,7 @@ object ClassificationManagementView extends Management:
           val confirmed =
             askConfirmation(
               titleText = "Eliminazione classifica",
-              header =
-                "Confermi l'eliminazione della classifica selezionata?",
+              header = "Confermi l'eliminazione della classifica selezionata?",
               content =
                 s"""Classifica: ${selected.getClassification}
                    |Codice: ${selected.getId}
@@ -126,7 +117,7 @@ object ClassificationManagementView extends Management:
             result.clear()
 
 
-    val addButton = primaryButton(text = "Aggiunta", action = () =>
+    val addButton = primaryButton(text = "Aggiungi", action = () =>
       result.clear()
       onAdd())
 
@@ -148,7 +139,7 @@ object ClassificationManagementView extends Management:
         .selectedItem
         .isNull
 
-    val deleteButton = dangerButton(text = "Eliminazione", action = () => deleteSelectedClassification())
+    val deleteButton = dangerButton(text = "Elimina", action = () => deleteSelectedClassification())
 
     deleteButton.disable <==
       table.selectionModel.value
@@ -157,19 +148,13 @@ object ClassificationManagementView extends Management:
 
     val exitButton = closeButton(onExit)
 
-    val navigationMenu =
-      new HBox:
-        spacing = 12
-        alignment = Pos.CenterLeft
-        styleClass += "classifications-toolbar"
-        children = Seq(
-          addButton,
-          editButton,
-          deleteButton
-        )
-
-     // Pulsante in fondo alla pagina.
-    val bottomActions = actionBar(exitButton)
+    val bottomActions =
+      actionBar(
+        exitButton,
+        editButton,
+        deleteButton,
+        addButton
+      )
 
     val header =
       titleBox(
@@ -184,5 +169,5 @@ object ClassificationManagementView extends Management:
     managementPage(
       rootStyle = "classifications-management-root",
       growNode = Some(table),
-      pageChildren = Seq(header, navigationMenu, table, result.label, bottomActions)
+      pageChildren = Seq(header, table, result.label, bottomActions)
     )

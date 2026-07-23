@@ -1,18 +1,17 @@
-<?xml version='1.0' encoding='UTF-8'?>
 <roles>
-    <record>
-      <id>1</id>
-      <role>admin</role>
-      <description>Attività di amministrazione del sistema</description>
-    </record>
-    <record>
-      <id>2</id>
-      <role>oper</role>
-      <description>Attività di protocollazione</description>
-    </record>
-    <record>
-      <id>3</id>
-      <role>viewer</role>
-      <description>Ricerca e visualizzazione nel cono di visibilità</description>
-    </record>
-  </roles>
+  <record>
+    <id>1</id>
+    <role>admin</role>
+    <description>Attività di amministrazione del sistema</description>
+  </record>
+  <record>
+    <id>2</id>
+    <role>oper</role>
+    <description>Attività di protocollazione</description>
+  </record>
+  <record>
+    <id>3</id>
+    <role>viewer</role>
+    <description>Ricerca e visualizzazione nel cono di visibilità</description>
+  </record>
+</roles>
