@@ -4,6 +4,7 @@ import pkg.a.gui.structures.{HomePageViewModel, RegistrationViewModel}
 import pkg.a.gui.traits.HomePage
 import pkg.a.gui.views.{LoginView, RegistrationView, RoleAddView}
 import pkg.b.logic.Account
+import pkg.d.util.Logger.logger
 import scalafx.application.JFXApp3
 import scalafx.scene.Scene
 
@@ -47,7 +48,7 @@ class Navigator(stage: JFXApp3.PrimaryStage):
     stage.scene = scene
 
   private def showHome(account: Account): Unit =
-    val homePage = HomePage.forAccount(account)
+    val homePage = homePageFor(account)
     val viewModel = new HomePageViewModel
 
     stage.title = "ProtoFlow"
@@ -95,3 +96,25 @@ class Navigator(stage: JFXApp3.PrimaryStage):
     Option(getClass.getResource(path))
       .foreach: css =>
         scene.stylesheets.add(css.toExternalForm)
+
+  private def homePageFor(account: Account): HomePage =
+    loadHomePage(account.getRole)
+
+  private def loadHomePage(roleName: String): HomePage =
+    val normalizedRole = roleName.trim.toLowerCase
+    val homePageObjectName = "HomePage" + normalizedRole.capitalize + "View"
+    val completeClassName = s"pkg.a.gui.views.$homePageObjectName$$"
+    try
+      Class
+        .forName(completeClassName)
+        .getField("MODULE$")
+        .get(null)
+        .asInstanceOf[HomePage]
+
+    catch
+      case exception: Exception =>
+        logger(exception)
+        throw IllegalArgumentException(
+          s"Nessuna homepage disponibile per il ruolo '$roleName'",
+          exception
+        )

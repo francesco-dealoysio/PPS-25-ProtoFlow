@@ -278,24 +278,3 @@ trait HomePage extends Root:
         ).map: title =>
           new TableColumn[Unit, String]:
             text = title
-
-
-object HomePage:
-
-  def forAccount(account: Account): HomePage =
-    loadHomePage(account.getRole)
-
-  private def loadHomePage(roleName: String): HomePage =
-    val normalizedRole = roleName.trim.toLowerCase
-    val homePageObjectName = normalizedRole.capitalize + "HomePageView"
-    val completeClassName = s"pkg.a.gui.views.$homePageObjectName$$"
-    try
-      Class
-        .forName(completeClassName)
-        .getField("MODULE$")
-        .get(null)
-        .asInstanceOf[HomePage]
-    catch
-      case exception: Exception =>
-        logger(exception)
-        throw IllegalArgumentException(s"Nessuna homepage disponibile per il ruolo '$roleName'", exception)

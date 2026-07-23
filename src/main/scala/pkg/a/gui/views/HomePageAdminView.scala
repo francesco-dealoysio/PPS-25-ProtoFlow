@@ -3,7 +3,7 @@ package pkg.a.gui.views
 import pkg.a.gui.structures.{MenuAction, MenuItem}
 import pkg.a.gui.traits.HomePage
 
-object AdminHomePageView extends HomePage:
+object HomePageAdminView extends HomePage:
 
   override protected val pageTitle: String = "Homepage Amministratore"
 

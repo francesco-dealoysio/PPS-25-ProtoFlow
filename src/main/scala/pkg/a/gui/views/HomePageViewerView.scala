@@ -3,7 +3,7 @@ package pkg.a.gui.views
 import pkg.a.gui.structures.{MenuAction, MenuItem}
 import pkg.a.gui.traits.HomePage
 
-object ViewerHomePageView extends HomePage:
+object HomePageViewerView extends HomePage:
 
   override protected val pageTitle: String = "Homepage Utente"
   override protected val roleDescription: String = "Viewer"
