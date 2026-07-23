@@ -44,12 +44,13 @@ case class Account(
 
   override def xmlFile = "accounts.xml"
 
-  override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+  override def recordInsert[T](obj: T, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
       val record = obj.asInstanceOf[Account]
       val id = record.id
       val username = record.username
+
       if !(fieldExists("id", id, xmlFilePathName) || fieldExists("username", username, xmlFilePathName)) then
         result = insertElemIntoXML(xmlFilePathName, obj)
       else

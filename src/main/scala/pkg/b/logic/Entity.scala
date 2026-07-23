@@ -1,12 +1,11 @@
 package pkg.b.logic
 
-import pkg.c.data.Xml.{getRecordFromXML, removeElemFromXML, searchFieldValue, updateElemOfXML}
+import pkg.c.data.Xml.{getRecordFromXML, insertElemIntoXML, removeElemFromXML, searchFieldValue, updateElemOfXML}
 import pkg.d.util.Logger.logger
 import pkg.d.util.Util.inDatabaseFilePathName
 
 trait Entity:
   def xmlFile: String
-  def recordInsert(obj: Any, xmlFilePathName: String): Boolean
 
   def getRecords[T](xmlFilePathName: String = defaultXmlFilePathName): Seq[T] =
     try
@@ -38,16 +37,30 @@ trait Entity:
       case e: Exception =>
         logger(e); constructor.newInstance()
 
-  def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+  def recordInsert[T](obj: T, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    var result = false
     try
-      removeElemFromXML(xmlFilePathName, id)
+      val method = asInstanceOf[T].getClass.getDeclaredMethod("getId")
+      val id = method.invoke(obj).toString
+      if !fieldExists("id", id, xmlFilePathName) then
+        result = insertElemIntoXML(xmlFilePathName, obj)
+      else
+        throw new RuntimeException("Valori duplicati (id)!")
     catch
       case e: Exception =>
-        logger(e); false
+        logger(e)
+    result
 
   def recordUpdate[T](obj: T, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     try
       updateElemOfXML(xmlFilePathName, obj)
+    catch
+      case e: Exception =>
+        logger(e); false
+
+  def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    try
+      removeElemFromXML(xmlFilePathName, id)
     catch
       case e: Exception =>
         logger(e); false

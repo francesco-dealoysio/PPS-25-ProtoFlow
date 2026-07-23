@@ -41,19 +41,5 @@ case class ErrorLog(
 
   override def xmlFile = "errors.xml"
 
-  override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
-    var result = false
-    try
-      val record = obj.asInstanceOf[ErrorLog]
-      val id = record.id
-      if !fieldExists("id", id, xmlFilePathName) then
-        result = insertElemIntoXML(xmlFilePathName, obj)
-      else
-        throw new RuntimeException("Valori duplicati (id)!")
-    catch
-      case e: Exception =>
-        logger(e)
-    result
-
 @main def tryErrorLog: Unit =
   println("Tested in ErrorLogTest.scala")

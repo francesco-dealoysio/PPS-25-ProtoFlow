@@ -10,7 +10,7 @@ case class Classification(
                           private var description: String = ""
                          ) extends Entity:
   def this() =
-    this("","","") // ??
+    this("","","")
 
   def setId(value: String): Unit = id = value
   def setClassification(value: String): Unit = classification = value
@@ -22,12 +22,13 @@ case class Classification(
 
   override def xmlFile = "classifications.xml"
 
-  override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+  override def recordInsert[T](obj: T, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
       val record = obj.asInstanceOf[Classification]
       val id = record.id
       val classification = record.classification
+
       if !(fieldExists("id", id, xmlFilePathName) || fieldExists("classification", classification, xmlFilePathName)) then
         result = insertElemIntoXML(xmlFilePathName, obj)
       else
