@@ -2,8 +2,8 @@ package pkg.a.gui.traits
 
 import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
 import pkg.a.gui.views.*
-import pkg.b.logic.Classification
-import pkg.b.logic.Role
+import pkg.b.logic.{Account, Classification, Role}
+import pkg.d.util.Logger.logger
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, TableColumn, TableView}
 import scalafx.scene.layout.*
@@ -281,13 +281,21 @@ trait HomePage extends Root:
 
 
 object HomePage:
-  def forRole(role: Role): HomePage =
-    role.getRole.toLowerCase match
-      case Role.ViewerName =>
-        ViewerHomePageView
-      case Role.OperatorName =>
-        OperatorHomePageView
-      case Role.AdminName =>
-        AdminHomePageView
-      case other =>
-        throw IllegalArgumentException(s"Ruolo non riconosciuto: $other")
+
+  def forAccount(account: Account): HomePage =
+    loadHomePage(account.getRole)
+
+  private def loadHomePage(roleName: String): HomePage =
+    val normalizedRole = roleName.trim.toLowerCase
+    val homePageObjectName = normalizedRole.capitalize + "HomePageView"
+    val completeClassName = s"pkg.a.gui.views.$homePageObjectName$$"
+    try
+      Class
+        .forName(completeClassName)
+        .getField("MODULE$")
+        .get(null)
+        .asInstanceOf[HomePage]
+    catch
+      case exception: Exception =>
+        logger(exception)
+        throw IllegalArgumentException(s"Nessuna homepage disponibile per il ruolo '$roleName'", exception)

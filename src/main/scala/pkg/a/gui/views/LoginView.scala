@@ -1,8 +1,8 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.traits.Form
-import pkg.b.logic.LoginService
-import pkg.b.logic.LoginService.{LoggedUser, LoginError}
+import pkg.b.logic.LoginService.LoginError
+import pkg.b.logic.{Account, LoginService}
 import scalafx.Includes.jfxKeyEvent2sfx
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, Label, PasswordField, TextField}
@@ -11,7 +11,7 @@ import scalafx.scene.layout.{BorderPane, Region, StackPane, VBox}
 
 object LoginView extends Form:
 
-  def apply(onLoginSuccess: LoggedUser => Unit,
+  def apply(onLoginSuccess: Account => Unit,
              onRegistrationRequest: () => Unit
            ): BorderPane =
 

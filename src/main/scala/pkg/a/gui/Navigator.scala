@@ -3,7 +3,7 @@ package pkg.a.gui
 import pkg.a.gui.structures.{HomePageViewModel, RegistrationViewModel}
 import pkg.a.gui.traits.HomePage
 import pkg.a.gui.views.{LoginView, RegistrationView, RoleAddView}
-import pkg.b.logic.LoginService.LoggedUser
+import pkg.b.logic.Account
 import scalafx.application.JFXApp3
 import scalafx.scene.Scene
 
@@ -46,8 +46,8 @@ class Navigator(stage: JFXApp3.PrimaryStage):
 
     stage.scene = scene
 
-  private def showHome(user: LoggedUser): Unit =
-    val homePage = HomePage.forRole(user.role)
+  private def showHome(account: Account): Unit =
+    val homePage = HomePage.forAccount(account)
     val viewModel = new HomePageViewModel
 
     stage.title = "ProtoFlow"
@@ -58,7 +58,7 @@ class Navigator(stage: JFXApp3.PrimaryStage):
     val scene = new Scene(1100, 700):
       root = homePage(
         viewModel = viewModel,
-        currentUser = user.fullName,
+        currentUser = account.getName,
         onLogout = () =>
           showLogin()
       )

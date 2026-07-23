@@ -11,9 +11,7 @@ object LoginService:
     case InvalidCredentials
     case UnknownRole(role: String)
 
-  case class LoggedUser(username: String, fullName: String, role: Role)
-
-  def login(username: String, password: String): Either[LoginError, LoggedUser] =
+  def login(username: String, password: String): Either[LoginError, Account] =
     val cleanUsername = username.trim
     val cleanPassword = password.trim
 
@@ -21,29 +19,11 @@ object LoginService:
       Left(LoginError.EmptyCredentials)
     else
       checkCredentials(cleanUsername, cleanPassword) match
-        case Some(account) if validRoles.contains(account.getRole) =>
-          Right(toLoggedUser(account))
-
         case Some(account) =>
-          Left(LoginError.UnknownRole(account.getRole))
+          Right(account)
 
         case None =>
           Left(LoginError.InvalidCredentials)
-
-  private val validRoles: Set[String] =
-    Role.validNames
-
-  private def toLoggedUser(account: Account): LoggedUser =
-    val fullName =
-      s"${account.getName} ${account.getSurname}".trim match
-        case "" => account.getUsername
-        case name => name
-
-    LoggedUser(
-      username = account.getUsername,
-      fullName = fullName,
-      role = Role.fromName(account.getRole)
-    )
 
   private def checkCredentials(username: String, password: String): Option[Account] =
     accounts.find(account => account.getUsername == username && account.getPassword == md5(password))
