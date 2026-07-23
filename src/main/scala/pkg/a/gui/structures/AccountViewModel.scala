@@ -62,15 +62,6 @@ class AccountViewModel:
       requirePassword
     ).isEmpty
 
-  def nextId(existingAccounts: Seq[Account]): String =
-    val maximumId =
-      existingAccounts
-        .flatMap(_.getId.toIntOption)
-        .maxOption
-        .getOrElse(0)
-
-    (maximumId + 1).toString
-
   private def validateRequired(
                                  errorMessage: String,
                                  value: String

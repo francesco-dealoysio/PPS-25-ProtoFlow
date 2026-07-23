@@ -100,17 +100,16 @@ trait HomePage extends Root:
 
     def showAccountManagement(): Unit =
       render(
-        AccountManagement$(
+        AccountManagementView(
           onAdd = () => showAccountAdd(),
           onEdit = selected => showAccountEdit(selected),
-          onDelete = selected => showAccountDelete(selected),
           onExit = () => showDashboard()
         )
       )
 
     def showAccountAdd(): Unit =
       render(
-        AccountAdd$(
+        AccountAddView(
           onSaved = () => showAccountManagement(),
           onExit = () => showAccountManagement()
         )
@@ -118,18 +117,9 @@ trait HomePage extends Root:
 
     def showAccountEdit(selected: Account): Unit =
       render(
-        AccountEdit$(
+        AccountEditView(
           selectedAccount = selected,
           onSaved = () => showAccountManagement(),
-          onExit = () => showAccountManagement()
-        )
-      )
-
-    def showAccountDelete(selected: Account): Unit =
-      render(
-        AccountDelete$(
-          selectedAccount = selected,
-          onDeleted = () => showAccountManagement(),
           onExit = () => showAccountManagement()
         )
       )

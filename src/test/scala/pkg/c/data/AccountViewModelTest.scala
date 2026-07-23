@@ -168,33 +168,6 @@ class AccountViewModelTest extends AnyFunSuite:
     assert(errors.contains(AccountViewModel.UsernameRequiredError))
     assert(errors.contains(AccountViewModel.PasswordRequiredError))
 
-  test("nextId restituisce 1 quando non esistono account"):
-    val id = viewModel.nextId(Seq.empty)
-
-    assert(id == "1")
-
-  test("nextId restituisce l'identificativo successivo a quello massimo"):
-    val accounts = Seq(
-      validForm().copy(id = "1"),
-      validForm().copy(id = "4", username = "altro1"),
-      validForm().copy(id = "2", username = "altro2")
-    )
-
-    val id = viewModel.nextId(accounts)
-
-    assert(id == "5")
-
-  test("nextId ignora gli identificativi non numerici"):
-    val accounts = Seq(
-      validForm().copy(id = "1"),
-      validForm().copy(id = "abc", username = "altro1"),
-      validForm().copy(id = "5", username = "altro2")
-    )
-
-    val id = viewModel.nextId(accounts)
-
-    assert(id == "6")
-
   private def validForm(): Account =
     Account(
       surname = "de aloysio",
