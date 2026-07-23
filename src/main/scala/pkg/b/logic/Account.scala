@@ -59,12 +59,13 @@ case class Account(
         logger(e)
     result
 
-  override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+  override def recordUpdate[T](obj: T, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
       val record = obj.asInstanceOf[Account]
       val id = record.id
       val username = record.username
+
       val found = countRecordsByFilter[Account](a => a.id != id && a.username == username, xmlFilePathName, classOf[Account])
       if (found == 0) then
         result = updateElemOfXML(xmlFilePathName, obj)

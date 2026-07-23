@@ -125,7 +125,7 @@ class RoleTest:
     assertEquals(Role().getRecordById[Role]("1", xmlFilePathName).getDescription, "Amministrazione")
     val record = Role().getRecordById[Role]("1")
     record.setDescription("Gestione")
-    Role().recordUpdate(record, "path inesistente")
+    Role().recordUpdate[Role](record, "path inesistente")
     assertNotEquals(Role().getRecordById[Role]("1", xmlFilePathName).getDescription, "Gestione")
 
   @Test
@@ -133,7 +133,7 @@ class RoleTest:
     cleanXmlFile(xmlFilePathName)
     val record = role1.copy()
     record.setDescription("Gestione")
-    Role().recordUpdate(record, xmlFilePathName)
+    Role().recordUpdate[Role](record, xmlFilePathName)
     assertNotEquals(Role().getRecordById[Role]("1", xmlFilePathName).getDescription, "Gestione")
 
   @Test
@@ -141,7 +141,7 @@ class RoleTest:
     val record = Role().getRecordById[Role]("1", xmlFilePathName)
     record.setDescription("Gestione")
     record.setId("?")
-    Role().recordUpdate(record, xmlFilePathName)
+    Role().recordUpdate[Role](record, xmlFilePathName)
     val recordUpdated = Role().getRecordById[Role]("?", xmlFilePathName)
     assertEquals(recordUpdated, empty)
 
@@ -153,7 +153,7 @@ class RoleTest:
     Role().recordInsert(role3, xmlFilePathName)
     val record = role1.copy()
     record.setRole(role2.getRole)
-    assertFalse(Role().recordUpdate(record, xmlFilePathName))
+    assertFalse(Role().recordUpdate[Role](record, xmlFilePathName))
 
   @Test
   def testRecordUpdate: Unit =
@@ -161,7 +161,7 @@ class RoleTest:
     assertEquals("Amministrazione", Role().getRecordById[Role]("1", xmlFilePathName).getDescription)
     val record = Role().getRecordById[Role]("1")
     record.setDescription("Gestione")
-    Role().recordUpdate(record, xmlFilePathName)
+    Role().recordUpdate[Role](record, xmlFilePathName)
     assertEquals(Role().getRecordById[Role]("1", xmlFilePathName).getDescription, "Gestione")
 
   @Test

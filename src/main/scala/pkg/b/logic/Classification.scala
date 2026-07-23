@@ -37,12 +37,13 @@ case class Classification(
         logger(e)
     result
   
-  override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+  override def recordUpdate[T](obj: T, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
       val record = obj.asInstanceOf[Classification]
       val id = record.id
       val classification = record.classification
+
       val  found = countRecordsByFilter[Classification](a => a.id != id && a.classification == classification, xmlFilePathName, classOf[Classification])
       if (found == 0) then
         result = updateElemOfXML(xmlFilePathName, obj)

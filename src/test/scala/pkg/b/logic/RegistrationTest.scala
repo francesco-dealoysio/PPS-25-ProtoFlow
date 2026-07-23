@@ -133,7 +133,7 @@ class RegistrationTest:
     assertEquals(Registration().getRecordById[Registration]("1", xmlFilePathName).getPhone, "06/11111111")
     val record = Registration().getRecordById[Registration]("1")
     record.setPhone("06/12345678")
-    Registration().recordUpdate(record, "path inesistente")
+    Registration().recordUpdate[Registration](record, "path inesistente")
     assertNotEquals(Registration().getRecordById[Registration]("1", xmlFilePathName).getPhone, "06/12345678")
 
   @Test
@@ -141,7 +141,7 @@ class RegistrationTest:
     cleanXmlFile(xmlFilePathName)
     val record = registration1.copy()
     record.setPhone("06/12345678")
-    Registration().recordUpdate(record, xmlFilePathName)
+    Registration().recordUpdate[Registration](record, xmlFilePathName)
     assertNotEquals(Registration().getRecordById[Registration]("1", xmlFilePathName).getPhone, "06/12345678")
 
   @Test
@@ -149,7 +149,7 @@ class RegistrationTest:
     val record = Registration().getRecordById[Registration]("1", xmlFilePathName)
     record.setPhone("06/87654321")
     record.setId("?")
-    Registration().recordUpdate(record, xmlFilePathName)
+    Registration().recordUpdate[Registration](record, xmlFilePathName)
     val recordUpdated = Registration().getRecordById[Registration]("?", xmlFilePathName)
     assertEquals(recordUpdated, empty)
 
@@ -159,7 +159,7 @@ class RegistrationTest:
     assertEquals("06/11111111", Registration().getRecordById[Registration]("1", xmlFilePathName).getPhone)
     val record = registration1.copy()
     record.setPhone("06/12345678")
-    assertTrue(Registration().recordUpdate(record, xmlFilePathName))
+    assertTrue(Registration().recordUpdate[Registration](record, xmlFilePathName))
 
   @Test
   def testRecordDelete: Unit =
@@ -170,7 +170,6 @@ class RegistrationTest:
     val record = Registration().getRecordById[Registration]("1", xmlFilePathName)
     assertEquals(record.getId, "1")
     Registration().recordDelete(record.getId, xmlFilePathName)
-    //assertEquals(Registration().getRecordById[Registration](record.getId, xmlFilePathName), empty)
 
   @Test
   def testRecordDeleteInesistentXmlFile: Unit =

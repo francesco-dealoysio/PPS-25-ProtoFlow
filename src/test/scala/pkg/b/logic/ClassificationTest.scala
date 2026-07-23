@@ -118,7 +118,7 @@ class ClassificationTest:
     assertEquals(Classification().getRecordById[Classification]("1", xmlFilePathName).getClassification, "amministrazione")
     val record = Classification().getRecordById[Classification]("1")
     record.setClassification("informatica")
-    Classification().recordUpdate(record, "path inesistente")
+    Classification().recordUpdate[Classification](record, "path inesistente")
     assertNotEquals(Classification().getRecordById[Classification]("1", xmlFilePathName).getClassification, "informatica")
 
   @Test
@@ -126,7 +126,7 @@ class ClassificationTest:
     cleanXmlFile(xmlFilePathName)
     val record = classification1.copy()
     record.setClassification("informatica")
-    Classification().recordUpdate(record, xmlFilePathName)
+    Classification().recordUpdate[Classification](record, xmlFilePathName)
     assertNotEquals(Classification().getRecordById[Classification]("1", xmlFilePathName).getClassification, "informatica")
 
   @Test
@@ -134,7 +134,7 @@ class ClassificationTest:
     val record = Classification().getRecordById[Classification]("1", xmlFilePathName)
     record.setClassification("informatica")
     record.setId("?")
-    Classification().recordUpdate(record, xmlFilePathName)
+    Classification().recordUpdate[Classification](record, xmlFilePathName)
     val recordUpdated = Classification().getRecordById[Classification]("?", xmlFilePathName)
     assertEquals(recordUpdated, empty)
 
@@ -146,7 +146,7 @@ class ClassificationTest:
     Classification().recordInsert(classification3, xmlFilePathName)
     val record = classification1.copy()
     record.setClassification(classification2.getClassification)
-    assertFalse(Classification().recordUpdate(record, xmlFilePathName))
+    assertFalse(Classification().recordUpdate[Classification](record, xmlFilePathName))
 
   @Test
   def testRecordUpdate: Unit =
@@ -154,7 +154,7 @@ class ClassificationTest:
     assertEquals("amministrazione", Classification().getRecordById[Classification]("1", xmlFilePathName).getClassification)
     val record = classification1.copy()
     record.setClassification("informatica")
-    assertTrue(Classification().recordUpdate(record, xmlFilePathName))
+    assertTrue(Classification().recordUpdate[Classification](record, xmlFilePathName))
 
   @Test
   def testRecordDelete: Unit =

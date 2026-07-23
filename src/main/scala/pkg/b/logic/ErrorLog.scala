@@ -55,13 +55,5 @@ case class ErrorLog(
         logger(e)
     result
 
-  override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
-    try
-      updateElemOfXML(xmlFilePathName, obj)
-    catch
-      case e: Exception =>
-        logger(e)
-        false
-
 @main def tryErrorLog: Unit =
   println("Tested in ErrorLogTest.scala")

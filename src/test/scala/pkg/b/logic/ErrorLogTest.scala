@@ -121,7 +121,7 @@ class ErrorLogTest:
     assertEquals(ErrorLog().getRecordById[ErrorLog]("1", xmlFilePathName).getLine, "23")
     val record = errorLog1.copy()
     record.setLine("78")
-    ErrorLog().recordUpdate(record, "path inesistente")
+    ErrorLog().recordUpdate[ErrorLog](record, "path inesistente")
     assertNotEquals(ErrorLog().getRecordById[ErrorLog]("1", xmlFilePathName).getLine, "78")
 
   @Test
@@ -129,7 +129,7 @@ class ErrorLogTest:
     cleanXmlFile(xmlFilePathName)
     val record = errorLog1.copy()
     record.setLine("235")
-    ErrorLog().recordUpdate(record, xmlFilePathName)
+    ErrorLog().recordUpdate[ErrorLog](record, xmlFilePathName)
     assertNotEquals(ErrorLog().getRecordById[ErrorLog]("1", xmlFilePathName).getLine, "235")
 
   @Test
@@ -137,7 +137,7 @@ class ErrorLogTest:
     val record = ErrorLog().getRecordById[ErrorLog]("1", xmlFilePathName)
     record.setLine("100")
     record.setId("?")
-    ErrorLog().recordUpdate(record, xmlFilePathName)
+    ErrorLog().recordUpdate[ErrorLog](record, xmlFilePathName)
     val recordUpdated = ErrorLog().getRecordById[ErrorLog]("?", xmlFilePathName)
     assertEquals(recordUpdated, empty)
 
@@ -147,7 +147,7 @@ class ErrorLogTest:
     assertEquals("23", ErrorLog().getRecordById[ErrorLog]("1", xmlFilePathName).getLine)
     val record = errorLog1.copy()
     record.setLine("150")
-    assertTrue(ErrorLog().recordUpdate(record, xmlFilePathName))
+    assertTrue(ErrorLog().recordUpdate[ErrorLog](record, xmlFilePathName))
 
   @Test
   def testRecordDelete: Unit =

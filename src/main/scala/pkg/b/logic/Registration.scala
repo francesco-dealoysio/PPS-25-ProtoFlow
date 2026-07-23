@@ -63,13 +63,5 @@ case class Registration(
         logger(e)
     result
 
-  override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
-    try
-      updateElemOfXML(xmlFilePathName, obj)
-    catch
-      case e: Exception =>
-        logger(e)
-        false
-
 @main def tryRegistration: Unit =
   println("Tested in RegistrationTest.scala")

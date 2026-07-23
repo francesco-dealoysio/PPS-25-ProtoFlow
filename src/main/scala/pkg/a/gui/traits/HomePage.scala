@@ -282,7 +282,6 @@ trait HomePage extends Root:
 
 object HomePage:
 
-
   def forRole(role: String/*Role*/): HomePage = // y
     //role.getRole.toLowerCase match // y -
     role.toLowerCase match // y +
