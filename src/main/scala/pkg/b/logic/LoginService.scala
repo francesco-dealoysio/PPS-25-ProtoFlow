@@ -11,7 +11,7 @@ object LoginService:
     case InvalidCredentials
     case UnknownRole(role: String)
 
-  case class LoggedUser(username: String, fullName: String, role: Role)
+  case class LoggedUser(username: String, fullName: String, role: String /*Role*/) // y
 
   def login(username: String, password: String): Either[LoginError, LoggedUser] =
     val cleanUsername = username.trim
@@ -30,8 +30,10 @@ object LoginService:
         case None =>
           Left(LoginError.InvalidCredentials)
 
-  private val validRoles: Set[String] =
-    Role.validNames
+  private val validRoles: Set[String] = {
+    Set("admin", "oper", "viewer") // y +
+    //Role.validNames // y -
+  }
 
   private def toLoggedUser(account: Account): LoggedUser =
     val fullName =
@@ -42,7 +44,8 @@ object LoginService:
     LoggedUser(
       username = account.getUsername,
       fullName = fullName,
-      role = Role.fromName(account.getRole)
+      //role = Role.fromName(account.getRole) // y -
+      role = account.getRole // y +
     )
 
   private def checkCredentials(username: String, password: String): Option[Account] =

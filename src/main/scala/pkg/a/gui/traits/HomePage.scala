@@ -2,8 +2,7 @@ package pkg.a.gui.traits
 
 import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
 import pkg.a.gui.views.*
-import pkg.b.logic.Classification
-import pkg.b.logic.Role
+import pkg.b.logic.{Account, Classification, Role}
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, TableColumn, TableView}
 import scalafx.scene.layout.*
@@ -280,14 +279,26 @@ trait HomePage extends Root:
             text = title
 
 
+
 object HomePage:
-  def forRole(role: Role): HomePage =
-    role.getRole.toLowerCase match
+
+
+  def forRole(role: String/*Role*/): HomePage = // y
+    //role.getRole.toLowerCase match // y -
+    role.toLowerCase match // y +
+      case "viewer" =>
+        ViewerHomePageView
+      case "oper" =>
+        OperatorHomePageView
+      case "admin" =>
+        AdminHomePageView
+/*
       case Role.ViewerName =>
         ViewerHomePageView
       case Role.OperatorName =>
         OperatorHomePageView
       case Role.AdminName =>
         AdminHomePageView
+*/
       case other =>
         throw IllegalArgumentException(s"Ruolo non riconosciuto: $other")
