@@ -68,20 +68,20 @@ class AccountTest:
 
   @Test
   def testGetRecordByIdInexistentXmlFile: Unit =
-    assertEquals(Account().getRecordById[Account](a => a.getId == "2", "path inesistente"), empty)
+    assertEquals(Account().getRecordById[Account]("2", "path inesistente"), empty)
 
   @Test
   def testGetRecordByIdEmptyXmlFile: Unit =
-    assertEquals(Account().getRecordById[Account](a => a.getId == "2", xmlFilePathName), empty)
+    assertEquals(Account().getRecordById[Account]("2", xmlFilePathName), empty)
 
   @Test
   def testGetRecordByIdFoundRecord: Unit =
     Account().recordInsert(account2, xmlFilePathName)
-    assertEquals(Account().getRecordById[Account](a => a.getId == "2", xmlFilePathName), account2)
+    assertEquals(Account().getRecordById[Account]("2", xmlFilePathName), account2)
 
   @Test
   def testGetRecordsIdInexistentId: Unit =
-    assertEquals(Account().getRecordById[Account](a => a.getId == "?", xmlFilePathName), empty)
+    assertEquals(Account().getRecordById[Account]("?", xmlFilePathName), empty)
 
   @Test
   def testGetRecordsByFilter: Unit =
@@ -103,7 +103,7 @@ class AccountTest:
   @Test
   def testRecordInsert: Unit =
     Account().recordInsert(account1, xmlFilePathName)
-    val record = Account().getRecordById[Account](a => a.getId == "1", xmlFilePathName)
+    val record = Account().getRecordById[Account]("1", xmlFilePathName)
     assertEquals(record, account1)
 
   @Test
@@ -132,7 +132,7 @@ class AccountTest:
     val record = account1.copy()
     record.setPhone("06/12345678")
     Account().recordUpdate(record, "path inesistente")
-    assertNotEquals(Account().getRecordById[Account](a => a.getId == "1", xmlFilePathName).getPhone, "06/12345678")
+    assertNotEquals(Account().getRecordById[Account]("1", xmlFilePathName).getPhone, "06/12345678")
 
   @Test
   def testRecordUpdateEmptyXmlFile: Unit =
@@ -140,15 +140,15 @@ class AccountTest:
     val record = account1.copy()
     record.setPhone("06/12345678")
     Account().recordUpdate(record, xmlFilePathName)
-    assertNotEquals(Account().getRecordById[Account](a => a.getId == "1", xmlFilePathName).getPhone, "06/12345678")
+    assertNotEquals(Account().getRecordById[Account]("1", xmlFilePathName).getPhone, "06/12345678")
 
   @Test
   def testRecordUpdateInexistentId: Unit =
-    val record = Account().getRecordById[Account](a => a.getId == "1", xmlFilePathName)
+    val record = Account().getRecordById[Account]("1", xmlFilePathName)
     record.setPhone("06/87654321")
     record.setId("?")
     Account().recordUpdate(record, xmlFilePathName)
-    val recordUpdated = Account().getRecordById[Account](a => a.getId == "?", xmlFilePathName)
+    val recordUpdated = Account().getRecordById[Account]("?", xmlFilePathName)
     assertEquals(recordUpdated, empty)
 
   @Test
@@ -164,7 +164,7 @@ class AccountTest:
   @Test
   def testRecordUpdate: Unit =
     Account().recordInsert(account1, xmlFilePathName)
-    assertEquals("06/11111111", Account().getRecordById[Account](a => a.getId == "1", xmlFilePathName).getPhone)
+    assertEquals("06/11111111", Account().getRecordById[Account]("1", xmlFilePathName).getPhone)
     val record = account1.copy()
     record.setPhone("06/12345678")
     assertTrue(Account().recordUpdate(record, xmlFilePathName))
@@ -175,9 +175,9 @@ class AccountTest:
     Account().recordInsert(account1, xmlFilePathName)
     Account().recordInsert(account2, xmlFilePathName)
     Account().recordInsert(account3, xmlFilePathName)
-    val record = Account().getRecordById[Account](a => a.getId == "1", xmlFilePathName)
+    val record = Account().getRecordById[Account]("1", xmlFilePathName)
     Account().recordDelete(record.getId, xmlFilePathName)
-    //assertEquals(Account().getRecordById(record.getId, xmlFilePathName), empty)
+    assertEquals(Account().getRecordById[Account](record.getId, xmlFilePathName), empty)
 
   @Test
   def testRecordDeleteInesistentXmlFile: Unit =
@@ -199,5 +199,4 @@ class AccountTest:
     val record = account1.copy()
     record.setId("100")
     assertFalse(Account().recordDelete(record.getId, xmlFilePathName))
-
 

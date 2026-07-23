@@ -21,36 +21,7 @@ case class Role(
   def getDescription: String = description
 
   override def xmlFile = "roles.xml"
-/*
-  override def getRecords(xmlFilePathName: String = defaultXmlFilePathName): Seq[Role] =
-    try
-      getRecordFromXML(xmlFilePathName, classOf[Role])
-        .map(r => r.asInstanceOf[Role])
-    catch
-      case e: Exception =>
-        logger(e)
-        Seq.empty[Role]
-*/
-/*
-  override def getRecordsByFilter[Role](predicate: Role => Boolean, xmlFilePathName: String = defaultXmlFilePathName, classType: Class[Role]): Seq[Role] =
-    try
-      getRecordFromXML(xmlFilePathName, classType)
-        .map(_.asInstanceOf[Role]).filter(predicate)
-    catch
-      case e: Exception =>
-        logger(e)
-        Seq.empty[Role]
-*/
-/*
-  override def getRecordById(id: String, xmlFilePathName: String = defaultXmlFilePathName): Role =
-    try
-      getRecordFromXML(xmlFilePathName, classOf[Role])
-        .map(a => a.asInstanceOf[Role]).filter(_.id == id).head
-    catch
-      case e: Exception =>
-        logger(e)
-        new Role
-*/
+
   override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
@@ -82,27 +53,6 @@ case class Role(
         logger(e)
         false
     result
-/*
-  override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
-    try
-      removeElemFromXML(xmlFilePathName, id)
-    catch
-      case e: Exception =>
-        logger(e)
-        false
-*/
 
-object Role:
-
-  val AdminName: String = "admin"
-  val OperatorName: String = "oper"
-  val ViewerName: String = "viewer"
-  val validNames: Set[String] = Set(AdminName, OperatorName, ViewerName)
-
-  def fromName(roleName: String): Role =
-    val normalizedRole = roleName.trim.toLowerCase
-
-    if validNames.contains(normalizedRole) then
-      Role(role = normalizedRole)
-    else
-      throw IllegalArgumentException(s"Ruolo non riconosciuto: $normalizedRole")
+@main def tryRole: Unit =
+    println("Tested in RoleTest.scala")

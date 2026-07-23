@@ -73,7 +73,7 @@ class RegistrationTest:
   @Test
   def testGetRecordsInexistentXmlFile: Unit =
     assertEquals(Registration().getRecords[Registration]("path inesistente"), Seq.empty[Registration])
-/*
+
   @Test
   def testGetRecordsEmptyXmlFile: Unit =
     assertEquals(Registration().getRecords[Registration](xmlFilePathName), Seq.empty[Registration])
@@ -86,20 +86,20 @@ class RegistrationTest:
 
   @Test
   def testGetRecordByIdInexistentXmlFile: Unit =
-    assertEquals(Registration().getRecordById("2", "path inesistente"), empty)
+    assertEquals(Registration().getRecordById[Registration]("2", "path inesistente"), empty)
 
   @Test
   def testGetRecordByIdEmptyXmlFile: Unit =
-    assertEquals(Registration().getRecordById("2", xmlFilePathName), empty)
+    assertEquals(Registration().getRecordById[Registration]("2", xmlFilePathName), empty)
 
   @Test
   def testGetRecordByIdFoundRecord: Unit =
     Registration().recordInsert(registration2, xmlFilePathName)
-    assertEquals(Registration().getRecordById("2", xmlFilePathName), registration2)
+    assertEquals(Registration().getRecordById[Registration]("2", xmlFilePathName), registration2)
 
   @Test
   def testGetRecordsIdInexistentId: Unit =
-    assertEquals(Registration().getRecordById("?", xmlFilePathName), empty)
+    assertEquals(Registration().getRecordById[Registration]("?", xmlFilePathName), empty)
 
   @Test
   def testGetRecordsByFilter: Unit =
@@ -108,7 +108,6 @@ class RegistrationTest:
     Registration().recordInsert(registration2, xmlFilePathName)
     Registration().recordInsert(registration3, xmlFilePathName)
     val sequence = Seq(registration1, registration3)
-    //assertEquals(Registration().getRecordsByFilter[Registration](a => a.getArea == "segreteria", xmlFilePathName, classOf[Registration]), sequence)
     assertEquals(Registration().getRecordsByFilter[Registration](a => a.getArea == "segreteria", xmlFilePathName), sequence)
 
   @Test
@@ -118,7 +117,7 @@ class RegistrationTest:
   @Test
   def testRecordInsert: Unit =
     Registration().recordInsert(registration1, xmlFilePathName)
-    val record = Registration().getRecordById("1", xmlFilePathName)
+    val record = Registration().getRecordById[Registration]("1", xmlFilePathName)
     assertEquals(record, registration1)
 
   @Test
@@ -131,11 +130,11 @@ class RegistrationTest:
   @Test
   def testRecordUpdateInexistentXmlFile: Unit =
     Registration().recordInsert(registration1, xmlFilePathName)
-    assertEquals(Registration().getRecordById("1", xmlFilePathName).getPhone, "06/11111111")
-    val record = Registration().getRecordById("1")
+    assertEquals(Registration().getRecordById[Registration]("1", xmlFilePathName).getPhone, "06/11111111")
+    val record = Registration().getRecordById[Registration]("1")
     record.setPhone("06/12345678")
     Registration().recordUpdate(record, "path inesistente")
-    assertNotEquals(Registration().getRecordById("1", xmlFilePathName).getPhone, "06/12345678")
+    assertNotEquals(Registration().getRecordById[Registration]("1", xmlFilePathName).getPhone, "06/12345678")
 
   @Test
   def testRecordUpdateEmptyXmlFile: Unit =
@@ -143,21 +142,21 @@ class RegistrationTest:
     val record = registration1.copy()
     record.setPhone("06/12345678")
     Registration().recordUpdate(record, xmlFilePathName)
-    assertNotEquals(Registration().getRecordById("1", xmlFilePathName).getPhone, "06/12345678")
+    assertNotEquals(Registration().getRecordById[Registration]("1", xmlFilePathName).getPhone, "06/12345678")
 
   @Test
   def testRecordUpdateInexistentId: Unit =
-    val record = Registration().getRecordById("1", xmlFilePathName)
+    val record = Registration().getRecordById[Registration]("1", xmlFilePathName)
     record.setPhone("06/87654321")
     record.setId("?")
     Registration().recordUpdate(record, xmlFilePathName)
-    val recordUpdated = Registration().getRecordById("?", xmlFilePathName)
+    val recordUpdated = Registration().getRecordById[Registration]("?", xmlFilePathName)
     assertEquals(recordUpdated, empty)
 
   @Test
   def testRecordUpdate: Unit =
     Registration().recordInsert(registration1, xmlFilePathName)
-    assertEquals("06/11111111", Registration().getRecordById("1", xmlFilePathName).getPhone)
+    assertEquals("06/11111111", Registration().getRecordById[Registration]("1", xmlFilePathName).getPhone)
     val record = registration1.copy()
     record.setPhone("06/12345678")
     assertTrue(Registration().recordUpdate(record, xmlFilePathName))
@@ -168,10 +167,10 @@ class RegistrationTest:
     Registration().recordInsert(registration1, xmlFilePathName)
     Registration().recordInsert(registration2, xmlFilePathName)
     Registration().recordInsert(registration3, xmlFilePathName)
-    val record = Registration().getRecordById("1", xmlFilePathName)
+    val record = Registration().getRecordById[Registration]("1", xmlFilePathName)
     assertEquals(record.getId, "1")
     Registration().recordDelete(record.getId, xmlFilePathName)
-    //assertEquals(Registration().getRecordById(record.getId, xmlFilePathName), empty)
+    //assertEquals(Registration().getRecordById[Registration](record.getId, xmlFilePathName), empty)
 
   @Test
   def testRecordDeleteInesistentXmlFile: Unit =
@@ -193,4 +192,3 @@ class RegistrationTest:
     val record = registration1.copy()
     record.setId("100")
     assertFalse(Registration().recordDelete(record.getId, xmlFilePathName))
-*/

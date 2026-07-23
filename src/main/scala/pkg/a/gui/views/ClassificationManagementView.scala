@@ -87,6 +87,7 @@ object ClassificationManagementView extends Management:
           classifications.clear()
           result.show("Errore durante il caricamento delle classifiche.", success = false)
           logger(exception)
+          showResult("Errore durante il caricamento delle classifiche.", success = false)
 
     def deleteSelectedClassification(): Unit =
       selectedClassification() match
