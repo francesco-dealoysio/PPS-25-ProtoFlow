@@ -3,6 +3,8 @@ package pkg.a.gui.views
 import pkg.a.gui.traits.Management
 import pkg.b.logic.Role
 import pkg.d.util.Logger.*
+import pkg.d.util.Util.inDatabaseFilePathName
+import pkg.d.util.XmlToPdf
 import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
@@ -114,6 +116,18 @@ object RoleManagementView extends Management:
             else
               result.show("Non è stato possibile eliminare il ruolo.", success = false)
 
+    def printRoles(): Unit =
+      val printed =
+        XmlToPdf.printList(
+          xmlPath = inDatabaseFilePathName("roles.xml"),
+          pdfFileName = "elenco-ruoli.pdf",
+          title = "Elenco Ruoli"
+        )
+      if printed then
+        result.show("Elenco dei ruoli stampato correttamente nella cartella protoflow/prints.", success = true)
+      else
+        result.show("Non è stato possibile stampare l'elenco dei ruoli.", success = false)
+
     table.selectionModel.value
       .selectedItem
       .onChange:
@@ -151,9 +165,12 @@ object RoleManagementView extends Management:
 
     val exitButton = closeButton(onExit)
 
+    val print = printButton(action = () => printRoles())
+
     val bottomActions =
       actionBar(
         exitButton,
+        print,
         editButton,
         deleteButton,
         addButton
