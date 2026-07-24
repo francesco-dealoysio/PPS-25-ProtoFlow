@@ -20,20 +20,8 @@ object RoleAddView extends Form:
     val roleLogic = new Role()
     val viewModel = new RoleViewModel()
 
-    val roleField =
-      new TextField:
-        promptText = "Inserisci il ruolo"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
-    val descriptionArea =
-      new TextArea:
-        promptText = "Inserisci la descrizione"
-        wrapText = true
-        prefRowCount = 5
-        maxWidth = Double.MaxValue
-        styleClass += "role-description-area"
-
+    val roleField = textField("Inserisci il ruolo")
+    val descriptionArea = textArea(prompt = "Inserisci la descrizione", styleName = "role-description-area")
     val roleError = fieldErrorLabel()
     val descriptionError = fieldErrorLabel()
     val resultMessage = messageLabel("roles-message")

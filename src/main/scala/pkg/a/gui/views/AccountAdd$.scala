@@ -15,54 +15,18 @@ object AccountAdd$ extends Form:
     val accountLogic = new Account()
     val viewModel = new AccountViewModel()
 
-    val surnameField =
-      new TextField:
-        promptText = "Inserisci il cognome"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
-    val nameField =
-      new TextField:
-        promptText = "Inserisci il nome"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
-    val emailField =
-      new TextField:
-        promptText = "Inserisci l'email"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
-    val phoneField =
-      new TextField:
-        promptText = "Inserisci il telefono"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
+    val surnameField = textField(prompt = "Inserisci il cognome")
+    val nameField = textField(prompt = "Inserisci il nome")
+    val emailField = textField(prompt = "Inserisci l'email")
+    val phoneField = textField(prompt = "Inserisci il telefono")
     val roleField =
       new ComboBox[String](AccountViewModel.roles):
         promptText = "Seleziona il ruolo"
         maxWidth = Double.MaxValue
         styleClass += "form-field"
-
-    val areaField =
-      new TextField:
-        promptText = "Inserisci l'area"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
-    val assignmentField =
-      new TextField:
-        promptText = "Inserisci la mansione"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
-    val usernameField =
-      new TextField:
-        promptText = "Inserisci lo username"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
+    val areaField = textField(prompt = "Inserisci l'area")
+    val assignmentField = textField(prompt = "Inserisci la mansione")
+    val usernameField = textField(prompt = "Inserisci lo username")
     val passwordField =
       new PasswordField:
         promptText = "Inserisci la password"
@@ -159,10 +123,8 @@ object AccountAdd$ extends Form:
               else
                 "Errore durante l'inserimento dell'account.",
             success = saved,
-            successStyle =
-              "accounts-message-success",
-            errorStyle =
-              "accounts-message-error"
+            successStyle = "accounts-message-success",
+            errorStyle = "accounts-message-error"
           )
 
           if saved then onSaved()
@@ -186,8 +148,7 @@ object AccountAdd$ extends Form:
 
     formPage(
       titleText = "Aggiunta account",
-      subtitleText =
-        "Inserisci i dati del nuovo account utente.",
+      subtitleText = "Inserisci i dati del nuovo account utente.",
       titleStyle = "accounts-title",
       subtitleStyle = "accounts-subtitle",
       rootStyle = "accounts-management-root",

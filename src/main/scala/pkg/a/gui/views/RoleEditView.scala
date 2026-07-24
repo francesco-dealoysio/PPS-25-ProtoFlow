@@ -3,7 +3,6 @@ package pkg.a.gui.views
 import pkg.a.gui.structures.RoleViewModel
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Role
-import scalafx.scene.control.{TextArea, TextField}
 import scalafx.scene.layout.BorderPane
 
 object RoleEditView extends Form:
@@ -20,27 +19,13 @@ object RoleEditView extends Form:
     val initialRole = selectedRole.getRole
     val initialDescription = selectedRole.getDescription
 
-    val roleField =
-      new TextField:
-        text = initialRole
-        promptText = "Inserisci il ruolo"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
-    val descriptionArea =
-      new TextArea:
-        text = initialDescription
-        promptText = "Inserisci la descrizione"
-        wrapText = true
-        prefRowCount = 5
-        maxWidth = Double.MaxValue
-        styleClass += "role-description-area"
+    val roleField = textField(prompt = "Inserisci il ruolo", initialText = initialRole)
+    val descriptionArea = textArea(prompt = "Inserisci la descrizione", styleName = "role-description-area", initialText = selectedRole.getDescription)
 
     val roleError = fieldErrorLabel()
     val descriptionError = fieldErrorLabel()
 
-    val resultMessage =
-      messageLabel("roles-message")
+    val resultMessage = messageLabel("roles-message")
 
     def clearErrors(): Unit =
       clearFieldErrors(

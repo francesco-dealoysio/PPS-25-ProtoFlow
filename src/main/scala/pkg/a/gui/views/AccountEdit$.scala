@@ -6,7 +6,7 @@ import pkg.b.logic.Account
 import pkg.d.util.Util.{inDatabaseFilePathName, md5}
 import pkg.d.util.XmlToPdf
 
-import scalafx.scene.control.{ComboBox, PasswordField, TextField}
+import scalafx.scene.control.{ComboBox, PasswordField}
 import scalafx.scene.layout.BorderPane
 
 object AccountEdit$ extends Form:
@@ -29,34 +29,10 @@ object AccountEdit$ extends Form:
     val initialAssignment = selectedAccount.getAssignment
     val initialUsername = selectedAccount.getUsername
 
-    val surnameField =
-      new TextField:
-        text = initialSurname
-        promptText = "Inserisci il cognome"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
-    val nameField =
-      new TextField:
-        text = initialName
-        promptText = "Inserisci il nome"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
-    val emailField =
-      new TextField:
-        text = initialEmail
-        promptText = "Inserisci l'email"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
-    val phoneField =
-      new TextField:
-        text = initialPhone
-        promptText = "Inserisci il telefono"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
+    val surnameField = textField(prompt = "Inserisci cognome")
+    val nameField = textField(prompt = "Inserisci nome")
+    val emailField = textField(prompt = "Inserisci email")
+    val phoneField = textField(prompt = "Inserisci il telefono")
     val roleField =
       new ComboBox[String](AccountViewModel.roles):
         value = initialRole
@@ -64,26 +40,9 @@ object AccountEdit$ extends Form:
         maxWidth = Double.MaxValue
         styleClass += "form-field"
 
-    val areaField =
-      new TextField:
-        text = initialArea
-        promptText = "Inserisci l'area"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
-    val assignmentField =
-      new TextField:
-        text = initialAssignment
-        promptText = "Inserisci la mansione"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
-    val usernameField =
-      new TextField:
-        text = initialUsername
-        promptText = "Inserisci lo username"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
+    val areaField = textField(prompt = "Inserisci l'area")
+    val assignmentField = textField(prompt = "Inserisci la mansione")
+    val usernameField = textField(prompt = "Inserisci username")
 
     val passwordField =
       new PasswordField:
