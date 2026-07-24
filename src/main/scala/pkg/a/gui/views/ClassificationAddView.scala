@@ -3,7 +3,6 @@ package pkg.a.gui.views
 import pkg.a.gui.structures.ClassificationViewModel
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
-import scalafx.scene.control.{TextArea, TextField}
 import scalafx.scene.layout.BorderPane
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
@@ -16,20 +15,8 @@ object ClassificationAddView extends Form:
     val classificationLogic = new Classification()
     val viewModel = new ClassificationViewModel()
 
-    val classificationField =
-      new TextField:
-        promptText = "Inserisci la classifica"
-        maxWidth = Double.MaxValue
-        styleClass += "form-field"
-
-    val descriptionArea =
-      new TextArea:
-        promptText = "Inserisci la descrizione"
-        wrapText = true
-        prefRowCount = 5
-        maxWidth = Double.MaxValue
-        styleClass += "classification-description-area"
-
+    val classificationField =  textField(prompt = "Inserisci la classifica")
+    val descriptionArea = textArea(prompt = "Inserisci la descrizione", styleName = "classification-description-area")
     val classificationError = fieldErrorLabel()
     val descriptionError = fieldErrorLabel()
 

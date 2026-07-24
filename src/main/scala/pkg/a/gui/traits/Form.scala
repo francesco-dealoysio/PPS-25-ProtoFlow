@@ -2,7 +2,7 @@ package pkg.a.gui.traits
 
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Node
-import scalafx.scene.control.{Button, Label, TextInputControl}
+import scalafx.scene.control.{Button, Label, TextArea, TextField, TextInputControl}
 import scalafx.scene.layout.*
 
 trait Form extends Root:
@@ -65,6 +65,22 @@ trait Form extends Root:
         case (field, errorLabel) =>
           showFieldError(field, errorLabel, error)
     errors.isEmpty
+
+  protected def textField(prompt: String, initialText: String = ""): TextField =
+    new TextField:
+      text = initialText
+      promptText = prompt
+      maxWidth = Double.MaxValue
+      styleClass += "form-field"
+
+  protected def textArea(prompt: String, styleName: String, initialText: String = "", rows: Int = 5): TextArea =
+    new TextArea:
+      text = initialText
+      promptText = prompt
+      wrapText = true
+      prefRowCount = rows
+      maxWidth = Double.MaxValue
+      styleClass += styleName
 
   protected def formPage(
                           titleText: String,

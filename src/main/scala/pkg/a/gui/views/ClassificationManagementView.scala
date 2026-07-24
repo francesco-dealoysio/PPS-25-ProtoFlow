@@ -8,6 +8,8 @@ import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
 import pkg.d.util.Logger.*
+import pkg.d.util.Util.inDatabaseFilePathName
+import pkg.d.util.XmlToPdf
 
 object ClassificationManagementView extends Management:
 
@@ -107,6 +109,23 @@ object ClassificationManagementView extends Management:
             else
               result.show("Non è stato possibile eliminare la classifica.", success = false)
 
+    def printClassifications(): Unit =
+      if classifications.isEmpty then
+        result.show("Non sono presenti classifiche da stampare.", success = false)
+      else
+        val printed =
+          XmlToPdf.printList(
+            xmlPath = inDatabaseFilePathName("classifications.xml"),
+            pdfFileName = "elenco-classifiche.pdf",
+            title = "Elenco Classifiche"
+          )
+
+        if printed then
+          result.show("Elenco delle classifiche stampato correttamente nella cartella protoflow/prints.", success = true)
+        else
+          result.show("Non è stato possibile stampare l'elenco delle classifiche.", success = false)
+
+
      // Pulisce il messaggio quando viene selezionata una nuova riga.
     table.selectionModel.value
       .selectedItem
@@ -147,10 +166,12 @@ object ClassificationManagementView extends Management:
         .isNull
 
     val exitButton = closeButton(onExit)
+    val print = printButton(action = () => printClassifications())
 
     val bottomActions =
       actionBar(
         exitButton,
+        print,
         editButton,
         deleteButton,
         addButton

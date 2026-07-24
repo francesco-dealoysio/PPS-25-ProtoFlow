@@ -3,6 +3,7 @@ package pkg.a.gui.traits
 import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
 import pkg.a.gui.views.*
 import pkg.b.logic.{Account, Classification, Registration, Role}
+import pkg.d.util.DateTime
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, TableColumn, TableView}
 import scalafx.scene.layout.*
@@ -213,10 +214,19 @@ trait HomePage extends Root:
       children = buttons
 
   private def createFooter(currentUser: String): HBox =
+    val dateTimeLabel = fieldLabel("", "footer-date-time")
+
+    dateTimeLabel.text <==
+      DateTime.dynamicDateTimeProperty()
+
     new HBox:
       alignment = Pos.CenterRight
+      spacing = 20
       styleClass += "app-footer"
-      children = Seq(fieldLabel(s"👤 $currentUser ($roleDescription)    Data e ora dinamici", "footer-user-info"))
+      children = Seq(
+        fieldLabel(s"👤 $currentUser ($roleDescription)", "footer-user-info"),
+        dateTimeLabel
+      )
 
   private def contentFor(action: MenuAction): Pane =
     action match
