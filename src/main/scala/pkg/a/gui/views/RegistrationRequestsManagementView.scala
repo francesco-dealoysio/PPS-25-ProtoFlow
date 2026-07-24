@@ -113,13 +113,7 @@ object RegistrationRequestsManagementView extends Management:
 
     val exitButton = closeButton(onExit)
 
-    val bottomActions =
-      actionBar(
-        exitButton,
-        refreshButton,
-        printButton,
-        processButton
-      )
+    val bottomActions = actionBar(Seq(exitButton, refreshButton, printButton, processButton))
 
     val header =
       titleBox(

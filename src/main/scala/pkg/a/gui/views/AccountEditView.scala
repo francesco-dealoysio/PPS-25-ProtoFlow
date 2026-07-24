@@ -49,6 +49,32 @@ object AccountEditView extends Form:
         promptText = "Lascia vuoto per non modificare la password"
         maxWidth = Double.MaxValue
         styleClass += "form-field"
+    val monitoredTextFields =
+      Seq(
+        surnameField,
+        nameField,
+        emailField,
+        phoneField,
+        areaField,
+        assignmentField,
+        usernameField,
+        passwordField
+      )
+
+    val monitoredComboBoxes = Seq(roleField)
+
+    val initialFormValues =
+      Seq(
+        initialSurname,
+        initialName,
+        initialEmail,
+        initialPhone,
+        initialArea,
+        initialAssignment,
+        initialUsername,
+        "", // password inizialmente vuota
+        initialRole // ComboBox viene dopo i TextInputControl
+      )
 
     val surnameError = fieldErrorLabel()
     val nameError = fieldErrorLabel()
@@ -198,27 +224,12 @@ object AccountEditView extends Form:
 
     formPage(
       titleText = "Modifica account",
-      subtitleText =
-        "Modifica i dati dell'account selezionato. Lascia vuoto il campo password per non modificarla.",
+      subtitleText = "Modifica i dati dell'account selezionato. Lascia vuoto il campo password per non modificarla.",
       titleStyle = "accounts-title",
       subtitleStyle = "accounts-subtitle",
       rootStyle = "accounts-management-root",
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, print, reset, save),
-      hasUnsavedChanges = () =>
-        !formSaved &&
-          (
-            surnameField.text.value.trim != initialSurname.trim ||
-              nameField.text.value.trim != initialName.trim ||
-              emailField.text.value.trim != initialEmail.trim ||
-              phoneField.text.value.trim != initialPhone.trim ||
-              Option(roleField.value.value)
-                .map(_.trim)
-                .getOrElse("") != initialRole.trim ||
-              areaField.text.value.trim != initialArea.trim ||
-              assignmentField.text.value.trim != initialAssignment.trim ||
-              usernameField.text.value.trim != initialUsername.trim ||
-              passwordField.text.value.nonEmpty
-            )
+      actions = actionBar(Seq(exit, print, reset, save)),
+      hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredTextFields, monitoredComboBoxes, initialFormValues)
     )

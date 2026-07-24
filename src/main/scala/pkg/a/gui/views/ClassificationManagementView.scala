@@ -168,14 +168,7 @@ object ClassificationManagementView extends Management:
     val exitButton = closeButton(onExit)
     val print = printButton(action = () => printClassifications())
 
-    val bottomActions =
-      actionBar(
-        exitButton,
-        print,
-        editButton,
-        deleteButton,
-        addButton
-      )
+    val bottomActions = actionBar(Seq(exitButton, print, editButton, deleteButton, addButton))
 
     val header =
       titleBox(

@@ -21,6 +21,7 @@ object ClassificationAddView extends Form:
     val descriptionError = fieldErrorLabel()
 
     val resultMessage = messageLabel("classifications-message")
+    val monitoredFields = Seq(classificationField, descriptionArea)
 
     def clearErrors(): Unit =
       clearFieldErrors(
@@ -112,8 +113,6 @@ object ClassificationAddView extends Form:
       rootStyle = "classifications-management-root",
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, reset, save),
-      hasUnsavedChanges = () =>
-        !formSaved && (classificationField.text.value.trim.nonEmpty ||
-          descriptionArea.text.value.trim.nonEmpty)
+      actions = actionBar(Seq(exit, reset, save)),
+      hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

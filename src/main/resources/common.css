@@ -88,3 +88,15 @@
 .table-view .table-row-cell {
     -fx-cell-size: 20px;
 }
+
+
+.form-actions {
+    -fx-alignment: CENTER-RIGHT;
+    -fx-spacing: 12px;
+}
+
+.login-actions {
+    -fx-alignment: CENTER;
+    -fx-spacing: 12px;
+    -fx-padding: 0;
+}

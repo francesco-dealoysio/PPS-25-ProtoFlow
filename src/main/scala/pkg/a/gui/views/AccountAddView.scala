@@ -43,6 +43,19 @@ object AccountAddView extends Form:
     val passwordError = fieldErrorLabel()
 
     val resultMessage = messageLabel("accounts-message")
+    val monitoredTextFields =
+      Seq(
+        surnameField,
+        nameField,
+        emailField,
+        phoneField,
+        areaField,
+        assignmentField,
+        usernameField,
+        passwordField
+      )
+
+    val monitoredComboBoxes = Seq(roleField)
 
     def clearErrors(): Unit =
       clearFieldErrors(
@@ -162,18 +175,6 @@ object AccountAddView extends Form:
       rootStyle = "accounts-management-root",
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, reset, save),
-      hasUnsavedChanges = () =>
-        !formSaved &&
-          (
-            surnameField.text.value.trim.nonEmpty ||
-              nameField.text.value.trim.nonEmpty ||
-              emailField.text.value.trim.nonEmpty ||
-              phoneField.text.value.trim.nonEmpty ||
-              Option(roleField.value.value).exists(_.trim.nonEmpty) ||
-              areaField.text.value.trim.nonEmpty ||
-              assignmentField.text.value.trim.nonEmpty ||
-              usernameField.text.value.trim.nonEmpty ||
-              passwordField.text.value.nonEmpty
-            )
+      actions = actionBar(Seq(exit, reset, save)),
+      hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredTextFields, monitoredComboBoxes)
     )

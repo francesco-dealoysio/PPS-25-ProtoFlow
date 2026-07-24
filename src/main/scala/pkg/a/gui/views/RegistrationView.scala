@@ -4,7 +4,7 @@ import pkg.a.gui.structures.RegistrationViewModel
 import pkg.a.gui.traits.Form
 import pkg.b.logic.{Registration, RegistrationRequestService}
 import scalafx.collections.ObservableBuffer
-import scalafx.scene.control.{Button, ComboBox, TextField}
+import scalafx.scene.control.{Button, ComboBox}
 import scalafx.scene.layout.{BorderPane, GridPane}
 
 object RegistrationView extends Form:
@@ -15,22 +15,11 @@ object RegistrationView extends Form:
            ): BorderPane =
 
     val service = new RegistrationRequestService()
-    
-    val nameField = new TextField:
-      promptText = "Inserisci il nome"
-      styleClass += "form-field"
 
-    val surnameField = new TextField:
-      promptText = "Inserisci il cognome"
-      styleClass += "form-field"
-
-    val emailField = new TextField:
-      promptText = "nome.cognome@email.it"
-      styleClass += "form-field"
-
-    val phoneField = new TextField:
-      promptText = "Inserisci il telefono"
-      styleClass += "form-field"
+    val nameField = textField("Inserisci il nome")
+    val surnameField = textField("Inserisci il cognome")
+    val emailField = textField("nome.cognome@email.it")
+    val phoneField = textField("Inserisci il telefono")
 
     val roleCombo = new ComboBox[String]:
       items = ObservableBuffer("Viewer", "Operatore Protocollo", "Amministratore")
@@ -49,9 +38,17 @@ object RegistrationView extends Form:
       promptText = "Seleziona area"
       styleClass += "form-field"
 
-    val assignmentField = new TextField:
-      promptText = "Inserisci incarico"
-      styleClass += "form-field"
+    val assignmentField = textField("Inserisci incarico")
+
+    val monitoredTextFields = Seq(
+        nameField,
+        surnameField,
+        emailField,
+        phoneField,
+        assignmentField
+      )
+
+    val monitoredComboBoxes = Seq(roleCombo, areaCombo)
 
     val resultMessage = messageLabel("form-message")
     var formSaved = false
@@ -65,6 +62,13 @@ object RegistrationView extends Form:
         role = Option(roleCombo.value.value).getOrElse(""),
         area = Option(areaCombo.value.value).getOrElse(""),
         assignment = assignmentField.text.value
+      )
+
+    def hasChanges: Boolean =
+      hasFormChanges(
+        formSaved = formSaved,
+        textFields = monitoredTextFields,
+        comboBoxes = monitoredComboBoxes
       )
 
     def clearFields(): Unit =
@@ -161,7 +165,7 @@ object RegistrationView extends Form:
       add(fieldLabel("Incarico *"), 0, 6)
       add(assignmentField, 0, 7)
 
-    val buttonsBox = actionBar(exit, reset, submit)
+    val buttonsBox = actionBar(Seq(exit, reset, submit))
 
     formPage(
       titleText = "Registrazione",
@@ -173,15 +177,5 @@ object RegistrationView extends Form:
       form = formGrid,
       resultMessage = resultMessage,
       actions = buttonsBox,
-      hasUnsavedChanges = () =>
-        !formSaved &&
-          (
-            nameField.text.value.trim.nonEmpty ||
-              surnameField.text.value.trim.nonEmpty ||
-              emailField.text.value.trim.nonEmpty ||
-              phoneField.text.value.trim.nonEmpty ||
-              Option(roleCombo.value.value).exists(_.trim.nonEmpty) ||
-              Option(areaCombo.value.value).exists(_.trim.nonEmpty) ||
-              assignmentField.text.value.trim.nonEmpty
-            )
+      hasUnsavedChanges = () => hasChanges
     )

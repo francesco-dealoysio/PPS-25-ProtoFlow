@@ -188,13 +188,7 @@ object AccountManagementView extends Management:
 
     val exitButton = closeButton(onExit)
 
-    val bottomActions =
-      actionBar(
-        exitButton,
-        editButton,
-        deleteButton,
-        addButton
-      )
+    val bottomActions = actionBar(Seq(exitButton, editButton, deleteButton, addButton))
 
     val header =
       titleBox(

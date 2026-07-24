@@ -24,7 +24,8 @@ object RoleEditView extends Form:
 
     val roleError = fieldErrorLabel()
     val descriptionError = fieldErrorLabel()
-
+    val monitoredFields = Seq(roleField, descriptionArea)
+    val initialFormValues = Seq(initialRole, initialDescription)
     val resultMessage = messageLabel("roles-message")
 
     def clearErrors(): Unit =
@@ -71,6 +72,7 @@ object RoleEditView extends Form:
         case RoleViewModel.DescriptionRequiredError =>
           descriptionArea -> descriptionError
 
+    var formSaved = false
     val save =
       saveButton: () =>
         if validateForm() then
@@ -90,6 +92,7 @@ object RoleEditView extends Form:
           )
 
           if updated then
+            formSaved = true
             onSaved()
 
     val reset = resetButton(() => resetForm())
@@ -112,8 +115,11 @@ object RoleEditView extends Form:
       rootStyle = "roles-management-root",
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, reset, save),
+      actions = actionBar(Seq(exit, reset, save)),
       hasUnsavedChanges = () =>
-        roleField.text.value.trim != initialRole.trim ||
-          descriptionArea.text.value.trim != initialDescription.trim
+        hasFormChanges(
+          formSaved = formSaved,
+          textFields = monitoredFields,
+          initialValues = initialFormValues
+        )
     )

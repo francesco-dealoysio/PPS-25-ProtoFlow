@@ -25,7 +25,7 @@ object RoleAddView extends Form:
     val roleError = fieldErrorLabel()
     val descriptionError = fieldErrorLabel()
     val resultMessage = messageLabel("roles-message")
-
+    val monitoredFields = Seq(roleField, descriptionArea)
     def currentRole(id: String = ""): Role =
       Role(
         id = id,
@@ -115,8 +115,6 @@ object RoleAddView extends Form:
       rootStyle = "roles-management-root",
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, reset, save),
-      hasUnsavedChanges = () =>
-        !formSaved && (roleField.text.value.trim.nonEmpty ||
-          descriptionArea.text.value.trim.nonEmpty)
+      actions = actionBar(Seq(exit, reset, save)),
+      hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

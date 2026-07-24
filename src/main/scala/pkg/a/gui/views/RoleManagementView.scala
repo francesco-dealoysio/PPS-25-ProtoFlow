@@ -167,14 +167,7 @@ object RoleManagementView extends Management:
 
     val print = printButton(action = () => printRoles())
 
-    val bottomActions =
-      actionBar(
-        exitButton,
-        print,
-        editButton,
-        deleteButton,
-        addButton
-      )
+    val bottomActions = actionBar(Seq(exitButton, print, editButton, deleteButton, addButton))
 
     val header =
       titleBox(

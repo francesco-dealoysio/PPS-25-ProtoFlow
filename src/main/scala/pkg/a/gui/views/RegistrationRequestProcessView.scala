@@ -165,8 +165,7 @@ object RegistrationRequestProcessView extends Management:
     val approveButton = primaryButton("Approva", () => approve())
     val exitButton = closeButton(onExit)
 
-    val actionsBox =
-      actionBar(exitButton, printButton, rejectButton, approveButton)
+    val actionsBox = actionBar(Seq(exitButton, printButton, rejectButton, approveButton))
 
     val header =
       titleBox(

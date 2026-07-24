@@ -24,7 +24,8 @@ object ClassificationEditView extends Form:
 
     val classificationError = fieldErrorLabel()
     val descriptionError = fieldErrorLabel()
-
+    val monitoredFields = Seq(classificationField, descriptionArea)
+    val initialFormValues = Seq(initialClassification, initialDescription)
     val resultMessage = messageLabel("classifications-message")
 
     def clearErrors(): Unit =
@@ -122,8 +123,11 @@ object ClassificationEditView extends Form:
       rootStyle = "classifications-management-root",
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, reset, save),
+      actions = actionBar(Seq(exit, reset, save)),
       hasUnsavedChanges = () =>
-        classificationField.text.value.trim != initialClassification.trim ||
-          descriptionArea.text.value.trim != initialDescription.trim
+        hasFormChanges(
+          formSaved = formSaved,
+          textFields = monitoredFields,
+          initialValues = initialFormValues
+        )
     )
