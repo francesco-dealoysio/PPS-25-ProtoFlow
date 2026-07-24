@@ -1,8 +1,8 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.structures.{RegistrationRequest, RegistrationViewModel}
+import pkg.a.gui.structures.RegistrationViewModel
 import pkg.a.gui.traits.Form
-import pkg.b.logic.RegistrationRequestService
+import pkg.b.logic.{Registration, RegistrationRequestService}
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.{Button, ComboBox, TextField}
 import scalafx.scene.layout.{BorderPane, GridPane}
@@ -55,15 +55,15 @@ object RegistrationView extends Form:
 
     val resultMessage = messageLabel("form-message")
 
-    def currentRequest(): RegistrationRequest =
-      RegistrationRequest(
+    def currentRequest(): Registration =
+      Registration(
         id = "",
         name = nameField.text.value,
         surname = surnameField.text.value,
         email = emailField.text.value,
         phone = phoneField.text.value,
-        requestedRole = Option(roleCombo.value.value).getOrElse(""),
-        requestedArea = Option(areaCombo.value.value).getOrElse(""),
+        role = Option(roleCombo.value.value).getOrElse(""),
+        area = Option(areaCombo.value.value).getOrElse(""),
         assignment = assignmentField.text.value
       )
 
@@ -102,13 +102,13 @@ object RegistrationView extends Form:
         )
       else
         service.submitRequest(
-          name = request.name,
-          surname = request.surname,
-          email = request.email,
-          phone = request.phone,
-          requestedRole = request.requestedRole,
-          requestedArea = request.requestedArea,
-          assignment = request.assignment
+          name = request.getName,
+          surname = request.getSurname,
+          email = request.getEmail,
+          phone = request.getPhone,
+          requestedRole = request.getRole,
+          requestedArea = request.getArea,
+          assignment = request.getAssignment
         ) match
           case Right(_) =>
             clearFields()

@@ -16,11 +16,14 @@ case class Registration(
                     private var date: String = "",
                     private var state: String = "",
                     private var result: String = "",
-                    private var motivation: String = ""
+                    private var motivation: String = "",
+                    private var processedBy: String = "",
+                    private var processedDate: String = "",
+                    private var assignedUsername: String = ""
                   ) extends Entity:
   def this() =
     this("", "", "", "", "", "", "", "", "", "", "", "")
-  
+
   def setId(value: String): Unit = id = value
   def setSurname(value: String): Unit = surname = value
   def setName(value: String): Unit = name = value
@@ -33,6 +36,9 @@ case class Registration(
   def setState(value: String): Unit = state = value
   def setResult(value: String): Unit = result = value
   def setMotivation(value: String): Unit = motivation = value
+  def setProcessedBy(value: String): Unit = processedBy = value
+  def setProcessedDate(value: String): Unit = processedDate = value
+  def setAssignedUsername(value: String): Unit = assignedUsername = value
 
   def getId: String = id
   def getSurname: String = surname
@@ -46,6 +52,9 @@ case class Registration(
   def getState: String = state
   def getResult: String = result
   def getMotivation: String = motivation
+  def getProcessedBy: String = processedBy
+  def getProcessedDate: String = processedDate
+  def getAssignedUsername: String = assignedUsername
 
   override def xmlFile = "registrations.xml"
 

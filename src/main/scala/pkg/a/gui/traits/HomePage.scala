@@ -2,7 +2,7 @@ package pkg.a.gui.traits
 
 import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
 import pkg.a.gui.views.*
-import pkg.b.logic.{Account, Classification, Role}
+import pkg.b.logic.{Account, Classification, Registration, Role}
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, TableColumn, TableView}
 import scalafx.scene.layout.*
@@ -22,6 +22,7 @@ trait HomePage extends Root:
   final def apply(
                    viewModel: HomePageViewModel,
                    currentUser: String,
+                   currentUsername: String,
                    onLogout: () => Unit = () => ()
                  ): BorderPane =
 
@@ -33,6 +34,7 @@ trait HomePage extends Root:
       top = createHeader(currentUser)
       left = createSidebar(
         viewModel = viewModel,
+        currentUsername = currentUsername,
         contentArea = contentArea,
         onLogout = onLogout
       )
@@ -54,6 +56,7 @@ trait HomePage extends Root:
 
   private def createSidebar(
                              viewModel: HomePageViewModel,
+                             currentUsername: String,
                              contentArea: StackPane,
                              onLogout: () => Unit
                            ): VBox =
@@ -94,7 +97,18 @@ trait HomePage extends Root:
     def showRegistrationRequests(): Unit =
       render(
         RegistrationRequestsManagementView(
+          onProcess = selected => showRegistrationRequestProcess(selected),
           onExit = () => showDashboard()
+        )
+      )
+
+    def showRegistrationRequestProcess(selected: Registration): Unit =
+      render(
+        RegistrationRequestProcessView(
+          request = selected,
+          operatorUsername = currentUsername,
+          onProcessed = () => showRegistrationRequests(),
+          onExit = () => showRegistrationRequests()
         )
       )
 
