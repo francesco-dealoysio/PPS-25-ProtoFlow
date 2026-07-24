@@ -71,6 +71,7 @@ object ClassificationEditView extends Form:
              ClassificationViewModel.DuplicateClassificationError => classificationField -> classificationError
         case ClassificationViewModel.DescriptionRequiredError => descriptionArea -> descriptionError
 
+    var formSaved = false
     val save =
       saveButton: () =>
         if validateForm() then
@@ -89,7 +90,9 @@ object ClassificationEditView extends Form:
             errorStyle =
               "classifications-message-error"
           )
-          if updated then onSaved()
+          if updated then
+            formSaved = true
+            onSaved()
 
     val reset = resetButton(() => resetForm())
     val exit = closeButton(onExit)
@@ -119,5 +122,8 @@ object ClassificationEditView extends Form:
       rootStyle = "classifications-management-root",
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, reset, save)
+      actions = actionBar(exit, reset, save),
+      hasUnsavedChanges = () =>
+        classificationField.text.value.trim != initialClassification.trim ||
+          descriptionArea.text.value.trim != initialDescription.trim
     )

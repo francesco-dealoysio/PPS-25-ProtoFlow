@@ -55,6 +55,7 @@ object ClassificationAddView extends Form:
 
       classificationField.requestFocus()
 
+    var formSaved = false
     val save =
       saveButton: () =>
         if validateForm() then
@@ -76,7 +77,9 @@ object ClassificationAddView extends Form:
               "classifications-message-error"
           )
 
-          if saved then onSaved()
+          if saved then
+            formSaved = true
+            onSaved()
 
     val reset = resetButton(() => resetForm())
 
@@ -109,5 +112,8 @@ object ClassificationAddView extends Form:
       rootStyle = "classifications-management-root",
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, reset, save)
+      actions = actionBar(exit, reset, save),
+      hasUnsavedChanges = () =>
+        !formSaved && (classificationField.text.value.trim.nonEmpty ||
+          descriptionArea.text.value.trim.nonEmpty)
     )

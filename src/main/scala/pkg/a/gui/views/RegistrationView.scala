@@ -54,7 +54,7 @@ object RegistrationView extends Form:
       styleClass += "form-field"
 
     val resultMessage = messageLabel("form-message")
-
+    var formSaved = false
     def currentRequest(): Registration =
       Registration(
         id = "",
@@ -111,6 +111,7 @@ object RegistrationView extends Form:
           assignment = request.getAssignment
         ) match
           case Right(_) =>
+            formSaved = true
             clearFields()
 
             showMessage(
@@ -171,5 +172,16 @@ object RegistrationView extends Form:
       contentStyle = Some("registration-card"),
       form = formGrid,
       resultMessage = resultMessage,
-      actions = buttonsBox
+      actions = buttonsBox,
+      hasUnsavedChanges = () =>
+        !formSaved &&
+          (
+            nameField.text.value.trim.nonEmpty ||
+              surnameField.text.value.trim.nonEmpty ||
+              emailField.text.value.trim.nonEmpty ||
+              phoneField.text.value.trim.nonEmpty ||
+              Option(roleCombo.value.value).exists(_.trim.nonEmpty) ||
+              Option(areaCombo.value.value).exists(_.trim.nonEmpty) ||
+              assignmentField.text.value.trim.nonEmpty
+            )
     )

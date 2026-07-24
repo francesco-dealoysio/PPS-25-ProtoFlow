@@ -110,6 +110,7 @@ object AccountAddView extends Form:
 
       surnameField.requestFocus()
 
+    var formSaved = false
     val save =
       saveButton: () =>
         if validateForm() then
@@ -128,7 +129,9 @@ object AccountAddView extends Form:
             errorStyle = "accounts-message-error"
           )
 
-          if saved then onSaved()
+          if saved then
+            formSaved = true
+            onSaved()
 
     val reset = resetButton(() => resetForm())
     val exit = closeButton(onExit)
@@ -159,5 +162,18 @@ object AccountAddView extends Form:
       rootStyle = "accounts-management-root",
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, reset, save)
+      actions = actionBar(exit, reset, save),
+      hasUnsavedChanges = () =>
+        !formSaved &&
+          (
+            surnameField.text.value.trim.nonEmpty ||
+              nameField.text.value.trim.nonEmpty ||
+              emailField.text.value.trim.nonEmpty ||
+              phoneField.text.value.trim.nonEmpty ||
+              Option(roleField.value.value).exists(_.trim.nonEmpty) ||
+              areaField.text.value.trim.nonEmpty ||
+              assignmentField.text.value.trim.nonEmpty ||
+              usernameField.text.value.trim.nonEmpty ||
+              passwordField.text.value.nonEmpty
+            )
     )

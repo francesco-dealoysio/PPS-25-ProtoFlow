@@ -91,7 +91,8 @@ trait Form extends Root:
                           form: GridPane,
                           resultMessage: Label,
                           actions: HBox,
-                          contentStyle: Option[String] = None
+                          contentStyle: Option[String] = None,
+                          hasUnsavedChanges: () => Boolean = () => false
                         ): BorderPane =
 
     val header =
@@ -114,12 +115,17 @@ trait Form extends Root:
           actions
         )
 
-    new BorderPane:
+    val page = new BorderPane:
       styleClass += rootStyle
       center =
         new StackPane:
           alignment = Pos.TopCenter
           children = Seq(content)
+
+    page.delegate
+      .getProperties
+      .put("has-unsaved-changes", hasUnsavedChanges)
+    page
 
   private def clearFieldError(field: Node, errorLabel: Label): Unit =
     errorLabel.text = ""

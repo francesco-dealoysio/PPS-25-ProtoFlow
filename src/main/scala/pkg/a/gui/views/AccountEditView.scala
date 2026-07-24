@@ -29,10 +29,10 @@ object AccountEditView extends Form:
     val initialAssignment = selectedAccount.getAssignment
     val initialUsername = selectedAccount.getUsername
 
-    val surnameField = textField(prompt = "Inserisci cognome")
-    val nameField = textField(prompt = "Inserisci nome")
-    val emailField = textField(prompt = "Inserisci email")
-    val phoneField = textField(prompt = "Inserisci il telefono")
+    val surnameField = textField("Inserisci cognome", initialSurname)
+    val nameField = textField("Inserisci nome", initialName)
+    val emailField = textField("Inserisci email", initialEmail)
+    val phoneField = textField("Inserisci il telefono", initialPhone)
     val roleField =
       new ComboBox[String](AccountViewModel.roles):
         value = initialRole
@@ -40,9 +40,9 @@ object AccountEditView extends Form:
         maxWidth = Double.MaxValue
         styleClass += "form-field"
 
-    val areaField = textField(prompt = "Inserisci l'area")
-    val assignmentField = textField(prompt = "Inserisci la mansione")
-    val usernameField = textField(prompt = "Inserisci username")
+    val areaField = textField("Inserisci l'area", initialArea)
+    val assignmentField = textField("Inserisci la mansione", initialAssignment)
+    val usernameField = textField("Inserisci username", initialUsername)
 
     val passwordField =
       new PasswordField:
@@ -129,6 +129,7 @@ object AccountEditView extends Form:
         case AccountViewModel.UsernameRequiredError |
              AccountViewModel.DuplicateUsernameError => usernameField -> usernameError
 
+    var formSaved = false
     val save =
       saveButton: () =>
         if validateForm() then
@@ -147,7 +148,9 @@ object AccountEditView extends Form:
             errorStyle =
               "accounts-message-error"
           )
-          if updated then onSaved()
+          if updated then
+            formSaved = true
+            onSaved()
 
     val reset = resetButton(() => resetForm())
     val exit = closeButton(onExit)
@@ -202,5 +205,20 @@ object AccountEditView extends Form:
       rootStyle = "accounts-management-root",
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, print, reset, save)
+      actions = actionBar(exit, print, reset, save),
+      hasUnsavedChanges = () =>
+        !formSaved &&
+          (
+            surnameField.text.value.trim != initialSurname.trim ||
+              nameField.text.value.trim != initialName.trim ||
+              emailField.text.value.trim != initialEmail.trim ||
+              phoneField.text.value.trim != initialPhone.trim ||
+              Option(roleField.value.value)
+                .map(_.trim)
+                .getOrElse("") != initialRole.trim ||
+              areaField.text.value.trim != initialArea.trim ||
+              assignmentField.text.value.trim != initialAssignment.trim ||
+              usernameField.text.value.trim != initialUsername.trim ||
+              passwordField.text.value.nonEmpty
+            )
     )

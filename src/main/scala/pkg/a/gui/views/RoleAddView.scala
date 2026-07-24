@@ -68,6 +68,8 @@ object RoleAddView extends Form:
       clearErrors()
       roleField.requestFocus()
 
+
+    var formSaved = false
     val save =
       saveButton: () =>
         if validateForm() then
@@ -86,8 +88,8 @@ object RoleAddView extends Form:
             successStyle = "roles-message-success",
             errorStyle = "roles-message-error"
           )
-
           if saved then
+            formSaved = true
             onSaved()
 
     val reset = resetButton(() => resetForm())
@@ -113,6 +115,8 @@ object RoleAddView extends Form:
       rootStyle = "roles-management-root",
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, reset, save)
+      actions = actionBar(exit, reset, save),
+      hasUnsavedChanges = () =>
+        !formSaved && (roleField.text.value.trim.nonEmpty ||
+          descriptionArea.text.value.trim.nonEmpty)
     )
-

@@ -112,5 +112,8 @@ object RoleEditView extends Form:
       rootStyle = "roles-management-root",
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, reset, save)
+      actions = actionBar(exit, reset, save),
+      hasUnsavedChanges = () =>
+        roleField.text.value.trim != initialRole.trim ||
+          descriptionArea.text.value.trim != initialDescription.trim
     )

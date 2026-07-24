@@ -4,6 +4,7 @@ import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
 import pkg.a.gui.views.*
 import pkg.b.logic.{Account, Classification, Registration, Role}
 import pkg.d.util.DateTime
+import scalafx.Includes.jfxNode2sfx
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, TableColumn, TableView}
 import scalafx.scene.layout.*
@@ -62,8 +63,28 @@ trait HomePage extends Root:
                              onLogout: () => Unit
                            ): VBox =
 
-    def render(view: Pane): Unit =
-      contentArea.children = Seq(view)
+    def render(view: => Pane): Unit =
+      val canLeave =
+        contentArea.children.headOption
+          .flatMap: node =>
+            Option(
+              node.delegate
+                .getProperties
+                .get("has-unsaved-changes")
+            )
+          .map:
+            _.asInstanceOf[() => Boolean]
+          .forall: check =>
+            !check() ||
+              askConfirmation(
+                titleText = "Modifiche non salvate",
+                header = "Vuoi uscire senza salvare?",
+                content =
+                  "Le informazioni inserite o modificate non verranno mantenute."
+              )
+
+      if canLeave then
+        contentArea.children = Seq(view)
 
     def showDashboard(): Unit =
       viewModel.select(MenuAction.Dashboard)
