@@ -1,17 +1,19 @@
 package pkg.a.gui.structures
 
+import pkg.b.logic.Registration
+
 class RegistrationViewModel:
-  def validate(request: RegistrationRequest): Seq[String] =
+  def validate(request: Registration): Seq[String] =
     Seq(
-      validateRequired("Nome", request.name),
-      validateRequired("Cognome", request.surname),
-      validateEmail(request.email),
-      validateRequired("Ruolo richiesto", request.requestedRole),
-      validateRequired("Area/Settore di appartenenza", request.requestedArea),
-      validateRequired("Incarico", request.assignment)
+      validateRequired("Nome", request.getName),
+      validateRequired("Cognome", request.getSurname),
+      validateEmail(request.getEmail),
+      validateRequired("Ruolo richiesto", request.getRole),
+      validateRequired("Area/Settore di appartenenza", request.getArea),
+      validateRequired("Incarico", request.getAssignment)
     ).flatten
 
-  def isValid(request: RegistrationRequest): Boolean =
+  def isValid(request: Registration): Boolean =
     validate(request).isEmpty
 
   private def validateRequired(fieldName: String, value: String): Option[String] =

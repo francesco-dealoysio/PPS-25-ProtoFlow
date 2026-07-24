@@ -7,16 +7,14 @@ import pkg.d.util.Logger.*
 import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
-import scalafx.geometry.Pos
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
 
-object AccountManagement$ extends Management:
+object AccountManagementView extends Management:
 
   def apply(
              onAdd: () => Unit = () => (),
              onEdit: Account => Unit = _ => (),
-             onDelete: Account => Unit = _ => (),
              onExit: () => Unit = () => ()
            ): BorderPane =
 
@@ -125,6 +123,33 @@ object AccountManagement$ extends Management:
           result.show("Errore durante il caricamento degli account.", success = false)
           logger(exception)
 
+    def deleteSelectedAccount(): Unit =
+      selectedAccount() match
+        case None =>
+          result.show("Seleziona un account da eliminare.", success = false)
+
+        case Some(selected) =>
+          val confirmed =
+            askConfirmation(
+              titleText = "Eliminazione account",
+              header = "Confermi l'eliminazione dell'account selezionato?",
+              content =
+                s"""Account: ${selected.getUsername}
+                   |Nominativo: ${selected.getName} ${selected.getSurname}
+                   |Codice: ${selected.getId}
+                   |
+                   |L'operazione non può essere annullata.""".stripMargin
+            )
+
+          if confirmed then
+            val deleted = accountLogic.recordDelete(selected.getId)
+
+            if deleted then
+              loadAccounts()
+              result.show(s"L'account '${selected.getUsername}' è stato eliminato correttamente.", success = true)
+            else
+              result.show("Non è stato possibile eliminare l'account.", success = false)
+
     // Pulisce il messaggio quando viene selezionata una nuova riga.
     table.selectionModel.value
       .selectedItem
@@ -134,21 +159,19 @@ object AccountManagement$ extends Management:
           if selected != null then
             result.clear()
 
-    val addButton = primaryButton(text = "Aggiunta", action = () =>
+    val addButton = primaryButton("Aggiungi", () =>
       result.clear()
       onAdd())
 
     val editButton =
-      secondaryButton(
-        text = "Modifica",
-        action = () =>
-          selectedAccount() match
-            case Some(selected) =>
-              result.clear()
-              onEdit(selected)
+      secondaryButton("Modifica", () =>
+        selectedAccount() match
+          case Some(selected) =>
+            result.clear()
+            onEdit(selected)
 
-            case None =>
-              result.show("Seleziona un account da modificare.", success = false)
+          case None =>
+            result.show("Seleziona un account da modificare.", success = false)
       )
 
     editButton.disable <==
@@ -156,18 +179,7 @@ object AccountManagement$ extends Management:
         .selectedItem
         .isNull
 
-    val deleteButton =
-      dangerButton(
-        text = "Eliminazione",
-        action = () =>
-          selectedAccount() match
-            case Some(selected) =>
-              result.clear()
-              onDelete(selected)
-
-            case None =>
-              result.show("Seleziona un account da eliminare.", success = false)
-      )
+    val deleteButton = dangerButton("Elimina", () => deleteSelectedAccount())
 
     deleteButton.disable <==
       table.selectionModel.value
@@ -176,19 +188,13 @@ object AccountManagement$ extends Management:
 
     val exitButton = closeButton(onExit)
 
-    val navigationMenu =
-      new HBox:
-        spacing = 12
-        alignment = Pos.CenterLeft
-        styleClass += "accounts-toolbar"
-        children = Seq(
-          addButton,
-          editButton,
-          deleteButton
-        )
-
-    // Pulsante in fondo alla pagina.
-    val bottomActions = actionBar(exitButton)
+    val bottomActions =
+      actionBar(
+        exitButton,
+        editButton,
+        deleteButton,
+        addButton
+      )
 
     val header =
       titleBox(
@@ -203,5 +209,10 @@ object AccountManagement$ extends Management:
     managementPage(
       rootStyle = "accounts-management-root",
       growNode = Some(table),
-      pageChildren = Seq(header, navigationMenu, table, result.label, bottomActions)
+      pageChildren = Seq(
+        header,
+        table,
+        result.label,
+        bottomActions
+      )
     )

@@ -3,9 +3,6 @@ package pkg.b.logic
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite
 
-import pkg.c.data.generalStructures.RegistrationRequestStatus
-import pkg.c.data.xmlManagement.RegistrationRequestRepository
-
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path}
 
@@ -15,6 +12,9 @@ class RegistrationRequestServiceTest
 
   private var tempDirectory: Path = _
   private var tempXmlFile: Path = _
+  private var tempAcceptedXmlFile: Path = _
+  private var tempRejectedXmlFile: Path = _
+  private var tempAccountsXmlFile: Path = _
   private var service: RegistrationRequestService = _
 
   override protected def beforeEach(): Unit =
@@ -23,35 +23,58 @@ class RegistrationRequestServiceTest
     tempDirectory =
       Files.createTempDirectory("protoflow-registration-test-")
 
-    tempXmlFile =
-      tempDirectory.resolve("registrationRequests.xml")
+    tempXmlFile = tempDirectory.resolve("registrations.xml")
+    tempAcceptedXmlFile = tempDirectory.resolve("registrationsAccepted.xml")
+    tempRejectedXmlFile = tempDirectory.resolve("registrationsRejected.xml")
+    tempAccountsXmlFile = tempDirectory.resolve("accounts.xml")
+
+    Seq(tempXmlFile, tempAcceptedXmlFile, tempRejectedXmlFile).foreach: file =>
+      Files.writeString(
+        file,
+        """<?xml version="1.0" encoding="UTF-8"?>
+          |<registrationRequests>
+          |</registrationRequests>
+          |""".stripMargin,
+        StandardCharsets.UTF_8
+      )
 
     Files.writeString(
-      tempXmlFile,
+      tempAccountsXmlFile,
       """<?xml version="1.0" encoding="UTF-8"?>
-        |<registrationRequests>
-        |</registrationRequests>
+        |<accounts>
+        |</accounts>
         |""".stripMargin,
       StandardCharsets.UTF_8
     )
 
-    val repository =
-      new RegistrationRequestRepository(
-        tempXmlFile.toString
-      )
-
     service =
-      new RegistrationRequestService(repository)
+      new RegistrationRequestService(
+        tempXmlFile.toString,
+        tempAcceptedXmlFile.toString,
+        tempRejectedXmlFile.toString,
+        tempAccountsXmlFile.toString
+      )
 
   override protected def afterEach(): Unit =
     try
-      if tempXmlFile != null then
-        Files.deleteIfExists(tempXmlFile)
+      Seq(tempXmlFile, tempAcceptedXmlFile, tempRejectedXmlFile, tempAccountsXmlFile)
+        .foreach(file => if file != null then Files.deleteIfExists(file))
 
       if tempDirectory != null then
         Files.deleteIfExists(tempDirectory)
     finally
       super.afterEach()
+
+  private def submitLuigi(): String =
+    service.submitRequest(
+      name = "Luigi",
+      surname = "Bianchi",
+      email = "luigi.approve@email.it",
+      phone = "",
+      requestedRole = "Viewer",
+      requestedArea = "Segreteria",
+      assignment = "Impiegato"
+    ).toOption.get.getId
 
   test("submitRequest crea una richiesta valida nello stato Pending"):
     val result = service.submitRequest(
@@ -68,12 +91,12 @@ class RegistrationRequestServiceTest
 
     val request = result.toOption.get
 
-    assert(request.name == "Mario")
-    assert(request.surname == "Rossi")
-    assert(request.status == RegistrationRequestStatus.Pending)
-    assert(request.id.nonEmpty)
+    assert(request.getName == "Mario")
+    assert(request.getSurname == "Rossi")
+    assert(request.getState == "Pending")
+    assert(request.getId.nonEmpty)
 
-  test("submitRequest salva la richiesta nel repository temporaneo"):
+  test("submitRequest salva la richiesta nel file temporaneo"):
     val created = service.submitRequest(
       name = "Mario",
       surname = "Rossi",
@@ -91,7 +114,7 @@ class RegistrationRequestServiceTest
 
     assert(pendingRequests.size == 1)
     assert(
-      pendingRequests.head.email ==
+      pendingRequests.head.getEmail ==
         "mario.repository@email.it"
     )
 
@@ -189,36 +212,44 @@ class RegistrationRequestServiceTest
     assert(requests.nonEmpty)
     assert(
       requests.forall(
-        _.status == RegistrationRequestStatus.Pending
+        _.getState == "Pending"
       )
     )
 
-  test("approveRequest cambia lo stato in Approved"):
-    val created = service.submitRequest(
-      name = "Luigi",
-      surname = "Bianchi",
-      email = "luigi.approve@email.it",
-      phone = "",
-      requestedRole = "Viewer",
-      requestedArea = "Segreteria",
-      assignment = "Impiegato"
-    )
-
-    val requestId =
-      created.toOption.get.id
+  test("approveRequest cambia lo stato in Approved, crea un account e sposta la richiesta tra le accettate"):
+    val requestId = submitLuigi()
 
     val result =
-      service.approveRequest(requestId)
+      service.approveRequest(requestId, operatorUsername = "admin")
 
     assert(result.isRight)
-    assert(
-      result.toOption.get.status ==
-        RegistrationRequestStatus.Approved
-    )
+
+    val approval = result.toOption.get
+
+    assert(approval.request.getState == "Approved")
+    assert(approval.request.getProcessedBy == "admin")
+    assert(approval.request.getProcessedDate.nonEmpty)
+    assert(approval.request.getAssignedUsername == approval.account.getUsername)
+    assert(approval.account.getRole == "viewer")
+    assert(approval.generatedPassword.nonEmpty)
 
     assert(service.getPendingRequests.isEmpty)
 
-  test("rejectRequest cambia lo stato in Rejected"):
+    val storedAccounts =
+      new Account().getRecords[Account](tempAccountsXmlFile.toString)
+
+    assert(storedAccounts.exists(_.getUsername == approval.account.getUsername))
+
+  test("rejectRequest richiede una motivazione"):
+    val requestId = submitLuigi()
+
+    val result =
+      service.rejectRequest(requestId, operatorUsername = "admin", motivation = "")
+
+    assert(result == Left("La motivazione del rifiuto è obbligatoria"))
+    assert(service.getPendingRequests.nonEmpty)
+
+  test("rejectRequest cambia lo stato in Rejected, registra la motivazione e sposta la richiesta tra le rifiutate"):
     val created = service.submitRequest(
       name = "Anna",
       surname = "Verdi",
@@ -230,27 +261,30 @@ class RegistrationRequestServiceTest
     )
 
     val requestId =
-      created.toOption.get.id
+      created.toOption.get.getId
 
     val result =
-      service.rejectRequest(requestId)
+      service.rejectRequest(requestId, operatorUsername = "admin", motivation = "Dati incompleti")
 
     assert(result.isRight)
-    assert(
-      result.toOption.get.status ==
-        RegistrationRequestStatus.Rejected
-    )
+
+    val rejected = result.toOption.get
+
+    assert(rejected.getState == "Rejected")
+    assert(rejected.getProcessedBy == "admin")
+    assert(rejected.getProcessedDate.nonEmpty)
+    assert(rejected.getMotivation == "Dati incompleti")
 
     assert(service.getPendingRequests.isEmpty)
 
   test("approveRequest restituisce errore per id inesistente"):
     val result =
-      service.approveRequest("id-inesistente")
+      service.approveRequest("id-inesistente", operatorUsername = "admin")
 
     assert(result == Left("Richiesta non trovata"))
 
   test("rejectRequest restituisce errore per id inesistente"):
     val result =
-      service.rejectRequest("id-inesistente")
+      service.rejectRequest("id-inesistente", operatorUsername = "admin", motivation = "Motivazione")
 
     assert(result == Left("Richiesta non trovata"))

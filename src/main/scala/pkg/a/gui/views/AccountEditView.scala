@@ -9,7 +9,7 @@ import pkg.d.util.XmlToPdf
 import scalafx.scene.control.{ComboBox, PasswordField}
 import scalafx.scene.layout.BorderPane
 
-object AccountEdit$ extends Form:
+object AccountEditView extends Form:
 
   def apply(
              selectedAccount: Account,

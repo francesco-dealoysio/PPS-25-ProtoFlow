@@ -61,6 +61,7 @@ class Navigator(stage: JFXApp3.PrimaryStage):
           root = homePage(
             viewModel = viewModel,
             currentUser = account.getName,
+            currentUsername = account.getUsername,
             onLogout = () =>
               showLogin()
           )

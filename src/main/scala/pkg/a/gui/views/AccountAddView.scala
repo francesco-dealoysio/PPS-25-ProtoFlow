@@ -3,12 +3,14 @@ package pkg.a.gui.views
 import pkg.a.gui.structures.AccountViewModel
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Account
-import pkg.d.util.Util.md5
+import pkg.d.util.IdGen
+import pkg.d.util.Util.{inIdsFilePathName, md5}
 
+import scalafx.application.Platform
 import scalafx.scene.control.{ComboBox, PasswordField, TextField}
 import scalafx.scene.layout.BorderPane
 
-object AccountAdd$ extends Form:
+object AccountAddView extends Form:
 
   def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
@@ -111,8 +113,7 @@ object AccountAdd$ extends Form:
     val save =
       saveButton: () =>
         if validateForm() then
-          val existingAccounts = accountLogic.getRecords()
-          val newAccount = currentAccount(viewModel.nextId(existingAccounts))
+          val newAccount = currentAccount(IdGen(inIdsFilePathName("accountId")))
           val saved = accountLogic.recordInsert(newAccount)
 
           showMessage(
@@ -145,6 +146,10 @@ object AccountAdd$ extends Form:
         FormRow("Password *", passwordField, passwordError)
       )
     )
+
+    Platform.runLater {
+      surnameField.requestFocus()
+    }
 
     formPage(
       titleText = "Aggiunta account",
