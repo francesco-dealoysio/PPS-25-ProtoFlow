@@ -62,8 +62,8 @@ class AccountTest:
 
   @Test
   def testGetRecordsFound: Unit =
-    Account().recordInsert(account1, xmlFilePathName)
-    Account().recordInsert(account2, xmlFilePathName)
+    Account().recordInsert[Account](account1, xmlFilePathName)
+    Account().recordInsert[Account](account2, xmlFilePathName)
     assertEquals(Account().getRecords[Account](xmlFilePathName), Seq(account1, account2))
 
   @Test
@@ -76,7 +76,7 @@ class AccountTest:
 
   @Test
   def testGetRecordByIdFoundRecord: Unit =
-    Account().recordInsert(account2, xmlFilePathName)
+    Account().recordInsert[Account](account2, xmlFilePathName)
     assertEquals(Account().getRecordById[Account]("2", xmlFilePathName), account2)
 
   @Test
@@ -86,52 +86,52 @@ class AccountTest:
   @Test
   def testGetRecordsByFilter: Unit =
     cleanXmlFile(xmlFilePathName)
-    Account().recordInsert(account1, xmlFilePathName)
-    Account().recordInsert(account2, xmlFilePathName)
-    Account().recordInsert(account3, xmlFilePathName)
+    Account().recordInsert[Account](account1, xmlFilePathName)
+    Account().recordInsert[Account](account2, xmlFilePathName)
+    Account().recordInsert[Account](account3, xmlFilePathName)
     val record = account1.copy()
     record.setId("4")
     record.setRole("admin")
     record.setUsername("spider")
-    Account().recordInsert(record, xmlFilePathName)
+    Account().recordInsert[Account](record, xmlFilePathName)
     assertEquals(Account().getRecordsByFilter[Account](a => a.getRole == "admin", xmlFilePathName), Seq(account1, record))
 
   @Test
   def testRecordInsertInexistentXmlFile: Unit =
-    assertFalse(Account().recordInsert(account1, "path inesistente"))
+    assertFalse(Account().recordInsert[Account](account1, "path inesistente"))
 
   @Test
   def testRecordInsert: Unit =
-    Account().recordInsert(account1, xmlFilePathName)
+    Account().recordInsert[Account](account1, xmlFilePathName)
     val record = Account().getRecordById[Account]("1", xmlFilePathName)
     assertEquals(record, account1)
 
   @Test
   def testRecordInsertDuplicateId: Unit =
     cleanXmlFile(xmlFilePathName)
-    Account().recordInsert(account1, xmlFilePathName)
-    Account().recordInsert(account2, xmlFilePathName)
-    Account().recordInsert(account3, xmlFilePathName)
+    Account().recordInsert[Account](account1, xmlFilePathName)
+    Account().recordInsert[Account](account2, xmlFilePathName)
+    Account().recordInsert[Account](account3, xmlFilePathName)
     val record = account1.copy()
     record.setUsername("sconosciuto")
-    assertFalse(Account().recordInsert(record, xmlFilePathName))
+    assertFalse(Account().recordInsert[Account](record, xmlFilePathName))
 
   @Test
   def testRecordInsertDuplicateUsername: Unit =
     cleanXmlFile(xmlFilePathName)
-    Account().recordInsert(account1, xmlFilePathName)
-    Account().recordInsert(account2, xmlFilePathName)
-    Account().recordInsert(account3, xmlFilePathName)
+    Account().recordInsert[Account](account1, xmlFilePathName)
+    Account().recordInsert[Account](account2, xmlFilePathName)
+    Account().recordInsert[Account](account3, xmlFilePathName)
     val record = account1.copy()
     record.setId("100")
-    assertFalse(Account().recordInsert(record, xmlFilePathName))
+    assertFalse(Account().recordInsert[Account](record, xmlFilePathName))
 
   @Test
   def testRecordUpdateInexistentXmlFile: Unit =
-    Account().recordInsert(account1, xmlFilePathName)
+    Account().recordInsert[Account](account1, xmlFilePathName)
     val record = account1.copy()
     record.setPhone("06/12345678")
-    Account().recordUpdate(record, "path inesistente")
+    Account().recordUpdate[Account](record, "path inesistente")
     assertNotEquals(Account().getRecordById[Account]("1", xmlFilePathName).getPhone, "06/12345678")
 
   @Test
@@ -139,7 +139,7 @@ class AccountTest:
     cleanXmlFile(xmlFilePathName)
     val record = account1.copy()
     record.setPhone("06/12345678")
-    Account().recordUpdate(record, xmlFilePathName)
+    Account().recordUpdate[Account](record, xmlFilePathName)
     assertNotEquals(Account().getRecordById[Account]("1", xmlFilePathName).getPhone, "06/12345678")
 
   @Test
@@ -147,34 +147,34 @@ class AccountTest:
     val record = Account().getRecordById[Account]("1", xmlFilePathName)
     record.setPhone("06/87654321")
     record.setId("?")
-    Account().recordUpdate(record, xmlFilePathName)
+    Account().recordUpdate[Account](record, xmlFilePathName)
     val recordUpdated = Account().getRecordById[Account]("?", xmlFilePathName)
     assertEquals(recordUpdated, empty)
 
   @Test
   def testRecordUpdateDuplicateUsername: Unit =
     cleanXmlFile(xmlFilePathName)
-    Account().recordInsert(account1, xmlFilePathName)
-    Account().recordInsert(account2, xmlFilePathName)
-    Account().recordInsert(account3, xmlFilePathName)
+    Account().recordInsert[Account](account1, xmlFilePathName)
+    Account().recordInsert[Account](account2, xmlFilePathName)
+    Account().recordInsert[Account](account3, xmlFilePathName)
     val record = account1.copy()
     record.setUsername(account2.getUsername)
-    assertFalse(Account().recordUpdate(record, xmlFilePathName))
+    assertFalse(Account().recordUpdate[Account](record, xmlFilePathName))
 
   @Test
   def testRecordUpdate: Unit =
-    Account().recordInsert(account1, xmlFilePathName)
+    Account().recordInsert[Account](account1, xmlFilePathName)
     assertEquals("06/11111111", Account().getRecordById[Account]("1", xmlFilePathName).getPhone)
     val record = account1.copy()
     record.setPhone("06/12345678")
-    assertTrue(Account().recordUpdate(record, xmlFilePathName))
+    assertTrue(Account().recordUpdate[Account](record, xmlFilePathName))
 
   @Test
   def testRecordDelete: Unit =
     cleanXmlFile(xmlFilePathName)
-    Account().recordInsert(account1, xmlFilePathName)
-    Account().recordInsert(account2, xmlFilePathName)
-    Account().recordInsert(account3, xmlFilePathName)
+    Account().recordInsert[Account](account1, xmlFilePathName)
+    Account().recordInsert[Account](account2, xmlFilePathName)
+    Account().recordInsert[Account](account3, xmlFilePathName)
     val record = Account().getRecordById[Account]("1", xmlFilePathName)
     Account().recordDelete(record.getId, xmlFilePathName)
     assertEquals(Account().getRecordById[Account](record.getId, xmlFilePathName), empty)
@@ -193,9 +193,9 @@ class AccountTest:
   @Test
   def testRecordDeleteInesistentId: Unit =
     cleanXmlFile(xmlFilePathName)
-    Account().recordInsert(account1, xmlFilePathName)
-    Account().recordInsert(account2, xmlFilePathName)
-    Account().recordInsert(account3, xmlFilePathName)
+    Account().recordInsert[Account](account1, xmlFilePathName)
+    Account().recordInsert[Account](account2, xmlFilePathName)
+    Account().recordInsert[Account](account3, xmlFilePathName)
     val record = account1.copy()
     record.setId("100")
     assertFalse(Account().recordDelete(record.getId, xmlFilePathName))

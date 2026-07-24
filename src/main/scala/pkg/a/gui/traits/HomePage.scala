@@ -118,6 +118,7 @@ trait HomePage extends Root:
         AccountManagementView(
           onAdd = () => showAccountAdd(),
           onEdit = selected => showAccountEdit(selected),
+          onDelete = selected => showAccountDelete(selected),
           onExit = () => showDashboard()
         )
       )

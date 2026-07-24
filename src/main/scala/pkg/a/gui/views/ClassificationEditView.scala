@@ -74,7 +74,7 @@ object ClassificationEditView extends Form:
     val save =
       saveButton: () =>
         if validateForm() then
-          val updated = classificationLogic.recordUpdate(currentClassification())
+          val updated = classificationLogic.recordUpdate[Classification](currentClassification())
 
           showMessage(
             label = resultMessage,

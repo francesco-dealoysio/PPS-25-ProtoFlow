@@ -22,12 +22,13 @@ case class Role(
 
   override def xmlFile = "roles.xml"
 
-  override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+  override def recordInsert[T](obj: T, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
       val record = obj.asInstanceOf[Role]
       val id = record.id
       val role = record.role
+
       if !(fieldExists("id", id, xmlFilePathName) || fieldExists("role", role, xmlFilePathName)) then
         result = insertElemIntoXML(xmlFilePathName, obj)
       else
@@ -37,12 +38,13 @@ case class Role(
         logger(e)
     result
 
-  override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+  override def recordUpdate[T](obj: T, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try
       val record = obj.asInstanceOf[Role]
       val id = record.id
       val role = record.role
+
       val  found = countRecordsByFilter[Role](a => a.id != id && a.role == role, xmlFilePathName, classOf[Role])
       if (found == 0) then
         result = updateElemOfXML(xmlFilePathName, obj)

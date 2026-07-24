@@ -58,27 +58,5 @@ case class Registration(
 
   override def xmlFile = "registrations.xml"
 
-  override def recordInsert(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
-    var result = false
-    try
-      val record = obj.asInstanceOf[Registration]
-      val id = record.id
-      if !fieldExists("id", id, xmlFilePathName) then
-        result = insertElemIntoXML(xmlFilePathName, obj)
-      else
-        throw new RuntimeException("Valori duplicati (id)!")
-    catch
-      case e: Exception =>
-        logger(e)
-    result
-
-  override def recordUpdate(obj: Any, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
-    try
-      updateElemOfXML(xmlFilePathName, obj)
-    catch
-      case e: Exception =>
-        logger(e)
-        false
-
 @main def tryRegistration: Unit =
   println("Tested in RegistrationTest.scala")
