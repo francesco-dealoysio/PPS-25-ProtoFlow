@@ -66,6 +66,7 @@ object RoleAddView extends Form:
       roleField.clear()
       descriptionArea.clear()
       clearErrors()
+
       roleField.requestFocus()
 
 

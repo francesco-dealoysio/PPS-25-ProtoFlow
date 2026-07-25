@@ -85,6 +85,7 @@ object RegistrationView extends Form:
 
     def resetForm(): Unit =
       clearFields()
+      formSaved = false
       clearMessage(resultMessage, successStyle = "form-message-success", errorStyle = "form-message-error")
 
     def submitRequest(): Unit =
@@ -137,7 +138,20 @@ object RegistrationView extends Form:
 
     val submit = primaryButton("Invio richiesta", () => submitRequest())
     val reset = resetButton(() => resetForm())
-    val exit = closeButton(onExit = onExit, text = "Annulla")
+    def exitRegistration(): Unit =
+      val canExit =
+        if hasChanges then
+          askConfirmation(
+            titleText = "Modifiche non salvate",
+            header = "Vuoi uscire senza salvare?",
+            content = "I dati inseriti nella richiesta di registrazione verranno persi."
+          )
+        else
+          true
+
+      if canExit then onExit()
+
+    val exit = closeButton(onExit = () => exitRegistration(), text = "Annulla")
 
     val formGrid = new GridPane:
       hgap = 18
@@ -176,6 +190,5 @@ object RegistrationView extends Form:
       contentStyle = Some("registration-card"),
       form = formGrid,
       resultMessage = resultMessage,
-      actions = buttonsBox,
-      hasUnsavedChanges = () => hasChanges
+      actions = buttonsBox
     )
