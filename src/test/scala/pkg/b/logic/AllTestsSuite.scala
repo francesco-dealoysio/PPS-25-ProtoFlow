@@ -9,7 +9,8 @@ import org.junit.runners.Suite
   classOf[ClassificationTest],
   classOf[RegistrationTest],
   classOf[RoleTest],
-  classOf[ErrorLogTest]
+  classOf[ErrorLogTest],
+  classOf[LoadedDocumentTest]
 ))
 
 class AllTestsSuite

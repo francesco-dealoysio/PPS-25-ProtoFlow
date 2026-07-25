@@ -64,19 +64,23 @@ object Util:
       .format(DateTimeFormatter.ofPattern("HH:mm:ss.SS"))
 
   def inDatabaseFilePathName(fileName: String): String =
-    inFolderFilePathName("database", fileName )
+    inFolderFilePathName("database", fileName)
 
+  def inDocumentsFilePathName(fileName: String) =
+    inFolderFilePathName("documents", fileName)
+
+/*
   def inArchiveFilePathName(fileName: String) =
-    inFolderFilePathName("archive", fileName )
-
+    inFolderFilePathName("archive", fileName)
+*/
   def inLogFilePathName(fileName: String) =
-    inFolderFilePathName("log", fileName )
+    inFolderFilePathName("log", fileName)
 
   def inIdsFilePathName(fileName: String) =
-    inFolderFilePathName("ids", fileName )
+    inFolderFilePathName("ids", fileName)
     
   def inTestFilePathName(fileName: String) =
-    inFolderFilePathName("test", fileName )
+    inFolderFilePathName("test", fileName)
 
   def inFolderFilePathName(folder: String, fileName: String): String =
     import pkg.c.data.Properties.getPropsFileProperty
@@ -107,7 +111,7 @@ object Util:
     // test inDatabaseFilePathName
     println("\nTest inDatabaseFilePathName")
     println("\tPath of " + "\"error.log\": \n\t" + inDatabaseFilePathName("error.log") + "\n")
-    println("\tPath of " + "\"protocols.xml\": \n\t" + inArchiveFilePathName("protocols.xml") + "\n")
+    //println("\tPath of " + "\"protocols.xml\": \n\t" + inArchiveFilePathName("protocols.xml") + "\n")
 
     // test Logger
     def riskyFunction(): Unit =
