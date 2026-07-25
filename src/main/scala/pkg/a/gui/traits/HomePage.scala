@@ -5,6 +5,7 @@ import pkg.a.gui.views.*
 import pkg.b.logic.{Account, Classification, Registration, Role}
 import pkg.d.util.DateTime
 import scalafx.Includes.jfxNode2sfx
+import scalafx.beans.property.BooleanProperty
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, TableColumn, TableView}
 import scalafx.scene.layout.*
@@ -28,39 +29,71 @@ trait HomePage extends Root:
                    onLogout: () => Unit = () => ()
                  ): BorderPane =
 
-    val contentArea = new StackPane:
-      styleClass += "content-area"
-      children = Seq(dashboardContent())
+    val menuVisible = BooleanProperty(true)
 
-    new BorderPane:
-      top = createHeader(currentUser)
-      left = createSidebar(
+    def toggleMenu(): Unit =
+      menuVisible.value = !menuVisible.value
+
+    def hideMenu(): Unit =
+      menuVisible.value = false
+
+    val contentArea =
+      new StackPane:
+        styleClass += "content-area"
+        children = Seq(dashboardContent())
+
+    val sidebar =
+      createSidebar(
         viewModel = viewModel,
         currentUsername = currentUsername,
         contentArea = contentArea,
-        onLogout = onLogout
+        onLogout = onLogout,
+        hideMenu = () => hideMenu()
       )
+
+    sidebar.visible <== menuVisible
+    sidebar.managed <== menuVisible
+
+    new BorderPane:
+      top =
+        createHeader(
+          currentUser = currentUser,
+          onMenuToggle = () => toggleMenu()
+        )
+
+      left = sidebar
       center = contentArea
       bottom = createFooter(currentUser)
 
-  private def createHeader(currentUser: String): HBox =
+  private def createHeader(currentUser: String, onMenuToggle: () => Unit): HBox =
+
     val spacer = new Region
     HBox.setHgrow(spacer, Priority.Always)
+
+    val menuButton =
+      new Button("☰"):
+        styleClass += "menu-toggle-button"
+        onAction = _ => onMenuToggle()
+
     new HBox:
       alignment = Pos.CenterLeft
       styleClass += "app-header"
       children = Seq(
-        fieldLabel("☰", "app-logo"),
+        menuButton,
         fieldLabel(applicationTitle, "app-title"),
         spacer,
-        fieldLabel(s"$currentUser\n$roleDescription", "user-info")
+        fieldLabel(
+          s"$currentUser\n$roleDescription",
+          "user-info"
+        )
       )
 
   private def createSidebar(
                              viewModel: HomePageViewModel,
                              currentUsername: String,
                              contentArea: StackPane,
-                             onLogout: () => Unit
+                             onLogout: () => Unit,
+                             hideMenu: () => Unit
                            ): VBox =
 
     def render(view: => Pane): Unit =
@@ -84,6 +117,7 @@ trait HomePage extends Root:
               )
 
       if canLeave then
+        hideMenu()
         contentArea.children = Seq(view)
 
     def showDashboard(): Unit =
