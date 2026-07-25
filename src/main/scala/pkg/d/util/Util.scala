@@ -69,10 +69,6 @@ object Util:
   def inDocumentsFilePathName(fileName: String) =
     inFolderFilePathName("documents", fileName)
 
-/*
-  def inArchiveFilePathName(fileName: String) =
-    inFolderFilePathName("archive", fileName)
-*/
   def inLogFilePathName(fileName: String) =
     inFolderFilePathName("log", fileName)
 
