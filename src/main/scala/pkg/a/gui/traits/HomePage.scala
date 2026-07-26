@@ -34,9 +34,6 @@ trait HomePage extends Root:
     def toggleMenu(): Unit =
       menuVisible.value = !menuVisible.value
 
-    def hideMenu(): Unit =
-      menuVisible.value = false
-
     val contentArea =
       new StackPane:
         styleClass += "content-area"
@@ -47,8 +44,7 @@ trait HomePage extends Root:
         viewModel = viewModel,
         currentUsername = currentUsername,
         contentArea = contentArea,
-        onLogout = onLogout,
-        hideMenu = () => hideMenu()
+        onLogout = onLogout
       )
 
     sidebar.visible <== menuVisible
@@ -92,8 +88,7 @@ trait HomePage extends Root:
                              viewModel: HomePageViewModel,
                              currentUsername: String,
                              contentArea: StackPane,
-                             onLogout: () => Unit,
-                             hideMenu: () => Unit
+                             onLogout: () => Unit
                            ): VBox =
 
     def render(view: => Pane): Unit =
@@ -117,7 +112,6 @@ trait HomePage extends Root:
               )
 
       if canLeave then
-        hideMenu()
         contentArea.children = Seq(view)
 
     def showDashboard(): Unit =
