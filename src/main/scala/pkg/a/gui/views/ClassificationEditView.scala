@@ -1,58 +1,56 @@
 package pkg.a.gui.views
 
+
 import pkg.a.gui.structures.ClassificationViewModel
+import pkg.a.gui.text.{UiStyles, UiText}
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
 import scalafx.scene.layout.BorderPane
-import pkg.a.gui.text.{UiStyles, UiText}
-import UiText.{Fields, Classifications}
+import UiText.{Classifications, Fields}
 
 object ClassificationEditView extends Form:
 
-  def apply(
-             selectedClassification: Classification,
-             onSaved: () => Unit,
-             onExit: () => Unit
-           ): BorderPane =
+  def apply(selectedClassification: Classification, onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val classificationLogic = new Classification()
     val viewModel = ClassificationViewModel()
 
-    val initialClassification = selectedClassification.getClassification
-    val initialDescription = selectedClassification.getDescription
-    val classificationField = textField(Fields.Prompts.Classification, initialClassification)
-    val descriptionArea = textArea(Fields.Prompts.Description, UiStyles.Classifications.DescriptionArea, initialDescription)
+    val classification =
+      stringField(
+        prompt = Fields.Prompts.Classification,
+        initialValue = selectedClassification.getClassification
+      )
 
+    val description =
+      areaField(
+        prompt = Fields.Prompts.Description,
+        styleName = UiStyles.Classifications.DescriptionArea,
+        initialValue = selectedClassification.getDescription
+      )
 
-    val classificationError = fieldErrorLabel()
-    val descriptionError = fieldErrorLabel()
-    val monitoredFields = Seq(classificationField, descriptionArea)
-    val initialFormValues = Seq(initialClassification, initialDescription)
+    val monitoredFields = Seq(classification, description)
     val resultMessage = messageLabel(UiStyles.Classifications.Message)
 
-    def clearErrors(): Unit =
-      clearFieldErrors(
-        classificationField -> classificationError,
-        descriptionArea -> descriptionError
+    def currentClassification(): Classification =
+      Classification(
+        id = selectedClassification.getId,
+        classification = classification.value,
+        description = description.value
       )
+
+    def clearErrors(): Unit =
+      clearFormFieldErrors(classification, description)
+
       clearMessage(
         resultMessage,
         UiStyles.Classifications.MessageSuccess,
         UiStyles.Classifications.MessageError
       )
 
-    def currentClassification(): Classification =
-      Classification(
-        id = selectedClassification.getId,
-        classification = classificationField.text.value.trim,
-        description = descriptionArea.text.value.trim
-      )
-
     def resetForm(): Unit =
-      classificationField.text = initialClassification
-      descriptionArea.text = initialDescription
+      resetFields(classification, description)
       clearErrors()
-      classificationField.requestFocus()
+      classification.requestFocus()
 
     def validateForm(): Boolean =
       clearErrors()
@@ -65,17 +63,20 @@ object ClassificationEditView extends Form:
             Some(selectedClassification.getId)
         )
 
-      showMappedErrors(errors):
+      showFormFieldErrors(errors):
         case ClassificationViewModel.ClassificationRequiredError |
-             ClassificationViewModel.DuplicateClassificationError => classificationField -> classificationError
-        case ClassificationViewModel.DescriptionRequiredError => descriptionArea -> descriptionError
+             ClassificationViewModel.DuplicateClassificationError =>
+          classification
+
+        case ClassificationViewModel.DescriptionRequiredError =>
+          description
 
     var formSaved = false
+
     val save =
       saveButton: () =>
         if validateForm() then
           val updated = classificationLogic.recordUpdate[Classification](currentClassification())
-
           showMessage(
             label = resultMessage,
             message =
@@ -89,22 +90,14 @@ object ClassificationEditView extends Form:
             formSaved = true
             onSaved()
 
-    val reset = resetButton(() => resetForm())
+    val reset = resetButton(resetForm)
     val exit = closeButton(onExit)
 
     val form =
       formGrid(
         Seq(
-          FormRow(
-            Fields.Labels.required(Fields.Labels.Classification),
-            classificationField,
-            classificationError
-          ),
-          FormRow(
-            Fields.Labels.required(Fields.Labels.Description),
-            descriptionArea,
-            descriptionError
-          )
+          formRow(Fields.Labels.required(Fields.Labels.Classification), classification),
+          formRow(Fields.Labels.required(Fields.Labels.Description), description)
         )
       )
 
@@ -117,10 +110,5 @@ object ClassificationEditView extends Form:
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),
-      hasUnsavedChanges = () =>
-        hasFormChanges(
-          formSaved = formSaved,
-          textFields = monitoredFields,
-          initialValues = initialFormValues
-        )
+      hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )
