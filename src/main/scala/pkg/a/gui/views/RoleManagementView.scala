@@ -10,6 +10,8 @@ import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.BorderPane
+import pkg.a.gui.text.{UiStyles, UiText}
+import UiText.{Common, Fields, Roles}
 
 object RoleManagementView extends Management:
 
@@ -25,9 +27,9 @@ object RoleManagementView extends Management:
 
     val result =
       createResultMessage(
-        baseStyle = "roles-message",
-        successStyle = "roles-message-success",
-        errorStyle = "roles-message-error"
+        baseStyle = UiStyles.Roles.Message,
+        successStyle = UiStyles.Roles.MessageSuccess,
+        errorStyle = UiStyles.Roles.MessageError
       )
 
     val table =
@@ -35,18 +37,18 @@ object RoleManagementView extends Management:
         columnResizePolicy =
           TableView.ConstrainedResizePolicy
 
-        placeholder = new Label("Non sono presenti ruoli nel sistema.")
-        styleClass += "roles-table"
+        placeholder = new Label(Roles.Management.Empty)
+        styleClass += UiStyles.Roles.Table
 
     val roleColumn =
       new TableColumn[Role, String]:
-        text = "Ruolo"
+        text = Fields.Labels.Role
         cellValueFactory = cell =>
           StringProperty(cell.value.getRole)
 
     val descriptionColumn =
       new TableColumn[Role, String]:
-        text = "Descrizione"
+        text = Fields.Labels.Description
 
         cellValueFactory = cell =>
           StringProperty(cell.value.getDescription)
@@ -55,13 +57,6 @@ object RoleManagementView extends Management:
       roleColumn,
       descriptionColumn
     )
-
-    def selectedRole(): Option[Role] =
-      Option(
-        table.selectionModel.value
-          .selectedItem
-          .value
-      )
 
     def loadRoles(): Unit =
       result.clear()
@@ -82,24 +77,24 @@ object RoleManagementView extends Management:
           .clearSelection()
 
         if loaded.isEmpty then
-          result.show("Non sono presenti ruoli nel sistema.", success = true)
+          result.show(Roles.Management.Empty, success = true)
 
       catch
         case exception: Exception =>
           roles.clear()
-          result.show("Errore durante il caricamento dei ruoli.", success = false)
+          result.show(Roles.Management.LoadError, success = false)
           logger(exception)
 
     def deleteSelectedRole(): Unit =
-      selectedRole() match
+      selectedItem(table) match
         case None =>
-          result.show("Seleziona un ruolo da eliminare.", success = false)
+          result.show(Roles.Management.SelectToDelete, success = false)
 
         case Some(selected) =>
           val confirmed =
             askConfirmation(
-              titleText = "Eliminazione ruolo",
-              header = "Confermi l'eliminazione del ruolo selezionato?",
+              titleText = Roles.Management.DeleteTitle,
+              header = Roles.Management.DeleteConfirmation,
               content =
                 s"""Ruolo: ${selected.getRole}
                    |Codice: ${selected.getId}
@@ -112,82 +107,60 @@ object RoleManagementView extends Management:
             val deleted = roleLogic.recordDelete(selected.getId)
             if deleted then
               loadRoles()
-              result.show(s"Il ruolo '${selected.getRole}' è stato eliminato correttamente.", success = true)
+              result.show(Roles.Management.deleted(selected.getRole), success = true)
             else
-              result.show("Non è stato possibile eliminare il ruolo.", success = false)
+              result.show(Roles.Management.DeleteError, success = false)
 
     def printRoles(): Unit =
       val printed =
         XmlToPdf.printList(
           xmlPath = inDatabaseFilePathName("roles.xml"),
           pdfFileName = "elenco-ruoli.pdf",
-          title = "Elenco Ruoli"
+          title = Roles.Management.PrintTitle
         )
       if printed then
-        result.show("Elenco dei ruoli stampato correttamente nella cartella protoflow/prints.", success = true)
+        result.show(Roles.Management.PrintSuccess, success = true)
       else
-        result.show("Non è stato possibile stampare l'elenco dei ruoli.", success = false)
+        result.show(Roles.Management.PrintError, success = false)
 
-    table.selectionModel.value
-      .selectedItem
-      .onChange:
-        (_, _, selected) =>
-          if selected != null then
-            result.clear()
+    clearResultOnSelection(table, result)
 
-    val addButton = primaryButton("Aggiungi", () =>
+    val addButton = primaryButton(Common.Buttons.Add, () =>
           result.clear()
           onAdd()
       )
 
     val editButton =
-      secondaryButton("Modifica", () =>
-          selectedRole() match
+      secondaryButton(Common.Buttons.Edit, () =>
+        selectedItem(table) match
             case Some(selected) =>
               result.clear()
               onEdit(selected)
 
             case None =>
-              result.show("Seleziona un ruolo da modificare.", success = false)
+              result.show(Roles.Management.SelectToEdit, success = false)
       )
 
-    editButton.disable <==
-      table.selectionModel.value
-        .selectedItem
-        .isNull
-
-    val deleteButton = dangerButton("Elimina", () => deleteSelectedRole())
-
-    deleteButton.disable <==
-      table.selectionModel.value
-        .selectedItem
-        .isNull
-
+    val deleteButton = dangerButton(Common.Buttons.Delete, () => deleteSelectedRole())
     val exitButton = closeButton(onExit)
+    disableWithoutSelection(table, editButton, deleteButton)
 
     val print = printButton(action = () => printRoles())
 
-    val bottomActions =
-      actionBar(
-        exitButton,
-        print,
-        editButton,
-        deleteButton,
-        addButton
-      )
+    val bottomActions = actionBar(Seq(exitButton, print, editButton, deleteButton, addButton))
 
     val header =
       titleBox(
-        titleText = "Gestione Ruoli",
-        subtitleText = "Visualizza, aggiungi, modifica ed elimina i ruoli del sistema.",
-        titleStyle = "roles-title",
-        subtitleStyle = "roles-subtitle"
+        titleText = Roles.Management.Title,
+        subtitleText = Roles.Management.Subtitle,
+        titleStyle = UiStyles.Roles.Title,
+        subtitleStyle = UiStyles.Roles.Subtitle
       )
 
     loadRoles()
 
     managementPage(
-      rootStyle = "roles-management-root",
+      rootStyle = UiStyles.Roles.Root,
       growNode = Some(table),
       pageChildren = Seq(
         header,

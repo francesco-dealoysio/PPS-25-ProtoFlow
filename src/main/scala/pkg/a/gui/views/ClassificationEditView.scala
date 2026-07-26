@@ -4,6 +4,8 @@ import pkg.a.gui.structures.ClassificationViewModel
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
 import scalafx.scene.layout.BorderPane
+import pkg.a.gui.text.{UiStyles, UiText}
+import UiText.{Fields, Classifications}
 
 object ClassificationEditView extends Form:
 
@@ -18,14 +20,15 @@ object ClassificationEditView extends Form:
 
     val initialClassification = selectedClassification.getClassification
     val initialDescription = selectedClassification.getDescription
-    val classificationField = textField(prompt = "Inserisci la classifica", initialText = selectedClassification.getClassification)
-    val descriptionArea = textArea(prompt = "Inserisci la descrizione", styleName = "classification-description-area", initialText = selectedClassification.getDescription)
+    val classificationField = textField(Fields.Prompts.Classification, initialClassification)
+    val descriptionArea = textArea(Fields.Prompts.Description, UiStyles.Classifications.DescriptionArea, initialDescription)
 
 
     val classificationError = fieldErrorLabel()
     val descriptionError = fieldErrorLabel()
-
-    val resultMessage = messageLabel("classifications-message")
+    val monitoredFields = Seq(classificationField, descriptionArea)
+    val initialFormValues = Seq(initialClassification, initialDescription)
+    val resultMessage = messageLabel(UiStyles.Classifications.Message)
 
     def clearErrors(): Unit =
       clearFieldErrors(
@@ -34,8 +37,8 @@ object ClassificationEditView extends Form:
       )
       clearMessage(
         resultMessage,
-        "classifications-message-success",
-        "classifications-message-error"
+        UiStyles.Classifications.MessageSuccess,
+        UiStyles.Classifications.MessageError
       )
 
     def currentClassification(): Classification =
@@ -46,12 +49,8 @@ object ClassificationEditView extends Form:
       )
 
     def resetForm(): Unit =
-      classificationField.text =
-        initialClassification
-
-      descriptionArea.text =
-        initialDescription
-
+      classificationField.text = initialClassification
+      descriptionArea.text = initialDescription
       clearErrors()
       classificationField.requestFocus()
 
@@ -71,6 +70,7 @@ object ClassificationEditView extends Form:
              ClassificationViewModel.DuplicateClassificationError => classificationField -> classificationError
         case ClassificationViewModel.DescriptionRequiredError => descriptionArea -> descriptionError
 
+    var formSaved = false
     val save =
       saveButton: () =>
         if validateForm() then
@@ -79,17 +79,15 @@ object ClassificationEditView extends Form:
           showMessage(
             label = resultMessage,
             message =
-              if updated then
-                "Classifica modificata correttamente."
-              else
-                "Errore durante la modifica della classifica.",
+              if updated then Classifications.Edit.Success
+              else Classifications.Edit.Error,
             success = updated,
-            successStyle =
-              "classifications-message-success",
-            errorStyle =
-              "classifications-message-error"
+            successStyle = UiStyles.Classifications.MessageSuccess,
+            errorStyle = UiStyles.Classifications.MessageError
           )
-          if updated then onSaved()
+          if updated then
+            formSaved = true
+            onSaved()
 
     val reset = resetButton(() => resetForm())
     val exit = closeButton(onExit)
@@ -98,12 +96,12 @@ object ClassificationEditView extends Form:
       formGrid(
         Seq(
           FormRow(
-            "Classifica *",
+            Fields.Labels.required(Fields.Labels.Classification),
             classificationField,
             classificationError
           ),
           FormRow(
-            "Descrizione *",
+            Fields.Labels.required(Fields.Labels.Description),
             descriptionArea,
             descriptionError
           )
@@ -111,13 +109,18 @@ object ClassificationEditView extends Form:
       )
 
     formPage(
-      titleText = "Modifica classifica",
-      subtitleText =
-        "Modifica i dati della classifica selezionata.",
-      titleStyle = "classifications-title",
-      subtitleStyle = "classifications-subtitle",
-      rootStyle = "classifications-management-root",
+      titleText = Classifications.Edit.Title,
+      subtitleText = Classifications.Edit.Subtitle,
+      titleStyle = UiStyles.Classifications.Title,
+      subtitleStyle = UiStyles.Classifications.Subtitle,
+      rootStyle = UiStyles.Classifications.Root,
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, reset, save)
+      actions = actionBar(Seq(exit, reset, save)),
+      hasUnsavedChanges = () =>
+        hasFormChanges(
+          formSaved = formSaved,
+          textFields = monitoredFields,
+          initialValues = initialFormValues
+        )
     )

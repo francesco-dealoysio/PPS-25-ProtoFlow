@@ -5,9 +5,10 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.Account
 import pkg.d.util.Util.{inDatabaseFilePathName, md5}
 import pkg.d.util.XmlToPdf
-
 import scalafx.scene.control.{ComboBox, PasswordField}
 import scalafx.scene.layout.BorderPane
+import pkg.a.gui.text.{UiStyles, UiText}
+import UiText.{Accounts, Common, Fields}
 
 object AccountEditView extends Form:
 
@@ -29,26 +30,52 @@ object AccountEditView extends Form:
     val initialAssignment = selectedAccount.getAssignment
     val initialUsername = selectedAccount.getUsername
 
-    val surnameField = textField(prompt = "Inserisci cognome")
-    val nameField = textField(prompt = "Inserisci nome")
-    val emailField = textField(prompt = "Inserisci email")
-    val phoneField = textField(prompt = "Inserisci il telefono")
+    val surnameField = textField(Fields.Prompts.Surname, initialSurname)
+    val nameField = textField(Fields.Prompts.Name, initialName)
+    val emailField = textField(Fields.Prompts.Email, initialEmail)
+    val phoneField = textField(Fields.Prompts.Phone, initialPhone)
     val roleField =
       new ComboBox[String](AccountViewModel.roles):
         value = initialRole
-        promptText = "Seleziona il ruolo"
+        promptText = Fields.Prompts.SelectRole
         maxWidth = Double.MaxValue
-        styleClass += "form-field"
+        styleClass += UiStyles.Common.FormField
 
-    val areaField = textField(prompt = "Inserisci l'area")
-    val assignmentField = textField(prompt = "Inserisci la mansione")
-    val usernameField = textField(prompt = "Inserisci username")
+    val areaField = textField(Fields.Prompts.Area, initialArea)
+    val assignmentField = textField(Fields.Prompts.Assignment, initialAssignment)
+    val usernameField = textField(Fields.Prompts.Username, initialUsername)
 
     val passwordField =
       new PasswordField:
-        promptText = "Lascia vuoto per non modificare la password"
+        promptText = Fields.Prompts.KeepPassword
         maxWidth = Double.MaxValue
-        styleClass += "form-field"
+        styleClass += UiStyles.Common.FormField
+    val monitoredTextFields =
+      Seq(
+        surnameField,
+        nameField,
+        emailField,
+        phoneField,
+        areaField,
+        assignmentField,
+        usernameField,
+        passwordField
+      )
+
+    val monitoredComboBoxes = Seq(roleField)
+
+    val initialFormValues =
+      Seq(
+        initialSurname,
+        initialName,
+        initialEmail,
+        initialPhone,
+        initialArea,
+        initialAssignment,
+        initialUsername,
+        "", // password inizialmente vuota
+        initialRole // ComboBox viene dopo i TextInputControl
+      )
 
     val surnameError = fieldErrorLabel()
     val nameError = fieldErrorLabel()
@@ -56,7 +83,7 @@ object AccountEditView extends Form:
     val roleError = fieldErrorLabel()
     val usernameError = fieldErrorLabel()
 
-    val resultMessage = messageLabel("accounts-message")
+    val resultMessage = messageLabel(UiStyles.Accounts.Message)
 
     def clearErrors(): Unit =
       clearFieldErrors(
@@ -68,8 +95,8 @@ object AccountEditView extends Form:
       )
       clearMessage(
         resultMessage,
-        "accounts-message-success",
-        "accounts-message-error"
+        UiStyles.Accounts.MessageSuccess,
+        UiStyles.Accounts.MessageError
       )
 
     def currentAccount(): Account =
@@ -129,6 +156,7 @@ object AccountEditView extends Form:
         case AccountViewModel.UsernameRequiredError |
              AccountViewModel.DuplicateUsernameError => usernameField -> usernameError
 
+    var formSaved = false
     val save =
       saveButton: () =>
         if validateForm() then
@@ -137,70 +165,64 @@ object AccountEditView extends Form:
           showMessage(
             label = resultMessage,
             message =
-              if updated then
-                "Account modificato correttamente."
-              else
-                "Errore durante la modifica dell'account.",
+              if updated then Accounts.Edit.Success
+              else Accounts.Edit.Error,
             success = updated,
-            successStyle =
-              "accounts-message-success",
-            errorStyle =
-              "accounts-message-error"
+            successStyle = UiStyles.Accounts.MessageSuccess,
+            errorStyle = UiStyles.Accounts.MessageError
           )
-          if updated then onSaved()
+          if updated then
+            formSaved = true
+            onSaved()
 
     val reset = resetButton(() => resetForm())
     val exit = closeButton(onExit)
 
     val print =
       secondaryButton(
-        text = "Stampa",
+        text = Common.Buttons.Print,
         action = () =>
           val printed =
             XmlToPdf.printDetails(
               xmlPath = inDatabaseFilePathName("accounts.xml"),
               recordId = selectedAccount.getId,
               pdfFileName = s"account_${selectedAccount.getId}",
-              title = "Scheda Account Utente"
+              title = Accounts.Edit.PrintTitle
             )
 
           showMessage(
             label = resultMessage,
             message =
-              if printed then
-                "Scheda account stampata correttamente in PDF."
-              else
-                "Errore durante la stampa della scheda account.",
+              if printed then Accounts.Edit.PrintSuccess
+              else Accounts.Edit.PrintError,
             success = printed,
-            successStyle =
-              "accounts-message-success",
-            errorStyle =
-              "accounts-message-error"
+            successStyle = UiStyles.Accounts.MessageSuccess,
+            errorStyle = UiStyles.Accounts.MessageError
           )
       )
 
     val form = formGrid(
       Seq(
-        FormRow("Cognome *", surnameField, surnameError),
-        FormRow("Nome *", nameField, nameError),
-        FormRow("Email *", emailField, emailError),
-        FormRow("Telefono", phoneField, fieldErrorLabel()),
-        FormRow("Ruolo *", roleField, roleError),
-        FormRow("Area", areaField, fieldErrorLabel()),
-        FormRow("Mansione", assignmentField, fieldErrorLabel()),
-        FormRow("Username *", usernameField, usernameError),
-        FormRow("Password", passwordField, fieldErrorLabel())
+        FormRow(Fields.Labels.required(Fields.Labels.Surname), surnameField, surnameError),
+        FormRow(Fields.Labels.required(Fields.Labels.Name), nameField, nameError),
+        FormRow(Fields.Labels.required(Fields.Labels.Email), emailField, emailError),
+        FormRow(Fields.Labels.Phone, phoneField, fieldErrorLabel()),
+        FormRow(Fields.Labels.required(Fields.Labels.Role), roleField, roleError),
+        FormRow( Fields.Labels.Area, areaField, fieldErrorLabel()),
+        FormRow(Fields.Labels.Assignment, assignmentField, fieldErrorLabel()),
+        FormRow(Fields.Labels.required(Fields.Labels.Username), usernameField, usernameError),
+        FormRow(Fields.Labels.Password, passwordField, fieldErrorLabel())
       )
     )
 
     formPage(
-      titleText = "Modifica account",
-      subtitleText =
-        "Modifica i dati dell'account selezionato. Lascia vuoto il campo password per non modificarla.",
-      titleStyle = "accounts-title",
-      subtitleStyle = "accounts-subtitle",
-      rootStyle = "accounts-management-root",
+      titleText = Accounts.Edit.Title,
+      subtitleText = Accounts.Edit.Subtitle,
+      titleStyle = UiStyles.Accounts.Title,
+      subtitleStyle = UiStyles.Accounts.Subtitle,
+      rootStyle = UiStyles.Accounts.Root,
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, print, reset, save)
+      actions = actionBar(Seq(exit, print, reset, save)),
+      hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredTextFields, monitoredComboBoxes, initialFormValues)
     )

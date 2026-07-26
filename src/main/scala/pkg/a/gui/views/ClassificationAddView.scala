@@ -7,6 +7,8 @@ import scalafx.scene.layout.BorderPane
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
 import scalafx.application.Platform
+import pkg.a.gui.text.{UiStyles, UiText}
+import UiText.{Fields, Classifications}
 
 object ClassificationAddView extends Form:
 
@@ -15,12 +17,13 @@ object ClassificationAddView extends Form:
     val classificationLogic = new Classification()
     val viewModel = new ClassificationViewModel()
 
-    val classificationField =  textField(prompt = "Inserisci la classifica")
-    val descriptionArea = textArea(prompt = "Inserisci la descrizione", styleName = "classification-description-area")
+    val classificationField =  textField(Fields.Prompts.Classification)
+    val descriptionArea = textArea(Fields.Prompts.Description, UiStyles.Classifications.DescriptionArea)
     val classificationError = fieldErrorLabel()
     val descriptionError = fieldErrorLabel()
 
-    val resultMessage = messageLabel("classifications-message")
+    val resultMessage = messageLabel(UiStyles.Classifications.Message)
+    val monitoredFields = Seq(classificationField, descriptionArea)
 
     def clearErrors(): Unit =
       clearFieldErrors(
@@ -29,8 +32,8 @@ object ClassificationAddView extends Form:
       )
       clearMessage(
         resultMessage,
-        successStyle = "classifications-message-success",
-        errorStyle = "classifications-message-error"
+        successStyle = UiStyles.Classifications.MessageSuccess,
+        errorStyle = UiStyles.Classifications.MessageError
       )
 
     def validateForm(): Boolean =
@@ -55,6 +58,7 @@ object ClassificationAddView extends Form:
 
       classificationField.requestFocus()
 
+    var formSaved = false
     val save =
       saveButton: () =>
         if validateForm() then
@@ -66,29 +70,29 @@ object ClassificationAddView extends Form:
             label = resultMessage,
             message =
               if saved then
-                "Classifica inserita correttamente."
+                Classifications.Add.Success
               else
-                "Errore durante l'inserimento della classifica.",
+                Classifications.Add.Error,
             success = saved,
-            successStyle =
-              "classifications-message-success",
-            errorStyle =
-              "classifications-message-error"
+            successStyle = UiStyles.Classifications.MessageSuccess,
+            errorStyle = UiStyles.Classifications.MessageError
           )
 
-          if saved then onSaved()
+          if saved then
+            formSaved = true
+            onSaved()
 
     val reset = resetButton(() => resetForm())
 
     val form = formGrid(
       Seq(
         FormRow(
-          "Classifica *",
+          Fields.Labels.required(Fields.Labels.Classification),
           classificationField,
           classificationError
         ),
         FormRow(
-          "Descrizione *",
+          Fields.Labels.required(Fields.Labels.Description),
           descriptionArea,
           descriptionError
         )
@@ -102,12 +106,13 @@ object ClassificationAddView extends Form:
     }
 
     formPage(
-      titleText = "Aggiunta classifica",
-      subtitleText = "Inserisci i dati della nuova classifica.",
-      titleStyle = "classifications-title",
-      subtitleStyle = "classifications-subtitle",
-      rootStyle = "classifications-management-root",
+      titleText = Classifications.Add.Title,
+      subtitleText = Classifications.Add.Subtitle,
+      titleStyle = UiStyles.Classifications.Title,
+      subtitleStyle = UiStyles.Classifications.Subtitle,
+      rootStyle = UiStyles.Classifications.Root,
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, reset, save)
+      actions = actionBar(Seq(exit, reset, save)),
+      hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

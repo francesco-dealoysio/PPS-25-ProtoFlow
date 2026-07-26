@@ -1,39 +1,44 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.structures.AccountViewModel
+import pkg.a.gui.text.{UiStyles, UiText}
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Account
 import pkg.d.util.IdGen
 import pkg.d.util.Util.{inIdsFilePathName, md5}
-
 import scalafx.application.Platform
-import scalafx.scene.control.{ComboBox, PasswordField, TextField}
+import scalafx.scene.control.{ComboBox, PasswordField}
 import scalafx.scene.layout.BorderPane
+import UiText.{Accounts, Fields}
 
 object AccountAddView extends Form:
 
-  def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
+  def apply(
+             onSaved: () => Unit,
+             onExit: () => Unit
+           ): BorderPane =
 
     val accountLogic = new Account()
     val viewModel = new AccountViewModel()
 
-    val surnameField = textField(prompt = "Inserisci il cognome")
-    val nameField = textField(prompt = "Inserisci il nome")
-    val emailField = textField(prompt = "Inserisci l'email")
-    val phoneField = textField(prompt = "Inserisci il telefono")
+    val surnameField = textField(Fields.Prompts.Surname)
+    val nameField = textField(Fields.Prompts.Name)
+    val emailField = textField(Fields.Prompts.Email)
+    val phoneField = textField(Fields.Prompts.Phone)
     val roleField =
       new ComboBox[String](AccountViewModel.roles):
-        promptText = "Seleziona il ruolo"
+        promptText = Fields.Prompts.SelectRole
         maxWidth = Double.MaxValue
-        styleClass += "form-field"
-    val areaField = textField(prompt = "Inserisci l'area")
-    val assignmentField = textField(prompt = "Inserisci la mansione")
-    val usernameField = textField(prompt = "Inserisci lo username")
+        styleClass += UiStyles.Common.FormField
+    val areaField = textField(Fields.Prompts.Area)
+    val assignmentField = textField(Fields.Prompts.Assignment)
+    val usernameField = textField(Fields.Prompts.Username)
+
     val passwordField =
       new PasswordField:
-        promptText = "Inserisci la password"
+        promptText = Fields.Prompts.Password
         maxWidth = Double.MaxValue
-        styleClass += "form-field"
+        styleClass += UiStyles.Common.FormField
 
     val surnameError = fieldErrorLabel()
     val nameError = fieldErrorLabel()
@@ -42,7 +47,9 @@ object AccountAddView extends Form:
     val usernameError = fieldErrorLabel()
     val passwordError = fieldErrorLabel()
 
-    val resultMessage = messageLabel("accounts-message")
+    val resultMessage = messageLabel(UiStyles.Accounts.Message)
+    val monitoredTextFields = Seq(surnameField, nameField, emailField, phoneField, areaField, assignmentField, usernameField, passwordField)
+    val monitoredComboBoxes = Seq(roleField)
 
     def clearErrors(): Unit =
       clearFieldErrors(
@@ -53,11 +60,8 @@ object AccountAddView extends Form:
         usernameField -> usernameError,
         passwordField -> passwordError
       )
-      clearMessage(
-        resultMessage,
-        successStyle = "accounts-message-success",
-        errorStyle = "accounts-message-error"
-      )
+
+      clearMessage(resultMessage, UiStyles.Accounts.MessageSuccess, UiStyles.Accounts.MessageError)
 
     def currentAccount(id: String = ""): Account =
       Account(
@@ -83,18 +87,26 @@ object AccountAddView extends Form:
           existingAccounts = accountLogic.getRecords()
         )
 
-      // roleField è un ComboBox, non un TextInputControl: showMappedErrors non lo accetta.
       if errors.contains(AccountViewModel.RoleRequiredError) then
         showFieldError(roleField, roleError, AccountViewModel.RoleRequiredError)
 
       showMappedErrors(errors):
-        case AccountViewModel.SurnameRequiredError => surnameField -> surnameError
-        case AccountViewModel.NameRequiredError => nameField -> nameError
+        case AccountViewModel.SurnameRequiredError =>
+          surnameField -> surnameError
+
+        case AccountViewModel.NameRequiredError =>
+          nameField -> nameError
+
         case AccountViewModel.EmailRequiredError |
-             AccountViewModel.EmailInvalidError => emailField -> emailError
+             AccountViewModel.EmailInvalidError =>
+          emailField -> emailError
+
         case AccountViewModel.UsernameRequiredError |
-             AccountViewModel.DuplicateUsernameError => usernameField -> usernameError
-        case AccountViewModel.PasswordRequiredError => passwordField -> passwordError
+             AccountViewModel.DuplicateUsernameError =>
+          usernameField -> usernameError
+
+        case AccountViewModel.PasswordRequiredError =>
+          passwordField -> passwordError
 
     def resetForm(): Unit =
       surnameField.clear()
@@ -107,57 +119,63 @@ object AccountAddView extends Form:
       usernameField.clear()
       passwordField.clear()
       clearErrors()
-
       surnameField.requestFocus()
+
+    var formSaved = false
 
     val save =
       saveButton: () =>
         if validateForm() then
           val newAccount = currentAccount(IdGen(inIdsFilePathName("accountId")))
           val saved = accountLogic.recordInsert(newAccount)
-
           showMessage(
             label = resultMessage,
             message =
-              if saved then
-                "Account inserito correttamente."
-              else
-                "Errore durante l'inserimento dell'account.",
+              if saved then Accounts.Add.Success
+              else Accounts.Add.Error,
             success = saved,
-            successStyle = "accounts-message-success",
-            errorStyle = "accounts-message-error"
+            successStyle = UiStyles.Accounts.MessageSuccess,
+            errorStyle = UiStyles.Accounts.MessageError
           )
 
-          if saved then onSaved()
+          if saved then
+            formSaved = true
+            onSaved()
 
-    val reset = resetButton(() => resetForm())
+    val reset = resetButton(resetForm)
     val exit = closeButton(onExit)
 
-    val form = formGrid(
-      Seq(
-        FormRow("Cognome *", surnameField, surnameError),
-        FormRow("Nome *", nameField, nameError),
-        FormRow("Email *", emailField, emailError),
-        FormRow("Telefono", phoneField, fieldErrorLabel()),
-        FormRow("Ruolo *", roleField, roleError),
-        FormRow("Area", areaField, fieldErrorLabel()),
-        FormRow("Mansione", assignmentField, fieldErrorLabel()),
-        FormRow("Username *", usernameField, usernameError),
-        FormRow("Password *", passwordField, passwordError)
+    val form =
+      formGrid(
+        Seq(
+          FormRow(Fields.Labels.required(Fields.Labels.Surname), surnameField, surnameError),
+          FormRow(Fields.Labels.required(Fields.Labels.Name), nameField, nameError),
+          FormRow(Fields.Labels.required(Fields.Labels.Email), emailField, emailError),
+          FormRow(Fields.Labels.Phone, phoneField, fieldErrorLabel()),
+          FormRow(Fields.Labels.required(Fields.Labels.Role), roleField, roleError),
+          FormRow(Fields.Labels.Area, areaField, fieldErrorLabel()),
+          FormRow(Fields.Labels.Assignment, assignmentField, fieldErrorLabel()),
+          FormRow(Fields.Labels.required(Fields.Labels.Username), usernameField, usernameError),
+          FormRow(Fields.Labels.required(Fields.Labels.Password), passwordField, passwordError)
+        )
       )
-    )
 
-    Platform.runLater {
+    Platform.runLater:
       surnameField.requestFocus()
-    }
 
     formPage(
-      titleText = "Aggiunta account",
-      subtitleText = "Inserisci i dati del nuovo account utente.",
-      titleStyle = "accounts-title",
-      subtitleStyle = "accounts-subtitle",
-      rootStyle = "accounts-management-root",
+      titleText = Accounts.Add.Title,
+      subtitleText = Accounts.Add.Subtitle,
+      titleStyle = UiStyles.Accounts.Title,
+      subtitleStyle = UiStyles.Accounts.Subtitle,
+      rootStyle = UiStyles.Accounts.Root,
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, reset, save)
+      actions = actionBar(Seq(exit, reset, save)),
+      hasUnsavedChanges = () =>
+        hasFormChanges(
+          formSaved,
+          monitoredTextFields,
+          monitoredComboBoxes
+        )
     )

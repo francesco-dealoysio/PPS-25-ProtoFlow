@@ -2,7 +2,7 @@ package pkg.a.gui.traits
 
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Node
-import scalafx.scene.control.{Button, Label, TextArea, TextField, TextInputControl}
+import scalafx.scene.control.{Button, ComboBox, Label, TextArea, TextField, TextInputControl}
 import scalafx.scene.layout.*
 
 trait Form extends Root:
@@ -91,7 +91,9 @@ trait Form extends Root:
                           form: GridPane,
                           resultMessage: Label,
                           actions: HBox,
-                          contentStyle: Option[String] = None
+                          contentStyle: Option[String] = None,
+                          hasUnsavedChanges: () => Boolean = () => false,
+                          actionsAtBottom: Boolean = true
                         ): BorderPane =
 
     val header =
@@ -101,25 +103,54 @@ trait Form extends Root:
         titleStyle = titleStyle,
         subtitleStyle = subtitleStyle
       )
-
+    val spacer = new Region
+    VBox.setVgrow(spacer, Priority.Always)
+    val pageChildren =
+      if actionsAtBottom then
+        Seq(header, form, resultMessage, spacer, actions)
+      else
+        Seq(header, form, resultMessage, actions)
     val content =
       new VBox:
         spacing = 20
         padding = Insets(25)
         maxWidth = 800
-        children = Seq(
-          header,
-          form,
-          resultMessage,
-          actions
-        )
+        maxHeight = Double.MaxValue
+        contentStyle.foreach(styleClass += _)
+        children = pageChildren
 
-    new BorderPane:
+    val page = new BorderPane:
       styleClass += rootStyle
       center =
         new StackPane:
           alignment = Pos.TopCenter
           children = Seq(content)
+
+    page.delegate
+      .getProperties
+      .put("has-unsaved-changes", hasUnsavedChanges)
+    page
+
+  protected def hasFormChanges(formSaved: Boolean, textFields: Seq[TextInputControl], comboBoxes: Seq[ComboBox[String]] = Seq.empty, initialValues: Seq[String] = Seq.empty): Boolean =
+    if formSaved then
+      false
+    else
+      val currentValues = formValues(textFields, comboBoxes)
+
+      val baseline =
+        if initialValues.nonEmpty then
+          initialValues.map(_.trim)
+        else
+          Seq.fill(currentValues.size)("")
+
+      currentValues != baseline
+
+  private def formValues(textFields: Seq[TextInputControl], comboBoxes: Seq[ComboBox[String]] = Seq.empty): Seq[String] =
+    textFields.map(_.text.value.trim) ++
+      comboBoxes.map: combo =>
+        Option(combo.value.value)
+          .map(_.trim)
+          .getOrElse("")
 
   private def clearFieldError(field: Node, errorLabel: Label): Unit =
     errorLabel.text = ""
@@ -130,3 +161,4 @@ trait Form extends Root:
       case control: scalafx.scene.control.Control =>
         control.styleClass.remove("form-field-error")
       case _ => ()
+

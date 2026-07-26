@@ -6,9 +6,10 @@ import pkg.b.logic.Role
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
 import scalafx.application.Platform
-
 import scalafx.scene.control.{TextArea, TextField}
 import scalafx.scene.layout.BorderPane
+import pkg.a.gui.text.{UiStyles, UiText}
+import UiText.{Fields, Roles}
 
 object RoleAddView extends Form:
 
@@ -19,13 +20,12 @@ object RoleAddView extends Form:
 
     val roleLogic = new Role()
     val viewModel = new RoleViewModel()
-
-    val roleField = textField("Inserisci il ruolo")
-    val descriptionArea = textArea(prompt = "Inserisci la descrizione", styleName = "role-description-area")
+    val roleField = textField(Fields.Prompts.Role)
+    val descriptionArea = textArea(Fields.Prompts.Description, UiStyles.Roles.DescriptionArea)
     val roleError = fieldErrorLabel()
     val descriptionError = fieldErrorLabel()
-    val resultMessage = messageLabel("roles-message")
-
+    val resultMessage = messageLabel(UiStyles.Roles.Message)
+    val monitoredFields = Seq(roleField, descriptionArea)
     def currentRole(id: String = ""): Role =
       Role(
         id = id,
@@ -41,8 +41,8 @@ object RoleAddView extends Form:
 
       clearMessage(
         resultMessage,
-        successStyle = "roles-message-success",
-        errorStyle = "roles-message-error"
+        successStyle = UiStyles.Roles.MessageSuccess,
+        errorStyle = UiStyles.Roles.MessageError
       )
 
     def validateForm(): Boolean =
@@ -66,8 +66,11 @@ object RoleAddView extends Form:
       roleField.clear()
       descriptionArea.clear()
       clearErrors()
+
       roleField.requestFocus()
 
+
+    var formSaved = false
     val save =
       saveButton: () =>
         if validateForm() then
@@ -79,15 +82,15 @@ object RoleAddView extends Form:
             label = resultMessage,
             message =
               if saved then
-                "Ruolo inserito correttamente."
+                Roles.Add.Success
               else
-                "Errore durante l'inserimento del ruolo.",
+                Roles.Add.Error,
             success = saved,
-            successStyle = "roles-message-success",
-            errorStyle = "roles-message-error"
+            successStyle = UiStyles.Roles.MessageSuccess,
+            errorStyle = UiStyles.Roles.MessageError
           )
-
           if saved then
+            formSaved = true
             onSaved()
 
     val reset = resetButton(() => resetForm())
@@ -96,8 +99,8 @@ object RoleAddView extends Form:
     val form =
       formGrid(
         Seq(
-          FormRow("Ruolo *", roleField, roleError),
-          FormRow("Descrizione *", descriptionArea, descriptionError)
+          FormRow(Fields.Labels.required(Fields.Labels.Role), roleField, roleError),
+          FormRow(Fields.Labels.required(Fields.Labels.Description), descriptionArea, descriptionError)
         )
       )
 
@@ -106,13 +109,13 @@ object RoleAddView extends Form:
     }
 
     formPage(
-      titleText = "Aggiunta ruolo",
-      subtitleText = "Inserisci i dati del nuovo ruolo.",
-      titleStyle = "roles-title",
-      subtitleStyle = "roles-subtitle",
-      rootStyle = "roles-management-root",
+      titleText = Roles.Add.Title,
+      subtitleText = Roles.Add.Subtitle,
+      titleStyle = UiStyles.Roles.Title,
+      subtitleStyle = UiStyles.Roles.Subtitle,
+      rootStyle = UiStyles.Roles.Root,
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(exit, reset, save)
+      actions = actionBar(Seq(exit, reset, save)),
+      hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )
-

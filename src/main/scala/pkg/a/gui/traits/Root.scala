@@ -72,10 +72,11 @@ trait Root:
     label.managed = false
     label.styleClass.removeAll(successStyle, errorStyle)
 
-  protected def actionBar(buttons: Button*): HBox =
+  protected def actionBar(buttons: Seq[Button], styleName: String = "form-actions", barAlignment: Pos = Pos.CenterRight): HBox =
     new HBox:
+      alignment = barAlignment
       spacing = 12
-      alignment = Pos.CenterRight
+      styleClass += styleName
       children = buttons
 
   protected def primaryButton(text: String, action: () => Unit): Button =

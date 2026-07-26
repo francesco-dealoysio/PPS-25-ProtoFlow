@@ -1,7 +1,9 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.structures.{MenuAction, MenuItem}
+import pkg.a.gui.text.UiText
 import pkg.a.gui.traits.HomePage
+import UiText.Menu
 
 object HomePageAdminView extends HomePage:
 
@@ -11,14 +13,14 @@ object HomePageAdminView extends HomePage:
 
   override protected val menuItems: Seq[MenuItem] =
     Seq(
-      MenuItem("Dashboard", MenuAction.Dashboard),
-      MenuItem("Profilo", MenuAction.Profilo),
-      MenuItem("Statistiche", MenuAction.Statistiche),
-      MenuItem("Log", MenuAction.Log),
-      MenuItem("Controllo Gestione", MenuAction.ControlloGestione),
-      MenuItem("Registrazioni", MenuAction.Registrazioni),
-      MenuItem("Account Utenti", MenuAction.AccountUtenti),
-      MenuItem("Ruoli", MenuAction.Ruoli),
-      MenuItem("Classifiche", MenuAction.Classifiche),
-      MenuItem("Logout", MenuAction.Logout)
+      MenuItem(Menu.Dashboard, MenuAction.Dashboard),
+      MenuItem(Menu.Profile, MenuAction.Profilo),
+      MenuItem(Menu.Statistics, MenuAction.Statistiche),
+      MenuItem(Menu.Log, MenuAction.Log),
+      MenuItem(Menu.ManagementControl, MenuAction.ControlloGestione),
+      MenuItem(Menu.Registrations, MenuAction.Registrazioni),
+      MenuItem(Menu.UserAccounts, MenuAction.AccountUtenti),
+      MenuItem(Menu.Roles, MenuAction.Ruoli),
+      MenuItem(Menu.Classifications, MenuAction.Classifiche),
+      MenuItem(Menu.Logout, MenuAction.Logout)
     )
