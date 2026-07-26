@@ -15,6 +15,13 @@ trait Management extends Root:
         .value
     )
 
+  protected def disableWithoutSelection[T](table: TableView[T], buttons: Button*): Unit =
+    buttons.foreach: button =>
+      button.disable <==
+        table.selectionModel.value
+          .selectedItem
+          .isNull
+
   protected def clearResultOnSelection[T](table: TableView[T], result: ResultMessage): Unit =
     table.selectionModel.value
       .selectedItem

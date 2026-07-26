@@ -153,17 +153,8 @@ object AccountManagementView extends Management:
             result.show(Accounts.Management.SelectToEdit, success = false)
       )
 
-    editButton.disable <==
-      table.selectionModel.value
-        .selectedItem
-        .isNull
-
     val deleteButton = dangerButton(Common.Buttons.Delete, () => deleteSelectedAccount())
-
-    deleteButton.disable <==
-      table.selectionModel.value
-        .selectedItem
-        .isNull
+    disableWithoutSelection(table, editButton, deleteButton)
 
     val exitButton = closeButton(onExit)
 

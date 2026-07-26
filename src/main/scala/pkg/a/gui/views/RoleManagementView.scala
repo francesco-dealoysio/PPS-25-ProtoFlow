@@ -141,19 +141,9 @@ object RoleManagementView extends Management:
               result.show(Roles.Management.SelectToEdit, success = false)
       )
 
-    editButton.disable <==
-      table.selectionModel.value
-        .selectedItem
-        .isNull
-
     val deleteButton = dangerButton(Common.Buttons.Delete, () => deleteSelectedRole())
-
-    deleteButton.disable <==
-      table.selectionModel.value
-        .selectedItem
-        .isNull
-
     val exitButton = closeButton(onExit)
+    disableWithoutSelection(table, editButton, deleteButton)
 
     val print = printButton(action = () => printRoles())
 

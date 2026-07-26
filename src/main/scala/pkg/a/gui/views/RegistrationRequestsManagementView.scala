@@ -97,13 +97,8 @@ object RegistrationRequestsManagementView extends Management:
             result.show(RegistrationRequests.Management.SelectToProcess, success = false)
       )
 
-    processButton.disable <==
-      table.selectionModel.value
-        .selectedItem
-        .isNull
-
+    disableWithoutSelection(table, processButton)
     val exitButton = closeButton(onExit)
-
     val bottomActions = actionBar(Seq(exitButton, refreshButton, printButton, processButton))
 
     val header =

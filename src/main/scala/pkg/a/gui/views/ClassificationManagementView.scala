@@ -139,21 +139,10 @@ object ClassificationManagementView extends Management:
               result.show(Classifications.Management.SelectToEdit, success = false)
       )
 
-    editButton.disable <==
-      table.selectionModel.value
-        .selectedItem
-        .isNull
-
     val deleteButton = dangerButton(text = Common.Buttons.Delete, action = () => deleteSelectedClassification())
-
-    deleteButton.disable <==
-      table.selectionModel.value
-        .selectedItem
-        .isNull
-
     val exitButton = closeButton(onExit)
     val print = printButton(action = () => printClassifications())
-
+    disableWithoutSelection(table, editButton, deleteButton)
     val bottomActions = actionBar(Seq(exitButton, print, editButton, deleteButton, addButton))
 
     val header =
