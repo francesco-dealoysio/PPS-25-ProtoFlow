@@ -2,54 +2,71 @@ package pkg.a.gui.text
 
 object UiStyles:
 
-  val FormField = "form-field"
+  object Common:
+    val FormField = "form-field"
 
-  final case class Section(
-                            root: String,
-                            title: String,
-                            subtitle: String,
-                            message: String,
-                            messageSuccess: String,
-                            messageError: String,
-                            table: String
-                          )
+  object Roles:
+    val Root = "roles-management-root"
+    val Title = "roles-title"
+    val Subtitle = "roles-subtitle"
+    val Message = "roles-message"
+    val MessageSuccess = "roles-message-success"
+    val MessageError = "roles-message-error"
+    val Table = "roles-table"
+    val DescriptionArea = "roles-description-area"
 
-  val Roles = Section(
-    root = "roles-management-root",
-    title = "roles-title",
-    subtitle = "roles-subtitle",
-    message = "roles-message",
-    messageSuccess = "roles-message-success",
-    messageError = "roles-message-error",
-    table = "roles-table"
-  )
+  object Accounts:
+    val Root = "accounts-management-root"
+    val Title = "accounts-title"
+    val Subtitle = "accounts-subtitle"
+    val Message = "accounts-message"
+    val MessageSuccess = "accounts-message-success"
+    val MessageError = "accounts-message-error"
+    val Table = "accounts-table"
 
-  val Accounts = Section(
-    root = "accounts-management-root",
-    title = "accounts-title",
-    subtitle = "accounts-subtitle",
-    message = "accounts-message",
-    messageSuccess = "accounts-message-success",
-    messageError = "accounts-message-error",
-    table = "accounts-table"
-  )
+  object Classifications:
+    val Root = "classifications-management-root"
+    val Title = "classifications-title"
+    val Subtitle = "classifications-subtitle"
+    val Message = "classifications-message"
+    val MessageSuccess = "classifications-message-success"
+    val MessageError = "classifications-message-error"
+    val Table = "classifications-table"
+    val DescriptionArea = "classifications-description-area"
 
-  val Classifications = Section(
-    root = "classifications-management-root",
-    title = "classifications-title",
-    subtitle = "classifications-subtitle",
-    message = "classifications-message",
-    messageSuccess = "classifications-message-success",
-    messageError = "classifications-message-error",
-    table = "classifications-table"
-  )
+  object Requests:
+    val Root = "requests-management-root"
+    val Title = "requests-title"
+    val Subtitle = "requests-subtitle"
+    val Message = "requests-message"
+    val MessageSuccess = "requests-message-success"
+    val MessageError = "requests-message-error"
+    val Table = "requests-table"
+    val DetailsGrid = "request-details-grid"
+    val DetailsCard = "request-details-card"
+    val DetailsTitle = "request-details-title"
+    val DetailLabel = "request-detail-label"
+    val DetailValue = "request-detail-value"
 
-  val Requests = Section(
-    root = "requests-management-root",
-    title = "requests-title",
-    subtitle = "requests-subtitle",
-    message = "requests-message",
-    messageSuccess = "requests-message-success",
-    messageError = "requests-message-error",
-    table = "requests-table"
-  )
+  object Login:
+    val Root = "registration-root"
+    val Card = "registration-card"
+    val LoginCard = "login-card"
+    val Message = "login-message"
+    val MessageSuccess = "login-message-success"
+    val MessageError = "login-message-error"
+    val Logo = "login-logo"
+    val LogoText = "login-logo-text"
+    val Title = "registration-title"
+    val Subtitle = "registration-subtitle"
+    val Actions = "login-actions"
+
+  object Registration:
+    val Root = "registration-root"
+    val Card = "registration-card"
+    val Grid = "registration-grid"
+    val Title = "registration-title"
+    val Subtitle = "registration-subtitle"
+    val Message = "form-message"
+    val MessageSuccess = "form-message-success"
+    val MessageError = "form-message-error"

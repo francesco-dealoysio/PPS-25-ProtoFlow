@@ -3,12 +3,13 @@ package pkg.a.gui.views
 import pkg.a.gui.traits.Management
 import pkg.b.logic.{Registration, RegistrationDates, RegistrationRequestService}
 import pkg.d.util.XmlToPdf
-
 import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
+import pkg.a.gui.text.{UiStyles, UiText}
+import UiText.{Common, Fields, RegistrationRequests}
 
 import java.time.format.DateTimeFormatter
 
@@ -27,17 +28,15 @@ object RegistrationRequestsManagementView extends Management:
 
     val result =
       createResultMessage(
-        baseStyle = "requests-message",
-        successStyle = "requests-message-success",
-        errorStyle = "requests-message-error"
+        baseStyle = UiStyles.Requests.Message,
+        successStyle = UiStyles.Requests.MessageSuccess,
+        errorStyle = UiStyles.Requests.MessageError
       )
 
     val table = new TableView[Registration](requests):
       columnResizePolicy = TableView.ConstrainedResizePolicy
-      placeholder = new Label(
-        "Non sono presenti richieste di registrazione da elaborare."
-      )
-      styleClass += "requests-table"
+      placeholder = new Label(RegistrationRequests.Management.Empty)
+      styleClass += UiStyles.Requests.Table
 
     def stringColumn(title: String, colWidth: Double)(value: Registration => String): TableColumn[Registration, String] =
       new TableColumn[Registration, String]:
@@ -47,13 +46,13 @@ object RegistrationRequestsManagementView extends Management:
           StringProperty(value(cell.value))
 
     table.columns ++= Seq(
-      stringColumn("Nome", 110)(_.getName),
-      stringColumn("Cognome", 120)(_.getSurname),
-      stringColumn("Email", 210)(_.getEmail),
-      stringColumn("Ruolo richiesto", 150)(_.getRole),
-      stringColumn("Area", 140)(_.getArea),
-      stringColumn("Incarico", 140)(_.getAssignment),
-      stringColumn("Data richiesta", 150)(request => RegistrationDates.parse(request.getDate).format(dateFormatter))
+      stringColumn(Fields.Labels.Name, 110)(_.getName),
+      stringColumn(Fields.Labels.Surname, 120)(_.getSurname),
+      stringColumn(Fields.Labels.Email, 210)(_.getEmail),
+      stringColumn(Fields.Labels.Role, 150)(_.getRole),
+      stringColumn(Fields.Labels.Area, 140)(_.getArea),
+      stringColumn(Fields.Labels.Assignment, 140)(_.getAssignment),
+      stringColumn(Fields.Labels.Date, 150)(request => RegistrationDates.parse(request.getDate).format(dateFormatter))
     )
 
     def selectedRequest(): Option[Registration] =
@@ -67,7 +66,7 @@ object RegistrationRequestsManagementView extends Management:
       table.selectionModel.value.clearSelection()
 
       if pending.isEmpty then
-        result.show("Non sono presenti richieste di registrazione da elaborare.", success = true)
+        result.show(RegistrationRequests.Management.Empty, success = true)
 
     table.selectionModel.value
       .selectedItem
@@ -80,30 +79,30 @@ object RegistrationRequestsManagementView extends Management:
       val printed =
         XmlToPdf.printList(
           xmlPath = service.pendingRequestsFilePath,
-          pdfFileName = "richieste_registrazione_elenco",
-          title = "Elenco Richieste di Registrazione da Elaborare"
+          pdfFileName = RegistrationRequests.Management.PrintFileName,
+          title = RegistrationRequests.Management.PrintTitle
         )
 
       result.show(
         if printed then
-          "Elenco stampato correttamente in PDF."
+          RegistrationRequests.Management.PrintSuccess
         else
-          "Errore durante la stampa dell'elenco (nessuna richiesta presente?).",
+          RegistrationRequests.Management.PrintError,
         success = printed
       )
 
-    val refreshButton = secondaryButton("Aggiorna", () => loadPendingRequests())
-    val printButton = secondaryButton("Stampa elenco", () => printPendingList())
+    val refreshButton = secondaryButton(Common.Buttons.Refresh, () => loadPendingRequests())
+    val printButton = secondaryButton(Common.Buttons.PrintList, () => printPendingList())
 
     val processButton =
-      primaryButton("Elabora", () =>
+      primaryButton(Common.Buttons.Process, () =>
         selectedRequest() match
           case Some(selected) =>
             result.clear()
             onProcess(selected)
 
           case None =>
-            result.show("Seleziona una richiesta da elaborare.", success = false)
+            result.show(RegistrationRequests.Management.SelectToProcess, success = false)
       )
 
     processButton.disable <==
@@ -117,16 +116,16 @@ object RegistrationRequestsManagementView extends Management:
 
     val header =
       titleBox(
-        titleText = "Gestione richieste registrazione",
-        subtitleText = "Visualizza le richieste di registrazione in attesa ed elaborale.",
-        titleStyle = "requests-title",
-        subtitleStyle = "requests-subtitle"
+        titleText = RegistrationRequests.Process.Title,
+        subtitleText = RegistrationRequests.Process.Subtitle,
+        titleStyle = UiStyles.Requests.Title,
+        subtitleStyle = UiStyles.Requests.Subtitle
       )
 
     loadPendingRequests()
 
     managementPage(
-      rootStyle = "requests-management-root",
+      rootStyle = UiStyles.Requests.Root,
       growNode = Some(table),
       pageChildren = Seq(
         header,

@@ -20,12 +20,11 @@ object RoleAddView extends Form:
 
     val roleLogic = new Role()
     val viewModel = new RoleViewModel()
-    val styles = UiStyles.Roles
     val roleField = textField(Fields.Prompts.Role)
-    val descriptionArea = textArea(Fields.Prompts.Description, styleName = "role-description-area")
+    val descriptionArea = textArea(Fields.Prompts.Description, UiStyles.Roles.DescriptionArea)
     val roleError = fieldErrorLabel()
     val descriptionError = fieldErrorLabel()
-    val resultMessage = messageLabel(styles.message)
+    val resultMessage = messageLabel(UiStyles.Roles.Message)
     val monitoredFields = Seq(roleField, descriptionArea)
     def currentRole(id: String = ""): Role =
       Role(
@@ -42,8 +41,8 @@ object RoleAddView extends Form:
 
       clearMessage(
         resultMessage,
-        successStyle = "roles-message-success",
-        errorStyle = "roles-message-error"
+        successStyle = UiStyles.Roles.MessageSuccess,
+        errorStyle = UiStyles.Roles.MessageError
       )
 
     def validateForm(): Boolean =
@@ -87,8 +86,8 @@ object RoleAddView extends Form:
               else
                 Roles.Add.Error,
             success = saved,
-            successStyle = styles.messageSuccess,
-            errorStyle = styles.messageError
+            successStyle = UiStyles.Roles.MessageSuccess,
+            errorStyle = UiStyles.Roles.MessageError
           )
           if saved then
             formSaved = true
@@ -100,8 +99,8 @@ object RoleAddView extends Form:
     val form =
       formGrid(
         Seq(
-          FormRow("Ruolo *", roleField, roleError),
-          FormRow("Descrizione *", descriptionArea, descriptionError)
+          FormRow(Fields.Labels.required(Fields.Labels.Role), roleField, roleError),
+          FormRow(Fields.Labels.required(Fields.Labels.Description), descriptionArea, descriptionError)
         )
       )
 
@@ -112,9 +111,9 @@ object RoleAddView extends Form:
     formPage(
       titleText = Roles.Add.Title,
       subtitleText = Roles.Add.Subtitle,
-      titleStyle = styles.title,
-      subtitleStyle = styles.subtitle,
-      rootStyle = styles.root,
+      titleStyle = UiStyles.Roles.Title,
+      subtitleStyle = UiStyles.Roles.Subtitle,
+      rootStyle = UiStyles.Roles.Root,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

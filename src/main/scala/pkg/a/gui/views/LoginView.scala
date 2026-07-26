@@ -8,6 +8,8 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, Label, PasswordField, TextField}
 import scalafx.scene.input.KeyCode
 import scalafx.scene.layout.{BorderPane, Region, StackPane, VBox}
+import pkg.a.gui.text.{UiStyles, UiText}
+import UiText.{Common, Fields, Login}
 
 object LoginView extends Form:
 
@@ -17,19 +19,19 @@ object LoginView extends Form:
 
     val usernameField = new TextField:
       maxWidth = 220
-      promptText = "Inserisci username"
-      styleClass += "form-field"
+      promptText = Fields.Prompts.Username
+      styleClass += UiStyles.Common.FormField
 
     val passwordField = new PasswordField:
       maxWidth = 220
-      promptText = "Inserisci password"
-      styleClass += "form-field"
+      promptText = Fields.Prompts.Password
+      styleClass += UiStyles.Common.FormField
 
     val result =
       createResultMessage(
-        baseStyle = "login-message",
-        successStyle = "login-message-success",
-        errorStyle = "login-message-error"
+        baseStyle = UiStyles.Login.Message,
+        successStyle = UiStyles.Login.MessageSuccess,
+        errorStyle = UiStyles.Login.MessageError
       )
 
     def clearFields(): Unit =
@@ -43,7 +45,7 @@ object LoginView extends Form:
       val password = passwordField.text.value.trim
 
       if username.isEmpty || password.isEmpty then
-        result.show("Inserisci username e password.", false)
+        result.show(Login.EmptyCredentials, false)
         usernameField.requestFocus()
       else
         LoginService.login(username, password) match
@@ -51,11 +53,11 @@ object LoginView extends Form:
             onLoginSuccess(user)
 
           case Left(LoginError.EmptyCredentials) =>
-            result.show("Inserisci username e password.", false)
+            result.show(Login.EmptyCredentials, false)
             usernameField.requestFocus()
 
           case Left(LoginError.InvalidCredentials) =>
-            result.show("Accesso negato. Username o password non corretti.", false)
+            result.show(Login.InvalidCredentials, false)
             passwordField.clear()
             passwordField.requestFocus()
 
@@ -75,16 +77,16 @@ object LoginView extends Form:
       minHeight = 58
       maxWidth = 58
       maxHeight = 58
-      styleClass += "login-logo"
+      styleClass += UiStyles.Login.Logo
       children = new Label("PF"):
-        styleClass += "login-logo-text"
+        styleClass += UiStyles.Login.LogoText
 
     val titleSection =
       titleBox(
-        titleText = "ProtoFlow",
-        subtitleText = "Enterprise Document Protocol System",
-        titleStyle = "registration-title",
-        subtitleStyle = "registration-subtitle"
+        titleText = Login.ApplicationTitle,
+        subtitleText = Login.ApplicationSubtitle,
+        titleStyle = UiStyles.Login.Title,
+        subtitleStyle = UiStyles.Login.Subtitle
       )
     titleSection.alignment = Pos.Center
 
@@ -98,7 +100,7 @@ object LoginView extends Form:
       alignment = Pos.CenterLeft
       maxWidth = 220
       children = Seq(
-        fieldLabel("Username *"),
+        fieldLabel(Fields.Labels.required(Fields.Labels.Username)),
         usernameField
       )
 
@@ -107,31 +109,26 @@ object LoginView extends Form:
       alignment = Pos.CenterLeft
       maxWidth = 220
       children = Seq(
-        fieldLabel("Password *"),
+        fieldLabel(Fields.Labels.required(Fields.Labels.Password)),
         passwordField
       )
 
     val formBox = new VBox:
       spacing = 16
       alignment = Pos.Center
-      children = Seq(
-        usernameBox,
-        passwordBox
-      )
+      children = Seq(usernameBox, passwordBox)
 
-    val clearButton = resetButton(() => clearFields(), "Pulisci")
-    val accessButton = primaryButton("Accedi", () => access())
-    val buttonsBox = actionBar(Seq(clearButton, accessButton), "login-actions", Pos.Center)
-
-
-    val registrationButton = secondaryButton("Richiedi registrazione", () => onRegistrationRequest())
+    val clearButton = resetButton(() => clearFields(), Common.Buttons.Clear)
+    val accessButton = primaryButton(Common.Buttons.Login, () => access())
+    val buttonsBox = actionBar(Seq(clearButton, accessButton), UiStyles.Login.Actions, Pos.Center)
+    val registrationButton = secondaryButton(Common.Buttons.RequestRegistration, () => onRegistrationRequest())
     registrationButton.maxWidth = 220
 
     val card = new VBox:
       alignment = Pos.Center
       spacing = 18
       padding = Insets(36, 46, 36, 46)
-      styleClass ++= Seq("registration-card", "login-card")
+      styleClass ++= Seq(UiStyles.Login.Card, UiStyles.Login.LoginCard)
       children = Seq(
         header,
         formBox,
@@ -144,5 +141,5 @@ object LoginView extends Form:
       )
 
     new BorderPane:
-      styleClass += "registration-root"
+      styleClass += UiStyles.Login.Root
       center = card

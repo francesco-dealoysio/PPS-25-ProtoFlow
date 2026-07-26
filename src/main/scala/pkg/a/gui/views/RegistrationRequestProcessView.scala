@@ -9,6 +9,8 @@ import scalafx.scene.control.*
 import scalafx.scene.layout.*
 
 import java.time.format.DateTimeFormatter
+import pkg.a.gui.text.{UiStyles, UiText}
+import UiText.{Common, Fields, Roles}
 
 object RegistrationRequestProcessView extends Management:
 
@@ -26,9 +28,9 @@ object RegistrationRequestProcessView extends Management:
 
     val result =
       createResultMessage(
-        baseStyle = "requests-message",
-        successStyle = "requests-message-success",
-        errorStyle = "requests-message-error"
+        baseStyle = UiStyles.Requests.Message,
+        successStyle = UiStyles.Requests.MessageSuccess,
+        errorStyle = UiStyles.Requests.MessageError
       )
 
     val detailsGrid = new GridPane:
@@ -38,14 +40,14 @@ object RegistrationRequestProcessView extends Management:
       styleClass += "request-details-grid"
 
     val detailRows = Seq(
-      "Nome" -> request.getName,
-      "Cognome" -> request.getSurname,
-      "Email" -> request.getEmail,
-      "Telefono" -> request.getPhone,
-      "Ruolo richiesto" -> request.getRole,
-      "Area richiesta" -> request.getArea,
-      "Incarico" -> request.getAssignment,
-      "Data richiesta" -> RegistrationDates.parse(request.getDate).format(dateFormatter)
+      Fields.Labels.Name -> request.getName,
+      Fields.Labels.Surname-> request.getSurname,
+      Fields.Labels.Email -> request.getEmail,
+      Fields.Labels.Phone -> request.getPhone,
+      Fields.Labels.Role -> request.getRole,
+      Fields.Labels.Area -> request.getArea,
+      Fields.Labels.Assignment -> request.getAssignment,
+      Fields.Labels.Date -> RegistrationDates.parse(request.getDate).format(dateFormatter)
     )
 
     detailRows.zipWithIndex.foreach:

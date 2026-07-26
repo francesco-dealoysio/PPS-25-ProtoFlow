@@ -3,6 +3,8 @@ package pkg.a.gui.views
 import pkg.a.gui.traits.Management
 import pkg.b.logic.Account
 import pkg.d.util.Logger.*
+import pkg.a.gui.text.{UiStyles, UiText}
+import UiText.{Accounts, Common, Fields}
 
 import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
@@ -23,59 +25,53 @@ object AccountManagementView extends Management:
 
     val result =
       createResultMessage(
-        baseStyle = "accounts-message",
-        successStyle = "accounts-message-success",
-        errorStyle = "accounts-message-error"
+        baseStyle = UiStyles.Accounts.Message,
+        successStyle = UiStyles.Accounts.MessageSuccess,
+        errorStyle = UiStyles.Accounts.MessageError
       )
 
     val table = new TableView[Account](accounts):
-
       columnResizePolicy = TableView.ConstrainedResizePolicy
-
-      placeholder =
-        new Label(
-          "Non sono presenti account nel sistema."
-        )
-
-      styleClass += "accounts-table"
+      placeholder = new Label(Accounts.Management.Empty)
+      styleClass += UiStyles.Accounts.Table
 
     val surnameColumn = new TableColumn[Account, String]:
-      text = "Cognome"
+      text = Fields.Labels.Surname
       cellValueFactory = cell =>
         StringProperty(cell.value.getSurname)
 
     val nameColumn = new TableColumn[Account, String]:
-      text = "Nome"
+      text = Fields.Labels.Name
       cellValueFactory = cell =>
         StringProperty(cell.value.getName)
 
     val usernameColumn = new TableColumn[Account, String]:
-      text = "Username"
+      text = Fields.Labels.Username
       cellValueFactory = cell =>
         StringProperty(cell.value.getUsername)
 
     val emailColumn = new TableColumn[Account, String]:
-      text = "Email"
+      text = Fields.Labels.Email
       cellValueFactory = cell =>
         StringProperty(cell.value.getEmail)
 
     val phoneColumn = new TableColumn[Account, String]:
-      text = "Telefono"
+      text = Fields.Labels.Phone
       cellValueFactory = cell =>
         StringProperty(cell.value.getPhone)
 
     val roleColumn = new TableColumn[Account, String]:
-      text = "Ruolo"
+      text = Fields.Labels.Role
       cellValueFactory = cell =>
         StringProperty(cell.value.getRole)
 
     val areaColumn = new TableColumn[Account, String]:
-      text = "Area"
+      text = Fields.Labels.Area
       cellValueFactory = cell =>
         StringProperty(cell.value.getArea)
 
     val assignmentColumn = new TableColumn[Account, String]:
-      text = "Mansione"
+      text = Fields.Labels.Assignment
       cellValueFactory = cell =>
         StringProperty(cell.value.getAssignment)
 
@@ -110,29 +106,26 @@ object AccountManagementView extends Management:
                 .getOrElse(Int.MaxValue)
 
         accounts.setAll(loaded*)
-
-        table.selectionModel.value
-          .clearSelection()
-
+        table.selectionModel.value.clearSelection()
         if loaded.isEmpty then
-          result.show("Non sono presenti account nel sistema.", success = true)
+          result.show(Accounts.Management.Empty, success = true)
 
       catch
         case exception: Exception =>
           accounts.clear()
-          result.show("Errore durante il caricamento degli account.", success = false)
+          result.show(Accounts.Management.LoadError, success = false)
           logger(exception)
 
     def deleteSelectedAccount(): Unit =
       selectedAccount() match
         case None =>
-          result.show("Seleziona un account da eliminare.", success = false)
+          result.show(Accounts.Management.SelectToDelete, success = false)
 
         case Some(selected) =>
           val confirmed =
             askConfirmation(
-              titleText = "Eliminazione account",
-              header = "Confermi l'eliminazione dell'account selezionato?",
+              titleText = Accounts.Management.DeleteTitle,
+              header = Accounts.Management.DeleteConfirmation,
               content =
                 s"""Account: ${selected.getUsername}
                    |Nominativo: ${selected.getName} ${selected.getSurname}
@@ -146,9 +139,9 @@ object AccountManagementView extends Management:
 
             if deleted then
               loadAccounts()
-              result.show(s"L'account '${selected.getUsername}' è stato eliminato correttamente.", success = true)
+              result.show(Accounts.Management.deleted(selected.getUsername), success = true)
             else
-              result.show("Non è stato possibile eliminare l'account.", success = false)
+              result.show(Accounts.Management.DeleteError, success = false)
 
     // Pulisce il messaggio quando viene selezionata una nuova riga.
     table.selectionModel.value
@@ -159,19 +152,19 @@ object AccountManagementView extends Management:
           if selected != null then
             result.clear()
 
-    val addButton = primaryButton("Aggiungi", () =>
+    val addButton = primaryButton(Common.Buttons.Add, () =>
       result.clear()
       onAdd())
 
     val editButton =
-      secondaryButton("Modifica", () =>
+      secondaryButton(Common.Buttons.Edit, () =>
         selectedAccount() match
           case Some(selected) =>
             result.clear()
             onEdit(selected)
 
           case None =>
-            result.show("Seleziona un account da modificare.", success = false)
+            result.show(Accounts.Management.SelectToEdit, success = false)
       )
 
     editButton.disable <==
@@ -179,7 +172,7 @@ object AccountManagementView extends Management:
         .selectedItem
         .isNull
 
-    val deleteButton = dangerButton("Elimina", () => deleteSelectedAccount())
+    val deleteButton = dangerButton(Common.Buttons.Delete, () => deleteSelectedAccount())
 
     deleteButton.disable <==
       table.selectionModel.value
@@ -192,16 +185,16 @@ object AccountManagementView extends Management:
 
     val header =
       titleBox(
-        titleText = "Gestione Account Utente",
+        titleText = Accounts.Management.Title,
         subtitleText = "Visualizza, aggiungi, modifica ed elimina gli account degli utenti del sistema.",
-        titleStyle = "accounts-title",
-        subtitleStyle = "accounts-subtitle"
+        titleStyle = UiStyles.Accounts.Title,
+        subtitleStyle = UiStyles.Accounts.Subtitle
       )
 
     loadAccounts() // Prima lettura dal file XML.
 
     managementPage(
-      rootStyle = "accounts-management-root",
+      rootStyle = UiStyles.Accounts.Root,
       growNode = Some(table),
       pageChildren = Seq(
         header,

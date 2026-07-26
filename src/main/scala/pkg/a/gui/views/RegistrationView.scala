@@ -1,8 +1,10 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiText.{Common, Fields, Registration}
 import pkg.a.gui.structures.RegistrationViewModel
 import pkg.a.gui.traits.Form
-import pkg.b.logic.{Registration, RegistrationRequestService}
+import pkg.b.logic.{Registration => RegistrationModel, RegistrationRequestService}
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.{Button, ComboBox}
 import scalafx.scene.layout.{BorderPane, GridPane}
@@ -16,15 +18,15 @@ object RegistrationView extends Form:
 
     val service = new RegistrationRequestService()
 
-    val nameField = textField("Inserisci il nome")
-    val surnameField = textField("Inserisci il cognome")
-    val emailField = textField("nome.cognome@email.it")
-    val phoneField = textField("Inserisci il telefono")
+    val nameField = textField(Registration.NamePrompt)
+    val surnameField = textField(Registration.SurnamePrompt)
+    val emailField = textField(Registration.EmailPrompt)
+    val phoneField = textField(Registration.PhonePrompt)
 
     val roleCombo = new ComboBox[String]:
       items = ObservableBuffer("Viewer", "Operatore Protocollo", "Amministratore")
-      promptText = "Seleziona ruolo"
-      styleClass += "form-field"
+      promptText = Registration.RolePrompt
+      styleClass += UiStyles.Common.FormField
 
     val areaCombo = new ComboBox[String]:
       items = ObservableBuffer(
@@ -35,25 +37,26 @@ object RegistrationView extends Form:
         "Finanziario",
         "Area Tecnica"
       )
-      promptText = "Seleziona area"
-      styleClass += "form-field"
+      promptText = Registration.AreaPrompt
+      styleClass += UiStyles.Common.FormField
 
-    val assignmentField = textField("Inserisci incarico")
+    val assignmentField = textField(Registration.AssignmentPrompt)
 
     val monitoredTextFields = Seq(
-        nameField,
-        surnameField,
-        emailField,
-        phoneField,
-        assignmentField
-      )
+      nameField,
+      surnameField,
+      emailField,
+      phoneField,
+      assignmentField
+    )
 
     val monitoredComboBoxes = Seq(roleCombo, areaCombo)
 
-    val resultMessage = messageLabel("form-message")
+    val resultMessage = messageLabel(UiStyles.Registration.Message)
     var formSaved = false
-    def currentRequest(): Registration =
-      Registration(
+
+    def currentRequest(): RegistrationModel =
+      RegistrationModel(
         id = "",
         name = nameField.text.value,
         surname = surnameField.text.value,
@@ -86,7 +89,11 @@ object RegistrationView extends Form:
     def resetForm(): Unit =
       clearFields()
       formSaved = false
-      clearMessage(resultMessage, successStyle = "form-message-success", errorStyle = "form-message-error")
+      clearMessage(
+        resultMessage,
+        successStyle = UiStyles.Registration.MessageSuccess,
+        errorStyle = UiStyles.Registration.MessageError
+      )
 
     def submitRequest(): Unit =
       val request = currentRequest()
@@ -95,15 +102,14 @@ object RegistrationView extends Form:
       if errors.nonEmpty then
         showMessage(
           label = resultMessage,
-          message =
-            errors.mkString(
-              "Errori riscontrati:\n- ",
-              "\n- ",
-              ""
-            ),
+          message = errors.mkString(
+            Registration.ValidationHeader,
+            Registration.ValidationSeparator,
+            ""
+          ),
           success = false,
-          successStyle = "form-message-success",
-          errorStyle = "form-message-error"
+          successStyle = UiStyles.Registration.MessageSuccess,
+          errorStyle = UiStyles.Registration.MessageError
         )
       else
         service.submitRequest(
@@ -121,10 +127,10 @@ object RegistrationView extends Form:
 
             showMessage(
               resultMessage,
-              "Richiesta presa in carico e salvata correttamente.",
+              Registration.SubmitSuccess,
               success = true,
-              "form-message-success",
-              "form-message-error"
+              UiStyles.Registration.MessageSuccess,
+              UiStyles.Registration.MessageError
             )
 
           case Left(error) =>
@@ -132,62 +138,63 @@ object RegistrationView extends Form:
               resultMessage,
               error,
               success = false,
-              "form-message-success",
-              "form-message-error"
+              UiStyles.Registration.MessageSuccess,
+              UiStyles.Registration.MessageError
             )
 
-    val submit = primaryButton("Invio richiesta", () => submitRequest())
+    val submit = primaryButton(Common.Buttons.RequestRegistration, () => submitRequest())
     val reset = resetButton(() => resetForm())
+
     def exitRegistration(): Unit =
       val canExit =
         if hasChanges then
           askConfirmation(
-            titleText = "Modifiche non salvate",
-            header = "Vuoi uscire senza salvare?",
-            content = "I dati inseriti nella richiesta di registrazione verranno persi."
+            titleText = Registration.ExitDialog.Title,
+            header = Registration.ExitDialog.Header,
+            content = Registration.ExitDialog.Content
           )
         else
           true
 
       if canExit then onExit()
 
-    val exit = closeButton(onExit = () => exitRegistration(), text = "Annulla")
+    val exit = closeButton(onExit = () => exitRegistration(), text = Common.Buttons.Close)
 
     val formGrid = new GridPane:
       hgap = 18
       vgap = 14
-      styleClass += "registration-grid"
+      styleClass += UiStyles.Registration.Grid
 
-      add(fieldLabel("Nome *"), 0, 0)
+      add(fieldLabel(Fields.Labels.required(Fields.Labels.Name)), 0, 0)
       add(nameField, 0, 1)
 
-      add(fieldLabel("Cognome *"), 1, 0)
+      add(fieldLabel(Fields.Labels.required(Fields.Labels.Surname)), 1, 0)
       add(surnameField, 1, 1)
 
-      add(fieldLabel("Indirizzo email *"), 0, 2)
+      add(fieldLabel(Fields.Labels.required(Fields.Labels.Email)), 0, 2)
       add(emailField, 0, 3)
 
-      add(fieldLabel("Telefono"), 1, 2)
+      add(fieldLabel(Fields.Labels.Phone), 1, 2)
       add(phoneField, 1, 3)
 
-      add(fieldLabel("Ruolo richiesto *"), 0, 4)
+      add(fieldLabel(Fields.Labels.required(Fields.Labels.Role)), 0, 4)
       add(roleCombo, 0, 5)
 
-      add(fieldLabel("Area/Settore di appartenenza *"), 1, 4)
+      add(fieldLabel(Fields.Labels.required(Fields.Labels.Area)), 1, 4)
       add(areaCombo, 1, 5)
 
-      add(fieldLabel("Incarico *"), 0, 6)
+      add(fieldLabel(Fields.Labels.required(Fields.Labels.Assignment)), 0, 6)
       add(assignmentField, 0, 7)
 
     val buttonsBox = actionBar(Seq(exit, reset, submit))
 
     formPage(
-      titleText = "Registrazione",
-      subtitleText = "Compila il modulo per richiedere l'accreditamento al sistema ProtoFlow.",
-      titleStyle = "registration-title",
-      subtitleStyle = "registration-subtitle",
-      rootStyle = "registration-root",
-      contentStyle = Some("registration-card"),
+      titleText = Registration.Title,
+      subtitleText = Registration.Subtitle,
+      titleStyle = UiStyles.Registration.Title,
+      subtitleStyle = UiStyles.Registration.Subtitle,
+      rootStyle = UiStyles.Registration.Root,
+      contentStyle = Some(UiStyles.Registration.Card),
       form = formGrid,
       resultMessage = resultMessage,
       actions = buttonsBox

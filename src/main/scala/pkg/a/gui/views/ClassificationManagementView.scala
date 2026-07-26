@@ -10,6 +10,8 @@ import scalafx.scene.layout.*
 import pkg.d.util.Logger.*
 import pkg.d.util.Util.inDatabaseFilePathName
 import pkg.d.util.XmlToPdf
+import pkg.a.gui.text.{UiStyles, UiText}
+import UiText.{Fields, Classifications, Common}
 
 object ClassificationManagementView extends Management:
 
@@ -24,23 +26,23 @@ object ClassificationManagementView extends Management:
 
     val result =
       createResultMessage(
-        baseStyle = "classifications-message",
-        successStyle = "classifications-message-success",
-        errorStyle = "classifications-message-error"
+        baseStyle = UiStyles.Classifications.Message,
+        successStyle = UiStyles.Classifications.MessageSuccess,
+        errorStyle = UiStyles.Classifications.MessageError
       )
 
     val table = new TableView[Classification](classifications):
         columnResizePolicy = TableView.ConstrainedResizePolicy
-        placeholder = new Label("Non sono presenti classifiche nel sistema.")
-        styleClass += "classifications-table"
+        placeholder = new Label(Classifications.Management.Empty)
+        styleClass += UiStyles.Classifications.Table
 
     val classificationColumn = new TableColumn[Classification, String]:
-        text = "Classifica"
+        text = Fields.Labels.Classification
         cellValueFactory = cell =>
           StringProperty(cell.value.getClassification)
 
     val descriptionColumn = new TableColumn[Classification, String]:
-        text = "Descrizione"
+        text = Fields.Labels.Description
         cellValueFactory = cell =>
           StringProperty(cell.value.getDescription)
 
@@ -74,24 +76,24 @@ object ClassificationManagementView extends Management:
           .clearSelection()
 
         if loaded.isEmpty then
-          result.show("Non sono presenti classifiche nel sistema.", success = true)
+          result.show(Classifications.Management.Empty, success = true)
 
       catch
         case exception: Exception =>
           classifications.clear()
-          result.show("Errore durante il caricamento delle classifiche.", success = false)
+          result.show(Classifications.Management.LoadError, success = false)
           logger(exception)
 
     def deleteSelectedClassification(): Unit =
       selectedClassification() match
         case None =>
-          result.show("Seleziona una classifica da eliminare.", success = false)
+          result.show(Classifications.Management.SelectToDelete, success = false)
 
         case Some(selected) =>
           val confirmed =
             askConfirmation(
-              titleText = "Eliminazione classifica",
-              header = "Confermi l'eliminazione della classifica selezionata?",
+              titleText = Classifications.Management.DeleteTitle,
+              header = Classifications.Management.DeleteConfirmation,
               content =
                 s"""Classifica: ${selected.getClassification}
                    |Codice: ${selected.getId}
@@ -105,25 +107,25 @@ object ClassificationManagementView extends Management:
             if deleted then
               loadClassifications()
 
-              result.show(s"La classifica '${selected.getClassification}' è stata eliminata correttamente.", success = true)
+              result.show(Classifications.Management.deleted(selected.getClassification), success = true)
             else
-              result.show("Non è stato possibile eliminare la classifica.", success = false)
+              result.show(Classifications.Management.DeleteError, success = false)
 
     def printClassifications(): Unit =
       if classifications.isEmpty then
-        result.show("Non sono presenti classifiche da stampare.", success = false)
+        result.show(Classifications.Management.PrintEmpty, success = false)
       else
         val printed =
           XmlToPdf.printList(
             xmlPath = inDatabaseFilePathName("classifications.xml"),
             pdfFileName = "elenco-classifiche.pdf",
-            title = "Elenco Classifiche"
+            title = Classifications.Management.PrintTitle
           )
 
         if printed then
-          result.show("Elenco delle classifiche stampato correttamente nella cartella protoflow/prints.", success = true)
+          result.show(Classifications.Management.PrintSuccess, success = true)
         else
-          result.show("Non è stato possibile stampare l'elenco delle classifiche.", success = false)
+          result.show(Classifications.Management.PrintError, success = false)
 
 
      // Pulisce il messaggio quando viene selezionata una nuova riga.
@@ -136,13 +138,13 @@ object ClassificationManagementView extends Management:
             result.clear()
 
 
-    val addButton = primaryButton(text = "Aggiungi", action = () =>
+    val addButton = primaryButton(text = Common.Buttons.Add, action = () =>
       result.clear()
       onAdd())
 
     val editButton =
       secondaryButton(
-        text = "Modifica",
+        text = Common.Buttons.Edit,
         action = () =>
           selectedClassification() match
             case Some(selected) =>
@@ -150,7 +152,7 @@ object ClassificationManagementView extends Management:
               onEdit(selected)
 
             case None =>
-              result.show("Seleziona una classifica da modificare.", success = false)
+              result.show(Classifications.Management.SelectToEdit, success = false)
       )
 
     editButton.disable <==
@@ -158,7 +160,7 @@ object ClassificationManagementView extends Management:
         .selectedItem
         .isNull
 
-    val deleteButton = dangerButton(text = "Elimina", action = () => deleteSelectedClassification())
+    val deleteButton = dangerButton(text = Common.Buttons.Delete, action = () => deleteSelectedClassification())
 
     deleteButton.disable <==
       table.selectionModel.value
@@ -172,16 +174,16 @@ object ClassificationManagementView extends Management:
 
     val header =
       titleBox(
-        titleText = "Gestione Classifiche",
-        subtitleText = "Visualizza e seleziona le classifiche utilizzate per la catalogazione dei documenti.",
-        titleStyle = "classifications-title",
-        subtitleStyle = "classifications-subtitle"
+        titleText = Classifications.Management.Title,
+        subtitleText = Classifications.Management.Subtitle,
+        titleStyle = UiStyles.Classifications.Title,
+        subtitleStyle = UiStyles.Classifications.Subtitle
       )
 
     loadClassifications() // Prima lettura dal file XML.
 
     managementPage(
-      rootStyle = "classifications-management-root",
+      rootStyle = UiStyles.Classifications.Root,
       growNode = Some(table),
       pageChildren = Seq(header, table, result.label, bottomActions)
     )

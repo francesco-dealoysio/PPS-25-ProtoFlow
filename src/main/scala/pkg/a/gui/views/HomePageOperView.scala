@@ -1,6 +1,7 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.structures.{MenuAction, MenuItem}
+import pkg.a.gui.text.UiText.Menu
 import pkg.a.gui.traits.HomePage
 
 object HomePageOperView extends HomePage:
@@ -11,10 +12,10 @@ object HomePageOperView extends HomePage:
 
   override protected val menuItems: Seq[MenuItem] =
     Seq(
-      MenuItem("Dashboard", MenuAction.Dashboard),
-      MenuItem("Profilo", MenuAction.Profilo),
-      MenuItem("Prese in carico", MenuAction.PreseInCarico),
-      MenuItem("Protocollazione", MenuAction.Protocollo),
-      MenuItem("Archiviazione", MenuAction.Archiviazione),
-      MenuItem("Logout", MenuAction.Logout)
+      MenuItem(Menu.Dashboard, MenuAction.Dashboard),
+      MenuItem(Menu.Profile, MenuAction.Profilo),
+      MenuItem(Menu.Assignments, MenuAction.PreseInCarico),
+      MenuItem(Menu.Protocols, MenuAction.Protocollo),
+      MenuItem(Menu.Archiving, MenuAction.Archiviazione),
+      MenuItem(Menu.Logout, MenuAction.Logout)
     )

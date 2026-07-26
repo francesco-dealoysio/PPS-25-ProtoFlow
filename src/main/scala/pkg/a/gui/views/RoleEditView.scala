@@ -22,13 +22,13 @@ object RoleEditView extends Form:
     val initialDescription = selectedRole.getDescription
     val styles = UiStyles.Roles
     val roleField = textField(Fields.Prompts.Role, initialRole)
-    val descriptionArea = textArea(Fields.Prompts.Description, "role-description-area", selectedRole.getDescription)
+    val descriptionArea = textArea(Fields.Prompts.Description, UiStyles.Roles.DescriptionArea, selectedRole.getDescription)
 
     val roleError = fieldErrorLabel()
     val descriptionError = fieldErrorLabel()
     val monitoredFields = Seq(roleField, descriptionArea)
     val initialFormValues = Seq(initialRole, initialDescription)
-    val resultMessage = messageLabel("roles-message")
+    val resultMessage = messageLabel(UiStyles.Roles.Message)
 
     def clearErrors(): Unit =
       clearFieldErrors(
@@ -38,8 +38,8 @@ object RoleEditView extends Form:
 
       clearMessage(
         resultMessage,
-        successStyle = "roles-message-success",
-        errorStyle = "roles-message-error"
+        successStyle = UiStyles.Roles.MessageSuccess,
+        errorStyle = UiStyles.Roles.MessageError
       )
 
     def currentRole(): Role =
@@ -85,12 +85,12 @@ object RoleEditView extends Form:
             label = resultMessage,
             message =
               if updated then
-                "Ruolo modificato correttamente."
+                Roles.Edit.Success
               else
-                "Errore durante la modifica del ruolo.",
+                Roles.Edit.Error,
             success = updated,
-            successStyle = "roles-message-success",
-            errorStyle = "roles-message-error"
+            successStyle = UiStyles.Roles.MessageSuccess,
+            errorStyle = UiStyles.Roles.MessageError
           )
 
           if updated then
@@ -103,18 +103,18 @@ object RoleEditView extends Form:
     val form =
       formGrid(
         Seq(
-          FormRow("Ruolo *", roleField, roleError),
-          FormRow("Descrizione *", descriptionArea, descriptionError
+          FormRow(Fields.Labels.required(Fields.Labels.Role), roleField, roleError),
+          FormRow(Fields.Labels.required(Fields.Labels.Description), descriptionArea, descriptionError
           )
         )
       )
 
     formPage(
-      titleText = "Modifica ruolo",
-      subtitleText = "Modifica i dati del ruolo selezionato.",
-      titleStyle = "roles-title",
-      subtitleStyle = "roles-subtitle",
-      rootStyle = "roles-management-root",
+      titleText = Roles.Edit.Title,
+      subtitleText = Roles.Edit.Subtitle,
+      titleStyle = UiStyles.Roles.Title,
+      subtitleStyle = UiStyles.Roles.Subtitle,
+      rootStyle = UiStyles.Roles.Root,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),
