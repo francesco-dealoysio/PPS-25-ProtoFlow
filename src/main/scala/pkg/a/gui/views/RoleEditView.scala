@@ -4,6 +4,8 @@ import pkg.a.gui.structures.RoleViewModel
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Role
 import scalafx.scene.layout.BorderPane
+import pkg.a.gui.text.{UiStyles, UiText}
+import UiText.{Fields, Roles}
 
 object RoleEditView extends Form:
 
@@ -18,9 +20,9 @@ object RoleEditView extends Form:
 
     val initialRole = selectedRole.getRole
     val initialDescription = selectedRole.getDescription
-
-    val roleField = textField(prompt = "Inserisci il ruolo", initialText = initialRole)
-    val descriptionArea = textArea(prompt = "Inserisci la descrizione", styleName = "role-description-area", initialText = selectedRole.getDescription)
+    val styles = UiStyles.Roles
+    val roleField = textField(Fields.Prompts.Role, initialRole)
+    val descriptionArea = textArea(Fields.Prompts.Description, "role-description-area", selectedRole.getDescription)
 
     val roleError = fieldErrorLabel()
     val descriptionError = fieldErrorLabel()

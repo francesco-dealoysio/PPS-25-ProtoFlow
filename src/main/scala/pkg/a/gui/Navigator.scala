@@ -2,7 +2,7 @@ package pkg.a.gui
 
 import pkg.a.gui.structures.{HomePageViewModel, RegistrationViewModel}
 import pkg.a.gui.traits.HomePage
-import pkg.a.gui.views.{LoginView, RegistrationView, RoleAddView}
+import pkg.a.gui.views.{LoginView, RegistrationView}
 import pkg.b.logic.Account
 import pkg.d.util.Logger.logger
 import scalafx.application.JFXApp3
