@@ -86,13 +86,6 @@ object AccountManagementView extends Management:
       assignmentColumn
     )
 
-    def selectedAccount(): Option[Account] =
-      Option(
-        table.selectionModel.value
-          .selectedItem
-          .value
-      )
-
     def loadAccounts(): Unit =
       result.clear()
       try
@@ -117,7 +110,7 @@ object AccountManagementView extends Management:
           logger(exception)
 
     def deleteSelectedAccount(): Unit =
-      selectedAccount() match
+      selectedItem(table) match
         case None =>
           result.show(Accounts.Management.SelectToDelete, success = false)
 
@@ -143,14 +136,7 @@ object AccountManagementView extends Management:
             else
               result.show(Accounts.Management.DeleteError, success = false)
 
-    // Pulisce il messaggio quando viene selezionata una nuova riga.
-    table.selectionModel.value
-      .selectedItem
-      .onChange:
-        (_, _, selected) =>
-
-          if selected != null then
-            result.clear()
+    clearResultOnSelection(table, result)
 
     val addButton = primaryButton(Common.Buttons.Add, () =>
       result.clear()
@@ -158,7 +144,7 @@ object AccountManagementView extends Management:
 
     val editButton =
       secondaryButton(Common.Buttons.Edit, () =>
-        selectedAccount() match
+        selectedItem(table) match
           case Some(selected) =>
             result.clear()
             onEdit(selected)

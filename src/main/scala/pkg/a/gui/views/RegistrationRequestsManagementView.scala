@@ -55,9 +55,6 @@ object RegistrationRequestsManagementView extends Management:
       stringColumn(Fields.Labels.Date, 150)(request => RegistrationDates.parse(request.getDate).format(dateFormatter))
     )
 
-    def selectedRequest(): Option[Registration] =
-      Option(table.selectionModel.value.selectedItem.value)
-
     def loadPendingRequests(): Unit =
       result.clear()
 
@@ -68,12 +65,7 @@ object RegistrationRequestsManagementView extends Management:
       if pending.isEmpty then
         result.show(RegistrationRequests.Management.Empty, success = true)
 
-    table.selectionModel.value
-      .selectedItem
-      .onChange:
-        (_, _, selected) =>
-          if selected != null then
-            result.clear()
+    clearResultOnSelection(table, result)
 
     def printPendingList(): Unit =
       val printed =
@@ -96,7 +88,7 @@ object RegistrationRequestsManagementView extends Management:
 
     val processButton =
       primaryButton(Common.Buttons.Process, () =>
-        selectedRequest() match
+        selectedItem(table) match
           case Some(selected) =>
             result.clear()
             onProcess(selected)

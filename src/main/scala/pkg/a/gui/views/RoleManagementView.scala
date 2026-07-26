@@ -58,13 +58,6 @@ object RoleManagementView extends Management:
       descriptionColumn
     )
 
-    def selectedRole(): Option[Role] =
-      Option(
-        table.selectionModel.value
-          .selectedItem
-          .value
-      )
-
     def loadRoles(): Unit =
       result.clear()
 
@@ -93,7 +86,7 @@ object RoleManagementView extends Management:
           logger(exception)
 
     def deleteSelectedRole(): Unit =
-      selectedRole() match
+      selectedItem(table) match
         case None =>
           result.show(Roles.Management.SelectToDelete, success = false)
 
@@ -130,12 +123,7 @@ object RoleManagementView extends Management:
       else
         result.show(Roles.Management.PrintError, success = false)
 
-    table.selectionModel.value
-      .selectedItem
-      .onChange:
-        (_, _, selected) =>
-          if selected != null then
-            result.clear()
+    clearResultOnSelection(table, result)
 
     val addButton = primaryButton(Common.Buttons.Add, () =>
           result.clear()
@@ -144,7 +132,7 @@ object RoleManagementView extends Management:
 
     val editButton =
       secondaryButton(Common.Buttons.Edit, () =>
-          selectedRole() match
+        selectedItem(table) match
             case Some(selected) =>
               result.clear()
               onEdit(selected)

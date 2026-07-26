@@ -1,12 +1,27 @@
 package pkg.a.gui.traits
 
+import scalafx.Includes.*
 import scalafx.geometry.Insets
 import scalafx.scene.Node
-import scalafx.scene.control.Button
+import scalafx.scene.control.{Button, TableView}
 import scalafx.scene.layout.{BorderPane, Priority, VBox}
 
 trait Management extends Root:
 
+  protected def selectedItem[T](table: TableView[T]): Option[T] =
+    Option(
+      table.selectionModel.value
+        .selectedItem
+        .value
+    )
+
+  protected def clearResultOnSelection[T](table: TableView[T], result: ResultMessage): Unit =
+    table.selectionModel.value
+      .selectedItem
+      .onChange:
+        (_, _, selected) =>
+          if selected != null then
+            result.clear()
 
   protected def printButton(action: () => Unit, text: String = "Stampa"): Button =
     secondaryButton(text = text, action = action)

@@ -51,13 +51,6 @@ object ClassificationManagementView extends Management:
       descriptionColumn
     )
 
-    def selectedClassification(): Option[Classification] =
-        Option(
-          table.selectionModel.value
-            .selectedItem
-            .value
-        )
-
     def loadClassifications(): Unit =
       result.clear()
       try
@@ -85,7 +78,7 @@ object ClassificationManagementView extends Management:
           logger(exception)
 
     def deleteSelectedClassification(): Unit =
-      selectedClassification() match
+      selectedItem(table) match
         case None =>
           result.show(Classifications.Management.SelectToDelete, success = false)
 
@@ -127,16 +120,7 @@ object ClassificationManagementView extends Management:
         else
           result.show(Classifications.Management.PrintError, success = false)
 
-
-     // Pulisce il messaggio quando viene selezionata una nuova riga.
-    table.selectionModel.value
-      .selectedItem
-      .onChange:
-        (_, _, selected) =>
-
-          if selected != null then
-            result.clear()
-
+    clearResultOnSelection(table, result)
 
     val addButton = primaryButton(text = Common.Buttons.Add, action = () =>
       result.clear()
@@ -146,7 +130,7 @@ object ClassificationManagementView extends Management:
       secondaryButton(
         text = Common.Buttons.Edit,
         action = () =>
-          selectedClassification() match
+          selectedItem(table) match
             case Some(selected) =>
               result.clear()
               onEdit(selected)
