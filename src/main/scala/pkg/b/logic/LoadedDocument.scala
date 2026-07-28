@@ -3,6 +3,7 @@ package pkg.b.logic
 import pkg.b.logic.Entity
 import pkg.c.data.Xml.*
 import pkg.d.util.Logger.*
+import pkg.d.util.Util.inDocumentsFilePathName
 
 case class LoadedDocument(
                          private var id: String = "",
@@ -51,6 +52,9 @@ case class LoadedDocument(
   def getProcessedBy: String = processedBy
 
   override def xmlFile = "loaded.xml"
+
+  override protected def defaultXmlFilePathName: String =
+    inDocumentsFilePathName(xmlFile)
 
 @main def tryLoadedDocument: Unit =
   println("Tested in LoadedDocumentTest")

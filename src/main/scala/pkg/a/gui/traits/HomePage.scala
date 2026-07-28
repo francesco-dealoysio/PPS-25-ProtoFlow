@@ -214,6 +214,15 @@ trait HomePage extends Root:
         )
       )
 
+    def showLoadedDocumentAdd(): Unit =
+      render(
+        LoadedDocumentAddView(
+          operatorUsername = currentUsername,
+          onSaved = () => showDashboard(),
+          onExit = () => showDashboard()
+        )
+      )
+
     val buttons =
       menuItems.map: item =>
         new Button(item.label):
@@ -253,6 +262,9 @@ trait HomePage extends Root:
 
                   case MenuAction.Ruoli =>
                     showRoleManagement()
+
+                  case MenuAction.PreseInCarico =>
+                    showLoadedDocumentAdd()
 
                   case other =>
                     render(contentFor(other))

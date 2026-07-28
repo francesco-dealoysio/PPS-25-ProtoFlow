@@ -186,6 +186,35 @@ object UiText:
       def approved(username: String, password: String): String =
         s"Richiesta approvata. Account creato con username '$username' e password temporanea '$password': comunicali al richiedente."
 
+  object LoadedDocuments:
+    object Fields:
+      val DocumentDate = "Data documento"
+      val DocumentTime = "Ora documento"
+      val DocumentProtocol = "Protocollo mittente"
+      val DocumentType = "Tipo documento"
+      val Sender = "Mittente"
+      val Recipient = "Destinatario"
+      val Subject = "Oggetto"
+      val Remarks = "Note"
+
+    object Prompts:
+      val DocumentTime = "Inserisci l'ora del documento (HH:mm:ss)"
+      val DocumentProtocol = "Inserisci il protocollo del mittente"
+      val DocumentType = "Inserisci il tipo di documento"
+      val Sender = "Inserisci il mittente"
+      val Recipient = "Inserisci il destinatario"
+      val Subject = "Inserisci l'oggetto"
+      val Remarks = "Inserisci eventuali note"
+
+    object Add:
+      val Title = "Presa in carico documento"
+      val Subtitle = "Inserisci i dati del documento da prendere in carico."
+      val Success = "Documento preso in carico correttamente."
+      val Error = "Errore durante la presa in carico del documento."
+
+      val SaveTitle = "Conferma presa in carico"
+      val SaveHeader = "Confermi la presa in carico del documento?"
+
   object Login:
     val ApplicationTitle = "ProtoFlow"
     val ApplicationSubtitle = "Enterprise Document Protocol System"

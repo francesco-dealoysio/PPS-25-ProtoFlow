@@ -1,0 +1,33 @@
+.loaded-documents-root {
+    -fx-background-color: #f4f6f8;
+    -fx-font-family: "Arial";
+}
+
+.loaded-documents-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #243447;
+}
+
+.loaded-documents-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #667788;
+}
+
+.loaded-documents-message {
+    -fx-padding: 10px 14px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+
+.loaded-documents-message-success {
+    -fx-background-color: #e8f5e9;
+    -fx-border-color: #81c784;
+    -fx-text-fill: #256029;
+}
+
+.loaded-documents-message-error {
+    -fx-background-color: #ffebee;
+    -fx-border-color: #ef9a9a;
+    -fx-text-fill: #b71c1c;
+}

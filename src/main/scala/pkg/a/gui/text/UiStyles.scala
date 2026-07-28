@@ -48,6 +48,14 @@ object UiStyles:
     val DetailLabel = "request-detail-label"
     val DetailValue = "request-detail-value"
 
+  object LoadedDocuments:
+    val Root = "loaded-documents-root"
+    val Title = "loaded-documents-title"
+    val Subtitle = "loaded-documents-subtitle"
+    val Message = "loaded-documents-message"
+    val MessageSuccess = "loaded-documents-message-success"
+    val MessageError = "loaded-documents-message-error"
+
   object Login:
     val Root = "registration-root"
     val Card = "registration-card"
