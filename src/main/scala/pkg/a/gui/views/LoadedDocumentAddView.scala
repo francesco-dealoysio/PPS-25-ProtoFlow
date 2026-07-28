@@ -7,120 +7,70 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.LoadedDocument
 import pkg.d.util.IdGen
 import pkg.d.util.Util.{inIdsFilePathName, localDate, localTime}
-
 import scalafx.application.Platform
-import scalafx.scene.control.{Alert, DatePicker}
+import scalafx.scene.Node
+import scalafx.scene.control.Alert
 import scalafx.scene.layout.BorderPane
-
 import java.time.LocalDate
 
 object LoadedDocumentAddView extends Form:
 
-  def apply(
-             operatorUsername: String,
-             onSaved: () => Unit = () => (),
-             onExit: () => Unit = () => ()
-           ): BorderPane =
+  def apply(operatorUsername: String, onSaved: () => Unit = () => (), onExit: () => Unit = () => ()): BorderPane =
 
     val documentLogic = new LoadedDocument()
     val viewModel = new LoadedDocumentViewModel()
-
+    val initialDate = LocalDate.now()
     val defaultTime = localTime
-
-    val documentDatePicker =
-      new DatePicker(LocalDate.now()):
-        maxWidth = Double.MaxValue
-        styleClass += UiStyles.Common.FormField
-
-    val documentTimeField = textField(LoadedDocuments.Prompts.DocumentTime, defaultTime)
-    val documentProtocolField = textField(LoadedDocuments.Prompts.DocumentProtocol)
-    val documentTypeField = textField(LoadedDocuments.Prompts.DocumentType)
-    val senderField = textField(LoadedDocuments.Prompts.Sender)
-    val recipientField = textField(LoadedDocuments.Prompts.Recipient)
-    val subjectField = textField(LoadedDocuments.Prompts.Subject)
-    val remarksArea = textArea(LoadedDocuments.Prompts.Remarks, UiStyles.Roles.DescriptionArea)
-
-    val documentDateError = fieldErrorLabel()
-    val documentTimeError = fieldErrorLabel()
-    val documentProtocolError = fieldErrorLabel()
-    val documentTypeError = fieldErrorLabel()
-    val senderError = fieldErrorLabel()
-    val recipientError = fieldErrorLabel()
-    val subjectError = fieldErrorLabel()
-
+    val documentDate = dateField(initialDate)
+    val documentTime = stringField(LoadedDocuments.Prompts.DocumentTime, defaultTime)
+    val documentProtocol = stringField(LoadedDocuments.Prompts.DocumentProtocol)
+    val documentType = stringField(LoadedDocuments.Prompts.DocumentType)
+    val sender = stringField(LoadedDocuments.Prompts.Sender)
+    val recipient = stringField(LoadedDocuments.Prompts.Recipient)
+    val subject = stringField(LoadedDocuments.Prompts.Subject)
+    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Roles.DescriptionArea)
+    val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks)
     val resultMessage = messageLabel(UiStyles.LoadedDocuments.Message)
 
-    val monitoredTextFields =
-      Seq(documentTimeField, documentProtocolField, documentTypeField, senderField, recipientField, subjectField, remarksArea)
-
-    val initialValues = Seq(defaultTime, "", "", "", "", "", "")
-
     def clearErrors(): Unit =
-      clearFieldErrors(
-        documentDatePicker -> documentDateError,
-        documentTimeField -> documentTimeError,
-        documentProtocolField -> documentProtocolError,
-        documentTypeField -> documentTypeError,
-        senderField -> senderError,
-        recipientField -> recipientError,
-        subjectField -> subjectError
-      )
+      clearFormFieldErrors(monitoredFields*)
 
-      clearMessage(resultMessage, UiStyles.LoadedDocuments.MessageSuccess, UiStyles.LoadedDocuments.MessageError)
+      clearMessage(
+        resultMessage,
+        UiStyles.LoadedDocuments.MessageSuccess,
+        UiStyles.LoadedDocuments.MessageError
+      )
 
     def currentDocument(id: String = ""): LoadedDocument =
       LoadedDocument(
         id = id,
-        documentDate = Option(documentDatePicker.value.value).map(_.toString).getOrElse(""),
-        documentTime = documentTimeField.text.value.trim,
-        documentProtocol = documentProtocolField.text.value.trim,
-        documentType = documentTypeField.text.value.trim,
-        sender = senderField.text.value.trim,
-        recipient = recipientField.text.value.trim,
-        subject = subjectField.text.value.trim,
-        remarks = remarksArea.text.value.trim,
+        documentDate = documentDate.value,
+        documentTime = documentTime.value,
+        documentProtocol = documentProtocol.value,
+        documentType = documentType.value,
+        sender = sender.value,
+        recipient = recipient.value,
+        subject = subject.value,
+        remarks = remarks.value,
         state = "loaded"
       )
 
     def validateForm(): Boolean =
       clearErrors()
-
       val errors = viewModel.validate(currentDocument())
-
-      if errors.contains(LoadedDocumentViewModel.DocumentDateRequiredError) then
-        showFieldError(documentDatePicker, documentDateError, LoadedDocumentViewModel.DocumentDateRequiredError)
-
-      showMappedErrors(errors):
-        case LoadedDocumentViewModel.DocumentTimeRequiredError =>
-          documentTimeField -> documentTimeError
-
-        case LoadedDocumentViewModel.DocumentProtocolRequiredError =>
-          documentProtocolField -> documentProtocolError
-
-        case LoadedDocumentViewModel.DocumentTypeRequiredError =>
-          documentTypeField -> documentTypeError
-
-        case LoadedDocumentViewModel.SenderRequiredError =>
-          senderField -> senderError
-
-        case LoadedDocumentViewModel.RecipientRequiredError =>
-          recipientField -> recipientError
-
-        case LoadedDocumentViewModel.SubjectRequiredError =>
-          subjectField -> subjectError
+      showFormFieldErrors(errors):
+        case LoadedDocumentViewModel.DocumentDateRequiredError => documentDate
+        case LoadedDocumentViewModel.DocumentTimeRequiredError => documentTime
+        case LoadedDocumentViewModel.DocumentProtocolRequiredError => documentProtocol
+        case LoadedDocumentViewModel.DocumentTypeRequiredError => documentType
+        case LoadedDocumentViewModel.SenderRequiredError => sender
+        case LoadedDocumentViewModel.RecipientRequiredError => recipient
+        case LoadedDocumentViewModel.SubjectRequiredError => subject
 
     def resetForm(): Unit =
-      documentDatePicker.value = LocalDate.now()
-      documentTimeField.text = defaultTime
-      documentProtocolField.clear()
-      documentTypeField.clear()
-      senderField.clear()
-      recipientField.clear()
-      subjectField.clear()
-      remarksArea.clear()
+      resetFields(monitoredFields*)
       clearErrors()
-
-      documentProtocolField.requestFocus()
+      documentProtocol.requestFocus()
 
     var formSaved = false
 
@@ -132,26 +82,28 @@ object LoadedDocumentAddView extends Form:
               titleText = LoadedDocuments.Add.SaveTitle,
               header = LoadedDocuments.Add.SaveHeader,
               content =
-                s"""Mittente: ${senderField.text.value.trim}
-                   |Oggetto: ${subjectField.text.value.trim}""".stripMargin
+                s"""Mittente: ${sender.value}
+                   |Oggetto: ${subject.value}""".stripMargin
             )
 
           if confirmed then
             val newDocument =
               currentDocument(IdGen(inIdsFilePathName("loadedDocumentId")))
                 .copy(
-                  processedDate = localDate,
-                  processedTime = localTime,
-                  processedBy = operatorUsername
-                )
+                processedDate = localDate,
+                processedTime = localTime,
+                processedBy = operatorUsername
+              )
 
             val saved = documentLogic.recordInsert(newDocument)
 
             showMessage(
               label = resultMessage,
               message =
-                if saved then LoadedDocuments.Add.Success
-                else LoadedDocuments.Add.Error,
+                if saved then
+                  LoadedDocuments.Add.Success
+                else
+                  LoadedDocuments.Add.Error,
               success = saved,
               successStyle = UiStyles.LoadedDocuments.MessageSuccess,
               errorStyle = UiStyles.LoadedDocuments.MessageError
@@ -159,37 +111,35 @@ object LoadedDocumentAddView extends Form:
 
             if saved then
               formSaved = true
-
-              new Alert(Alert.AlertType.Information):
+              val alert = new Alert(Alert.AlertType.Information):
                 title = LoadedDocuments.Add.Title
                 headerText = None
                 contentText = LoadedDocuments.Add.Success
-              .showAndWait()
+              alert.showAndWait()
 
               resetForm()
               formSaved = false
-
               onSaved()
 
-    val reset = resetButton(() => resetForm())
+    val reset = resetButton(resetForm)
     val exit = closeButton(onExit)
-
     val form =
       formGrid(
         Seq(
-          FormRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentDate), documentDatePicker, documentDateError),
-          FormRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentTime), documentTimeField, documentTimeError),
-          FormRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentProtocol), documentProtocolField, documentProtocolError),
-          FormRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentType), documentTypeField, documentTypeError),
-          FormRow(Fields.Labels.required(LoadedDocuments.Fields.Sender), senderField, senderError),
-          FormRow(Fields.Labels.required(LoadedDocuments.Fields.Recipient), recipientField, recipientError),
-          FormRow(Fields.Labels.required(LoadedDocuments.Fields.Subject), subjectField, subjectError),
-          FormRow(LoadedDocuments.Fields.Remarks, remarksArea, fieldErrorLabel())
+          formRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentDate), documentDate),
+          formRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentTime), documentTime),
+          formRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentProtocol), documentProtocol),
+          formRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentType), documentType),
+          formRow(Fields.Labels.required(LoadedDocuments.Fields.Sender), sender),
+          formRow(Fields.Labels.required(LoadedDocuments.Fields.Recipient), recipient),
+          formRow(Fields.Labels.required(LoadedDocuments.Fields.Subject), subject),
+          formRow(LoadedDocuments.Fields.Remarks, remarks
+          )
         )
       )
 
     Platform.runLater:
-      documentProtocolField.requestFocus()
+      documentProtocol.requestFocus()
 
     formPage(
       titleText = LoadedDocuments.Add.Title,
@@ -200,5 +150,5 @@ object LoadedDocumentAddView extends Form:
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),
-      hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredTextFields, initialValues = initialValues)
+      hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

@@ -2,8 +2,9 @@ package pkg.a.gui.traits
 
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Node
-import scalafx.scene.control.{Button, ComboBox, Label, PasswordField, TextArea, TextField}
+import scalafx.scene.control.{Button, ComboBox, DatePicker, Label, PasswordField, TextArea, TextField}
 import scalafx.scene.layout.*
+import java.time.LocalDate
 
 trait Form extends Root:
 
@@ -151,6 +152,24 @@ trait Form extends Root:
       promptText = prompt
       maxWidth = Double.MaxValue
       styleClass += "form-field"
+
+  protected def dateField(initialValue: LocalDate): FormField[DatePicker] =
+
+    val control =
+      new DatePicker(initialValue):
+        maxWidth = Double.MaxValue
+        styleClass += "form-field"
+
+    formField(control, initialValue.toString)(
+      readValue = picker =>
+        Option(picker.value.value)
+          .map(_.toString)
+          .getOrElse(""),
+      writeValue = (picker, value) =>
+        picker.value =
+          if value.isBlank then null
+          else LocalDate.parse(value)
+    )
 
   private def textArea(prompt: String, styleName: String, initialText: String = "", rows: Int = 5): TextArea =
     new TextArea:
