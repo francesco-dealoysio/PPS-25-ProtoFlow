@@ -7,122 +7,75 @@ import pkg.b.logic.Account
 import pkg.d.util.IdGen
 import pkg.d.util.Util.{inIdsFilePathName, md5}
 import scalafx.application.Platform
-import scalafx.scene.control.{ComboBox, PasswordField}
+import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
 import UiText.{Accounts, Fields}
 
 object AccountAddView extends Form:
 
-  def apply(
-             onSaved: () => Unit,
-             onExit: () => Unit
-           ): BorderPane =
+  def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val accountLogic = new Account()
     val viewModel = new AccountViewModel()
 
-    val surnameField = textField(Fields.Prompts.Surname)
-    val nameField = textField(Fields.Prompts.Name)
-    val emailField = textField(Fields.Prompts.Email)
-    val phoneField = textField(Fields.Prompts.Phone)
-    val roleField =
-      new ComboBox[String](AccountViewModel.roles):
-        promptText = Fields.Prompts.SelectRole
-        maxWidth = Double.MaxValue
-        styleClass += UiStyles.Common.FormField
-    val areaField = textField(Fields.Prompts.Area)
-    val assignmentField = textField(Fields.Prompts.Assignment)
-    val usernameField = textField(Fields.Prompts.Username)
+    val surname = stringField(Fields.Prompts.Surname)
+    val name = stringField(Fields.Prompts.Name)
+    val email = stringField(Fields.Prompts.Email)
+    val phone = stringField(Fields.Prompts.Phone)
+    val role = stringComboField(AccountViewModel.roles, Fields.Prompts.SelectRole)
+    val area = stringField(Fields.Prompts.Area)
+    val assignment = stringField(Fields.Prompts.Assignment)
+    val username = stringField(Fields.Prompts.Username)
+    val password = passwordFormField(Fields.Prompts.Password)
 
-    val passwordField =
-      new PasswordField:
-        promptText = Fields.Prompts.Password
-        maxWidth = Double.MaxValue
-        styleClass += UiStyles.Common.FormField
-
-    val surnameError = fieldErrorLabel()
-    val nameError = fieldErrorLabel()
-    val emailError = fieldErrorLabel()
-    val roleError = fieldErrorLabel()
-    val usernameError = fieldErrorLabel()
-    val passwordError = fieldErrorLabel()
-
+    val monitoredFields: Seq[FormField[? <: Node]] = Seq(surname, name, email, phone, role, area, assignment, username, password)
     val resultMessage = messageLabel(UiStyles.Accounts.Message)
-    val monitoredTextFields = Seq(surnameField, nameField, emailField, phoneField, areaField, assignmentField, usernameField, passwordField)
-    val monitoredComboBoxes = Seq(roleField)
 
     def clearErrors(): Unit =
-      clearFieldErrors(
-        surnameField -> surnameError,
-        nameField -> nameError,
-        emailField -> emailError,
-        roleField -> roleError,
-        usernameField -> usernameError,
-        passwordField -> passwordError
+      clearFormFieldErrors(monitoredFields*)
+      clearMessage(
+        resultMessage,
+        UiStyles.Accounts.MessageSuccess,
+        UiStyles.Accounts.MessageError
       )
-
-      clearMessage(resultMessage, UiStyles.Accounts.MessageSuccess, UiStyles.Accounts.MessageError)
 
     def currentAccount(id: String = ""): Account =
       Account(
         id = id,
-        surname = surnameField.text.value.trim,
-        name = nameField.text.value.trim,
-        email = emailField.text.value.trim,
-        phone = phoneField.text.value.trim,
-        role = Option(roleField.value.value).getOrElse(""),
-        area = areaField.text.value.trim,
-        assignment = assignmentField.text.value.trim,
-        username = usernameField.text.value.trim,
-        password = md5(passwordField.text.value)
+        surname = surname.value,
+        name = name.value,
+        email = email.value,
+        phone = phone.value,
+        role = role.value,
+        area = area.value,
+        assignment = assignment.value,
+        username = username.value,
+        password = md5(password.value)
       )
 
     def validateForm(): Boolean =
       clearErrors()
-
       val errors =
         viewModel.validate(
           account = currentAccount(),
-          rawPassword = passwordField.text.value,
+          rawPassword = password.value,
           existingAccounts = accountLogic.getRecords()
         )
 
-      if errors.contains(AccountViewModel.RoleRequiredError) then
-        showFieldError(roleField, roleError, AccountViewModel.RoleRequiredError)
-
-      showMappedErrors(errors):
-        case AccountViewModel.SurnameRequiredError =>
-          surnameField -> surnameError
-
-        case AccountViewModel.NameRequiredError =>
-          nameField -> nameError
-
-        case AccountViewModel.EmailRequiredError |
-             AccountViewModel.EmailInvalidError =>
-          emailField -> emailError
-
-        case AccountViewModel.UsernameRequiredError |
-             AccountViewModel.DuplicateUsernameError =>
-          usernameField -> usernameError
-
-        case AccountViewModel.PasswordRequiredError =>
-          passwordField -> passwordError
+      showFormFieldErrors(errors):
+        case AccountViewModel.SurnameRequiredError => surname
+        case AccountViewModel.NameRequiredError => name
+        case AccountViewModel.EmailRequiredError | AccountViewModel.EmailInvalidError => email
+        case AccountViewModel.RoleRequiredError => role
+        case AccountViewModel.UsernameRequiredError | AccountViewModel.DuplicateUsernameError => username
+        case AccountViewModel.PasswordRequiredError => password
 
     def resetForm(): Unit =
-      surnameField.clear()
-      nameField.clear()
-      emailField.clear()
-      phoneField.clear()
-      roleField.value = null
-      areaField.clear()
-      assignmentField.clear()
-      usernameField.clear()
-      passwordField.clear()
+      resetFields(monitoredFields*)
       clearErrors()
-      surnameField.requestFocus()
+      surname.requestFocus()
 
     var formSaved = false
-
     val save =
       saveButton: () =>
         if validateForm() then
@@ -148,20 +101,20 @@ object AccountAddView extends Form:
     val form =
       formGrid(
         Seq(
-          FormRow(Fields.Labels.required(Fields.Labels.Surname), surnameField, surnameError),
-          FormRow(Fields.Labels.required(Fields.Labels.Name), nameField, nameError),
-          FormRow(Fields.Labels.required(Fields.Labels.Email), emailField, emailError),
-          FormRow(Fields.Labels.Phone, phoneField, fieldErrorLabel()),
-          FormRow(Fields.Labels.required(Fields.Labels.Role), roleField, roleError),
-          FormRow(Fields.Labels.Area, areaField, fieldErrorLabel()),
-          FormRow(Fields.Labels.Assignment, assignmentField, fieldErrorLabel()),
-          FormRow(Fields.Labels.required(Fields.Labels.Username), usernameField, usernameError),
-          FormRow(Fields.Labels.required(Fields.Labels.Password), passwordField, passwordError)
+          formRow(Fields.Labels.required(Fields.Labels.Surname), surname),
+          formRow(Fields.Labels.required(Fields.Labels.Name), name),
+          formRow(Fields.Labels.required(Fields.Labels.Email), email),
+          formRow(Fields.Labels.Phone, phone),
+          formRow(Fields.Labels.required(Fields.Labels.Role), role),
+          formRow(Fields.Labels.Area, area),
+          formRow(Fields.Labels.Assignment, assignment),
+          formRow(Fields.Labels.required(Fields.Labels.Username), username),
+          formRow(Fields.Labels.required(Fields.Labels.Password), password)
         )
       )
 
     Platform.runLater:
-      surnameField.requestFocus()
+      surname.requestFocus()
 
     formPage(
       titleText = Accounts.Add.Title,
@@ -172,10 +125,5 @@ object AccountAddView extends Form:
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),
-      hasUnsavedChanges = () =>
-        hasFormChanges(
-          formSaved,
-          monitoredTextFields,
-          monitoredComboBoxes
-        )
+      hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

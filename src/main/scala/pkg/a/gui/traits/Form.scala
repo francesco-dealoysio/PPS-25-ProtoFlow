@@ -2,12 +2,50 @@ package pkg.a.gui.traits
 
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Node
-import scalafx.scene.control.{Button, ComboBox, Label, TextArea, TextField, TextInputControl}
+import scalafx.scene.control.{Button, ComboBox, Label, PasswordField, TextArea, TextField}
 import scalafx.scene.layout.*
 
 trait Form extends Root:
 
   protected case class FormRow(label: String, field: Node, errorLabel: Label)
+
+  protected case class FormField[C <: Node](control: C, errorLabel: Label, initialValue: String, readValue: C => String, writeValue: (C, String) => Unit):
+    def value: String =
+      readValue(control).trim
+
+    def reset(): Unit =
+      writeValue(control, initialValue)
+
+    def hasChanged: Boolean =
+      value != initialValue.trim
+
+    def requestFocus(): Unit =
+      control.requestFocus()
+
+    def showError(message: String): Unit =
+      errorLabel.text = message
+      errorLabel.visible = true
+      errorLabel.managed = true
+
+      control match
+        case styledControl: scalafx.scene.control.Control =>
+          if !styledControl.styleClass.contains("form-field-error") then
+            styledControl.styleClass += "form-field-error"
+
+        case _ =>
+          ()
+
+    def clearError(): Unit =
+      errorLabel.text = ""
+      errorLabel.visible = false
+      errorLabel.managed = false
+
+      control match
+        case styledControl: scalafx.scene.control.Control =>
+          styledControl.styleClass.remove("form-field-error")
+
+        case _ =>
+          ()
 
   protected def fieldErrorLabel(styleName: String = "field-error"): Label =
     new Label:
@@ -16,21 +54,62 @@ trait Form extends Root:
       wrapText = true
       styleClass += styleName
 
-  protected def showFieldError(field: Node, errorLabel: Label, message: String): Unit =
-    errorLabel.text = message
-    errorLabel.visible = true
-    errorLabel.managed = true
+  protected def resetFields(fields: FormField[? <: Node]*): Unit =
+    fields.foreach(_.reset())
 
-    field match
-      case control: scalafx.scene.control.Control =>
-        if !control.styleClass.contains("form-field-error") then
-          control.styleClass += "form-field-error"
-      case _ => ()
+  protected def hasFormChanges(formSaved: Boolean, fields: Seq[FormField[? <: Node]]): Boolean =
+    !formSaved && fields.exists(_.hasChanged)
 
-  protected def clearFieldErrors(fields: (Node, Label)*): Unit =
-    fields.foreach:
-      case (field, errorLabel) =>
-        clearFieldError(field, errorLabel)
+  protected def formRow(label: String, field: FormField[? <: Node]): FormRow =
+    FormRow(
+      label = label,
+      field = field.control,
+      errorLabel = field.errorLabel
+    )
+
+  protected def clearFormFieldErrors(fields: FormField[? <: Node]*): Unit =
+    fields.foreach(_.clearError())
+
+  protected def stringField(prompt: String, initialValue: String = ""): FormField[TextField] =
+    formField(textField(prompt, initialValue), initialValue)(
+      readValue = _.text.value,
+      writeValue = (field, value) => field.text = value
+    )
+
+  protected def areaField(prompt: String, styleName: String, initialValue: String = "", rows: Int = 5): FormField[TextArea] =
+    formField(textArea(prompt, styleName, initialValue, rows), initialValue)(
+      readValue = _.text.value,
+      writeValue = (field, value) => field.text = value
+    )
+
+  protected def passwordFormField(prompt: String, initialValue: String = ""): FormField[PasswordField] =
+    val control =
+      new PasswordField:
+        text = initialValue
+        promptText = prompt
+        maxWidth = Double.MaxValue
+        styleClass += "form-field"
+    formField(control, initialValue)(
+      readValue = _.text.value,
+      writeValue = (field, value) => field.text = value
+    )
+
+  protected def stringComboField(items: Seq[String], prompt: String, initialValue: String = ""): FormField[ComboBox[String]] =
+    val control =
+      new ComboBox[String](items):
+        if initialValue.nonEmpty then
+          value = initialValue
+
+        promptText = prompt
+        maxWidth = Double.MaxValue
+        styleClass += "form-field"
+
+    formField(control, initialValue)(
+      readValue = combo =>
+        Option(combo.value.value).getOrElse(""),
+      writeValue = (combo, value) =>
+        combo.value = if value.isBlank then null else value
+    )
 
   protected def formGrid(rows: Seq[FormRow]): GridPane =
     new GridPane:
@@ -59,21 +138,21 @@ trait Form extends Root:
   protected def resetButton(onReset: () => Unit, text: String = "Reset"): Button =
     secondaryButton(text, onReset)
 
-  protected def showMappedErrors(errors: Seq[String])(mapping: PartialFunction[String, (TextInputControl, Label)]): Boolean =
+  protected def showFormFieldErrors(errors: Seq[String])(mapping: PartialFunction[String, FormField[? <: Node]]): Boolean =
     errors.foreach: error =>
-      mapping.lift(error).foreach:
-        case (field, errorLabel) =>
-          showFieldError(field, errorLabel, error)
+      mapping
+        .lift(error)
+        .foreach(_.showError(error))
     errors.isEmpty
 
-  protected def textField(prompt: String, initialText: String = ""): TextField =
+  private def textField(prompt: String, initialText: String = ""): TextField =
     new TextField:
       text = initialText
       promptText = prompt
       maxWidth = Double.MaxValue
       styleClass += "form-field"
 
-  protected def textArea(prompt: String, styleName: String, initialText: String = "", rows: Int = 5): TextArea =
+  private def textArea(prompt: String, styleName: String, initialText: String = "", rows: Int = 5): TextArea =
     new TextArea:
       text = initialText
       promptText = prompt
@@ -131,34 +210,11 @@ trait Form extends Root:
       .put("has-unsaved-changes", hasUnsavedChanges)
     page
 
-  protected def hasFormChanges(formSaved: Boolean, textFields: Seq[TextInputControl], comboBoxes: Seq[ComboBox[String]] = Seq.empty, initialValues: Seq[String] = Seq.empty): Boolean =
-    if formSaved then
-      false
-    else
-      val currentValues = formValues(textFields, comboBoxes)
-
-      val baseline =
-        if initialValues.nonEmpty then
-          initialValues.map(_.trim)
-        else
-          Seq.fill(currentValues.size)("")
-
-      currentValues != baseline
-
-  private def formValues(textFields: Seq[TextInputControl], comboBoxes: Seq[ComboBox[String]] = Seq.empty): Seq[String] =
-    textFields.map(_.text.value.trim) ++
-      comboBoxes.map: combo =>
-        Option(combo.value.value)
-          .map(_.trim)
-          .getOrElse("")
-
-  private def clearFieldError(field: Node, errorLabel: Label): Unit =
-    errorLabel.text = ""
-    errorLabel.visible = false
-    errorLabel.managed = false
-
-    field match
-      case control: scalafx.scene.control.Control =>
-        control.styleClass.remove("form-field-error")
-      case _ => ()
-
+  private def formField[C <: Node](control: C, initialValue: String)(readValue: C => String, writeValue: (C, String) => Unit): FormField[C] =
+    FormField(
+      control = control,
+      errorLabel = fieldErrorLabel(),
+      initialValue = initialValue,
+      readValue = readValue,
+      writeValue = writeValue
+    )

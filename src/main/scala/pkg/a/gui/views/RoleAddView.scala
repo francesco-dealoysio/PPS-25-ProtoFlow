@@ -20,24 +20,19 @@ object RoleAddView extends Form:
 
     val roleLogic = new Role()
     val viewModel = new RoleViewModel()
-    val roleField = textField(Fields.Prompts.Role)
-    val descriptionArea = textArea(Fields.Prompts.Description, UiStyles.Roles.DescriptionArea)
-    val roleError = fieldErrorLabel()
-    val descriptionError = fieldErrorLabel()
+    val role = stringField(Fields.Prompts.Role)
+    val description = areaField(Fields.Prompts.Description, UiStyles.Roles.DescriptionArea)
     val resultMessage = messageLabel(UiStyles.Roles.Message)
-    val monitoredFields = Seq(roleField, descriptionArea)
+    val monitoredFields = Seq(role, description)
     def currentRole(id: String = ""): Role =
       Role(
         id = id,
-        role = roleField.text.value.trim.toLowerCase,
-        description = descriptionArea.text.value.trim
+        role = role.value.toLowerCase,
+        description = description.value
       )
 
     def clearErrors(): Unit =
-      clearFieldErrors(
-        roleField -> roleError,
-        descriptionArea -> descriptionError
-      )
+      clearFormFieldErrors(role, description)
 
       clearMessage(
         resultMessage,
@@ -47,28 +42,22 @@ object RoleAddView extends Form:
 
     def validateForm(): Boolean =
       clearErrors()
-
       val errors =
         viewModel.validate(
           role = currentRole(),
           existingRoles = roleLogic.getRecords()
         )
 
-      showMappedErrors(errors):
-        case RoleViewModel.RoleRequiredError |
-             RoleViewModel.DuplicateRoleError =>
-          roleField -> roleError
-
+      showFormFieldErrors(errors):
+        case RoleViewModel.RoleRequiredError | RoleViewModel.DuplicateRoleError =>
+          role
         case RoleViewModel.DescriptionRequiredError =>
-          descriptionArea -> descriptionError
+          description
 
     def resetForm(): Unit =
-      roleField.clear()
-      descriptionArea.clear()
+      resetFields(role, description)
       clearErrors()
-
-      roleField.requestFocus()
-
+      role.requestFocus()
 
     var formSaved = false
     val save =
@@ -99,14 +88,13 @@ object RoleAddView extends Form:
     val form =
       formGrid(
         Seq(
-          FormRow(Fields.Labels.required(Fields.Labels.Role), roleField, roleError),
-          FormRow(Fields.Labels.required(Fields.Labels.Description), descriptionArea, descriptionError)
+          formRow(Fields.Labels.required(Fields.Labels.Role), role),
+          formRow(Fields.Labels.required(Fields.Labels.Description), description)
         )
       )
 
-    Platform.runLater {
-      roleField.requestFocus()
-    }
+    Platform.runLater:
+      role.requestFocus()
 
     formPage(
       titleText = Roles.Add.Title,
