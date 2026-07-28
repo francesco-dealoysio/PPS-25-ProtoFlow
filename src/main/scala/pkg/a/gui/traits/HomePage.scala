@@ -2,12 +2,12 @@ package pkg.a.gui.traits
 
 import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
 import pkg.a.gui.views.*
-import pkg.b.logic.{Account, Classification, Registration, Role}
+import pkg.b.logic.{Account, Classification, LoadedDocument, Registration, RegisteredDocument, Role}
 import pkg.d.util.DateTime
 import scalafx.Includes.jfxNode2sfx
 import scalafx.beans.property.BooleanProperty
 import scalafx.geometry.Pos
-import scalafx.scene.control.{Button, TableColumn, TableView}
+import scalafx.scene.control.{Alert, Button, TableColumn, TableView}
 import scalafx.scene.layout.*
 
 trait HomePage extends Root:
@@ -214,6 +214,46 @@ trait HomePage extends Root:
         )
       )
 
+    def showLoadedDocumentAdd(): Unit =
+      render(
+        LoadedDocumentAddView(
+          operatorUsername = currentUsername,
+          onSaved = () => (), // resta sulla maschera dopo il salvataggio, mostra solo il popup di conferma
+          onExit = () => showLoadedDocumentManagement()
+        )
+      )
+
+    def showLoadedDocumentManagement(): Unit =
+      render(
+        LoadedDocumentManagementView(
+          onRegister = selected => showDocumentRegistration(selected),
+          onExit = () => showDashboard()
+        )
+      )
+
+    def showDocumentRegistration(selected: LoadedDocument): Unit =
+      render(
+        DocumentRegistrationView(
+          selectedDocument = selected,
+          operatorUsername = currentUsername,
+          onRegistered = () => showLoadedDocumentManagement(),
+          onExit = () => showLoadedDocumentManagement()
+        )
+      )
+
+    def showRegisteredDocumentManagement(): Unit =
+      render(
+        RegisteredDocumentManagementView(
+          onArchive = _ =>
+            new Alert(Alert.AlertType.Information):
+              this.title = "Archiviazione"
+              headerText = None
+              contentText = "La funzionalità di archiviazione non è ancora disponibile."
+            .showAndWait(),
+          onExit = () => showDashboard()
+        )
+      )
+
     val buttons =
       menuItems.map: item =>
         new Button(item.label):
@@ -253,6 +293,15 @@ trait HomePage extends Root:
 
                   case MenuAction.Ruoli =>
                     showRoleManagement()
+
+                  case MenuAction.PreseInCarico =>
+                    showLoadedDocumentAdd()
+
+                  case MenuAction.Protocollo =>
+                    showLoadedDocumentManagement()
+
+                  case MenuAction.Archiviazione =>
+                    showRegisteredDocumentManagement()
 
                   case other =>
                     render(contentFor(other))

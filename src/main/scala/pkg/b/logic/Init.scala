@@ -20,7 +20,7 @@ object Init:
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
     val databaseFolder = baseFolder + fs + "database"
-    val documentsFolder = baseFolder + fs + databaseFolder + fs + "documents"
+    val documentsFolder = databaseFolder + fs + "documents"
     val logFolder = baseFolder + fs + "log"
     val idFolder = baseFolder + fs + "ids"
     val testFolder = baseFolder + fs + "test"

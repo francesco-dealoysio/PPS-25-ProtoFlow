@@ -1,11 +1,10 @@
 package pkg.b.logic
 
 import pkg.b.logic.Entity
-import pkg.c.data.Xml.*
-import pkg.d.util.Logger.*
+import pkg.c.data.Xml.createEmptyXmlFile
 import pkg.d.util.Util.inDocumentsFilePathName
 
-case class LoadedDocument(
+case class RegisteredDocument(
                          private var id: String = "",
                          private var documentDate: String = "",
                          private var documentTime: String = "",
@@ -16,12 +15,16 @@ case class LoadedDocument(
                          private var subject: String = "",
                          private var remarks: String = "",
                          private var state: String = "",
-                         private var processedDate: String = "",
-                         private var processedTime: String = "",
-                         private var processedBy: String = ""
+                         private var loadedDate: String = "",
+                         private var loadedTime: String = "",
+                         private var loadedBy: String = "",
+                         private var protocolNumber: String = "",
+                         private var registeredDate: String = "",
+                         private var registeredTime: String = "",
+                         private var registeredBy: String = ""
                        ) extends Entity:
   def this() =
-    this("", "", "", "", "", "", "", "", "", "", "", "", "")
+    this("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
 
   def setId(value: String): Unit = id = value
   def setDocumentDate(value: String): Unit = documentDate = value
@@ -33,9 +36,13 @@ case class LoadedDocument(
   def setSubject(value: String): Unit = subject = value
   def setRemarks(value: String): Unit = remarks = value
   def setState(value: String): Unit = state = value
-  def setProcessedDate(value: String): Unit = processedDate = value
-  def setProcessedTime(value: String): Unit = processedTime = value
-  def setProcessedBy(value: String): Unit = processedBy = value
+  def setLoadedDate(value: String): Unit = loadedDate = value
+  def setLoadedTime(value: String): Unit = loadedTime = value
+  def setLoadedBy(value: String): Unit = loadedBy = value
+  def setProtocolNumber(value: String): Unit = protocolNumber = value
+  def setRegisteredDate(value: String): Unit = registeredDate = value
+  def setRegisteredTime(value: String): Unit = registeredTime = value
+  def setRegisteredBy(value: String): Unit = registeredBy = value
 
   def getId: String = id
   def getDocumentDate: String = documentDate
@@ -47,17 +54,21 @@ case class LoadedDocument(
   def getSubject: String = subject
   def getRemarks: String = remarks
   def getState: String = state
-  def getProcessedDate: String = processedDate
-  def getProcessedTime: String = processedTime
-  def getProcessedBy: String = processedBy
+  def getLoadedDate: String = loadedDate
+  def getLoadedTime: String = loadedTime
+  def getLoadedBy: String = loadedBy
+  def getProtocolNumber: String = protocolNumber
+  def getRegisteredDate: String = registeredDate
+  def getRegisteredTime: String = registeredTime
+  def getRegisteredBy: String = registeredBy
 
-  override def xmlFile = "loaded.xml"
+  override def xmlFile = "registered.xml"
 
   override protected def defaultXmlFilePathName: String =
     val path = inDocumentsFilePathName(xmlFile)
     if java.nio.file.Files.notExists(java.nio.file.Paths.get(path)) then
-      createEmptyXmlFile(path, "loadedDocuments")
+      createEmptyXmlFile(path, "registeredDocuments")
     path
 
-@main def tryLoadedDocument: Unit =
-  println("Tested in LoadedDocumentTest")
+@main def tryRegisteredDocument: Unit =
+  println("Tested in RegisteredDocumentTest")
