@@ -2,43 +2,43 @@ package pkg.a.gui.views
 
 import pkg.a.gui.structures.LoadedDocumentViewModel
 import pkg.a.gui.text.{UiStyles, UiText}
-import UiText.{Fields, LoadedDocuments}
+import UiText.{Fields, LoadedDocuments, RegisteredDocuments}
 import pkg.a.gui.traits.Form
-import pkg.b.logic.LoadedDocument
-import pkg.d.util.IdGen
-import pkg.d.util.Util.{inIdsFilePathName, localDate, localTime}
+import pkg.b.logic.{LoadedDocument, LoadedDocumentService}
 
 import scalafx.application.Platform
-import scalafx.scene.control.{Alert, DatePicker}
+import scalafx.scene.control.DatePicker
 import scalafx.scene.layout.BorderPane
 
 import java.time.LocalDate
 
-object LoadedDocumentAddView extends Form:
+object DocumentRegistrationView extends Form:
 
   def apply(
+             selectedDocument: LoadedDocument,
              operatorUsername: String,
-             onSaved: () => Unit = () => (),
+             onRegistered: () => Unit = () => (),
              onExit: () => Unit = () => ()
            ): BorderPane =
 
-    val documentLogic = new LoadedDocument()
+    val service = new LoadedDocumentService()
     val viewModel = new LoadedDocumentViewModel()
 
-    val defaultTime = localTime
+    val initialDocumentDate =
+      LocalDate.parse(selectedDocument.getDocumentDate)
 
     val documentDatePicker =
-      new DatePicker(LocalDate.now()):
+      new DatePicker(initialDocumentDate):
         maxWidth = Double.MaxValue
         styleClass += UiStyles.Common.FormField
 
-    val documentTimeField = textField(LoadedDocuments.Prompts.DocumentTime, defaultTime)
-    val documentProtocolField = textField(LoadedDocuments.Prompts.DocumentProtocol)
-    val documentTypeField = textField(LoadedDocuments.Prompts.DocumentType)
-    val senderField = textField(LoadedDocuments.Prompts.Sender)
-    val recipientField = textField(LoadedDocuments.Prompts.Recipient)
-    val subjectField = textField(LoadedDocuments.Prompts.Subject)
-    val remarksArea = textArea(LoadedDocuments.Prompts.Remarks, UiStyles.Roles.DescriptionArea)
+    val documentTimeField = textField(LoadedDocuments.Prompts.DocumentTime, selectedDocument.getDocumentTime)
+    val documentProtocolField = textField(LoadedDocuments.Prompts.DocumentProtocol, selectedDocument.getDocumentProtocol)
+    val documentTypeField = textField(LoadedDocuments.Prompts.DocumentType, selectedDocument.getDocumentType)
+    val senderField = textField(LoadedDocuments.Prompts.Sender, selectedDocument.getSender)
+    val recipientField = textField(LoadedDocuments.Prompts.Recipient, selectedDocument.getRecipient)
+    val subjectField = textField(LoadedDocuments.Prompts.Subject, selectedDocument.getSubject)
+    val remarksArea = textArea(LoadedDocuments.Prompts.Remarks, UiStyles.Roles.DescriptionArea, selectedDocument.getRemarks)
 
     val documentDateError = fieldErrorLabel()
     val documentTimeError = fieldErrorLabel()
@@ -53,7 +53,16 @@ object LoadedDocumentAddView extends Form:
     val monitoredTextFields =
       Seq(documentTimeField, documentProtocolField, documentTypeField, senderField, recipientField, subjectField, remarksArea)
 
-    val initialValues = Seq(defaultTime, "", "", "", "", "", "")
+    val initialValues =
+      Seq(
+        selectedDocument.getDocumentTime,
+        selectedDocument.getDocumentProtocol,
+        selectedDocument.getDocumentType,
+        selectedDocument.getSender,
+        selectedDocument.getRecipient,
+        selectedDocument.getSubject,
+        selectedDocument.getRemarks
+      )
 
     def clearErrors(): Unit =
       clearFieldErrors(
@@ -68,9 +77,9 @@ object LoadedDocumentAddView extends Form:
 
       clearMessage(resultMessage, UiStyles.LoadedDocuments.MessageSuccess, UiStyles.LoadedDocuments.MessageError)
 
-    def currentDocument(id: String = ""): LoadedDocument =
+    def editedDocument(): LoadedDocument =
       LoadedDocument(
-        id = id,
+        id = selectedDocument.getId,
         documentDate = Option(documentDatePicker.value.value).map(_.toString).getOrElse(""),
         documentTime = documentTimeField.text.value.trim,
         documentProtocol = documentProtocolField.text.value.trim,
@@ -79,13 +88,16 @@ object LoadedDocumentAddView extends Form:
         recipient = recipientField.text.value.trim,
         subject = subjectField.text.value.trim,
         remarks = remarksArea.text.value.trim,
-        state = "loaded"
+        state = selectedDocument.getState,
+        processedDate = selectedDocument.getProcessedDate,
+        processedTime = selectedDocument.getProcessedTime,
+        processedBy = selectedDocument.getProcessedBy
       )
 
     def validateForm(): Boolean =
       clearErrors()
 
-      val errors = viewModel.validate(currentDocument())
+      val errors = viewModel.validate(editedDocument())
 
       if errors.contains(LoadedDocumentViewModel.DocumentDateRequiredError) then
         showFieldError(documentDatePicker, documentDateError, LoadedDocumentViewModel.DocumentDateRequiredError)
@@ -110,14 +122,14 @@ object LoadedDocumentAddView extends Form:
           subjectField -> subjectError
 
     def resetForm(): Unit =
-      documentDatePicker.value = LocalDate.now()
-      documentTimeField.text = defaultTime
-      documentProtocolField.clear()
-      documentTypeField.clear()
-      senderField.clear()
-      recipientField.clear()
-      subjectField.clear()
-      remarksArea.clear()
+      documentDatePicker.value = initialDocumentDate
+      documentTimeField.text = selectedDocument.getDocumentTime
+      documentProtocolField.text = selectedDocument.getDocumentProtocol
+      documentTypeField.text = selectedDocument.getDocumentType
+      senderField.text = selectedDocument.getSender
+      recipientField.text = selectedDocument.getRecipient
+      subjectField.text = selectedDocument.getSubject
+      remarksArea.text = selectedDocument.getRemarks
       clearErrors()
 
       documentProtocolField.requestFocus()
@@ -129,47 +141,35 @@ object LoadedDocumentAddView extends Form:
         if validateForm() then
           val confirmed =
             askConfirmation(
-              titleText = LoadedDocuments.Add.SaveTitle,
-              header = LoadedDocuments.Add.SaveHeader,
+              titleText = RegisteredDocuments.Process.SaveTitle,
+              header = RegisteredDocuments.Process.SaveHeader,
               content =
                 s"""Mittente: ${senderField.text.value.trim}
                    |Oggetto: ${subjectField.text.value.trim}""".stripMargin
             )
 
           if confirmed then
-            val newDocument =
-              currentDocument(IdGen(inIdsFilePathName("loadedDocumentId")))
-                .copy(
-                  processedDate = localDate,
-                  processedTime = localTime,
-                  processedBy = operatorUsername
+            service.registerDocument(selectedDocument, editedDocument(), operatorUsername) match
+              case Right(registered) =>
+                showMessage(
+                  label = resultMessage,
+                  message = s"${RegisteredDocuments.Process.Success} Numero di protocollo: ${registered.getProtocolNumber}.",
+                  success = true,
+                  successStyle = UiStyles.LoadedDocuments.MessageSuccess,
+                  errorStyle = UiStyles.LoadedDocuments.MessageError
                 )
 
-            val saved = documentLogic.recordInsert(newDocument)
+                formSaved = true
+                onRegistered()
 
-            showMessage(
-              label = resultMessage,
-              message =
-                if saved then LoadedDocuments.Add.Success
-                else LoadedDocuments.Add.Error,
-              success = saved,
-              successStyle = UiStyles.LoadedDocuments.MessageSuccess,
-              errorStyle = UiStyles.LoadedDocuments.MessageError
-            )
-
-            if saved then
-              formSaved = true
-
-              new Alert(Alert.AlertType.Information):
-                title = LoadedDocuments.Add.Title
-                headerText = None
-                contentText = LoadedDocuments.Add.Success
-              .showAndWait()
-
-              resetForm()
-              formSaved = false
-
-              onSaved()
+              case Left(error) =>
+                showMessage(
+                  label = resultMessage,
+                  message = error,
+                  success = false,
+                  successStyle = UiStyles.LoadedDocuments.MessageSuccess,
+                  errorStyle = UiStyles.LoadedDocuments.MessageError
+                )
 
     val reset = resetButton(() => resetForm())
     val exit = closeButton(onExit)
@@ -192,8 +192,8 @@ object LoadedDocumentAddView extends Form:
       documentProtocolField.requestFocus()
 
     formPage(
-      titleText = LoadedDocuments.Add.Title,
-      subtitleText = LoadedDocuments.Add.Subtitle,
+      titleText = RegisteredDocuments.Process.Title,
+      subtitleText = RegisteredDocuments.Process.Subtitle,
       titleStyle = UiStyles.LoadedDocuments.Title,
       subtitleStyle = UiStyles.LoadedDocuments.Subtitle,
       rootStyle = UiStyles.LoadedDocuments.Root,

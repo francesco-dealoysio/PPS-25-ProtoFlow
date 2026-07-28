@@ -20,6 +20,8 @@ object UiText:
       val Approve = "Approva"
       val Reject = "Rifiuta"
       val Process = "Elabora"
+      val Register = "Protocolla"
+      val Archive = "Archivia"
       val Login = "Accedi"
       val RequestRegistration = "Richiedi registrazione"
 
@@ -214,6 +216,49 @@ object UiText:
 
       val SaveTitle = "Conferma presa in carico"
       val SaveHeader = "Confermi la presa in carico del documento?"
+
+    object Management:
+      val Title = "Gestione documenti presi in carico"
+      val Subtitle = "Visualizza i documenti presi in carico e avviane la protocollazione."
+      val Empty = "Non sono presenti documenti presi in carico nel sistema."
+      val SelectToDelete = "Seleziona un documento da eliminare."
+      val SelectToRegister = "Seleziona un documento da protocollare."
+      val DeleteTitle = "Eliminazione documento"
+      val DeleteConfirmation = "Confermi l'eliminazione del documento selezionato? L'operazione non può essere annullata."
+      val DeleteError = "Non è stato possibile eliminare il documento."
+      val Deleted = "Il documento è stato eliminato correttamente."
+
+      val PrintTitle = "Elenco Documenti Presi in Carico"
+      val PrintFileName = "documenti_presi_in_carico_elenco"
+      val PrintSuccess = "Elenco stampato correttamente in PDF."
+      val PrintError = "Errore durante la stampa dell'elenco (nessun documento presente?)."
+
+  object RegisteredDocuments:
+    object Process:
+      val Title = "Protocollazione documento"
+      val Subtitle = "Verifica e correggi i dati del documento preso in carico, poi conferma la protocollazione."
+      val Success = "Documento protocollato correttamente."
+      val Error = "Errore durante la protocollazione del documento."
+
+      val SaveTitle = "Conferma protocollazione"
+      val SaveHeader = "Confermi la protocollazione del documento selezionato?"
+
+    object Management:
+      val Title = "Gestione documenti protocollati"
+      val Subtitle = "Visualizza i documenti protocollati e avviane l'archiviazione."
+      val Empty = "Non sono presenti documenti protocollati nel sistema."
+      val SelectToDelete = "Seleziona un documento da eliminare."
+      val SelectToArchive = "Seleziona un documento da archiviare."
+      val DeleteTitle = "Eliminazione documento"
+      val DeleteConfirmation = "Confermi l'eliminazione del documento selezionato? L'operazione non può essere annullata."
+      val DeleteError = "Non è stato possibile eliminare il documento."
+      val Deleted = "Il documento è stato eliminato correttamente."
+      val ArchiveNotYetAvailable = "La funzionalità di archiviazione non è ancora disponibile."
+
+      val PrintTitle = "Elenco Documenti Protocollati"
+      val PrintFileName = "documenti_protocollati_elenco"
+      val PrintSuccess = "Elenco stampato correttamente in PDF."
+      val PrintError = "Errore durante la stampa dell'elenco (nessun documento presente?)."
 
   object Login:
     val ApplicationTitle = "ProtoFlow"

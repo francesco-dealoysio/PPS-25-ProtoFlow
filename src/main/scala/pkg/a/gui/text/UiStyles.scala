@@ -55,6 +55,7 @@ object UiStyles:
     val Message = "loaded-documents-message"
     val MessageSuccess = "loaded-documents-message-success"
     val MessageError = "loaded-documents-message-error"
+    val Table = "loaded-documents-table"
 
   object Login:
     val Root = "registration-root"

@@ -31,3 +31,36 @@
     -fx-border-color: #ef9a9a;
     -fx-text-fill: #b71c1c;
 }
+
+.loaded-documents-table {
+    -fx-background-color: white;
+    -fx-border-color: #dfe5eb;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.loaded-documents-table .column-header-background {
+    -fx-background-color: #edf2f7;
+}
+
+.loaded-documents-table .column-header {
+    -fx-background-color: transparent;
+    -fx-padding: 10px 8px;
+}
+
+.loaded-documents-table .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #334155;
+}
+
+.loaded-documents-table .table-row-cell {
+    -fx-cell-size: 40px;
+}
+
+.loaded-documents-table .table-row-cell:selected {
+    -fx-background-color: #dbeafe;
+}
+
+.loaded-documents-table .table-row-cell:selected .text {
+    -fx-fill: #1e3a5f;
+}
