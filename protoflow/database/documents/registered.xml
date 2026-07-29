@@ -18,4 +18,23 @@
     <registeredTime>19:21:22.55</registeredTime>
     <registeredBy>tommy</registeredBy>
   </record>
+  <record>
+    <id>4</id>
+    <documentDate>2026-07-29</documentDate>
+    <documentTime>19:19:08.97</documentTime>
+    <documentProtocol>ALLORA</documentProtocol>
+    <documentType>ALLORA</documentType>
+    <sender>ALLORA</sender>
+    <recipient>ALLORA</recipient>
+    <subject>ALLORA</subject>
+    <remarks>ALLORA</remarks>
+    <state>registered</state>
+    <loadedDate>2026-07-29</loadedDate>
+    <loadedTime>19:19:39.80</loadedTime>
+    <loadedBy>tommy</loadedBy>
+    <protocolNumber>2026/000004</protocolNumber>
+    <registeredDate>2026-07-29</registeredDate>
+    <registeredTime>19:19:56.37</registeredTime>
+    <registeredBy>tommy</registeredBy>
+  </record>
 </registeredDocuments>

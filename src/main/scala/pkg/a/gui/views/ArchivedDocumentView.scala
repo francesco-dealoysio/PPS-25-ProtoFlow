@@ -7,6 +7,8 @@ import pkg.b.logic.{ArchivedDocumentService, RegisteredDocument}
 import pkg.d.util.Util.{localDate, localTime}
 import scalafx.application.Platform
 import scalafx.scene.Node
+import scalafx.geometry.Pos
+import scalafx.scene.layout.{BorderPane, HBox, Priority}
 import scalafx.scene.layout.BorderPane
 
 import java.time.LocalDate
@@ -132,7 +134,8 @@ object ArchivedDocumentView extends Form:
 
     val reset = resetButton(resetForm)
     val exit = closeButton(onExit)
-    val form =
+
+    val documentForm =
       formGrid(
         Seq(
           formRow(Fields.Labels.required(RegisteredDocuments.Fields.ProtocolNumber), protocolNumber),
@@ -143,7 +146,12 @@ object ArchivedDocumentView extends Form:
           formRow(Fields.Labels.required(LoadedDocuments.Fields.Sender), sender),
           formRow(Fields.Labels.required(LoadedDocuments.Fields.Recipient), recipient),
           formRow(Fields.Labels.required(LoadedDocuments.Fields.Subject), subject),
-          formRow(LoadedDocuments.Fields.Remarks, remarks),
+          formRow(LoadedDocuments.Fields.Remarks, remarks)
+        )
+      )
+    val archiveForm =
+      formGrid(
+        Seq(
           formRow(Fields.Labels.required(ArchivedDocuments.Fields.ArchivedDate), archivedDate),
           formRow(Fields.Labels.required(ArchivedDocuments.Fields.ArchivedTime), archivedTime),
           formRow(Fields.Labels.required(ArchivedDocuments.Fields.ArchivedBy), archivedBy),
@@ -151,6 +159,17 @@ object ArchivedDocumentView extends Form:
           formRow(ArchivedDocuments.Fields.ArchiveRemarks, archiveRemarks)
         )
       )
+
+    archiveForm.maxWidth = Double.MaxValue
+    documentForm.maxWidth = Double.MaxValue
+    val form =
+      new HBox:
+        spacing = 30
+        alignment = Pos.TopCenter
+        children = Seq(documentForm, archiveForm)
+
+        HBox.setHgrow(documentForm, Priority.Always)
+        HBox.setHgrow(archiveForm, Priority.Always)
 
     Platform.runLater:
       archiveLocation.requestFocus()

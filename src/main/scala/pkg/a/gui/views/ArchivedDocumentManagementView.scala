@@ -5,7 +5,6 @@ import pkg.a.gui.traits.Management
 import pkg.b.logic.{ArchivedDocument, ArchivedDocumentService}
 import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.XmlToPdf
-
 import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
@@ -37,13 +36,7 @@ object ArchivedDocumentManagementView extends Management:
         placeholder = new Label(ArchivedDocuments.Management.Empty)
         styleClass += UiStyles.LoadedDocuments.Table
 
-    def stringColumn(
-                      title: String,
-                      columnWidth: Double
-                    )(
-                      value: ArchivedDocument => String
-                    ): TableColumn[ArchivedDocument, String] =
-
+    def stringColumn(title: String, columnWidth: Double)(value: ArchivedDocument => String): TableColumn[ArchivedDocument, String] =
       new TableColumn[ArchivedDocument, String]:
         text = title
         prefWidth = columnWidth
@@ -76,10 +69,7 @@ object ArchivedDocumentManagementView extends Management:
       table.selectionModel.value.clearSelection()
 
       if archived.isEmpty then
-        result.show(
-          ArchivedDocuments.Management.Empty,
-          success = true
-        )
+        result.show(ArchivedDocuments.Management.Empty, success = true)
 
     clearResultOnSelection(table, result)
 
@@ -110,7 +100,7 @@ object ArchivedDocumentManagementView extends Management:
 
     val viewButton =
       primaryButton(
-        "Common.Buttons.View",
+        ArchivedDocuments.Management.View,
         () =>
           selectedItem(table) match
             case Some(selected) =>
@@ -125,18 +115,8 @@ object ArchivedDocumentManagementView extends Management:
       )
 
     disableWithoutSelection(table, viewButton)
-
     val exitButton = closeButton(onExit)
-
-    val bottomActions =
-      actionBar(
-        Seq(
-          exitButton,
-          refreshButton,
-          print,
-          viewButton
-        )
-      )
+    val bottomActions = actionBar(Seq(exitButton, refreshButton, print, viewButton))
 
     val header =
       titleBox(

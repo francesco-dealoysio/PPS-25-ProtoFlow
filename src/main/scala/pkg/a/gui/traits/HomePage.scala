@@ -2,7 +2,7 @@ package pkg.a.gui.traits
 
 import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
 import pkg.a.gui.views.*
-import pkg.b.logic.{Account, Classification, LoadedDocument, Registration, RegisteredDocument, Role}
+import pkg.b.logic.{Account, ArchivedDocument, Classification, LoadedDocument, RegisteredDocument, Registration, Role}
 import pkg.d.util.DateTime
 import scalafx.Includes.jfxNode2sfx
 import scalafx.beans.property.BooleanProperty
@@ -262,8 +262,16 @@ trait HomePage extends Root:
     def showArchivedDocumentManagement(): Unit =
       render(
         ArchivedDocumentManagementView(
-          onView = _ => (),
+          onView = selected => showArchivedDocumentDetails(selected),
           onExit = () => showDashboard()
+        )
+      )
+
+    def showArchivedDocumentDetails(selectedDocument: ArchivedDocument): Unit =
+      render(
+        ArchivedDocumentDetailsView(
+          selectedDocument = selectedDocument,
+          onExit = () => showArchivedDocumentManagement()
         )
       )
 
@@ -312,10 +320,10 @@ trait HomePage extends Root:
 
                   case MenuAction.DocumentiDaProtocollare =>
                     showLoadedDocumentManagement()
-                    
+
                   case MenuAction.DocumentiDaArchiviare =>
                     showRegisteredDocumentManagement()
-                    
+
                   case  MenuAction.DocumentiArchiviati =>
                     showArchivedDocumentManagement()
 

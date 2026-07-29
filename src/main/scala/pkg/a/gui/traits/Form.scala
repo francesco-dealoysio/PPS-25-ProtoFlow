@@ -186,7 +186,7 @@ trait Form extends Root:
                           titleStyle: String,
                           subtitleStyle: String,
                           rootStyle: String,
-                          form: GridPane,
+                          form: Node,
                           resultMessage: Label,
                           actions: HBox,
                           contentStyle: Option[String] = None,

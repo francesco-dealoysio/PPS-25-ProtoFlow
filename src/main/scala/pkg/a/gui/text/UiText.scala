@@ -268,6 +268,10 @@ object UiText:
 
   object ArchivedDocuments:
 
+    object Details:
+      val Title = "Dettaglio documento archiviato"
+      val Subtitle = "Visualizza tutte le informazioni del documento selezionato"
+        
     object Fields:
       val ProtocolNumber = "Numero protocollo"
       val ArchivedDate = "Data archiviazione"
@@ -281,6 +285,7 @@ object UiText:
 
     object Prompts:
       val ArchivedTime = "Inserisci l'ora di archiviazione"
+      val ArchivedDate = ""
       val ArchivedBy = "Operatore archiviatore"
       val ArchiveLocation = "Inserisci la collocazione archivistica"
       val ArchiveRemarks = "Inserisci eventuali note di archiviazione"
@@ -301,6 +306,7 @@ object UiText:
       val Title = "Gestione documenti archiviati"
       val Subtitle = "Visualizza e consulta i documenti archiviati."
       val Empty = "Non sono presenti documenti archiviati nel sistema."
+      val View = "Visualizza"
       val SelectToView = "Seleziona un documento da visualizzare."
       val PrintTitle = "Elenco Documenti Archiviati"
       val PrintFileName = "documenti_archiviati_elenco"
