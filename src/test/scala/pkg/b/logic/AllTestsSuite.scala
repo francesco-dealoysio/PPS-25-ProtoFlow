@@ -10,7 +10,8 @@ import org.junit.runners.Suite
   classOf[RegistrationTest],
   classOf[RoleTest],
   classOf[ErrorLogTest],
-  classOf[LoadedDocumentTest]
+  classOf[LoadedDocumentTest],
+  classOf[ArchivedDocumentTest]
 ))
 
 class AllTestsSuite
