@@ -7,7 +7,7 @@ import pkg.d.util.DateTime
 import scalafx.Includes.jfxNode2sfx
 import scalafx.beans.property.BooleanProperty
 import scalafx.geometry.Pos
-import scalafx.scene.control.{Alert, Button, TableColumn, TableView}
+import scalafx.scene.control.{Button, TableColumn, TableView}
 import scalafx.scene.layout.*
 
 trait HomePage extends Root:
@@ -244,13 +244,18 @@ trait HomePage extends Root:
     def showRegisteredDocumentManagement(): Unit =
       render(
         RegisteredDocumentManagementView(
-          onArchive = _ =>
-            new Alert(Alert.AlertType.Information):
-              this.title = "Archiviazione"
-              headerText = None
-              contentText = "La funzionalità di archiviazione non è ancora disponibile."
-            .showAndWait(),
+          onArchive = selected => showDocumentArchived(selected),
           onExit = () => showDashboard()
+        )
+      )
+
+    def showDocumentArchived(selected: RegisteredDocument): Unit =
+      render(
+        ArchivedDocumentView(
+          selectedDocument = selected,
+          operatorUsername = currentUsername,
+          onArchived = () => showRegisteredDocumentManagement(),
+          onExit = () => showRegisteredDocumentManagement()
         )
       )
 

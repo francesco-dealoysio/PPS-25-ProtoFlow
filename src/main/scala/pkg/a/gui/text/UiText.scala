@@ -234,6 +234,12 @@ object UiText:
       val PrintError = "Errore durante la stampa dell'elenco (nessun documento presente?)."
 
   object RegisteredDocuments:
+    object Fields:
+      val ProtocolNumber = "Numero protocollo"
+      val RegisteredDate = "Data protocollo"
+      val RegisteredTime = "Ora protocollo"
+      val RegisteredBy = "Operatore protocollatore"
+
     object Process:
       val Title = "Protocollazione documento"
       val Subtitle = "Verifica e correggi i dati del documento preso in carico, poi conferma la protocollazione."
@@ -259,6 +265,33 @@ object UiText:
       val PrintFileName = "documenti_protocollati_elenco"
       val PrintSuccess = "Elenco stampato correttamente in PDF."
       val PrintError = "Errore durante la stampa dell'elenco (nessun documento presente?)."
+
+  object ArchivedDocuments:
+
+    object Fields:
+      val ArchivedDate = "Data archiviazione"
+      val ArchivedTime = "Ora archiviazione"
+      val ArchivedBy = "Operatore archiviatore"
+      val ArchiveLocation = "Collocazione archivistica"
+      val ArchiveRemarks = "Note di archiviazione"
+
+    object Prompts:
+      val ArchivedTime = "Inserisci l'ora di archiviazione"
+      val ArchivedBy = "Operatore archiviatore"
+      val ArchiveLocation = "Inserisci la collocazione archivistica"
+      val ArchiveRemarks = "Inserisci eventuali note di archiviazione"
+
+    object Errors:
+      val ArchivedDateRequired = "La data di archiviazione è obbligatoria"
+      val ArchivedTimeRequired = "L'ora di archiviazione è obbligatoria"
+      val ArchivedByRequired = "L'operatore archiviatore è obbligatorio"
+
+    object Process:
+      val Title = "Archiviazione documento"
+      val Subtitle = "Conferma i dati e completa l'archiviazione del documento protocollato"
+      val SaveTitle = "Conferma archiviazione"
+      val SaveHeader = "Vuoi archiviare il documento selezionato?"
+      val Success = "Documento archiviato correttamente"
 
   object Login:
     val ApplicationTitle = "ProtoFlow"
