@@ -14,8 +14,9 @@ object HomePageOperView extends HomePage:
     Seq(
       MenuItem(Menu.Dashboard, MenuAction.Dashboard),
       MenuItem(Menu.Profile, MenuAction.Profilo),
-      MenuItem(Menu.Assignments, MenuAction.PreseInCarico),
-      MenuItem(Menu.Protocols, MenuAction.Protocollo),
-      MenuItem(Menu.Archiving, MenuAction.Archiviazione),
+      MenuItem(Menu.NewAssignment, MenuAction.NuovaPresaInCarico),
+      MenuItem(Menu.DocumentsToRegister, MenuAction.DocumentiDaProtocollare),
+      MenuItem(Menu.DocumentsToArchive, MenuAction.DocumentiDaArchiviare),
+      MenuItem(Menu.ArchivedDocuments, MenuAction.DocumentiArchiviati),
       MenuItem(Menu.Logout, MenuAction.Logout)
     )

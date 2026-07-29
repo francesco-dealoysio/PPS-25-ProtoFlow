@@ -259,6 +259,14 @@ trait HomePage extends Root:
         )
       )
 
+    def showArchivedDocumentManagement(): Unit =
+      render(
+        ArchivedDocumentManagementView(
+          onView = _ => (),
+          onExit = () => showDashboard()
+        )
+      )
+
     val buttons =
       menuItems.map: item =>
         new Button(item.label):
@@ -299,14 +307,17 @@ trait HomePage extends Root:
                   case MenuAction.Ruoli =>
                     showRoleManagement()
 
-                  case MenuAction.PreseInCarico =>
+                  case MenuAction.NuovaPresaInCarico =>
                     showLoadedDocumentAdd()
 
-                  case MenuAction.Protocollo =>
+                  case MenuAction.DocumentiDaProtocollare =>
                     showLoadedDocumentManagement()
-
-                  case MenuAction.Archiviazione =>
+                    
+                  case MenuAction.DocumentiDaArchiviare =>
                     showRegisteredDocumentManagement()
+                    
+                  case  MenuAction.DocumentiArchiviati =>
+                    showArchivedDocumentManagement()
 
                   case other =>
                     render(contentFor(other))
@@ -346,17 +357,17 @@ trait HomePage extends Root:
       MenuAction.Profilo ->
         "Profilo",
 
-      MenuAction.VisualizzazioneProtocollazioni ->
-        "Visualizzazione Protocollazioni",
+      MenuAction.NuovaPresaInCarico ->
+        "Nuova presa in carico",
 
-      MenuAction.PreseInCarico ->
-        "Prese in carico",
+      MenuAction.DocumentiDaProtocollare ->
+        "Documenti da protocollare",
 
-      MenuAction.Protocollo ->
-        "Protocollazione",
+      MenuAction.DocumentiDaArchiviare ->
+        "Documenti da archiviare",
 
-      MenuAction.Archiviazione ->
-        "Archiviazione",
+      MenuAction.DocumentiArchiviati ->
+        "Documenti archiviati",
 
       MenuAction.Statistiche ->
         "Statistiche",

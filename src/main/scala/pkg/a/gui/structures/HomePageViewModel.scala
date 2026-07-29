@@ -4,9 +4,10 @@ enum MenuAction:
   case Dashboard
   case Profilo
   case VisualizzazioneProtocollazioni
-  case PreseInCarico
-  case Protocollo
-  case Archiviazione
+  case NuovaPresaInCarico
+  case DocumentiDaProtocollare
+  case DocumentiDaArchiviare
+  case DocumentiArchiviati
   case Statistiche
   case Log
   case ControlloGestione

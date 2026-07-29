@@ -269,9 +269,13 @@ object UiText:
   object ArchivedDocuments:
 
     object Fields:
+      val ProtocolNumber = "Numero protocollo"
       val ArchivedDate = "Data archiviazione"
       val ArchivedTime = "Ora archiviazione"
       val ArchivedBy = "Operatore archiviatore"
+      val Sender = "Mittente"
+      val Recipient = "Destinatario"
+      val Subject = "Oggetto"
       val ArchiveLocation = "Collocazione archivistica"
       val ArchiveRemarks = "Note di archiviazione"
 
@@ -293,6 +297,16 @@ object UiText:
       val SaveHeader = "Vuoi archiviare il documento selezionato?"
       val Success = "Documento archiviato correttamente"
 
+    object Management:
+      val Title = "Gestione documenti archiviati"
+      val Subtitle = "Visualizza e consulta i documenti archiviati."
+      val Empty = "Non sono presenti documenti archiviati nel sistema."
+      val SelectToView = "Seleziona un documento da visualizzare."
+      val PrintTitle = "Elenco Documenti Archiviati"
+      val PrintFileName = "documenti_archiviati_elenco"
+      val PrintSuccess = "Elenco stampato correttamente in PDF."
+      val PrintError = "Errore durante la stampa dell'elenco."
+
   object Login:
     val ApplicationTitle = "ProtoFlow"
     val ApplicationSubtitle = "Enterprise Document Protocol System"
@@ -305,6 +319,7 @@ object UiText:
   object Menu:
     val Dashboard = "Dashboard"
     val Profile = "Profilo"
+    val Protocols = "Protocollazioni"
     val Statistics = "Statistiche"
     val Log = "Log"
     val ManagementControl = "Controllo Gestione"
@@ -312,9 +327,10 @@ object UiText:
     val UserAccounts = "Account Utenti"
     val Roles = "Ruoli"
     val Classifications = "Classifiche"
-    val Protocols = "Visualizzazione Protocollazioni"
-    val Assignments = "Prese in carico"
-    val Archiving = "Archiviazione"
+    val NewAssignment = "Nuova presa in carico"
+    val DocumentsToRegister = "Documenti da protocollare"
+    val DocumentsToArchive = "Documenti da archiviare"
+    val ArchivedDocuments = "Documenti archiviati"
     val Logout = "Logout"
 
   object Registration:

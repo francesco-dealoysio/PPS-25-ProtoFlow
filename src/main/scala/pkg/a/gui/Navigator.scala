@@ -73,7 +73,8 @@ class Navigator(stage: JFXApp3.PrimaryStage):
           "/classifications-management.css",
           "/accounts-management.css",
           "/roles-management.css",
-          "/loaded-documents.css"
+          "/loaded-documents.css",
+          "/archived-documents.css"
         )
 
         stage.scene = scene

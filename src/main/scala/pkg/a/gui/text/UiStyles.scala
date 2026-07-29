@@ -79,3 +79,12 @@ object UiStyles:
     val Message = "form-message"
     val MessageSuccess = "form-message-success"
     val MessageError = "form-message-error"
+
+  object ArchivedDocuments:
+    val Root = "archived-documents-root"
+    val Title = "archived-documents-title"
+    val Subtitle = "archived-documents-subtitle"
+    val Message = "archived-documents-message"
+    val MessageSuccess = "archived-documents-message-success"
+    val MessageError = "archived-documents-message-error"
+    val Table = "archived-documents-table"
