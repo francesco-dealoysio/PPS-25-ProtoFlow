@@ -35,16 +35,4 @@
     <username>robby</username>
     <password>4985b646b98460468e94d7d620af5e49</password>
   </record>
-  <record>
-    <id>37</id>
-    <surname>tes</surname>
-    <name>thom</name>
-    <email>thom@gmail.com</email>
-    <phone>3200871964</phone>
-    <role>viewer</role>
-    <area>Personale</area>
-    <assignment>programmatoer</assignment>
-    <username>ttes</username>
-    <password>a11e6661ebdcfd32745943631687828e</password>
-  </record>
 </accounts>
