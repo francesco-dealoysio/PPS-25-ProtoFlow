@@ -163,7 +163,7 @@ class RoleTest:
   def testRecordUpdate: Unit =
     Role().recordInsert[Role](role1, xmlFilePathName)
     assertEquals("Amministrazione", Role().getRecordById[Role]("1", xmlFilePathName).getDescription)
-    val record = Role().getRecordById[Role]("1")
+    val record = Role().getRecordById[Role]("1", xmlFilePathName)
     record.setDescription("Gestione")
     Role().recordUpdate[Role](record, xmlFilePathName)
     assertEquals(Role().getRecordById[Role]("1", xmlFilePathName).getDescription, "Gestione")
