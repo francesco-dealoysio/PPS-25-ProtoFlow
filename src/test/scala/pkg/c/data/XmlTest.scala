@@ -2,8 +2,8 @@ package pkg.c.data
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.b.logic.Account
-import pkg.c.data.Xml.{createEmptyXmlFile, getRecordFromXML, insertElemIntoXML}
+import pkg.b.logic.{Account, Role}
+import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, getRecordsFromXML, insertElemIntoXML, saveXML}
 import pkg.d.util.Util.{inTestFilePathName, md5}
 
 import java.*
@@ -59,27 +59,69 @@ class XmlTest:
 
   @After
   def tearDown(): Unit =
-    Files.deleteIfExists(Paths.get(inTestFilePathName("file1.xml")))
-    Files.deleteIfExists(Paths.get(inTestFilePathName("file2.xml")))
-  //  Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
+    //Files.deleteIfExists(Paths.get(inTestFilePathName("file1.xml")))
+    //Files.deleteIfExists(Paths.get(inTestFilePathName("file2.xml")))
+    Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
 
   @Test
   def testCreateEmptyXmlFile: Unit =
-    XML.save(inTestFilePathName("file1.xml"), empty, enc = "UTF-8", xmlDecl = true)
-    createEmptyXmlFile(inTestFilePathName("file2.xml"), "root")
+    createEmptyXmlFile(inTestFilePathName("file1.xml"), "root")
+    val file1 = inTestFilePathName("file1.xml")
+    val content1 = readAllLines(Paths.get(file1)).asScala.mkString("\n")
+    assertEquals("Files differ in content!", "<root></root>", content1)
+
+  @Test
+  def testCleanXmlFile: Unit =
+    createEmptyXmlFile(inTestFilePathName("file1.xml"), "accounts")
+    createEmptyXmlFile(inTestFilePathName("file2.xml"), "accounts")
+    insertElemIntoXML(inTestFilePathName("file2.xml"), account)
+    cleanXmlFile(inTestFilePathName("file2.xml"))
     val file1 = inTestFilePathName("file1.xml")
     val file2 = inTestFilePathName("file2.xml")
     val content1 = readAllLines(Paths.get(file1)).asScala.mkString("\n")
     val content2 = readAllLines(Paths.get(file2)).asScala.mkString("\n")
     assertEquals("Files differ in content!", content1, content2)
 
+  @Test
+  def testRecordsFromXML: Unit =
+    assertTrue(false)
 
   @Test
-  def testinsertElemIntoXML: Unit =
+  def testSaveXML: Unit =
+    val role = new Role("1", "admin", "Attività di amministrazione del sistema")
+    createEmptyXmlFile(inTestFilePathName("file1.xml"), "roles")
+    insertElemIntoXML(inTestFilePathName("file1.xml"), role)
+
+    var roles: Elem = <roles>
+      <record>
+        <id>1</id>
+        <role>admin</role>
+        <description>Attività di amministrazione del sistema</description>
+      </record>
+    </roles>
+
+    saveXML(inTestFilePathName("file2.xml"), roles)
+
+    val file1 = inTestFilePathName("file1.xml")
+    val file2 = inTestFilePathName("file2.xml")
+    val content1 = readAllLines(Paths.get(file1)).asScala.mkString("\n")
+    val content2 = readAllLines(Paths.get(file2)).asScala.mkString("\n")
+    assertEquals("Files differ in content!", content1, content2)
+
+  @Test
+  def testInsertElemIntoXML: Unit =
     createEmptyXmlFile(inTestFilePathName("test.xml"), "accounts")
     insertElemIntoXML(inTestFilePathName("test.xml"), account)
-    assertEquals(getRecordFromXML(inTestFilePathName("test.xml"), classOf[Account])(0), account)
+    assertEquals(getRecordsFromXML(inTestFilePathName("test.xml"), classOf[Account])(0), account)
 
   @Test
-  def testCleanXmlFile: Unit =
+  def testUpdateElemOfXLM: Unit =
+    assertTrue(false)
+
+  @Test
+  def testRemoveElemFromXLM: Unit =
+    assertTrue(false)
+
+  @Test
+  def testSearchFieldValue: Unit =
     assertTrue(false)

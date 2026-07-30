@@ -20,7 +20,7 @@ object Init:
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
     val databaseFolder = baseFolder + fs + "database"
-    val documentsFolder = baseFolder + fs + databaseFolder + fs + "documents"
+    val documentsFolder = baseFolder + fs + "database" + fs + "documents"
     val logFolder = baseFolder + fs + "log"
     val idFolder = baseFolder + fs + "ids"
     val testFolder = baseFolder + fs + "test"
@@ -102,20 +102,24 @@ object Init:
     createFile(path + fs + "7. Retrospettiva.MD", "")
 
     // Creazione dati fittizi
-    if (Files.notExists(Paths.get(databaseFolder + fs + "accounts.xml")))
-      writeXML(databaseFolder + fs + "accounts.xml", accounts)
 
-    if (Files.notExists(Paths.get(databaseFolder + fs + "roles.xml")))
-      writeXML(databaseFolder + fs + "roles.xml", roles)
+    if (Files.notExists(Paths.get(inDatabaseFilePathName("accounts.xml"))))
+      saveXML(inDatabaseFilePathName("accounts.xml"), accounts)
 
-    if (Files.notExists(Paths.get(databaseFolder + fs + "classifications.xml")))
-      writeXML(databaseFolder + fs + "classifications.xml", classifications)
+    if (Files.notExists(Paths.get(inDatabaseFilePathName("roles.xml"))))
+      saveXML(inDatabaseFilePathName("roles.xml"), roles)
 
-    if (Files.notExists(Paths.get(databaseFolder + fs + "registrations.xml")))
-      writeXML(databaseFolder + fs + "registrations.xml", registrations)
+    if (Files.notExists(Paths.get(inDatabaseFilePathName("classifications.xml"))))
+      saveXML(inDatabaseFilePathName("classifications.xml"), classifications)
+
+    if (Files.notExists(Paths.get(inDatabaseFilePathName("registrations.xml"))))
+      saveXML(inDatabaseFilePathName("registrations.xml"), registrations)
 
     if (Files.notExists(Paths.get(inLogFilePathName("errors.xml"))))
       createEmptyXmlFile(inLogFilePathName("errors.xml"), "errors")
+
+    if (Files.notExists(Paths.get(inDocumentsFilePathName("loaded.xml"))))
+      createEmptyXmlFile(inDocumentsFilePathName("loaded.xml"), "loaded")
 /*
     if (Files.notExists(Paths.get(databaseFolder + fs + "registrations" + fs + "requests.xml")))
       writeXML(databaseFolder + fs + "registrations" + fs + "requests.xml", registrations)

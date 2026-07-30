@@ -63,12 +63,13 @@ object Xml:
     if !rootTagName.matches("^[A-Za-z_][A-Za-z0-9._-]*$") then
       throw new IllegalArgumentException(s"Invalid XML tag name: '$rootTagName'")
 
-    val xmlContent: Elem = Elem(null, rootTagName, scala.xml.Null, scala.xml.TopScope, minimizeEmpty = true)
-    val prettyPrinter = PrettyPrinter(80, 2)
-    val xmlString = """<?xml version='1.0' encoding='UTF-8'?>""" + "\n" + prettyPrinter.format(xmlContent)
+    //val xmlContent: Elem = Elem(null, rootTagName, scala.xml.Null, scala.xml.TopScope, minimizeEmpty = true)
+    //val prettyPrinter = PrettyPrinter(80, 2)
+    //val xmlString = """<?xml version='1.0' encoding='UTF-8'?>""" + "\n" + prettyPrinter.format(xmlContent)
+    val xmlString = s"<$rootTagName></$rootTagName>"
     val path = Paths.get(xmlFilePathName)
-
-    Files.write(path, xmlString.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+    //Files.write(path, xmlString.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+    Files.write(path, xmlString.getBytes(StandardCharsets.UTF_8))
     println(s"XML file created at: $xmlFilePathName")
 
   def cleanXmlFile(xmlFilePathName: String): Unit =
@@ -79,7 +80,6 @@ object Xml:
         saveXML(xmlFilePathName, cleanedXml)
       case Failure(ex) =>
         logger(ex match { case e: Exception => e })
-        //println(s"Error loading XML: ${ex.getMessage}")
 
   private def recordUpdate(obj: AnyRef, fieldName: String, value: String): AnyRef =
     try
@@ -92,7 +92,7 @@ object Xml:
         logger(e)
         obj
 
-  def getRecordFromXML(xmlFilePathName: String, classType: Class[?]): Seq[AnyRef] =
+  def getRecordsFromXML(xmlFilePathName: String, classType: Class[?]): Seq[AnyRef] =
     val xmlTry: Try[Elem] = Try(XML.loadFile(xmlFilePathName))
 
     xmlTry match
@@ -116,18 +116,12 @@ object Xml:
         logger(ex match { case e: Exception => e })
         println (s"Error loading XML: ${ex.getMessage}")
         Seq.empty
-  
-  // ???
-  def writeXML(xmlFilePathName: String, xmlElem: Elem): Unit =
-    XML.save(xmlFilePathName, xmlElem, "UTF-8", xmlDecl = true)
 
-  // ???
   def saveXML(xmlFilePathName: String, xmlElem: Elem): Unit =
     val pw = new PrintWriter(new File(xmlFilePathName))
     try pw.write(new PrettyPrinter(80, 2).format(xmlElem))
     finally pw.close()
 
-  // ???
   private def recordToElem(obj: Any): Elem =
     val fields = obj.getClass.getDeclaredFields
     val children: Seq[Node] = fields.map { field =>
@@ -200,7 +194,6 @@ object Xml:
     xmlTry match
       case Success(root) =>
         root match
-        //case Elem(_, _, _, _, children@_*) =>
         case Elem(_, _, _, _, children*) =>
           result = (root \\ fieldName).exists(_.text.trim == fieldValue)
         case other =>
@@ -272,3 +265,4 @@ object Xml:
     for (record <- accounts)
       println(record.asInstanceOf[Account].cognome)
 */
+

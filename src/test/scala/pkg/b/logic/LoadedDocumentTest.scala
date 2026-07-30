@@ -23,7 +23,7 @@ class LoadedDocumentTest:
     loadedDocument1 = LoadedDocument(
       "1",
       "2026-07-10",
-      "22:19:13.86",
+//      "22:19:13.86",
       "2024/002342/F.D.",
       "email",
       "ACEA",
@@ -39,7 +39,7 @@ class LoadedDocumentTest:
     loadedDocument2 = LoadedDocument(
       "2",
       "2026-07-10",
-      "22:19:13.86",
+//      "22:19:13.86",
       "2024/002342/F.D.",
       "letter",
       "ACEA",
@@ -55,7 +55,7 @@ class LoadedDocumentTest:
     loadedDocument3 = LoadedDocument(
       "3",
       "2026-07-10",
-      "22:19:13.86",
+//      "22:19:13.86",
       "2024/002342/F.D.",
       "letter",
       "ACEA",
@@ -70,7 +70,8 @@ class LoadedDocumentTest:
 
   @After
   def tearDown(): Unit =
-    Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
+    println
+    //Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =

@@ -1,6 +1,6 @@
 package pkg.b.logic
 
-import pkg.c.data.Xml.{getRecordFromXML, insertElemIntoXML, removeElemFromXML, searchFieldValue, updateElemOfXML}
+import pkg.c.data.Xml.{getRecordsFromXML, insertElemIntoXML, removeElemFromXML, searchFieldValue, updateElemOfXML}
 import pkg.d.util.Logger.logger
 import pkg.d.util.Util.inDatabaseFilePathName
 
@@ -9,7 +9,7 @@ trait Entity:
 
   def getRecords[T](xmlFilePathName: String = defaultXmlFilePathName): Seq[T] =
     try
-      getRecordFromXML(xmlFilePathName, asInstanceOf[T].getClass)
+      getRecordsFromXML(xmlFilePathName, asInstanceOf[T].getClass)
         .map(r => r.asInstanceOf[T])
     catch
       case e: Exception =>
@@ -17,7 +17,7 @@ trait Entity:
 
   def getRecordsByFilter[T](predicate: T => Boolean, xmlFilePathName: String = defaultXmlFilePathName): Seq[T] =
     try {
-      getRecordFromXML(xmlFilePathName, asInstanceOf[T].getClass)
+      getRecordsFromXML(xmlFilePathName, asInstanceOf[T].getClass)
         .map(_.asInstanceOf[T]).filter(predicate)
     } catch
       case e: Exception =>
@@ -31,7 +31,7 @@ trait Entity:
     constructor.setAccessible(true)
 
     try
-      getRecordFromXML(xmlFilePathName, asInstanceOf[T].getClass)
+      getRecordsFromXML(xmlFilePathName, asInstanceOf[T].getClass)
         .map(_.asInstanceOf[T]).find(predicate).getOrElse(constructor.newInstance())
     catch
       case e: Exception =>
@@ -81,7 +81,7 @@ trait Entity:
 
   protected def countRecordsByFilter[T](predicate: T => Boolean, xmlFilePathName: String, classType: Class[T]): Int =
     try
-      getRecordFromXML(xmlFilePathName, classType)
+      getRecordsFromXML(xmlFilePathName, classType)
         .map(_.asInstanceOf[T]).count(predicate)
     catch
       case e: Exception =>

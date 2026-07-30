@@ -32,4 +32,4 @@ object LoginService:
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
     val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
-    getRecordFromXML(databaseFolder + fs + "accounts.xml", classOf[Account]).map(_.asInstanceOf[Account])
+    getRecordsFromXML(databaseFolder + fs + "accounts.xml", classOf[Account]).map(_.asInstanceOf[Account])
