@@ -22,7 +22,7 @@ class ClassificationTest:
         .resolve("test.xml")
         .toString
     createEmptyXmlFile(xmlFilePathName, "test_records")
-
+    empty = new Classification
     classification1 = Classification(
       "1",
       "amministrazione"
@@ -48,7 +48,8 @@ class ClassificationTest:
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =
-    assertEquals(Classification().getRecords[Classification]("path inesistente"), Seq.empty[Classification])
+    val result = Classification().getRecords[Classification]("path inesistente")
+    assertEquals(Seq.empty[Classification], result)
 
   @Test
   def testGetRecordsEmptyXmlFile: Unit =
@@ -62,11 +63,13 @@ class ClassificationTest:
 
   @Test
   def testGetRecordByIdInexistentXmlFile: Unit =
-    assertEquals(Classification().getRecordById[Classification]("2", "path inesistente"), empty)
+    val result = Classification().getRecordById[Classification]("2", "path inesistente")
+    assertEquals(empty, result)
 
   @Test
   def testGetRecordByIdEmptyXmlFile: Unit =
-    assertEquals(Classification().getRecordById[Classification]("2", xmlFilePathName), empty)
+    val result = Classification().getRecordById[Classification]("1", xmlFilePathName)
+    assertEquals(empty, result)
 
   @Test
   def testGetRecordByIdFoundRecord: Unit =
@@ -75,7 +78,9 @@ class ClassificationTest:
 
   @Test
   def testGetRecordsIdInexistentId: Unit =
-    assertEquals(Classification().getRecordById[Classification]("?", xmlFilePathName), empty)
+    Classification().recordInsert(classification1, xmlFilePathName)
+    val result = Classification().getRecordById[Classification]("100", xmlFilePathName)
+    assertEquals(empty, result)
 
   @Test
   def testGetRecordsByFilter: Unit =
@@ -120,29 +125,29 @@ class ClassificationTest:
 
   @Test
   def testRecordUpdateInexistentXmlFile: Unit =
-    Classification().recordInsert[Classification](classification1, xmlFilePathName)
-    assertEquals(Classification().getRecordById[Classification]("1", xmlFilePathName).getClassification, "amministrazione")
-    val record = Classification().getRecordById[Classification]("1")
+    Classification().recordInsert(classification1, xmlFilePathName)
+    val record = Classification().getRecordById[Classification]("1", xmlFilePathName)
+    assertEquals("amministrazione", record.getClassification)
     record.setClassification("informatica")
-    Classification().recordUpdate[Classification](record, "path inesistente")
-    assertNotEquals(Classification().getRecordById[Classification]("1", xmlFilePathName).getClassification, "informatica")
+    assertFalse(Classification().recordUpdate(record, "path inesistente"))
+    val unchangedRecord = Classification().getRecordById[Classification]("1", xmlFilePathName)
+    assertEquals("amministrazione", unchangedRecord.getClassification)
 
   @Test
   def testRecordUpdateEmptyXmlFile: Unit =
     cleanXmlFile(xmlFilePathName)
     val record = classification1.copy()
     record.setClassification("informatica")
-    Classification().recordUpdate[Classification](record, xmlFilePathName)
-    assertNotEquals(Classification().getRecordById[Classification]("1", xmlFilePathName).getClassification, "informatica")
+    assertFalse(Classification().recordUpdate(record, xmlFilePathName))
+    val result = Classification().getRecordById[Classification]("1", xmlFilePathName)
+    assertEquals(empty, result)
 
   @Test
-  def testRecordUpdateInexistentId: Unit =
-    val record = Classification().getRecordById[Classification]("1", xmlFilePathName)
-    record.setClassification("informatica")
-    record.setId("?")
-    Classification().recordUpdate[Classification](record, xmlFilePathName)
-    val recordUpdated = Classification().getRecordById[Classification]("?", xmlFilePathName)
-    assertEquals(recordUpdated, empty)
+  def testRecordUpdateInexistentId(): Unit =
+    val updated = classification1.copy(id = "100")
+    assertFalse(Classification().recordUpdate(updated, xmlFilePathName))
+    val result = Classification().getRecordById[Classification]("100", xmlFilePathName)
+    assertEquals(empty, result)
 
   @Test
   def testRecordUpdateDuplicateClassification: Unit =
@@ -163,15 +168,11 @@ class ClassificationTest:
     assertTrue(Classification().recordUpdate[Classification](record, xmlFilePathName))
 
   @Test
-  def testRecordDelete: Unit =
-    cleanXmlFile(xmlFilePathName)
-    Classification().recordInsert[Classification](classification1, xmlFilePathName)
-    Classification().recordInsert[Classification](classification2, xmlFilePathName)
-    Classification().recordInsert[Classification](classification3, xmlFilePathName)
-    val record = Classification().getRecordById[Classification]("1", xmlFilePathName)
-    assertEquals(record.getId, "1")
-    Classification().recordDelete(record.getId, xmlFilePathName)
-    assertEquals(Classification().getRecordById[Classification](record.getId, xmlFilePathName), empty)
+  def testRecordDelete(): Unit =
+    Classification().recordInsert(classification1, xmlFilePathName)
+    assertTrue(Classification().recordDelete(classification1.getId, xmlFilePathName))
+    val result = Classification().getRecordById[Classification](classification1.getId, xmlFilePathName)
+    assertEquals(empty, result)
 
   @Test
   def testRecordDeleteInesistentXmlFile: Unit =

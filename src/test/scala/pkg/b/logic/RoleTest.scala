@@ -127,7 +127,7 @@ class RoleTest:
   def testRecordUpdateInexistentXmlFile: Unit =
     Role().recordInsert[Role](role1, xmlFilePathName)
     assertEquals(Role().getRecordById[Role]("1", xmlFilePathName).getDescription, "Amministrazione")
-    val record = Role().getRecordById[Role]("1")
+    val record = Role().getRecordById[Role]("1", xmlFilePathName)
     record.setDescription("Gestione")
     Role().recordUpdate[Role](record, "path inesistente")
     assertNotEquals(Role().getRecordById[Role]("1", xmlFilePathName).getDescription, "Gestione")
