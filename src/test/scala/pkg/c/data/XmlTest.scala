@@ -3,9 +3,8 @@ package pkg.c.data
 import org.junit.*
 import org.junit.Assert.*
 import pkg.b.logic.Account
-import pkg.c.data.Xml.{createEmptyXmlFile, getRecordFromXML, insertElemIntoXML}
-import pkg.d.util.Util.{inTestFilePathName, md5}
-
+import pkg.c.data.Xml.{createEmptyXmlFile, getRecordFromXML, insertElemIntoXML, cleanXmlFile}
+import pkg.d.util.Util.md5
 import java.*
 import java.io.{File, IOException}
 import java.nio.*
@@ -18,13 +17,15 @@ import scala.xml.XML
 class XmlTest:
 
   private var xmlFilePathName: String = _
+  private var tempDirectory: Path = _
   private var account: Account = _
   private var empty: Elem = _
   private var elem: Elem = _
 
   @Before
   def setUp(): Unit =
-    xmlFilePathName = inTestFilePathName("test.xml")
+    tempDirectory = Files.createTempDirectory("protoflow-xml-test-")
+    xmlFilePathName = testPath("test.xml")
 
     account = Account(
       "1",
@@ -59,27 +60,47 @@ class XmlTest:
 
   @After
   def tearDown(): Unit =
-    Files.deleteIfExists(Paths.get(inTestFilePathName("file1.xml")))
-    Files.deleteIfExists(Paths.get(inTestFilePathName("file2.xml")))
-  //  Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
+    Option(tempDirectory).foreach: directory =>
+      if Files.exists(directory) then
+        val paths = Files.walk(directory)
+        try
+          paths
+            .sorted(java.util.Comparator.reverseOrder())
+            .forEach(path => Files.deleteIfExists(path))
+        finally
+          paths.close()
 
   @Test
   def testCreateEmptyXmlFile: Unit =
-    XML.save(inTestFilePathName("file1.xml"), empty, enc = "UTF-8", xmlDecl = true)
-    createEmptyXmlFile(inTestFilePathName("file2.xml"), "root")
-    val file1 = inTestFilePathName("file1.xml")
-    val file2 = inTestFilePathName("file2.xml")
-    val content1 = readAllLines(Paths.get(file1)).asScala.mkString("\n")
-    val content2 = readAllLines(Paths.get(file2)).asScala.mkString("\n")
+    val file1 = testPath("file1.xml")
+    val file2 = testPath("file2.xml")
+    XML.save(file1, empty, enc = "UTF-8", xmlDecl = true)
+    createEmptyXmlFile(file2, "root")
+    val content1 =
+      readAllLines(Path.of(file1))
+        .asScala
+        .mkString("\n")
+    val content2 =
+      readAllLines(Path.of(file2))
+        .asScala
+        .mkString("\n")
     assertEquals("Files differ in content!", content1, content2)
 
-
   @Test
-  def testinsertElemIntoXML: Unit =
-    createEmptyXmlFile(inTestFilePathName("test.xml"), "accounts")
-    insertElemIntoXML(inTestFilePathName("test.xml"), account)
-    assertEquals(getRecordFromXML(inTestFilePathName("test.xml"), classOf[Account])(0), account)
+  def testInsertElemIntoXML: Unit =
+    createEmptyXmlFile(xmlFilePathName, "accounts")
+    insertElemIntoXML(xmlFilePathName, account)
+    assertEquals(account, getRecordFromXML(xmlFilePathName, classOf[Account]).head)
 
   @Test
   def testCleanXmlFile: Unit =
-    assertTrue(false)
+    createEmptyXmlFile(xmlFilePathName, "accounts")
+    insertElemIntoXML(xmlFilePathName, account)
+    assertFalse(getRecordFromXML(xmlFilePathName, classOf[Account]).isEmpty)
+    cleanXmlFile(xmlFilePathName)
+    assertTrue(getRecordFromXML(xmlFilePathName, classOf[Account]).isEmpty)
+
+  private def testPath(fileName: String): String =
+    tempDirectory
+      .resolve(fileName)
+      .toString

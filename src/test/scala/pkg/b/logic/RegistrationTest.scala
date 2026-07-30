@@ -2,13 +2,13 @@ package pkg.b.logic
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, searchFieldValue}
-import pkg.d.util.Util.inTestFilePathName
-import java.nio.file.{Files, Paths}
+import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
+import java.nio.file.{Files, Path}
 
 class RegistrationTest:
 
   private var xmlFilePathName: String = _
+  private var tempDirectory: Path = _
   private var registration1: Registration = _
   private var registration2: Registration = _
   private var registration3: Registration = _
@@ -16,7 +16,11 @@ class RegistrationTest:
 
   @Before
   def setUp(): Unit =
-    xmlFilePathName = inTestFilePathName("test.xml")
+    tempDirectory = Files.createTempDirectory("protoflow-registration-record-test-")
+    xmlFilePathName =
+      tempDirectory
+        .resolve("test.xml")
+        .toString
     createEmptyXmlFile(xmlFilePathName, "test_records")
     empty = new Registration
 
@@ -67,7 +71,11 @@ class RegistrationTest:
 
   @After
   def tearDown(): Unit =
-    Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
+    Option(xmlFilePathName).foreach: fileName =>
+      Files.deleteIfExists(Path.of(fileName))
+
+    Option(tempDirectory).foreach: directory =>
+      Files.deleteIfExists(directory)
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =
@@ -130,7 +138,7 @@ class RegistrationTest:
   def testRecordUpdateInexistentXmlFile: Unit =
     Registration().recordInsert[Registration](registration1, xmlFilePathName)
     assertEquals(Registration().getRecordById[Registration]("1", xmlFilePathName).getPhone, "06/11111111")
-    val record = Registration().getRecordById[Registration]("1")
+    val record = Registration().getRecordById[Registration]("1", xmlFilePathName)
     record.setPhone("06/12345678")
     Registration().recordUpdate[Registration](record, "path inesistente")
     assertNotEquals(Registration().getRecordById[Registration]("1", xmlFilePathName).getPhone, "06/12345678")

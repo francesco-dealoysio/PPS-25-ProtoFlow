@@ -2,10 +2,8 @@ package pkg.b.logic
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, searchFieldValue}
-import pkg.c.data.Properties.getPropsFileProperty
-import pkg.d.util.Util.{inTestFilePathName, md5}
-import java.nio.file.{Files, Paths}
+import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
+import java.nio.file.{Files, Path}
 
 class RoleTest:
 
@@ -14,10 +12,15 @@ class RoleTest:
   private var role2: Role = _
   private var role3: Role = _
   private var empty: Role = _
+  private var tempDirectory: Path = _
 
   @Before
   def setUp(): Unit =
-    xmlFilePathName = inTestFilePathName("test.xml")
+    tempDirectory = Files.createTempDirectory("protoflow-test-")
+    xmlFilePathName =
+      tempDirectory
+        .resolve("test.xml")
+        .toString
     createEmptyXmlFile(xmlFilePathName, "test_records")
     empty = new Role
 
@@ -41,7 +44,8 @@ class RoleTest:
 
   @After
   def tearDown(): Unit =
-    Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
+    Files.deleteIfExists(Path.of(xmlFilePathName))
+    Files.deleteIfExists(tempDirectory)
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =

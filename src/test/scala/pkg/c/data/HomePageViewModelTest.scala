@@ -12,11 +12,11 @@ class HomePageViewModelTest extends AnyFunSuite with OneInstancePerTest:
     assert(viewModel.currentSection == MenuAction.Dashboard)
 
   test("select deve cambiare la sezione corrente"):
-    viewModel.select(MenuAction.Protocollo)
-    assert(viewModel.currentSection == MenuAction.Protocollo)
+    viewModel.select(MenuAction.VisualizzazioneProtocollazioni)
+    assert(viewModel.currentSection == MenuAction.VisualizzazioneProtocollazioni)
 
   test("select deve permettere di tornare alla Dashboard"):
-    viewModel.select(MenuAction.Archiviazione)
+    viewModel.select(MenuAction.Classifiche)
     viewModel.select(MenuAction.Dashboard)
     assert(viewModel.currentSection == MenuAction.Dashboard)
 

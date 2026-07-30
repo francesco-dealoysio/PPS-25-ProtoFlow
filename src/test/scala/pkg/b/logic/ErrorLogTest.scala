@@ -2,13 +2,13 @@ package pkg.b.logic
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, searchFieldValue}
-import pkg.d.util.Util.inTestFilePathName
-import java.nio.file.{Files, Paths}
+import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
+import java.nio.file.{Files, Path}
 
 class ErrorLogTest:
 
   private var xmlFilePathName: String = _
+  private var tempDirectory: Path = _
   private var errorLog1: ErrorLog = _
   private var errorLog2: ErrorLog = _
   private var errorLog3: ErrorLog = _
@@ -16,9 +16,13 @@ class ErrorLogTest:
 
   @Before
   def setUp(): Unit =
-    xmlFilePathName = inTestFilePathName("test.xml")
+    tempDirectory = Files.createTempDirectory("protoflow-error-log-test-")
+    xmlFilePathName = tempDirectory
+      .resolve("test.xml")
+      .toString
     createEmptyXmlFile(xmlFilePathName, "test_records")
     empty = new ErrorLog
+      
 
     errorLog1 = ErrorLog(
       "1",
@@ -55,7 +59,11 @@ class ErrorLogTest:
 
   @After
   def tearDown(): Unit =
-    Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
+    Option(xmlFilePathName).foreach: fileName =>
+      Files.deleteIfExists(Path.of(fileName))
+
+    Option(tempDirectory).foreach: directory =>
+      Files.deleteIfExists(directory)
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =

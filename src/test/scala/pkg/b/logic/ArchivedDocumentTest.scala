@@ -2,14 +2,13 @@ package pkg.b.logic
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
-import pkg.d.util.Util.inTestFilePathName
-
-import java.nio.file.{Files, Paths}
+import pkg.c.data.Xml.createEmptyXmlFile
+import java.nio.file.{Files, Path}
 
 class ArchivedDocumentTest:
 
   private var xmlFilePathName: String = _
+  private var tempDirectory: Path = _
   private var archivedDocument1: ArchivedDocument = _
   private var archivedDocument2: ArchivedDocument = _
   private var archivedDocument3: ArchivedDocument = _
@@ -17,7 +16,12 @@ class ArchivedDocumentTest:
 
   @Before
   def setUp(): Unit =
-    xmlFilePathName = inTestFilePathName("test-archived.xml")
+    tempDirectory = Files.createTempDirectory("protoflow-archived-test-")
+    xmlFilePathName =
+      tempDirectory
+        .resolve("test-archived.xml")
+        .toString
+
     createEmptyXmlFile(xmlFilePathName, "test_records")
     empty = new ArchivedDocument
 
@@ -65,7 +69,11 @@ class ArchivedDocumentTest:
 
   @After
   def tearDown(): Unit =
-    Files.deleteIfExists(Paths.get(xmlFilePathName))
+    Option(xmlFilePathName).foreach: fileName =>
+      Files.deleteIfExists(Path.of(fileName))
+
+    Option(tempDirectory).foreach: directory =>
+      Files.deleteIfExists(directory)
 
   @Test
   def testGetRecordsInexistentXmlFile(): Unit =

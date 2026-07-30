@@ -2,13 +2,13 @@ package pkg.b.logic
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, searchFieldValue}
-import pkg.d.util.Util.inTestFilePathName
-import java.nio.file.{Files, Paths}
+import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
+import java.nio.file.{Files, Path}
 
 class LoadedDocumentTest:
   
   private var xmlFilePathName: String = _
+  private var tempDirectory: Path = _
   private var loadedDocument1: LoadedDocument = _
   private var loadedDocument2: LoadedDocument = _
   private var loadedDocument3: LoadedDocument = _
@@ -16,7 +16,11 @@ class LoadedDocumentTest:
 
   @Before
   def setUp(): Unit =
-    xmlFilePathName = inTestFilePathName("test.xml")
+    tempDirectory = Files.createTempDirectory("protoflow-loaded-document-test-")
+    xmlFilePathName =
+      tempDirectory
+        .resolve("test.xml")
+        .toString
     createEmptyXmlFile(xmlFilePathName, "test_records")
     empty = new LoadedDocument
 
@@ -70,7 +74,11 @@ class LoadedDocumentTest:
 
   @After
   def tearDown(): Unit =
-    Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
+    Option(xmlFilePathName).foreach: fileName =>
+      Files.deleteIfExists(Path.of(fileName))
+
+    Option(tempDirectory).foreach: directory =>
+      Files.deleteIfExists(directory)
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =
@@ -133,7 +141,7 @@ class LoadedDocumentTest:
   def testRecordUpdateInexistentXmlFile: Unit =
     LoadedDocument().recordInsert[LoadedDocument](loadedDocument1, xmlFilePathName)
     assertEquals(LoadedDocument().getRecordById[LoadedDocument]("1", xmlFilePathName).getProcessedBy, "Rossi")
-    val record = LoadedDocument().getRecordById[LoadedDocument]("1")
+    val record = LoadedDocument().getRecordById[LoadedDocument]("1", xmlFilePathName)
     record.setProcessedBy("Bruni")
     LoadedDocument().recordUpdate[LoadedDocument](record, "path inesistente")
     assertNotEquals(LoadedDocument().getRecordById[LoadedDocument]("1", xmlFilePathName).getProcessedBy, "Bruni")
