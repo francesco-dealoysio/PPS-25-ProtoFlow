@@ -47,7 +47,7 @@ object LoadedDocumentManagementView extends Management:
       stringColumn(LoadedDocuments.Fields.Subject, 220)(_.getSubject),
       stringColumn(LoadedDocuments.Fields.DocumentType, 110)(_.getDocumentType),
       stringColumn(LoadedDocuments.Fields.DocumentDate, 110)(_.getDocumentDate),
-      stringColumn("Preso in carico da", 140)(_.getProcessedBy)
+      stringColumn(LoadedDocuments.Fields.ProcessedBy, 140)(_.getProcessedBy)
     )
 
     def loadDocuments(): Unit =

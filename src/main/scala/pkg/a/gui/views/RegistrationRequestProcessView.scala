@@ -3,14 +3,12 @@ package pkg.a.gui.views
 import pkg.a.gui.traits.Management
 import pkg.b.logic.{Registration, RegistrationApproval, RegistrationDates, RegistrationRequestService}
 import pkg.d.util.XmlToPdf
-
 import scalafx.geometry.Insets
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
-
 import java.time.format.DateTimeFormatter
 import pkg.a.gui.text.{UiStyles, UiText}
-import UiText.{Common, Fields, Roles}
+import UiText.Fields
 
 object RegistrationRequestProcessView extends Management:
 

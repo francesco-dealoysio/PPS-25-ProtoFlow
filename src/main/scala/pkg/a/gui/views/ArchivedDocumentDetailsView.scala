@@ -1,12 +1,14 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.text.{UiStyles, UiText}
-import pkg.a.gui.text.UiText.{ArchivedDocuments, Fields, LoadedDocuments, RegisteredDocuments}
+import pkg.a.gui.text.UiText.{ArchivedDocuments, LoadedDocuments, RegisteredDocuments}
 import pkg.a.gui.traits.Form
 import pkg.b.logic.ArchivedDocument
 import scalafx.geometry.Pos
 import scalafx.scene.Node
 import scalafx.scene.layout.{BorderPane, HBox, Priority}
+import pkg.d.util.Util.inDocumentsFilePathName
+import pkg.d.util.XmlToPdf
 
 object ArchivedDocumentDetailsView extends Form:
 
@@ -89,7 +91,36 @@ object ArchivedDocumentDetailsView extends Form:
     HBox.setHgrow(documentForm, Priority.Always)
     HBox.setHgrow(archiveForm, Priority.Always)
 
+    val result =
+      createResultMessage(
+        baseStyle = UiStyles.ArchivedDocuments.Message,
+        successStyle = UiStyles.ArchivedDocuments.MessageSuccess,
+        errorStyle = UiStyles.ArchivedDocuments.MessageError
+      )
+
+    def printDocumentDetails(): Unit =
+      val safeProtocolNumber =
+        selectedDocument.getProtocolNumber.replaceAll("[^a-zA-Z0-9_-]", "_")
+
+      val printed =
+        XmlToPdf.printDetails(
+          xmlPath = inDocumentsFilePathName("archived.xml"),
+          recordId = selectedDocument.getId,
+          pdfFileName = s"${ArchivedDocuments.Details.PrintFileNamePrefix}_$safeProtocolNumber",
+          title = ArchivedDocuments.Details.PrintTitle
+        )
+
+      result.show(
+        message =
+          if printed then
+            ArchivedDocuments.Details.PrintSuccess
+          else
+            ArchivedDocuments.Details.PrintError,
+        success = printed
+      )
+
     val exitButton = closeButton(onExit)
+    val printButton = secondaryButton(UiText.Common.Buttons.Print, () => printDocumentDetails())
 
     formPage(
       titleText = ArchivedDocuments.Details.Title,
@@ -98,6 +129,6 @@ object ArchivedDocumentDetailsView extends Form:
       subtitleStyle = UiStyles.ArchivedDocuments.Subtitle,
       rootStyle = UiStyles.ArchivedDocuments.Root,
       form = form,
-      resultMessage = messageLabel(UiStyles.ArchivedDocuments.Message),
-      actions = actionBar(Seq(exitButton))
+      resultMessage = result.label,
+      actions = actionBar(Seq(exitButton, printButton))
     )

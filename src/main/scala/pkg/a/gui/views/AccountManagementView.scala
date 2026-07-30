@@ -5,8 +5,6 @@ import pkg.b.logic.Account
 import pkg.d.util.Logger.*
 import pkg.a.gui.text.{UiStyles, UiText}
 import UiText.{Accounts, Common, Fields}
-
-import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*

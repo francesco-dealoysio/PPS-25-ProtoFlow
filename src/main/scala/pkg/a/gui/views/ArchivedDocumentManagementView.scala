@@ -5,7 +5,6 @@ import pkg.a.gui.traits.Management
 import pkg.b.logic.{ArchivedDocument, ArchivedDocumentService}
 import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.XmlToPdf
-import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
@@ -48,8 +47,6 @@ object ArchivedDocumentManagementView extends Management:
       stringColumn(ArchivedDocuments.Fields.ArchivedDate, 120)(_.getArchivedDate),
       stringColumn(ArchivedDocuments.Fields.ArchivedTime, 100)(_.getArchivedTime),
       stringColumn(ArchivedDocuments.Fields.ArchivedBy, 150)(_.getArchivedBy),
-      stringColumn(ArchivedDocuments.Fields.Sender, 160)(_.getSender),
-      stringColumn(ArchivedDocuments.Fields.Recipient, 160)(_.getRecipient),
       stringColumn(ArchivedDocuments.Fields.Subject, 220)(_.getSubject),
       stringColumn(ArchivedDocuments.Fields.ArchiveLocation, 180)(_.getArchiveLocation)
     )
@@ -78,7 +75,8 @@ object ArchivedDocumentManagementView extends Management:
         XmlToPdf.printList(
           xmlPath = inDocumentsFilePathName("archived.xml"),
           pdfFileName = ArchivedDocuments.Management.PrintFileName,
-          title = ArchivedDocuments.Management.PrintTitle
+          title = ArchivedDocuments.Management.PrintTitle,
+          fields = Seq("protocolNumber", "archivedDate", "archivedTime", "archivedBy", "archiveLocation", "archiveRemarks")
         )
 
       result.show(

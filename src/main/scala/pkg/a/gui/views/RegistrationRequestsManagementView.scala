@@ -3,7 +3,6 @@ package pkg.a.gui.views
 import pkg.a.gui.traits.Management
 import pkg.b.logic.{Registration, RegistrationDates, RegistrationRequestService}
 import pkg.d.util.XmlToPdf
-import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*

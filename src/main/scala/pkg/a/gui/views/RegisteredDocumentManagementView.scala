@@ -6,8 +6,6 @@ import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.XmlToPdf
 import pkg.a.gui.text.{UiStyles, UiText}
 import UiText.{Common, RegisteredDocuments}
-
-import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
@@ -93,7 +91,8 @@ object RegisteredDocumentManagementView extends Management:
         XmlToPdf.printList(
           xmlPath = inDocumentsFilePathName("registered.xml"),
           pdfFileName = RegisteredDocuments.Management.PrintFileName,
-          title = RegisteredDocuments.Management.PrintTitle
+          title = RegisteredDocuments.Management.PrintTitle,
+          fields = Seq("protocolNumber", "registeredDate", "registeredTime", "registeredBy", "documentType", "sender", "recipient", "subject")
         )
 
       result.show(

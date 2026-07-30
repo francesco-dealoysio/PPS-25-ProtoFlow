@@ -192,6 +192,7 @@ object UiText:
     object Fields:
       val DocumentDate = "Data documento"
       val DocumentTime = "Ora documento"
+      val ProcessedBy = "Preso in carico da"
       val DocumentProtocol = "Protocollo mittente"
       val DocumentType = "Tipo documento"
       val Sender = "Mittente"
@@ -271,6 +272,10 @@ object UiText:
     object Details:
       val Title = "Dettaglio documento archiviato"
       val Subtitle = "Visualizza tutte le informazioni del documento selezionato"
+      val PrintTitle = "Scheda Documento Archiviato"
+      val PrintFileNamePrefix = "documento_archiviato"
+      val PrintSuccess = "Scheda del documento stampata correttamente nella cartella protoflow/prints."
+      val PrintError = "Non è stato possibile stampare la scheda del documento."
         
     object Fields:
       val ProtocolNumber = "Numero protocollo"

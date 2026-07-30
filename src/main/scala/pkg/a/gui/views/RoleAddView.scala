@@ -6,7 +6,6 @@ import pkg.b.logic.Role
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
 import scalafx.application.Platform
-import scalafx.scene.control.{TextArea, TextField}
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.{UiStyles, UiText}
 import UiText.{Fields, Roles}

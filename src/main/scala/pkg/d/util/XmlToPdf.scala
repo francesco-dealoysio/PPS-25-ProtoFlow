@@ -10,19 +10,25 @@ object XmlToPdf:
 
   private val printsFolder = new File(System.getProperty("user.dir"), "protoflow/prints")
 
-  def printList(xmlPath: String, pdfFileName: String, title: String): Boolean =
+  def printList(xmlPath: String, pdfFileName: String, title: String, fields: Seq[String] = Seq.empty): Boolean =
     val records = loadRecords(xmlPath)
 
     if records.isEmpty then
       false
     else
       createPdf(pdfFileName, title, landscape = true): document =>
-        val columns =
+        val availableColumns =
           records
-            .flatMap(_.child.collect:
+          .flatMap:
+            _.child.collect:
               case element: Elem => element.label
-            )
-            .distinct
+          .distinct
+        
+        val columns =
+          if fields.nonEmpty then
+            fields.filter(availableColumns.contains)
+          else
+            availableColumns
 
         val table = new PdfPTable(columns.size)
 

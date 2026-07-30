@@ -5,7 +5,6 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.Account
 import pkg.d.util.Util.{inDatabaseFilePathName, md5}
 import pkg.d.util.XmlToPdf
-import scalafx.scene.control.{ComboBox, PasswordField}
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.{UiStyles, UiText}
 import UiText.{Accounts, Common, Fields}
