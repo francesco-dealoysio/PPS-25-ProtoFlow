@@ -2,8 +2,22 @@ package pkg.d.util
 
 import pkg.b.logic.ErrorLog
 import pkg.d.util.Util.inLogFilePathName
+import java.nio.file.{Files, Path, Paths}
 
 object Logger:
+
+  private def logFilePath: Path =
+    val configuredPath = Paths.get(inLogFilePathName("errors.xml"))
+    val parent = configuredPath.getParent
+
+    if parent != null && Files.exists(parent) then
+      configuredPath
+    else
+      Paths
+        .get(System.getProperty("java.io.tmpdir"))
+        .resolve("protoflow")
+        .resolve("log")
+        .resolve("errors.xml")
 
   // Evita che un errore avvenuto durante il logging stesso (es. scrittura di errors.xml)
   // inneschi una ricorsione infinita richiamando logger() su se stesso.
@@ -33,25 +47,44 @@ object Logger:
 
   def logger(ex: Exception, console: Boolean = false): Unit =
     if loggingInProgress.get() then
-      println(s"Errore durante il logging di un errore precedente (evitata ricorsione infinita): ${ex.getMessage}")
+      println(s"Errore durante il logging di un errore precedente " + s"(evitata ricorsione infinita): ${ex.getMessage}")
     else
       loggingInProgress.set(true)
       try
-        import java.nio.file.{Files, Paths}
+        import java.nio.file.{Files, Path, Paths}
         import pkg.c.data.Xml.createEmptyXmlFile
 
-        if (Files.notExists(Paths.get(inLogFilePathName("errors.xml"))))
-          createEmptyXmlFile(inLogFilePathName("errors.xml"), "errors")
+        val configuredPath = Paths.get(inLogFilePathName("errors.xml"))
+        val logPath: Path =
+          val parent = configuredPath.getParent
 
-        ErrorLog().recordInsert(getErrorLog(ex), inLogFilePathName("errors.xml"))
+          if parent != null && Files.exists(parent) then
+            configuredPath
+          else
+            Paths
+              .get(System.getProperty("java.io.tmpdir"))
+              .resolve("protoflow")
+              .resolve("log")
+              .resolve("errors.xml")
+
+        Option(logPath.getParent).foreach: parent =>
+          Files.createDirectories(parent)
+
+        if Files.notExists(logPath) then
+          createEmptyXmlFile(logPath.toString, "errors")
+          ErrorLog().recordInsert(getErrorLog(ex), logPath.toString)
 
         if console then
-          val methodName = ex.getStackTrace.headOption.map(_.getMethodName.stripSuffix("$1"))
+          val methodName =
+            ex.getStackTrace
+              .headOption
+              .map(_.getMethodName.stripSuffix("$1"))
+
           methodName match
-            case Some(something) =>
-              println(something)
-            case _ =>
-              println(s"Errore in ${methodName}: ${ex.getMessage}")
+            case Some(name) =>
+              println(name)
+            case None =>
+              println(s"Errore: ${ex.getMessage}")
       finally
         loggingInProgress.set(false)
 
@@ -59,4 +92,3 @@ object Logger:
     stackTrace
       .map(elem => s"at $elem".indent(6)).mkString("")
       //.map(elem => " ".repeat(6) + s"at $elem").mkString("\n")
-
