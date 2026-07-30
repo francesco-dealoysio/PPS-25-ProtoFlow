@@ -6,15 +6,6 @@ import pkg.a.gui.Navigator
 import scalafx.application.JFXApp3
 import scalafx.scene.image.Image
 
-/*
-object RunApp {
-  def main(args: Array[String]): Unit = {
-    Init.init
-    Login.main(args)
-  }
-}
- */
-
 object RunApp extends JFXApp3:
 
   override def start(): Unit = {
