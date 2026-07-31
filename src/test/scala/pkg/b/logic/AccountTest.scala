@@ -2,35 +2,15 @@ package pkg.b.logic
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, searchFieldValue}
-import pkg.d.util.Util.md5
-import java.nio.file.{Files, Path}
+import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
+import pkg.d.util.Util.{inTestFilePathName, md5}
 
 class AccountTest:
 
-  private var tempDirectory: Path = _
-  private var xmlFilePathName: String = _
-  private var empty: Account = _
-
   @Before
-  def setUp(): Unit =
-    tempDirectory = Files.createTempDirectory("protoflow-account-test-")
-
-    xmlFilePathName =
-      tempDirectory
-        .resolve("test.xml")
-        .toString
-
-    createEmptyXmlFile(xmlFilePathName, "test_records")
-    empty = new Account
-
-  @After
-  def tearDown(): Unit =
-    Option(xmlFilePathName).foreach: fileName =>
-      Files.deleteIfExists(Path.of(fileName))
-
-    Option(tempDirectory).foreach: directory =>
-      Files.deleteIfExists(directory)
+  val xmlFilePathName = inTestFilePathName("test.xml")
+  createEmptyXmlFile(xmlFilePathName, "test_records")
+  val empty = new Account
 
   val account1 = Account(
     "1",
