@@ -59,16 +59,8 @@ object Xml:
  */
 
   def createEmptyXmlFile(xmlFilePathName: String, rootTagName: String): Unit =
-
-    if !rootTagName.matches("^[A-Za-z_][A-Za-z0-9._-]*$") then
-      throw new IllegalArgumentException(s"Invalid XML tag name: '$rootTagName'")
-
-    //val xmlContent: Elem = Elem(null, rootTagName, scala.xml.Null, scala.xml.TopScope, minimizeEmpty = true)
-    //val prettyPrinter = PrettyPrinter(80, 2)
-    //val xmlString = """<?xml version='1.0' encoding='UTF-8'?>""" + "\n" + prettyPrinter.format(xmlContent)
     val xmlString = s"<$rootTagName></$rootTagName>"
     val path = Paths.get(xmlFilePathName)
-    //Files.write(path, xmlString.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
     Files.write(path, xmlString.getBytes(StandardCharsets.UTF_8))
     println(s"XML file created at: $xmlFilePathName")
 
