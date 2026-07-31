@@ -15,6 +15,8 @@ Compile / packageBin / mappings ~= {
   }
 }
 
+Test / parallelExecution := false
+
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-xml" % "2.4.0",
   "org.scalafx" %% "scalafx" % "21.0.0-R32",

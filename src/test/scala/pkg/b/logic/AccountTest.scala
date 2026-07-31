@@ -7,10 +7,14 @@ import pkg.d.util.Util.{inTestFilePathName, md5}
 
 class AccountTest:
 
+  private var xmlFilePathName: String = _
+  private var empty: Account = _
+
   @Before
-  val xmlFilePathName = inTestFilePathName("test.xml")
-  createEmptyXmlFile(xmlFilePathName, "test_records")
-  val empty = new Account
+  def setUp(): Unit =
+    xmlFilePathName = inTestFilePathName("test.xml")
+    createEmptyXmlFile(xmlFilePathName, "test_records")
+    empty = new Account
 
   val account1 = Account(
     "1",
