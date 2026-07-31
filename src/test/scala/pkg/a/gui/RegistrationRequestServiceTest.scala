@@ -1,7 +1,8 @@
-package pkg.b.logic
+package pkg.a.gui
 
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite
+import pkg.b.logic.{Account, RegistrationRequestService}
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path}

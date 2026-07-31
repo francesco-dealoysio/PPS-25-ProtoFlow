@@ -6,7 +6,8 @@ import UiText.{Fields, LoadedDocuments}
 import pkg.a.gui.traits.Form
 import pkg.b.logic.LoadedDocument
 import pkg.d.util.IdGen
-import pkg.d.util.Util.{inIdsFilePathName, localDate, localTime}
+import pkg.d.util.Util.inIdsFilePathName
+import pkg.d.util.DateTime.{localDate, localTime}
 import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.scene.control.Alert

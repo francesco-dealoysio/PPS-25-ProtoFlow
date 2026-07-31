@@ -1,106 +1,101 @@
 package pkg.a.gui.traits
 
+import pkg.d.util.DateTime
+import scalafx.Includes.jfxNode2sfx
+import scalafx.beans.property.BooleanProperty
 import scalafx.geometry.Pos
-import scalafx.scene.control.{Alert, Button, ButtonType, Label}
-import scalafx.scene.layout.{HBox, VBox}
+import scalafx.scene.control.Button
+import scalafx.scene.layout.*
 
-trait Root:
+trait Root extends Common:
 
-  protected case class ResultMessage(label: Label, successStyle: String, errorStyle: String):
+  private val applicationTitle: String = "ProtoFlow"
 
-    def clear(): Unit =
-      clearMessage(
-        label = label,
-        successStyle = successStyle,
-        errorStyle = errorStyle
-      )
+  protected def createRoot(currentUser: String, roleDescription: String, contentArea: StackPane, menu: VBox): BorderPane =
 
-    def show(message: String, success: Boolean): Unit =
-      showMessage(
-        label = label,
-        message = message,
-        success = success,
-        successStyle = successStyle,
-        errorStyle = errorStyle
-      )
+    val menuVisible = BooleanProperty(true)
 
-  protected def askConfirmation(titleText: String, header: String, content: String): Boolean =
-    val dialog =
-      new Alert(Alert.AlertType.Confirmation):
-        title = titleText
-        headerText = header
-        contentText = content
+    def toggleMenu(): Unit =
+      menuVisible.value = !menuVisible.value
 
-    dialog
-      .showAndWait()
-      .contains(ButtonType.OK)
+    menu.visible <== menuVisible
+    menu.managed <== menuVisible
 
-  protected def createResultMessage(baseStyle: String, successStyle: String, errorStyle: String): ResultMessage =
-    ResultMessage(
-      label = messageLabel(baseStyle),
-      successStyle = successStyle,
-      errorStyle = errorStyle
-    )
-
-  protected def closeButton(onExit: () => Unit, text: String = "Chiudi"): Button =
-    new Button(text):
-      styleClass += "secondary-button"
-      onAction = _ => onExit()
-
-  protected def fieldLabel(text: String, styleName: String = "form-label"): Label =
-    new Label(text):
-      styleClass += styleName
-
-  protected def messageLabel(baseStyle: String): Label =
-    new Label:
-      visible = false
-      managed = false
-      wrapText = true
-      maxWidth = Double.MaxValue
-      styleClass += baseStyle
-
-  protected def showMessage(label: Label, message: String, success: Boolean, successStyle: String, errorStyle: String): Unit =
-    label.text = message
-    label.visible = true
-    label.managed = true
-    label.styleClass.removeAll(successStyle, errorStyle)
-    label.styleClass += (if success then successStyle else errorStyle)
-
-  protected def clearMessage(label: Label, successStyle: String, errorStyle: String): Unit =
-    label.text = ""
-    label.visible = false
-    label.managed = false
-    label.styleClass.removeAll(successStyle, errorStyle)
-
-  protected def actionBar(buttons: Seq[Button], styleName: String = "form-actions", barAlignment: Pos = Pos.CenterRight): HBox =
-    new HBox:
-      alignment = barAlignment
-      spacing = 12
-      styleClass += styleName
-      children = buttons
-
-  protected def primaryButton(text: String, action: () => Unit): Button =
-    new Button(text):
-      styleClass += "primary-button"
-      onAction = _ => action()
-
-  protected def secondaryButton(text: String, action: () => Unit): Button =
-    new Button(text):
-      styleClass += "secondary-button"
-      onAction = _ => action()
-
-  protected def dangerButton(text: String, action: () => Unit): Button =
-    new Button(text):
-      styleClass += "danger-button"
-      onAction = _ => action()
-
-  protected def titleBox(titleText: String, subtitleText: String, titleStyle: String, subtitleStyle: String): VBox =
-    new VBox:
-      spacing = 5
-      children = Seq(
-        new Label(titleText):
-          styleClass += titleStyle,
-        new Label(subtitleText):
-          wrapText = true
-          styleClass += subtitleStyle
+    new BorderPane:
+      top =
+        createHeader(
+          currentUser = currentUser,
+          roleDescription = roleDescription,
+          onMenuToggle = () => toggleMenu()
         )
+
+      left = menu
+      center = contentArea
+
+      bottom =
+        createFooter(
+          currentUser = currentUser,
+          roleDescription = roleDescription
+        )
+
+  protected def render(contentArea: StackPane, view: => Pane): Unit =
+    if canLeaveCurrentView(contentArea) then contentArea.children = Seq(view)
+
+  private def canLeaveCurrentView(contentArea: StackPane): Boolean =
+    contentArea.children.headOption
+      .flatMap: node =>
+        Option(
+          node.delegate
+            .getProperties
+            .get("has-unsaved-changes")
+        )
+      .map:
+        _.asInstanceOf[() => Boolean]
+      .forall: check =>
+        !check() ||
+          askConfirmation(
+            titleText = "Modifiche non salvate",
+            header = "Vuoi uscire senza salvare?",
+            content = "Le informazioni inserite o modificate non verranno mantenute."
+          )
+
+  private def createHeader(currentUser: String, roleDescription: String, onMenuToggle: () => Unit): HBox =
+    val spacer = new Region
+    HBox.setHgrow(spacer, Priority.Always)
+
+    val menuButton =
+      new Button("☰"):
+        styleClass += "menu-toggle-button"
+        onAction = _ => onMenuToggle()
+
+    new HBox:
+      alignment = Pos.CenterLeft
+      styleClass += "app-header"
+      children = Seq(
+        menuButton,
+        fieldLabel(applicationTitle, "app-title"),
+        spacer,
+        fieldLabel(
+          s"$currentUser\n$roleDescription",
+          "user-info"
+        )
+      )
+
+  private def createFooter(currentUser: String, roleDescription: String): HBox =
+    val dateTimeLabel =
+      fieldLabel("", "footer-date-time")
+
+    dateTimeLabel.text <==
+      DateTime.dynamicDateTimeProperty()
+
+    new HBox:
+      alignment = Pos.CenterRight
+      spacing = 20
+      styleClass += "app-footer"
+      children = Seq(
+        fieldLabel(
+          s"👤 $currentUser ($roleDescription)",
+          "footer-user-info"
+        ),
+        dateTimeLabel
+      )

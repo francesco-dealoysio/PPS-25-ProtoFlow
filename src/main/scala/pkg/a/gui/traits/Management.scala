@@ -6,7 +6,7 @@ import scalafx.scene.Node
 import scalafx.scene.control.{Button, TableView}
 import scalafx.scene.layout.{BorderPane, Priority, VBox}
 
-trait Management extends Root:
+trait Management extends Common:
 
   protected def selectedItem[T](table: TableView[T]): Option[T] =
     Option(

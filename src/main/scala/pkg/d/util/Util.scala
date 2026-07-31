@@ -45,24 +45,6 @@ object Util:
     val digestBytes = md.digest(text.getBytes("UTF-8"))
     digestBytes.map("%02x".format(_)).mkString
 
-  def localDateTime: String =
-    import java.time.{LocalDateTime, ZoneId}
-    import java.time.format.DateTimeFormatter
-    LocalDateTime.now(ZoneId.of("Europe/Rome"))
-      .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS"))
-
-  def localDate: String =
-    import java.time.{LocalDate, ZoneId}
-    import java.time.format.DateTimeFormatter
-    LocalDate.now(ZoneId.of("Europe/Rome"))
-      .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-
-  def localTime: String =
-    import java.time.{LocalTime, ZoneId}
-    import java.time.format.DateTimeFormatter
-    LocalTime.now(ZoneId.of("Europe/Rome"))
-      .format(DateTimeFormatter.ofPattern("HH:mm:ss.SS"))
-
   def inDatabaseFilePathName(fileName: String): String =
     inFolderFilePathName("database", fileName)
 
@@ -98,11 +80,6 @@ object Util:
     println("\t" + md5(""))
     println("\t" + md5("topolino"))
 
-    // test local Date and Time
-    println("\nTest date and time:")
-    println("\tDate and Time: " + localDateTime)
-    println("\tDate: " + localDate)
-    println("\tTime: " + localTime)
 
     // test inDatabaseFilePathName
     println("\nTest inDatabaseFilePathName")

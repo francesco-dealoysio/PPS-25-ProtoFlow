@@ -4,7 +4,7 @@ import pkg.a.gui.text.{UiStyles, UiText}
 import pkg.a.gui.text.UiText.{ArchivedDocuments, Fields, LoadedDocuments, RegisteredDocuments}
 import pkg.a.gui.traits.Form
 import pkg.b.logic.{ArchivedDocumentService, RegisteredDocument}
-import pkg.d.util.Util.{localDate, localTime}
+import pkg.d.util.DateTime.{localDate, localTime}
 import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.geometry.Pos

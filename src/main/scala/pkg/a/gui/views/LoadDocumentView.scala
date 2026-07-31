@@ -1,7 +1,9 @@
 package pkg.a.gui.views
 
+/*
 import pkg.b.logic.{Account, Entity, LoadedDocument}
 import pkg.d.util.Util.*
+import pkg.d.util.DateTime.{localDate, localDateTime, localTime}
 import pkg.d.util.IdGen
 import scalafx.application.JFXApp3
 import scalafx.scene.Scene
@@ -13,8 +15,6 @@ import scalafx.scene.paint.Color
 import scalafx.scene.paint.Color.*
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.layout.*
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import javafx.collections.FXCollections
 import scala.util.{Try, Success, Failure}
 import scalafx.stage.{Stage, StageStyle, Modality}
@@ -393,3 +393,4 @@ class LoadDocumentView(user: Account) extends JFXApp3:
   new LoadDocumentView(account1).main(Array.empty)
 
 
+*/

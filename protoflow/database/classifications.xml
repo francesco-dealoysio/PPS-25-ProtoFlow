@@ -1,34 +1,42 @@
 <classifications>
-  <record>
-    <id>1</id>
-    <classification>presidenza</classification>
-  </record>
-  <record>
-    <id>2</id>
-    <classification>segreteria</classification>
-  </record>
-  <record>
-    <id>3</id>
-    <classification>amministrazione</classification>
-  </record>
-  <record>
-    <id>4</id>
-    <classification>personale</classification>
-  </record>
-  <record>
-    <id>5</id>
-    <classification>materiali</classification>
-  </record>
-  <record>
-    <id>6</id>
-    <classification>infrastrutture</classification>
-  </record>
-  <record>
-    <id>7</id>
-    <classification>addestramento</classification>
-  </record>
-  <record>
-    <id>8</id>
-    <classification>informatica</classification>
-  </record>
+    <record>
+        <id>1</id>
+        <classification>presidenza</classification>
+        <description>Presidenza e organi di governo</description>
+    </record>
+    <record>
+        <id>2</id>
+        <classification>segreteria</classification>
+        <description>Segreteria e affari generali</description>
+    </record>
+    <record>
+        <id>3</id>
+        <classification>amministrazione</classification>
+        <description>Amministrazione, bilancio e contabilità</description>
+    </record>
+    <record>
+        <id>4</id>
+        <classification>personale</classification>
+        <description>Gestione del personale</description>
+    </record>
+    <record>
+        <id>5</id>
+        <classification>materiali</classification>
+        <description>Gestione beni, forniture e acquisti</description>
+    </record>
+    <record>
+        <id>6</id>
+        <classification>infrastrutture</classification>
+        <description>Infrastrutture, immobili e manutenzione</description>
+    </record>
+    <record>
+        <id>7</id>
+        <classification>addestramento</classification>
+        <description>Addestramento e formazione</description>
+    </record>
+    <record>
+        <id>8</id>
+        <classification>informatica</classification>
+        <description>Sistemi informatici e tecnologie</description>
+    </record>
 </classifications>

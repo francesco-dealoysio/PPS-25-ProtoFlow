@@ -4,21 +4,13 @@ import pkg.b.logic.Account
 
 object AccountViewModel:
   val SurnameRequiredError = "Il campo Cognome è obbligatorio."
-
   val NameRequiredError = "Il campo Nome è obbligatorio."
-
   val EmailRequiredError = "Il campo Email è obbligatorio."
-
   val EmailInvalidError = "Inserisci un indirizzo email valido."
-
   val RoleRequiredError = "Il campo Ruolo è obbligatorio."
-
   val UsernameRequiredError = "Il campo Username è obbligatorio."
-
   val PasswordRequiredError = "Il campo Password è obbligatorio."
-
   val DuplicateUsernameError = "Esiste già un account con questo username."
-
   val roles: Seq[String] = Seq("admin", "oper", "viewer")
 
   private val emailPattern = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$".r

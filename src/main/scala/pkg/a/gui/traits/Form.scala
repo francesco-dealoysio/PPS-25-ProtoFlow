@@ -6,7 +6,7 @@ import scalafx.scene.control.{Button, ComboBox, DatePicker, Label, PasswordField
 import scalafx.scene.layout.*
 import java.time.LocalDate
 
-trait Form extends Root:
+trait Form extends Common:
 
   protected case class FormRow(label: String, field: Node, errorLabel: Label)
 

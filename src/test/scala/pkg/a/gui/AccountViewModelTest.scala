@@ -1,4 +1,4 @@
-package pkg.c.data
+package pkg.a.gui
 
 import org.scalatest.funsuite.AnyFunSuite
 import pkg.a.gui.structures.AccountViewModel
