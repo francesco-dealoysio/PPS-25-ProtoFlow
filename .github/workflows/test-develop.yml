@@ -1,4 +1,3 @@
-name: Test su develop
 
 on:
   push:
@@ -26,6 +25,9 @@ jobs:
 
       - name: Configura sbt
         uses: sbt/setup-sbt@v1
+
+      - name: Inizializza ProtoFlow
+        run: sbt -batch "runMain pkg.b.logic.tryInit"
 
       - name: Esegui tutti i test
         run: sbt -batch test
