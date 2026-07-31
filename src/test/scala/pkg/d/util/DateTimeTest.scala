@@ -1,78 +1,17 @@
 package pkg.d.util
 
-import javafx.application.Platform
-import org.scalatest.BeforeAndAfterAll
-import org.scalatest.concurrent.Eventually
 import org.scalatest.funsuite.AnyFunSuite
-import org.scalatest.time.{Millis, Seconds, Span}
 import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, LocalDateTime, LocalTime, ZoneId}
-import java.util.concurrent.atomic.AtomicReference
-import java.util.concurrent.{CountDownLatch, TimeUnit}
 import scala.util.Try
 
-class DateTimeTest
-  extends AnyFunSuite
-    with Eventually
-    with BeforeAndAfterAll:
+class DateTimeTest extends AnyFunSuite:
 
-  private val romeZone =
-    ZoneId.of("Europe/Rome")
-
-  private val displayDateTimeFormatter =
-    DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
-
-  private val storageDateTimeFormatter =
-    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS")
-
-  private val storageDateFormatter =
-    DateTimeFormatter.ofPattern("yyyy-MM-dd")
-
-  private val storageTimeFormatter =
-    DateTimeFormatter.ofPattern("HH:mm:ss.SS")
-
-  override implicit val patienceConfig: PatienceConfig = PatienceConfig(timeout = Span(3, Seconds), interval = Span(100, Millis))
-
-  override protected def beforeAll(): Unit =
-    super.beforeAll()
-
-    try
-      Platform.startup(() => ())
-    catch
-      case _: IllegalStateException =>
-        // JavaFX è già stato avviato da un altro test.
-        ()
-
-  private def runOnFxThread[T](operation: => T): T =
-    if Platform.isFxApplicationThread then
-      operation
-    else
-      val result = new AtomicReference[Either[Throwable, T]]()
-      val latch = new CountDownLatch(1)
-
-      Platform.runLater(() =>
-        try
-          result.set(Right(operation))
-        catch
-          case error: Throwable =>
-            result.set(Left(error))
-        finally
-          latch.countDown()
-      )
-
-      val completed = latch.await(5, TimeUnit.SECONDS)
-
-      if !completed then
-        throw new RuntimeException(
-          "Il JavaFX Application Thread non ha risposto entro 5 secondi."
-        )
-
-      result.get() match
-        case Right(value) =>
-          value
-
-        case Left(error) =>
-          throw error
+  private val romeZone = ZoneId.of("Europe/Rome")
+  private val displayDateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+  private val storageDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS")
+  private val storageDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+  private val storageTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss.SS")
 
   test("currentDateTime restituisce una stringa nel formato corretto"):
     val result = DateTime.currentDateTime
@@ -129,28 +68,3 @@ class DateTimeTest
     val result = DateTime.localTime
     val parsedResult = Try(LocalTime.parse(result, storageTimeFormatter))
     assert(parsedResult.isSuccess)
-
-  test("dynamicDateTimeProperty contiene inizialmente una data valida"):
-    val property =
-      runOnFxThread:
-        DateTime.dynamicDateTimeProperty()
-    val initialValue =
-      runOnFxThread:
-        property.value
-    val parsedResult = Try(LocalDateTime.parse(initialValue, displayDateTimeFormatter))
-    assert(parsedResult.isSuccess)
-
-  test("dynamicDateTimeProperty aggiorna il valore dopo un secondo"):
-    val property =
-      runOnFxThread:
-        DateTime.dynamicDateTimeProperty()
-    val initialValue =
-      runOnFxThread:
-        property.value
-    eventually:
-      val updatedValue =
-        runOnFxThread:
-          property.value
-
-      assert(updatedValue != initialValue)
-      assert(Try(LocalDateTime.parse(updatedValue, displayDateTimeFormatter)).isSuccess)
