@@ -3,12 +3,12 @@ package pkg.b.logic
 import org.junit.*
 import org.junit.Assert.*
 import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
-import java.nio.file.{Files, Path}
+import pkg.d.util.Util.inTestFilePathName
+import java.nio.file.{Files, Paths}
 
 class ClassificationTest:
 
   private var xmlFilePathName: String = _
-  private var tempDirectory: Path = _
   private var classification1: Classification = _
   private var classification2: Classification = _
   private var classification3: Classification = _
@@ -16,11 +16,7 @@ class ClassificationTest:
 
   @Before
   def setUp(): Unit =
-    tempDirectory = Files.createTempDirectory("protoflow-classification-test-")
-    xmlFilePathName =
-      tempDirectory
-        .resolve("test.xml")
-        .toString
+    xmlFilePathName = inTestFilePathName("test.xml")
     createEmptyXmlFile(xmlFilePathName, "test_records")
     empty = new Classification
     classification1 = Classification(
@@ -40,11 +36,7 @@ class ClassificationTest:
 
   @After
   def tearDown(): Unit =
-    Option(xmlFilePathName).foreach: fileName =>
-      Files.deleteIfExists(Path.of(fileName))
-
-    Option(tempDirectory).foreach: directory =>
-      Files.deleteIfExists(directory)
+    Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =
