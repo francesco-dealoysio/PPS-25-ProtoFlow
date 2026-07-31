@@ -7,6 +7,14 @@ lazy val root = (project in file("."))
     name := "PPS-25-ProtoFlow"
   )
 
+Compile / mainClass := Some("pkg.RunApp")
+
+Compile / packageBin / mappings ~= {
+  _.filterNot { case (_, pathInJar) =>
+    pathInJar.equalsIgnoreCase("META-INF/MANIFEST.MF")
+  }
+}
+
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-xml" % "2.4.0",
   "org.scalafx" %% "scalafx" % "21.0.0-R32",
