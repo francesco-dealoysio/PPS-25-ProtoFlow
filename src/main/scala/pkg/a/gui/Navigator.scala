@@ -69,12 +69,7 @@ class Navigator(stage: JFXApp3.PrimaryStage):
         addPageStylesheets(
           scene,
           "/homepages.css",
-          "/registration-requests-management.css",
-          "/classifications-management.css",
-          "/accounts-management.css",
-          "/roles-management.css",
-          "/loaded-documents.css",
-          "/archived-documents.css"
+          "/registration-requests-management.css"
         )
 
         stage.scene = scene

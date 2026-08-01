@@ -18,9 +18,9 @@ object ClassificationAddView extends Form:
     val viewModel = new ClassificationViewModel()
 
     val classification = stringField(Fields.Prompts.Classification)
-    val description = areaField(Fields.Prompts.Description, UiStyles.Classifications.DescriptionArea)
+    val description = areaField(Fields.Prompts.Description, UiStyles.Common.DescriptionArea)
     val monitoredFields = Seq(classification, description)
-    val resultMessage = messageLabel(UiStyles.Classifications.Message)
+    val resultMessage = messageLabel()
 
     def currentClassification(id: String = ""): Classification =
       Classification(
@@ -31,19 +31,14 @@ object ClassificationAddView extends Form:
 
     def clearErrors(): Unit =
       clearFormFieldErrors(classification, description)
-      clearMessage(
-        resultMessage,
-        successStyle = UiStyles.Classifications.MessageSuccess,
-        errorStyle = UiStyles.Classifications.MessageError
-      )
+      clearMessage(resultMessage)
 
     def validateForm(): Boolean =
       clearErrors()
       val errors =
         viewModel.validate(
           classification = currentClassification(),
-          existingClassifications =
-            classificationLogic.getRecords()
+          existingClassifications = classificationLogic.getRecords()
         )
 
       showFormFieldErrors(errors):
@@ -72,10 +67,8 @@ object ClassificationAddView extends Form:
               else
                 Classifications.Add.Error,
             success = saved,
-            successStyle =
-              UiStyles.Classifications.MessageSuccess,
-            errorStyle =
-              UiStyles.Classifications.MessageError
+            successStyle = UiStyles.Common.MessageSuccess,
+            errorStyle = UiStyles.Common.MessageError
           )
 
           if saved then
@@ -99,13 +92,8 @@ object ClassificationAddView extends Form:
     formPage(
       titleText = Classifications.Add.Title,
       subtitleText = Classifications.Add.Subtitle,
-      titleStyle = UiStyles.Classifications.Title,
-      subtitleStyle = UiStyles.Classifications.Subtitle,
-      rootStyle = UiStyles.Classifications.Root,
       form = form,
       resultMessage = resultMessage,
-      actions = actionBar(
-        Seq(exit, reset, save)
-      ),
+      actions = actionBar(Seq(exit, reset, save)),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

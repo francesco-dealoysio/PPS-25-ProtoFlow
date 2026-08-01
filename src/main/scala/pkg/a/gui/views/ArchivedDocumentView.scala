@@ -31,7 +31,7 @@ object ArchivedDocumentView extends Form:
     val sender = stringField(LoadedDocuments.Prompts.Sender, selectedDocument.getSender)
     val recipient = stringField(LoadedDocuments.Prompts.Recipient, selectedDocument.getRecipient)
     val subject = stringField(LoadedDocuments.Prompts.Subject, selectedDocument.getSubject)
-    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Roles.DescriptionArea, selectedDocument.getRemarks)
+    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Common.DescriptionArea, selectedDocument.getRemarks)
 
     /*
      * Dati propri dell'archiviazione.
@@ -40,7 +40,7 @@ object ArchivedDocumentView extends Form:
     val archivedTime = stringField(ArchivedDocuments.Prompts.ArchivedTime, localTime)
     val archivedBy = stringField(ArchivedDocuments.Prompts.ArchivedBy, operatorUsername)
     val archiveLocation = stringField(ArchivedDocuments.Prompts.ArchiveLocation)
-    val archiveRemarks = areaField(ArchivedDocuments.Prompts.ArchiveRemarks, UiStyles.Roles.DescriptionArea)
+    val archiveRemarks = areaField(ArchivedDocuments.Prompts.ArchiveRemarks, UiStyles.Common.DescriptionArea)
 
     /*
      * I dati già protocollati sono solamente visualizzati.
@@ -58,11 +58,11 @@ object ArchivedDocumentView extends Form:
     val archiveFields: Seq[FormField[? <: Node]] =
       Seq(archivedDate, archivedTime, archivedBy, archiveLocation, archiveRemarks)
 
-    val resultMessage = messageLabel(UiStyles.LoadedDocuments.Message)
+    val resultMessage = messageLabel(UiStyles.Common.Message)
 
     def clearErrors(): Unit =
       clearFormFieldErrors(archiveFields*)
-      clearMessage(resultMessage, UiStyles.LoadedDocuments.MessageSuccess, UiStyles.LoadedDocuments.MessageError)
+      clearMessage(resultMessage, UiStyles.Common.MessageSuccess, UiStyles.Common.MessageError)
 
     def validateForm(): Boolean =
       clearErrors()
@@ -116,9 +116,7 @@ object ArchivedDocumentView extends Form:
                 showMessage(
                   label = resultMessage,
                   message = ArchivedDocuments.Process.Success,
-                  success = true,
-                  successStyle = UiStyles.LoadedDocuments.MessageSuccess,
-                  errorStyle = UiStyles.LoadedDocuments.MessageError
+                  success = true
                 )
 
                 onArchived()
@@ -127,9 +125,7 @@ object ArchivedDocumentView extends Form:
                 showMessage(
                   label = resultMessage,
                   message = error,
-                  success = false,
-                  successStyle = UiStyles.LoadedDocuments.MessageSuccess,
-                  errorStyle = UiStyles.LoadedDocuments.MessageError
+                  success = false
                 )
 
     val reset = resetButton(resetForm)
@@ -177,9 +173,6 @@ object ArchivedDocumentView extends Form:
     formPage(
       titleText = ArchivedDocuments.Process.Title,
       subtitleText = ArchivedDocuments.Process.Subtitle,
-      titleStyle = UiStyles.LoadedDocuments.Title,
-      subtitleStyle = UiStyles.LoadedDocuments.Subtitle,
-      rootStyle = UiStyles.LoadedDocuments.Root,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

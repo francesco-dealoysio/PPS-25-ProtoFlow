@@ -5,6 +5,7 @@ import scalafx.scene.Node
 import scalafx.scene.control.{Button, ComboBox, DatePicker, Label, PasswordField, TextArea, TextField}
 import scalafx.scene.layout.*
 import java.time.LocalDate
+import pkg.a.gui.text.UiStyles
 
 trait Form extends Common:
 
@@ -30,8 +31,8 @@ trait Form extends Common:
 
       control match
         case styledControl: scalafx.scene.control.Control =>
-          if !styledControl.styleClass.contains("form-field-error") then
-            styledControl.styleClass += "form-field-error"
+          if !styledControl.styleClass.contains(UiStyles.Common.FormFieldError) then
+            styledControl.styleClass += UiStyles.Common.FormFieldError
 
         case _ =>
           ()
@@ -43,7 +44,7 @@ trait Form extends Common:
 
       control match
         case styledControl: scalafx.scene.control.Control =>
-          styledControl.styleClass.remove("form-field-error")
+          styledControl.styleClass.remove(UiStyles.Common.FormFieldError)
 
         case _ =>
           ()
@@ -89,7 +90,7 @@ trait Form extends Common:
         text = initialValue
         promptText = prompt
         maxWidth = Double.MaxValue
-        styleClass += "form-field"
+        styleClass += UiStyles.Common.FormField
     formField(control, initialValue)(
       readValue = _.text.value,
       writeValue = (field, value) => field.text = value
@@ -103,7 +104,7 @@ trait Form extends Common:
 
         promptText = prompt
         maxWidth = Double.MaxValue
-        styleClass += "form-field"
+        styleClass += UiStyles.Common.FormField
 
     formField(control, initialValue)(
       readValue = combo =>
@@ -151,14 +152,14 @@ trait Form extends Common:
       text = initialText
       promptText = prompt
       maxWidth = Double.MaxValue
-      styleClass += "form-field"
+      styleClass += UiStyles.Common.FormField
 
   protected def dateField(initialValue: LocalDate): FormField[DatePicker] =
 
     val control =
       new DatePicker(initialValue):
         maxWidth = Double.MaxValue
-        styleClass += "form-field"
+        styleClass += UiStyles.Common.FormField
 
     formField(control, initialValue.toString)(
       readValue = picker =>
@@ -183,9 +184,9 @@ trait Form extends Common:
   protected def formPage(
                           titleText: String,
                           subtitleText: String,
-                          titleStyle: String,
-                          subtitleStyle: String,
-                          rootStyle: String,
+                          titleStyle: String = UiStyles.Common.Title,
+                          subtitleStyle: String = UiStyles.Common.Subtitle,
+                          rootStyle: String = UiStyles.Common.Root,
                           form: Node,
                           resultMessage: Label,
                           actions: HBox,

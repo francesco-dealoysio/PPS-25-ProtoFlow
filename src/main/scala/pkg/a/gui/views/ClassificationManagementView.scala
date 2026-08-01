@@ -15,26 +15,14 @@ import UiText.{Fields, Classifications, Common}
 
 object ClassificationManagementView extends Management:
 
-  def apply(
-             onAdd: () => Unit = () => (),
-             onEdit: Classification => Unit = _ => (),
-             onExit: () => Unit = () => ()
-           ): BorderPane =
+  def apply(onAdd: () => Unit = () => (), onEdit: Classification => Unit = _ => (), onExit: () => Unit = () => ()): BorderPane =
 
     val classificationLogic = new Classification()
     val classifications = ObservableBuffer.empty[Classification]
 
-    val result =
-      createResultMessage(
-        baseStyle = UiStyles.Classifications.Message,
-        successStyle = UiStyles.Classifications.MessageSuccess,
-        errorStyle = UiStyles.Classifications.MessageError
-      )
-
-    val table = new TableView[Classification](classifications):
-        columnResizePolicy = TableView.ConstrainedResizePolicy
-        placeholder = new Label(Classifications.Management.Empty)
-        styleClass += UiStyles.Classifications.Table
+    val result = createResultMessage()
+    
+    val table = managementTable(classifications, Classifications.Management.Empty)
 
     val classificationColumn = new TableColumn[Classification, String]:
         text = Fields.Labels.Classification
@@ -145,18 +133,11 @@ object ClassificationManagementView extends Management:
     disableWithoutSelection(table, editButton, deleteButton)
     val bottomActions = actionBar(Seq(exitButton, print, editButton, deleteButton, addButton))
 
-    val header =
-      titleBox(
-        titleText = Classifications.Management.Title,
-        subtitleText = Classifications.Management.Subtitle,
-        titleStyle = UiStyles.Classifications.Title,
-        subtitleStyle = UiStyles.Classifications.Subtitle
-      )
+    val header = titleBox(Classifications.Management.Title, Classifications.Management.Subtitle)
 
     loadClassifications() // Prima lettura dal file XML.
 
     managementPage(
-      rootStyle = UiStyles.Classifications.Root,
       growNode = Some(table),
       pageChildren = Seq(header, table, result.label, bottomActions)
     )

@@ -1,7 +1,7 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.structures.AccountViewModel
-import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiText
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Account
 import pkg.d.util.IdGen
@@ -29,15 +29,11 @@ object AccountAddView extends Form:
     val password = passwordFormField(Fields.Prompts.Password)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(surname, name, email, phone, role, area, assignment, username, password)
-    val resultMessage = messageLabel(UiStyles.Accounts.Message)
+    val resultMessage = messageLabel()
 
     def clearErrors(): Unit =
       clearFormFieldErrors(monitoredFields*)
-      clearMessage(
-        resultMessage,
-        UiStyles.Accounts.MessageSuccess,
-        UiStyles.Accounts.MessageError
-      )
+      clearMessage(resultMessage)
 
     def currentAccount(id: String = ""): Account =
       Account(
@@ -86,9 +82,7 @@ object AccountAddView extends Form:
             message =
               if saved then Accounts.Add.Success
               else Accounts.Add.Error,
-            success = saved,
-            successStyle = UiStyles.Accounts.MessageSuccess,
-            errorStyle = UiStyles.Accounts.MessageError
+            success = saved
           )
 
           if saved then
@@ -119,9 +113,6 @@ object AccountAddView extends Form:
     formPage(
       titleText = Accounts.Add.Title,
       subtitleText = Accounts.Add.Subtitle,
-      titleStyle = UiStyles.Accounts.Title,
-      subtitleStyle = UiStyles.Accounts.Subtitle,
-      rootStyle = UiStyles.Accounts.Root,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

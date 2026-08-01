@@ -6,7 +6,7 @@ import pkg.b.logic.Account
 import pkg.d.util.Util.{inDatabaseFilePathName, md5}
 import pkg.d.util.XmlToPdf
 import scalafx.scene.layout.BorderPane
-import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiText
 import UiText.{Accounts, Common, Fields}
 import scalafx.scene.Node
 
@@ -28,15 +28,11 @@ object AccountEditView extends Form:
     val password = passwordFormField(Fields.Prompts.KeepPassword)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(surname, name, email, phone, role, area, assignment, username, password)
-    val resultMessage = messageLabel(UiStyles.Accounts.Message)
+    val resultMessage = messageLabel()
 
     def clearErrors(): Unit =
       clearFormFieldErrors(monitoredFields*)
-      clearMessage(
-        resultMessage,
-        UiStyles.Accounts.MessageSuccess,
-        UiStyles.Accounts.MessageError
-      )
+      clearMessage(resultMessage)
 
     def currentAccount(): Account =
       val updatedPassword =
@@ -91,9 +87,7 @@ object AccountEditView extends Form:
             message =
               if updated then Accounts.Edit.Success
               else Accounts.Edit.Error,
-            success = updated,
-            successStyle = UiStyles.Accounts.MessageSuccess,
-            errorStyle = UiStyles.Accounts.MessageError
+            success = updated
           )
           if updated then
             formSaved = true
@@ -119,9 +113,7 @@ object AccountEditView extends Form:
             message =
               if printed then Accounts.Edit.PrintSuccess
               else Accounts.Edit.PrintError,
-            success = printed,
-            successStyle = UiStyles.Accounts.MessageSuccess,
-            errorStyle = UiStyles.Accounts.MessageError
+            success = printed
           )
       )
 
@@ -142,9 +134,6 @@ object AccountEditView extends Form:
     formPage(
       titleText = Accounts.Edit.Title,
       subtitleText = Accounts.Edit.Subtitle,
-      titleStyle = UiStyles.Accounts.Title,
-      subtitleStyle = UiStyles.Accounts.Subtitle,
-      rootStyle = UiStyles.Accounts.Root,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, print, reset, save)),

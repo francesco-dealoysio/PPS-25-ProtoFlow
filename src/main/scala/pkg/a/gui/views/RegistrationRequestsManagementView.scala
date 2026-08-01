@@ -14,8 +14,7 @@ import java.time.format.DateTimeFormatter
 
 object RegistrationRequestsManagementView extends Management:
 
-  private val dateFormatter =
-    DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+  private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
 
   def apply(
              onProcess: Registration => Unit = _ => (),
@@ -25,17 +24,9 @@ object RegistrationRequestsManagementView extends Management:
     val service = new RegistrationRequestService()
     val requests = ObservableBuffer.empty[Registration]
 
-    val result =
-      createResultMessage(
-        baseStyle = UiStyles.Requests.Message,
-        successStyle = UiStyles.Requests.MessageSuccess,
-        errorStyle = UiStyles.Requests.MessageError
-      )
+    val result = createResultMessage()
 
-    val table = new TableView[Registration](requests):
-      columnResizePolicy = TableView.ConstrainedResizePolicy
-      placeholder = new Label(RegistrationRequests.Management.Empty)
-      styleClass += UiStyles.Requests.Table
+    val table = managementTable(requests, RegistrationRequests.Management.Empty)
 
     def stringColumn(title: String, colWidth: Double)(value: Registration => String): TableColumn[Registration, String] =
       new TableColumn[Registration, String]:
@@ -100,18 +91,11 @@ object RegistrationRequestsManagementView extends Management:
     val exitButton = closeButton(onExit)
     val bottomActions = actionBar(Seq(exitButton, refreshButton, printButton, processButton))
 
-    val header =
-      titleBox(
-        titleText = RegistrationRequests.Process.Title,
-        subtitleText = RegistrationRequests.Process.Subtitle,
-        titleStyle = UiStyles.Requests.Title,
-        subtitleStyle = UiStyles.Requests.Subtitle
-      )
+    val header = titleBox(RegistrationRequests.Process.Title, RegistrationRequests.Process.Subtitle)
 
     loadPendingRequests()
 
     managementPage(
-      rootStyle = UiStyles.Requests.Root,
       growNode = Some(table),
       pageChildren = Seq(
         header,

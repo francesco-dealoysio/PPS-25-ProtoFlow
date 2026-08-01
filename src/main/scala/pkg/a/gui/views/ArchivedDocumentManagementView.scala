@@ -14,26 +14,14 @@ import UiText.{ArchivedDocuments, Common}
 
 object ArchivedDocumentManagementView extends Management:
 
-  def apply(
-             onView: ArchivedDocument => Unit = _ => (),
-             onExit: () => Unit = () => ()
-           ): BorderPane =
+  def apply(onView: ArchivedDocument => Unit = _ => (), onExit: () => Unit = () => ()): BorderPane =
 
     val service = new ArchivedDocumentService()
     val documents = ObservableBuffer.empty[ArchivedDocument]
 
-    val result =
-      createResultMessage(
-        baseStyle = UiStyles.ArchivedDocuments.Message,
-        successStyle = UiStyles.ArchivedDocuments.MessageSuccess,
-        errorStyle = UiStyles.ArchivedDocuments.MessageError
-      )
+    val result = createResultMessage()
 
-    val table =
-      new TableView[ArchivedDocument](documents):
-        columnResizePolicy = TableView.ConstrainedResizePolicy
-        placeholder = new Label(ArchivedDocuments.Management.Empty)
-        styleClass += UiStyles.LoadedDocuments.Table
+    val table = managementTable(documents, ArchivedDocuments.Management.Empty)
 
     def stringColumn(title: String, columnWidth: Double)(value: ArchivedDocument => String): TableColumn[ArchivedDocument, String] =
       new TableColumn[ArchivedDocument, String]:
@@ -116,18 +104,11 @@ object ArchivedDocumentManagementView extends Management:
     val exitButton = closeButton(onExit)
     val bottomActions = actionBar(Seq(exitButton, refreshButton, print, viewButton))
 
-    val header =
-      titleBox(
-        titleText = ArchivedDocuments.Management.Title,
-        subtitleText = ArchivedDocuments.Management.Subtitle,
-        titleStyle = UiStyles.ArchivedDocuments.Title,
-        subtitleStyle = UiStyles.ArchivedDocuments.Subtitle
-      )
+    val header = titleBox(ArchivedDocuments.Management.Title, ArchivedDocuments.Management.Subtitle)
 
     loadDocuments()
 
     managementPage(
-      rootStyle = UiStyles.ArchivedDocuments.Root,
       growNode = Some(table),
       pageChildren = Seq(
         header,

@@ -8,7 +8,7 @@ import scalafx.scene.control.*
 import scalafx.scene.layout.*
 import java.time.format.DateTimeFormatter
 import pkg.a.gui.text.{UiStyles, UiText}
-import UiText.Fields
+import UiText.{Fields, RegistrationRequests, Common}
 
 object RegistrationRequestProcessView extends Management:
 
@@ -24,12 +24,7 @@ object RegistrationRequestProcessView extends Management:
 
     val service = new RegistrationRequestService()
 
-    val result =
-      createResultMessage(
-        baseStyle = UiStyles.Requests.Message,
-        successStyle = UiStyles.Requests.MessageSuccess,
-        errorStyle = UiStyles.Requests.MessageError
-      )
+    val result = createResultMessage()
 
     val detailsGrid = new GridPane:
       hgap = 18
@@ -160,23 +155,16 @@ object RegistrationRequestProcessView extends Management:
             case Left(error) =>
               result.show(error, success = false)
 
-    val printButton = secondaryButton("Stampa", () => printPendingRequest())
-    val rejectButton = dangerButton("Rifiuta", () => reject())
-    val approveButton = primaryButton("Approva", () => approve())
+    val printButton = secondaryButton(Common.Buttons.Print, () => printPendingRequest())
+    val rejectButton = dangerButton(Common.Buttons.Reject, () => reject())
+    val approveButton = primaryButton(Common.Buttons.Approve, () => approve())
     val exitButton = closeButton(onExit)
 
     val actionsBox = actionBar(Seq(exitButton, printButton, rejectButton, approveButton))
 
-    val header =
-      titleBox(
-        titleText = "Elaborazione richiesta registrazione",
-        subtitleText = "Visualizza i dati della richiesta e approvala o rifiutala.",
-        titleStyle = "requests-title",
-        subtitleStyle = "requests-subtitle"
-      )
+    val header = titleBox(RegistrationRequests.Management.Title, RegistrationRequests.Management.Subtitle)
 
     managementPage(
-      rootStyle = "requests-management-root",
       pageChildren = Seq(
         header,
         detailsCard,

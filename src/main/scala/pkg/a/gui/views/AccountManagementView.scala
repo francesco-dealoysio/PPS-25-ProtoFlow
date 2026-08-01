@@ -21,17 +21,9 @@ object AccountManagementView extends Management:
     val accountLogic = new Account()
     val accounts = ObservableBuffer.empty[Account]
 
-    val result =
-      createResultMessage(
-        baseStyle = UiStyles.Accounts.Message,
-        successStyle = UiStyles.Accounts.MessageSuccess,
-        errorStyle = UiStyles.Accounts.MessageError
-      )
+    val result = createResultMessage()
 
-    val table = new TableView[Account](accounts):
-      columnResizePolicy = TableView.ConstrainedResizePolicy
-      placeholder = new Label(Accounts.Management.Empty)
-      styleClass += UiStyles.Accounts.Table
+    val table = managementTable(accounts, Accounts.Management.Empty)
 
     val surnameColumn = new TableColumn[Account, String]:
       text = Fields.Labels.Surname
@@ -158,18 +150,11 @@ object AccountManagementView extends Management:
 
     val bottomActions = actionBar(Seq(exitButton, editButton, deleteButton, addButton))
 
-    val header =
-      titleBox(
-        titleText = Accounts.Management.Title,
-        subtitleText = "Visualizza, aggiungi, modifica ed elimina gli account degli utenti del sistema.",
-        titleStyle = UiStyles.Accounts.Title,
-        subtitleStyle = UiStyles.Accounts.Subtitle
-      )
+    val header = titleBox(Accounts.Management.Title, Accounts.Management.Subtitle)
 
     loadAccounts() // Prima lettura dal file XML.
 
     managementPage(
-      rootStyle = UiStyles.Accounts.Root,
       growNode = Some(table),
       pageChildren = Seq(
         header,

@@ -29,18 +29,13 @@ object LoadedDocumentAddView extends Form:
     val sender = stringField(LoadedDocuments.Prompts.Sender)
     val recipient = stringField(LoadedDocuments.Prompts.Recipient)
     val subject = stringField(LoadedDocuments.Prompts.Subject)
-    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Roles.DescriptionArea)
+    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Common.DescriptionArea)
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks)
-    val resultMessage = messageLabel(UiStyles.LoadedDocuments.Message)
+    val resultMessage = messageLabel(UiStyles.Common.Message)
 
     def clearErrors(): Unit =
       clearFormFieldErrors(monitoredFields*)
-
-      clearMessage(
-        resultMessage,
-        UiStyles.LoadedDocuments.MessageSuccess,
-        UiStyles.LoadedDocuments.MessageError
-      )
+      clearMessage(resultMessage)
 
     def currentDocument(id: String = ""): LoadedDocument =
       LoadedDocument(
@@ -105,9 +100,7 @@ object LoadedDocumentAddView extends Form:
                   LoadedDocuments.Add.Success
                 else
                   LoadedDocuments.Add.Error,
-              success = saved,
-              successStyle = UiStyles.LoadedDocuments.MessageSuccess,
-              errorStyle = UiStyles.LoadedDocuments.MessageError
+              success = saved
             )
 
             if saved then
@@ -145,9 +138,6 @@ object LoadedDocumentAddView extends Form:
     formPage(
       titleText = LoadedDocuments.Add.Title,
       subtitleText = LoadedDocuments.Add.Subtitle,
-      titleStyle = UiStyles.LoadedDocuments.Title,
-      subtitleStyle = UiStyles.LoadedDocuments.Subtitle,
-      rootStyle = UiStyles.LoadedDocuments.Root,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

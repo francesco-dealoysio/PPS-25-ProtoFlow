@@ -21,12 +21,12 @@ object ArchivedDocumentDetailsView extends Form:
     val sender = stringField(LoadedDocuments.Prompts.Sender, selectedDocument.getSender)
     val recipient = stringField(LoadedDocuments.Prompts.Recipient, selectedDocument.getRecipient)
     val subject = stringField(LoadedDocuments.Prompts.Subject, selectedDocument.getSubject)
-    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Roles.DescriptionArea, selectedDocument.getRemarks)
+    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Common.DescriptionArea, selectedDocument.getRemarks)
     val archivedDate = stringField(ArchivedDocuments.Fields.ArchivedDate, selectedDocument.getArchivedDate)
     val archivedTime = stringField(ArchivedDocuments.Prompts.ArchivedTime, selectedDocument.getArchivedTime)
     val archivedBy = stringField(ArchivedDocuments.Prompts.ArchivedBy, selectedDocument.getArchivedBy)
     val archiveLocation = stringField(ArchivedDocuments.Prompts.ArchiveLocation, selectedDocument.getArchiveLocation)
-    val archiveRemarks = areaField(ArchivedDocuments.Prompts.ArchiveRemarks, UiStyles.Roles.DescriptionArea, selectedDocument.getArchiveRemarks)
+    val archiveRemarks = areaField(ArchivedDocuments.Prompts.ArchiveRemarks, UiStyles.Common.DescriptionArea, selectedDocument.getArchiveRemarks)
 
     val readOnlyFields: Seq[FormField[? <: Node]] =
       Seq(
@@ -92,11 +92,7 @@ object ArchivedDocumentDetailsView extends Form:
     HBox.setHgrow(archiveForm, Priority.Always)
 
     val result =
-      createResultMessage(
-        baseStyle = UiStyles.ArchivedDocuments.Message,
-        successStyle = UiStyles.ArchivedDocuments.MessageSuccess,
-        errorStyle = UiStyles.ArchivedDocuments.MessageError
-      )
+      createResultMessage()
 
     def printDocumentDetails(): Unit =
       val safeProtocolNumber =
@@ -125,9 +121,6 @@ object ArchivedDocumentDetailsView extends Form:
     formPage(
       titleText = ArchivedDocuments.Details.Title,
       subtitleText = ArchivedDocuments.Details.Subtitle,
-      titleStyle = UiStyles.ArchivedDocuments.Title,
-      subtitleStyle = UiStyles.ArchivedDocuments.Subtitle,
-      rootStyle = UiStyles.ArchivedDocuments.Root,
       form = form,
       resultMessage = result.label,
       actions = actionBar(Seq(exitButton, printButton))

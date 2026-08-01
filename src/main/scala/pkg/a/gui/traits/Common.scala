@@ -3,6 +3,7 @@ package pkg.a.gui.traits
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Alert, Button, ButtonType, Label}
 import scalafx.scene.layout.{HBox, VBox}
+import pkg.a.gui.text.UiStyles
 
 trait Common:
 
@@ -22,14 +23,14 @@ trait Common:
         contentText = content
     dialog.showAndWait().contains(ButtonType.OK)
 
-  protected def createResultMessage(baseStyle: String, successStyle: String, errorStyle: String): ResultMessage =
+  protected def createResultMessage(baseStyle: String = UiStyles.Common.Message, successStyle: String = UiStyles.Common.MessageSuccess, errorStyle: String = UiStyles.Common.MessageError): ResultMessage =
     ResultMessage(messageLabel(baseStyle), successStyle, errorStyle)
 
   protected def fieldLabel(text: String, styleName: String = "form-label"): Label =
     new Label(text):
       styleClass += styleName
 
-  protected def messageLabel(baseStyle: String): Label =
+  protected def messageLabel(baseStyle: String = UiStyles.Common.Message): Label =
     new Label:
       visible = false
       managed = false
@@ -56,7 +57,7 @@ trait Common:
   protected def closeButton(onExit: () => Unit, text: String = "Chiudi"): Button =
     secondaryButton(text, onExit)
 
-  protected def titleBox(titleText: String, subtitleText: String, titleStyle: String, subtitleStyle: String): VBox =
+  protected def titleBox(titleText: String, subtitleText: String, titleStyle: String = UiStyles.Common.Title, subtitleStyle: String = UiStyles.Common.Subtitle): VBox =
     new VBox:
       spacing = 5
       children = Seq(
@@ -72,7 +73,7 @@ trait Common:
       styleClass += styleName
       onAction = _ => action()
 
-  protected def showMessage(label: Label, message: String, success: Boolean, successStyle: String, errorStyle: String): Unit =
+  protected def showMessage(label: Label, message: String, success: Boolean, successStyle: String = UiStyles.Common.MessageSuccess, errorStyle: String = UiStyles.Common.MessageError): Unit =
     label.text = message
     label.visible = true
     label.managed = true
@@ -80,7 +81,7 @@ trait Common:
     label.styleClass +=
       (if success then successStyle else errorStyle)
 
-  protected def clearMessage(label: Label, successStyle: String, errorStyle: String): Unit =
+  protected def clearMessage(label: Label, successStyle: String = UiStyles.Common.MessageSuccess, errorStyle: String = UiStyles.Common.MessageError): Unit =
     label.text = ""
     label.visible = false
     label.managed = false

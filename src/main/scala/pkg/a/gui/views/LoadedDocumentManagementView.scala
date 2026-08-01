@@ -23,17 +23,9 @@ object LoadedDocumentManagementView extends Management:
     val service = new LoadedDocumentService()
     val documents = ObservableBuffer.empty[LoadedDocument]
 
-    val result =
-      createResultMessage(
-        baseStyle = UiStyles.LoadedDocuments.Message,
-        successStyle = UiStyles.LoadedDocuments.MessageSuccess,
-        errorStyle = UiStyles.LoadedDocuments.MessageError
-      )
+    val result = createResultMessage()
 
-    val table = new TableView[LoadedDocument](documents):
-      columnResizePolicy = TableView.ConstrainedResizePolicy
-      placeholder = new Label(LoadedDocuments.Management.Empty)
-      styleClass += UiStyles.LoadedDocuments.Table
+    val table = managementTable(documents, LoadedDocuments.Management.Empty)
 
     def stringColumn(title: String, colWidth: Double)(value: LoadedDocument => String): TableColumn[LoadedDocument, String] =
       new TableColumn[LoadedDocument, String]:
@@ -124,18 +116,11 @@ object LoadedDocumentManagementView extends Management:
     val bottomActions =
       actionBar(Seq(exitButton, refreshButton, printListButton, deleteButton, registerButton))
 
-    val header =
-      titleBox(
-        titleText = LoadedDocuments.Management.Title,
-        subtitleText = LoadedDocuments.Management.Subtitle,
-        titleStyle = UiStyles.LoadedDocuments.Title,
-        subtitleStyle = UiStyles.LoadedDocuments.Subtitle
-      )
+    val header = titleBox(LoadedDocuments.Management.Title, LoadedDocuments.Management.Subtitle)
 
     loadDocuments()
 
     managementPage(
-      rootStyle = UiStyles.LoadedDocuments.Root,
       growNode = Some(table),
       pageChildren = Seq(
         header,

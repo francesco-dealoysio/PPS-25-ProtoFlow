@@ -28,19 +28,15 @@ object DocumentRegistrationView extends Form:
     val sender = stringField(LoadedDocuments.Prompts.Sender, selectedDocument.getSender)
     val recipient = stringField(LoadedDocuments.Prompts.Recipient, selectedDocument.getRecipient)
     val subject = stringField(LoadedDocuments.Prompts.Subject, selectedDocument.getSubject)
-    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Roles.DescriptionArea, selectedDocument.getRemarks)
+    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Common.DescriptionArea, selectedDocument.getRemarks)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks)
 
-    val resultMessage = messageLabel(UiStyles.LoadedDocuments.Message)
+    val resultMessage = messageLabel()
 
     def clearErrors(): Unit =
       clearFormFieldErrors(monitoredFields*)
-      clearMessage(
-        resultMessage,
-        UiStyles.LoadedDocuments.MessageSuccess,
-        UiStyles.LoadedDocuments.MessageError
-      )
+      clearMessage(resultMessage)
 
     def editedDocument(): LoadedDocument =
       LoadedDocument(
@@ -100,9 +96,7 @@ object DocumentRegistrationView extends Form:
                 showMessage(
                   label = resultMessage,
                   message = s"${RegisteredDocuments.Process.Success} Numero di protocollo: ${registered.getProtocolNumber}.",
-                  success = true,
-                  successStyle = UiStyles.LoadedDocuments.MessageSuccess,
-                  errorStyle = UiStyles.LoadedDocuments.MessageError
+                  success = true
                 )
 
                 formSaved = true
@@ -112,9 +106,7 @@ object DocumentRegistrationView extends Form:
                 showMessage(
                   label = resultMessage,
                   message = error,
-                  success = false,
-                  successStyle = UiStyles.LoadedDocuments.MessageSuccess,
-                  errorStyle = UiStyles.LoadedDocuments.MessageError
+                  success = false
                 )
 
     val reset = resetButton(resetForm)
@@ -139,9 +131,6 @@ object DocumentRegistrationView extends Form:
     formPage(
       titleText = RegisteredDocuments.Process.Title,
       subtitleText = RegisteredDocuments.Process.Subtitle,
-      titleStyle = UiStyles.LoadedDocuments.Title,
-      subtitleStyle = UiStyles.LoadedDocuments.Subtitle,
-      rootStyle = UiStyles.LoadedDocuments.Root,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

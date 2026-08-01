@@ -12,16 +12,13 @@ import UiText.{Fields, Roles}
 
 object RoleAddView extends Form:
 
-  def apply(
-             onSaved: () => Unit,
-             onExit: () => Unit
-           ): BorderPane =
+  def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val roleLogic = new Role()
     val viewModel = new RoleViewModel()
     val role = stringField(Fields.Prompts.Role)
-    val description = areaField(Fields.Prompts.Description, UiStyles.Roles.DescriptionArea)
-    val resultMessage = messageLabel(UiStyles.Roles.Message)
+    val description = areaField(Fields.Prompts.Description, UiStyles.Common.DescriptionArea)
+    val resultMessage = messageLabel(UiStyles.Common.Message)
     val monitoredFields = Seq(role, description)
     def currentRole(id: String = ""): Role =
       Role(
@@ -32,12 +29,7 @@ object RoleAddView extends Form:
 
     def clearErrors(): Unit =
       clearFormFieldErrors(role, description)
-
-      clearMessage(
-        resultMessage,
-        successStyle = UiStyles.Roles.MessageSuccess,
-        errorStyle = UiStyles.Roles.MessageError
-      )
+      clearMessage(resultMessage)
 
     def validateForm(): Boolean =
       clearErrors()
@@ -63,7 +55,6 @@ object RoleAddView extends Form:
       saveButton: () =>
         if validateForm() then
           val newRole = currentRole(IdGen(inIdsFilePathName("roleId")))
-
           val saved = roleLogic.recordInsert(newRole)
 
           showMessage(
@@ -74,8 +65,8 @@ object RoleAddView extends Form:
               else
                 Roles.Add.Error,
             success = saved,
-            successStyle = UiStyles.Roles.MessageSuccess,
-            errorStyle = UiStyles.Roles.MessageError
+            successStyle = UiStyles.Common.MessageSuccess,
+            errorStyle = UiStyles.Common.MessageError
           )
           if saved then
             formSaved = true
@@ -98,9 +89,6 @@ object RoleAddView extends Form:
     formPage(
       titleText = Roles.Add.Title,
       subtitleText = Roles.Add.Subtitle,
-      titleStyle = UiStyles.Roles.Title,
-      subtitleStyle = UiStyles.Roles.Subtitle,
-      rootStyle = UiStyles.Roles.Root,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

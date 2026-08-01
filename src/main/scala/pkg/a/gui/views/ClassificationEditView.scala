@@ -1,6 +1,5 @@
 package pkg.a.gui.views
 
-
 import pkg.a.gui.structures.ClassificationViewModel
 import pkg.a.gui.text.{UiStyles, UiText}
 import pkg.a.gui.traits.Form
@@ -24,12 +23,12 @@ object ClassificationEditView extends Form:
     val description =
       areaField(
         prompt = Fields.Prompts.Description,
-        styleName = UiStyles.Classifications.DescriptionArea,
+        styleName = UiStyles.Common.DescriptionArea,
         initialValue = selectedClassification.getDescription
       )
 
     val monitoredFields = Seq(classification, description)
-    val resultMessage = messageLabel(UiStyles.Classifications.Message)
+    val resultMessage = messageLabel()
 
     def currentClassification(): Classification =
       Classification(
@@ -40,12 +39,7 @@ object ClassificationEditView extends Form:
 
     def clearErrors(): Unit =
       clearFormFieldErrors(classification, description)
-
-      clearMessage(
-        resultMessage,
-        UiStyles.Classifications.MessageSuccess,
-        UiStyles.Classifications.MessageError
-      )
+      clearMessage(resultMessage)
 
     def resetForm(): Unit =
       resetFields(classification, description)
@@ -59,8 +53,7 @@ object ClassificationEditView extends Form:
         viewModel.validate(
           classification = currentClassification(),
           existingClassifications = classificationLogic.getRecords(),
-          currentClassificationId =
-            Some(selectedClassification.getId)
+          currentClassificationId = Some(selectedClassification.getId)
         )
 
       showFormFieldErrors(errors):
@@ -82,9 +75,7 @@ object ClassificationEditView extends Form:
             message =
               if updated then Classifications.Edit.Success
               else Classifications.Edit.Error,
-            success = updated,
-            successStyle = UiStyles.Classifications.MessageSuccess,
-            errorStyle = UiStyles.Classifications.MessageError
+            success = updated
           )
           if updated then
             formSaved = true
@@ -104,9 +95,6 @@ object ClassificationEditView extends Form:
     formPage(
       titleText = Classifications.Edit.Title,
       subtitleText = Classifications.Edit.Subtitle,
-      titleStyle = UiStyles.Classifications.Title,
-      subtitleStyle = UiStyles.Classifications.Subtitle,
-      rootStyle = UiStyles.Classifications.Root,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

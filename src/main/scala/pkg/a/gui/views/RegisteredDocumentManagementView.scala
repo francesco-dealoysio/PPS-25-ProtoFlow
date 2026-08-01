@@ -13,25 +13,14 @@ import scalafx.scene.layout.BorderPane
 
 object RegisteredDocumentManagementView extends Management:
 
-  def apply(
-             onArchive: RegisteredDocument => Unit = _ => (),
-             onExit: () => Unit = () => ()
-           ): BorderPane =
+  def apply(onArchive: RegisteredDocument => Unit = _ => (), onExit: () => Unit = () => ()): BorderPane =
 
     val service = new LoadedDocumentService()
     val documents = ObservableBuffer.empty[RegisteredDocument]
 
-    val result =
-      createResultMessage(
-        baseStyle = UiStyles.LoadedDocuments.Message,
-        successStyle = UiStyles.LoadedDocuments.MessageSuccess,
-        errorStyle = UiStyles.LoadedDocuments.MessageError
-      )
+    val result = createResultMessage()
 
-    val table = new TableView[RegisteredDocument](documents):
-      columnResizePolicy = TableView.ConstrainedResizePolicy
-      placeholder = new Label(RegisteredDocuments.Management.Empty)
-      styleClass += UiStyles.LoadedDocuments.Table
+    val table = managementTable(documents, RegisteredDocuments.Management.Empty)
 
     def stringColumn(title: String, colWidth: Double)(value: RegisteredDocument => String): TableColumn[RegisteredDocument, String] =
       new TableColumn[RegisteredDocument, String]:
@@ -120,22 +109,12 @@ object RegisteredDocumentManagementView extends Management:
     disableWithoutSelection(table, archiveButton, deleteButton)
 
     val exitButton = closeButton(onExit)
-
-    val bottomActions =
-      actionBar(Seq(exitButton, refreshButton, printListButton, deleteButton, archiveButton))
-
-    val header =
-      titleBox(
-        titleText = RegisteredDocuments.Management.Title,
-        subtitleText = RegisteredDocuments.Management.Subtitle,
-        titleStyle = UiStyles.LoadedDocuments.Title,
-        subtitleStyle = UiStyles.LoadedDocuments.Subtitle
-      )
+    val bottomActions = actionBar(Seq(exitButton, refreshButton, printListButton, deleteButton, archiveButton))
+    val header = titleBox(RegisteredDocuments.Management.Title, RegisteredDocuments.Management.Subtitle)
 
     loadDocuments()
 
     managementPage(
-      rootStyle = UiStyles.LoadedDocuments.Root,
       growNode = Some(table),
       pageChildren = Seq(
         header,

@@ -13,9 +13,7 @@ import UiText.{Common, Fields, Login}
 
 object LoginView extends Form:
 
-  def apply(onLoginSuccess: Account => Unit,
-             onRegistrationRequest: () => Unit
-           ): BorderPane =
+  def apply(onLoginSuccess: Account => Unit, onRegistrationRequest: () => Unit): BorderPane =
 
     val usernameField = new TextField:
       maxWidth = 220
@@ -30,7 +28,6 @@ object LoginView extends Form:
     val result =
       createResultMessage(
         baseStyle = UiStyles.Login.Message,
-        successStyle = UiStyles.Login.MessageSuccess,
         errorStyle = UiStyles.Login.MessageError
       )
 
@@ -120,7 +117,7 @@ object LoginView extends Form:
 
     val clearButton = resetButton(() => clearFields(), Common.Buttons.Clear)
     val accessButton = primaryButton(Common.Buttons.Login, () => access())
-    val buttonsBox = actionBar(Seq(clearButton, accessButton), UiStyles.Login.Actions, Pos.Center)
+    val buttonsBox = actionBar(Seq(clearButton, accessButton), barAlignment = Pos.Center)
     val registrationButton = secondaryButton(Common.Buttons.RequestRegistration, () => onRegistrationRequest())
     registrationButton.maxWidth = 220
 

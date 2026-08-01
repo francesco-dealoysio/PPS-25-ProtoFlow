@@ -24,20 +24,9 @@ object RoleManagementView extends Management:
     val roleLogic = new Role()
     val roles = ObservableBuffer.empty[Role]
 
-    val result =
-      createResultMessage(
-        baseStyle = UiStyles.Roles.Message,
-        successStyle = UiStyles.Roles.MessageSuccess,
-        errorStyle = UiStyles.Roles.MessageError
-      )
-
-    val table =
-      new TableView[Role](roles):
-        columnResizePolicy =
-          TableView.ConstrainedResizePolicy
-
-        placeholder = new Label(Roles.Management.Empty)
-        styleClass += UiStyles.Roles.Table
+    val result = createResultMessage()
+    
+    val table = managementTable(roles, Roles.Management.Empty)
 
     val roleColumn =
       new TableColumn[Role, String]:
@@ -148,18 +137,11 @@ object RoleManagementView extends Management:
 
     val bottomActions = actionBar(Seq(exitButton, print, editButton, deleteButton, addButton))
 
-    val header =
-      titleBox(
-        titleText = Roles.Management.Title,
-        subtitleText = Roles.Management.Subtitle,
-        titleStyle = UiStyles.Roles.Title,
-        subtitleStyle = UiStyles.Roles.Subtitle
-      )
+    val header = titleBox(Roles.Management.Title, Roles.Management.Subtitle)
 
     loadRoles()
 
     managementPage(
-      rootStyle = UiStyles.Roles.Root,
       growNode = Some(table),
       pageChildren = Seq(
         header,

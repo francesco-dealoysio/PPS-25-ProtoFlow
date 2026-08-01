@@ -140,6 +140,7 @@ object UiText:
 
     object Management:
       val Title = "Gestione Account Utente"
+      val Subtitle = "Visualizza, aggiungi, modifica ed elimina gli account degli utenti del sistema."
       val Empty = "Non sono presenti account nel sistema."
       val LoadError = "Errore durante il caricamento degli account."
       val SelectToEdit = "Seleziona un account da modificare."
