@@ -1,1 +1,107 @@
-<loadedDocuments></loadedDocuments>
+<loadedDocuments>
+  <record>
+    <id/>
+    <documentDate/>
+    <documentTime/>
+    <documentProtocol/>
+    <documentType/>
+    <sender/>
+    <recipient/>
+    <subject/>
+    <remarks/>
+    <state/>
+    <processedDate/>
+    <processedTime/>
+    <processedBy/>
+  </record>
+  <record>
+    <id>26</id>
+    <documentDate>2026-08-02</documentDate>
+    <documentTime/>
+    <documentProtocol>fdgdfgdfg</documentProtocol>
+    <documentType>Email</documentType>
+    <sender>bfggfhfg</sender>
+    <recipient>gfhdhdfhfd</recipient>
+    <subject>jhjjghj</subject>
+    <remarks>pippo</remarks>
+    <state>Loaded</state>
+    <processedDate>2026-08-02</processedDate>
+    <processedTime>02:28:02.65</processedTime>
+    <processedBy>francesco de aloysio</processedBy>
+  </record>
+  <record>
+    <id>27</id>
+    <documentDate>2024-12-15</documentDate>
+    <documentTime/>
+    <documentProtocol>2024/2013.Ausiliaria</documentProtocol>
+    <documentType>Lettera</documentType>
+    <sender>Centro Nazionale di Amministrazione</sender>
+    <recipient>Col. DE ALOYSIO</recipient>
+    <subject>Posizione di Ausiliaria</subject>
+    <remarks>All'attenzione dell'Ufficio Personale</remarks>
+    <state>Loaded</state>
+    <processedDate>2026-08-02</processedDate>
+    <processedTime>02:35:37.73</processedTime>
+    <processedBy>francesco de aloysio</processedBy>
+  </record>
+  <record>
+    <id>28</id>
+    <documentDate>2026-07-28</documentDate>
+    <documentTime/>
+    <documentProtocol/>
+    <documentType/>
+    <sender/>
+    <recipient/>
+    <subject/>
+    <remarks/>
+    <state>Loaded</state>
+    <processedDate>2026-08-02</processedDate>
+    <processedTime>17:31:34.39</processedTime>
+    <processedBy>Francesco de Aloysio</processedBy>
+  </record>
+  <record>
+    <id>29</id>
+    <documentDate>2026-08-06</documentDate>
+    <documentTime/>
+    <documentProtocol/>
+    <documentType/>
+    <sender/>
+    <recipient/>
+    <subject/>
+    <remarks/>
+    <state>Loaded</state>
+    <processedDate>2026-08-02</processedDate>
+    <processedTime>17:33:05.92</processedTime>
+    <processedBy>Francesco de Aloysio</processedBy>
+  </record>
+  <record>
+    <id>30</id>
+    <documentDate>2026-08-05</documentDate>
+    <documentTime/>
+    <documentProtocol/>
+    <documentType>Email</documentType>
+    <sender>Pippo</sender>
+    <recipient>Topolino</recipient>
+    <subject>Riviste</subject>
+    <remarks/>
+    <state>Loaded</state>
+    <processedDate>2026-08-02</processedDate>
+    <processedTime>19:59:46.97</processedTime>
+    <processedBy>Francesco de Aloysio</processedBy>
+  </record>
+  <record>
+    <id>31</id>
+    <documentDate>2026-08-02</documentDate>
+    <documentTime></documentTime>
+    <documentProtocol>2026/123</documentProtocol>
+    <documentType>Email</documentType>
+    <sender>INPS</sender>
+    <recipient>UNUCI - Amministrazione</recipient>
+    <subject>CUD 2025</subject>
+    <remarks>All'attenzione del Tesoriere</remarks>
+    <state>Loaded</state>
+    <processedDate>2026-08-02</processedDate>
+    <processedTime>22:33:49.75</processedTime>
+    <processedBy>Francesco de Aloysio</processedBy>
+  </record>
+</loadedDocuments>

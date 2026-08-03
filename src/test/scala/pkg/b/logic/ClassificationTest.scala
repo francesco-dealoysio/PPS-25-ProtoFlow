@@ -23,6 +23,7 @@ class ClassificationTest:
         .toString
     createEmptyXmlFile(xmlFilePathName, "test_records")
     empty = new Classification
+
     classification1 = Classification(
       "1",
       "amministrazione"

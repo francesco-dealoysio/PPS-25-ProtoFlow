@@ -11,52 +11,6 @@ import scala.util.{Failure, Success, Try}
 import scala.xml.*
 
 object Xml:
-/*
-  // Thomas
-  private def loadXml(xmlFilePathName: String): Elem =
-    val file = File(xmlFilePathName)
-    //if file.exists() then
-    if Files.exists(xmlFilePathName) then
-      XML.loadFile(xmlFilePathName)
-    else
-      //saveXml(emptyXml)
-      //emptyXml
-      Elem.null
-      
- */
-/*
-  // Thomas
-  private def emptyXml: Elem =
-    <registrationRequests></registrationRequests>
-
-  // Thomas
-  private def loadXml(): Elem =
-    val file = File(filePath)
-
-    if file.exists() then
-      XML.loadFile(file)
-    else
-      saveXml(emptyXml)
-      emptyXml
-
-  // Thomas
-  def findAll(): List[RegistrationRequest] =
-    val xml = loadXml()
-    (xml \ "request").toList.map(fromXml)
-
-  // Thomas
-  def findById(id: String): Option[RegistrationRequest] =
-    findAll().find(_.id == id)
-
-  // Thomas
-  private def saveAll(requests: List[RegistrationRequest]): Unit =
-    val xml =
-      <registrationRequests>
-        {requests.map(toXml)}
-      </registrationRequests>
-
-    saveXml(xml)
- */
 
   def createEmptyXmlFile(xmlFilePathName: String, rootTagName: String): Unit =
     val xmlString = s"<$rootTagName></$rootTagName>"
@@ -196,65 +150,4 @@ object Xml:
       result
 
   @main def tryXml(): Unit =
-    println
-/*
-    val fs = java.io.File.separator
-    val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-    val databaseFolder = baseFolder + fs + "database"
-
-    //val record = recordToElem(Ruolo("5", "Manager", "Compiti di gestione"))
-    val record = Account().getRecordById("2")
-    val elem = recordToElem(record)
-    val pp = PrettyPrinter(80, 2)
-    println(pp.format(elem))
-
-    val account1 = Account().getRecordById("1")
-    val account3 = Account().getRecordById("3")
-    println(account1)
-    println(account3.getRole)
-    account3.setRole("paperino")
-    updateElemOfXML(databaseFolder + fs + "accounts.xml", account3)
-
-    createEmptyXmlFile(databaseFolder + fs + "nuovo.xml", "libri")
-    insertElemIntoXML(databaseFolder + fs + "nuovo.xml", account3)
-*/
-    //writeXML(databaseFolder + fs + "testElem.xml", elem)
-    //saveXML(databaseFolder + fs + "testElem.xml", elem)
-    //insertElemIntoXML(databaseFolder + fs + "test.xml", elem)
-/*
-    val fs = java.io.File.separator
-    val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-    val databaseFolder = getPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder")
-
-    // test loadXML
-    println("\n\nInizio Test")
-    val accounts = loadXML(databaseFolder + fs + "accounts.xml", classOf[Account])
-    accounts.foreach(println)
-    println("XXXXXXXXXXXXXXXXXXX")
-
-    loadXML(databaseFolder + fs + "ruoli.xml", classOf[Ruolo]).foreach(println)
-/*
-    val classifiche = loadXML(databaseFolder + fs + "classifiche.xml", classOf[Classifica])
-    classifiche.foreach(println)
-*/
-    // test filtri
-    val admins = accounts.map(a => a.asInstanceOf[Account]).filter(_.ruolo == "viewer")
-    //println(admins)
-    //admins.foreach(a => println(a.cognome + " " + a.nome))
-    println(admins(0))
-    println(admins(0).cognome + " " + admins(0).nome)
-    println
-
-    val selection: Seq[Account] = accounts.map(a => a.asInstanceOf[Account]).filter(_.id == "2")
-    selection.foreach(r => println(r.cognome))
-    println
-
-    if selection.length > 0 then
-      val p: Account = selection(0)
-      println(s"Selected: ${p.cognome}")
-    println
-
-    for (record <- accounts)
-      println(record.asInstanceOf[Account].cognome)
-*/
-
+    println("Tested in XmlTest.scala")

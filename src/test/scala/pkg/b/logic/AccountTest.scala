@@ -10,6 +10,9 @@ class AccountTest:
 
   private var tempDirectory: Path = _
   private var xmlFilePathName: String = _
+  private var account1: Account = _
+  private var account2: Account = _
+  private var account3: Account = _
   private var empty: Account = _
 
   @Before
@@ -24,6 +27,45 @@ class AccountTest:
     createEmptyXmlFile(xmlFilePathName, "test_records")
     empty = new Account
 
+    account1 = Account(
+      "1",
+      "de aloysio",
+      "francesco",
+      "francesco.dealoysio@studio.unibo.it",
+      "06/11111111",
+      "admin",
+      "presidenza",
+      "presidente",
+      "frank",
+      md5("topolino")
+    )
+
+    account2 = Account(
+      "2",
+      "rossi",
+      "mario",
+      "mario.rossi@gmail.com",
+      "06/22222222",
+      "oper",
+      "amministrazione",
+      "contabile",
+      "rosma",
+      md5("pippo")
+    )
+
+    account3 = Account(
+      "3",
+      "bianchi",
+      "giovanni",
+      "giovanni.bianchi@gmail.com",
+      "06/33333333",
+      "viewer",
+      "segreteria",
+      "assistente",
+      "condor",
+      md5("paperino")
+    )
+
   @After
   def tearDown(): Unit =
     Option(xmlFilePathName).foreach: fileName =>
@@ -31,45 +73,6 @@ class AccountTest:
 
     Option(tempDirectory).foreach: directory =>
       Files.deleteIfExists(directory)
-
-  val account1 = Account(
-    "1",
-    "de aloysio",
-    "francesco",
-    "francesco.dealoysio@studio.unibo.it",
-    "06/11111111",
-    "admin",
-    "presidenza",
-    "presidente",
-    "frank",
-    md5("topolino")
-  )
-
-  val account2 = Account(
-    "2",
-    "rossi",
-    "mario",
-    "mario.rossi@gmail.com",
-    "06/22222222",
-    "oper",
-    "amministrazione",
-    "contabile",
-    "rosma",
-    md5("pippo")
-  )
-
-  val account3 = Account(
-    "3",
-    "bianchi",
-    "giovanni",
-    "giovanni.bianchi@gmail.com",
-    "06/33333333",
-    "viewer",
-    "segreteria",
-    "assistente",
-    "condor",
-    md5("paperino")
-  )
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =

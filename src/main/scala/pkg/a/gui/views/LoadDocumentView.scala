@@ -136,7 +136,7 @@ class LoadDocumentView(user: Account) extends JFXApp3:
               close()
         }
 
-        val header = new HBox {
+       val header = new HBox {
           spacing = 10
           minHeight = 80
           prefHeight = 80
