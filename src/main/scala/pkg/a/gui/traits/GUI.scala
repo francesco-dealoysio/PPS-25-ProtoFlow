@@ -28,11 +28,10 @@ trait GUI extends JFXApp3:
       width = Width
       height = Height
       resizable = false
-      //alwaysOnTop = true
       centerOnScreen()
 
       onCloseRequest = event =>
-        event.consume() // Prevents the window from closing
+        event.consume()
 
       scene = new Scene:
 
