@@ -11,7 +11,7 @@ trait Root extends Common:
 
   private val applicationTitle: String = "ProtoFlow"
 
-  protected def createRoot(currentUser: String, roleDescription: String, contentArea: StackPane, menu: VBox): BorderPane =
+  protected def createRoot(currentUser: String, roleDescription: String, contentArea: StackPane, menu: VBox, onProfileOpen: () => Unit): BorderPane =
 
     val menuVisible = BooleanProperty(true)
 
@@ -35,7 +35,8 @@ trait Root extends Common:
       bottom =
         createFooter(
           currentUser = currentUser,
-          roleDescription = roleDescription
+          roleDescription = roleDescription,
+          onProfileOpen = onProfileOpen
         )
 
   protected def render(contentArea: StackPane, view: => Pane): Unit =
@@ -75,27 +76,21 @@ trait Root extends Common:
         menuButton,
         fieldLabel(applicationTitle, "app-title"),
         spacer,
-        fieldLabel(
-          s"$currentUser\n$roleDescription",
-          "user-info"
-        )
+        fieldLabel(s"$currentUser\n$roleDescription", "user-info")
       )
 
-  private def createFooter(currentUser: String, roleDescription: String): HBox =
-    val dateTimeLabel =
-      fieldLabel("", "footer-date-time")
-
+  private def createFooter(currentUser: String, roleDescription: String,  onProfileOpen: () => Unit): HBox =
+    val dateTimeLabel = fieldLabel("", "footer-date-time")
+    val userInfoLabel = fieldLabel(s"👤 $currentUser ($roleDescription)", "footer-user-info")
+    
     dateTimeLabel.text <==
       DateTime.dynamicDateTimeProperty()
-
+    
+    userInfoLabel.onMouseClicked = _ =>
+      onProfileOpen()
+      
     new HBox:
       alignment = Pos.CenterRight
       spacing = 20
       styleClass += "app-footer"
-      children = Seq(
-        fieldLabel(
-          s"👤 $currentUser ($roleDescription)",
-          "footer-user-info"
-        ),
-        dateTimeLabel
-      )
+      children = Seq(userInfoLabel, dateTimeLabel)

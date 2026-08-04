@@ -104,3 +104,11 @@
     -fx-font-weight: bold;
     -fx-text-fill: #111827;
 }
+
+.footer-user-info {
+    -fx-cursor: hand;
+}
+
+.footer-user-info:hover {
+    -fx-underline: true;
+}

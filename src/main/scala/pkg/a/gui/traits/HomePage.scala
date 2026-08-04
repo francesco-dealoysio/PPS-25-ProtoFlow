@@ -73,7 +73,8 @@ trait HomePage extends Root:
       currentUser = currentAccount.getUsername,
       roleDescription = roleDescription,
       contentArea = contentArea,
-      menu = sidebar
+      menu = sidebar,
+      onProfileOpen = () => navigate(MenuAction.Profilo)
     )
 
   private def createSidebar(onNavigate: MenuAction => Unit): VBox =
