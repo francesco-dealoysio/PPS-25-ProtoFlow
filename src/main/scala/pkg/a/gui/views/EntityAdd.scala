@@ -3,7 +3,8 @@ package pkg.a.gui.views
 import pkg.a.gui.traits.Operation
 import pkg.b.logic.{Account, LoadedDocument}
 import pkg.d.util.IdGen
-import pkg.d.util.Util.{inDocumentsFilePathName, inIdsFilePathName, localDate, localTime}
+import pkg.d.util.Util.{inDocumentsFilePathName, inIdsFilePathName}
+import pkg.d.util.DateTime.{localDate, localTime}
 import scala.util.{Failure, Success, Try}
 import scalafx.scene.control.{Control, Alert, ComboBox, DatePicker, Label, TextArea, TextField}
 import javafx.collections.FXCollections

@@ -14,4 +14,19 @@
     <processedTime>21:46:43.18</processedTime>
     <processedBy>tommy</processedBy>
   </record>
+  <record>
+    <id>34</id>
+    <documentDate>2026-08-04</documentDate>
+    <documentTime></documentTime>
+    <documentProtocol>12345</documentProtocol>
+    <documentType>Email</documentType>
+    <sender>pippo</sender>
+    <recipient>pluto</recipient>
+    <subject>oggetto</subject>
+    <remarks>descrizione</remarks>
+    <state>Loaded</state>
+    <processedDate>2026-08-04</processedDate>
+    <processedTime>11:53:01.59</processedTime>
+    <processedBy>Francesco de Aloysio</processedBy>
+  </record>
 </loadedDocuments>
