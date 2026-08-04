@@ -12,13 +12,12 @@ import java.time.format.DateTimeFormatter
 
 class EntityAdd(val user: Account) extends Operation:
 
-
   override val Title: String = "Aggiunta Entità"
   override val Width = 780
   override val Height = 600
-  pageTitle = "Aggiunta Entità"
 
-  operation = "insert"
+  pageTitle = "Aggiunta Entità"
+  operationType = "insert"
   objEntity = new LoadedDocument
   xmlFilePathName = inDocumentsFilePathName("loaded.xml")
 
@@ -95,7 +94,7 @@ class EntityAdd(val user: Account) extends Operation:
     typeFld.promptText = "Selezionare un tipo"
     typeFld.value.onChange { (_, _, _) =>
       dirty = true
-      saveBtn.disable = false
+      execBtn.disable = false
       resetBtn.disable = false
     }
 
@@ -133,10 +132,10 @@ class EntityAdd(val user: Account) extends Operation:
         lbl.style = "-fx-text-fill: black;"
 
     if (!"".equals(errorMessage)) then
-      new Alert(Alert.AlertType.Information) {
+      new Alert(Alert.AlertType.Error) {
         val found = if counter > 1 then "Trovati" else "Trovato"
         val error = if counter > 1 then "errori" else "errore"
-        title = "Riepilogo errori"
+        title = "Errori"
         headerText = found + " " + counter + " " + error + "!"
         contentText = errorMessage
       }.showAndWait()

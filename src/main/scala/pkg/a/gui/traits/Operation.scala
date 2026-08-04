@@ -14,7 +14,7 @@ trait Operation extends GUI:
 
   override val Title: String = "Operation Trait"
 
-  var operation: String = ""
+  var operationType: String = ""
   var objEntity: Entity = null
   var xmlFilePathName: String = ""
 
@@ -22,7 +22,7 @@ trait Operation extends GUI:
   var controls: Seq[Control] = Seq.empty[Control]
   var dirty = false
 
-  var saveBtn: Button = _
+  var execBtn: Button = _
   var resetBtn: Button = _
   var exitBtn: Button = _
 
@@ -30,6 +30,8 @@ trait Operation extends GUI:
     super.start()
 
   def menu = new VBox {
+    this.styleClass += "sidebar"
+
     //spacing = 8
     minWidth = 160
     prefWidth = 160
@@ -39,7 +41,6 @@ trait Operation extends GUI:
     prefWidth = 0
     maxWidth = 0
     */
-    style = "-fx-background-color: black;"
 
     val dashboardBtn = new Button("Dashboard")
     val profileBtn = new Button("Profilo")
@@ -60,26 +61,9 @@ trait Operation extends GUI:
     )
 
     menuItems.foreach(item =>
+      item.styleClass += "sidebar-button"
       item.maxWidth = Double.MaxValue
       item.textAlignment = TextAlignment.Left
-
-      item.style =
-        """
-          |-fx-background-color: transparent;
-          |-fx-border-color: transparent;
-          |-fx-padding: 0;
-          |-fx-text-fill: white;
-          |-fx-font-size: 14px;
-                """.stripMargin
-
-      item.onMouseEntered = _ =>
-        item.style = "-fx-background-color: lightgreen; -fx-text-fill: black;"
-
-      item.onMouseExited = _ =>
-        item.style = "-fx-background-color: trasparent; -fx-text-fill: white;"
-
-      item.onMouseClicked = _ =>
-        item.style = "-fx-background-color: white; -fx-text-fill: black;"
     )
 
     dashboardBtn.onAction = _ => ()
@@ -94,50 +78,83 @@ trait Operation extends GUI:
   }
 
   def operationPageTitle = new HBox {
+    styleClass += "operation-page-title"
     spacing = 10
     minHeight = 40
     prefHeight = 40
     maxHeight = 40
-    style = "-fx-background-color: lightgreen;"
+    //style = "-fx-background-color: grey;"
     alignment = Pos.Center
+
+    val operationPageTitleLbl = new Label(pageTitle):
+      styleClass += "operation-page-title-lbl"
+
     children = Seq(
-      new Label(pageTitle)
+      operationPageTitleLbl
     )
   }
 
   def operationPageGrid = new GridPane {
     hgap = 16
     vgap = 8
-    style = "-fx-background-color: lightblue;"
     padding = Insets(10)
     controls.zipWithIndex.foreach { (ctl, row) => add(ctl, row % 2, row / 2) }
   }
 
   def operationPageToolBar = new HBox {
+    styleClass += "operation-page-toolbar"
     spacing = 10
     padding = Insets(10)
     minHeight = 40
     prefHeight = 40
     maxHeight = 40
-    style = "-fx-background-color: lightgreen;"
     alignment = Pos.CenterRight
 
-    saveBtn = new Button("Salva") {
+    var execBtnText = "Salva"
+    var askConfirmationText = ""
+    var operationText = ""
+
+    operationType match
+      case "insert" =>
+        askConfirmationText = "aggiunto"
+        operationText = "Aggiunta"
+      case "update" =>
+        askConfirmationText = "modificato"
+        operationText = "Modifica"
+      case "delete" =>
+        execBtnText = "Elimina"
+        askConfirmationText = "eliminato"
+        operationText = "Eliminazione"
+
+    execBtn = new Button(execBtnText) {
       disable = true
       onAction = _ =>
         if valid then
           val confirmed =
             askConfirmation(
-              titleText = "Conferma aggiunta",
+              titleText = "Richiesta conferma",
               header = "Confermi l'operazione?",
-              content = "Il record verrà aggiunto"
+              content = "Il record verrà " + askConfirmationText
             )
+
+          val operationResult = false
           if confirmed then
-            objUpdate
-            if objEntity.recordInsert(objEntity, xmlFilePathName) then
+            val operationResult = operationType match
+              case "insert" =>
+                objUpdate
+                objEntity.recordInsert(objEntity, xmlFilePathName)
+              case "update" =>
+                objUpdate
+                objEntity.recordUpdate(objEntity, xmlFilePathName)
+              case "delete" =>
+                val id = objEntity.getClass.getDeclaredMethod("getId").invoke(objEntity).toString
+                objEntity.recordDelete(id, xmlFilePathName)
+              case _ => false
+
+            if operationResult then
               new Alert(Alert.AlertType.Information) {
                 title = "Esito Operazione"
-                headerText = "Aggiunta Record"
+                headerText = operationText + " Record"
                 contentText = "Operazione eseguita con successo!"
               }.showAndWait()
             stage.close()
@@ -148,7 +165,7 @@ trait Operation extends GUI:
       onAction = _ =>
         fieldsLoad
         dirty = false
-        saveBtn.disable = true
+        execBtn.disable = true
         disable = true
         setLabelForegroundColor(controls)
     }
@@ -170,7 +187,7 @@ trait Operation extends GUI:
 
     children = Seq(
       exitBtn,
-      saveBtn,
+      execBtn,
       resetBtn
     )
   }
@@ -193,13 +210,13 @@ trait Operation extends GUI:
           case t: (TextField | TextArea) =>
             t.text.onChange { (_, _, _) =>
               dirty = true
-              saveBtn.disable = false
+              execBtn.disable = false
               resetBtn.disable = false
             }
           case v: (ComboBox[String] | DatePicker) =>
             v.value.onChange { (_, _, _) =>
               dirty = true
-              saveBtn.disable = false
+              execBtn.disable = false
               resetBtn.disable = false
             }
         }
