@@ -95,7 +95,6 @@ class ErrorLogTest:
     ErrorLog().recordInsert[ErrorLog](errorLog2, xmlFilePathName)
     ErrorLog().recordInsert[ErrorLog](errorLog3, xmlFilePathName)
     val sequence = Seq(errorLog1, errorLog3)
-    //assertEquals(ErrorLog().getRecordsByFilter[ErrorLog](a => a.getClass == "pkg.d.util.Util", xmlFilePathName, classOf[ErrorLog]), sequence)
     assertEquals(ErrorLog().getRecordsByFilter[ErrorLog](a => a.getClass == "pkg.d.util.Util", xmlFilePathName), sequence)
 
   @Test

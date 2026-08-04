@@ -52,7 +52,7 @@ case class LoadedDocument(
   def getProcessedBy: String = processedBy
 
   override def xmlFile = "loaded.xml"
-
+  
   override protected def defaultXmlFilePathName: String =
     val path = inDocumentsFilePathName(xmlFile)
     if java.nio.file.Files.notExists(java.nio.file.Paths.get(path)) then
