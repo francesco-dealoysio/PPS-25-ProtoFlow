@@ -123,6 +123,12 @@ object UiText:
         s"La classifica '$classification' è stata eliminata correttamente."
 
   object Accounts:
+    object Profile:
+      val Title = "Modifica profilo"
+      val Subtitle = "Modifica email, telefono o password del tuo account."
+      val Success = "Profilo modificato correttamente."
+      val Error = "Errore durante la modifica del profilo."
+    
     object Add:
       val Title = "Aggiunta account"
       val Subtitle = "Inserisci i dati del nuovo account."

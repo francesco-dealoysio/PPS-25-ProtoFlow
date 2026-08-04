@@ -60,10 +60,8 @@ class Navigator(stage: JFXApp3.PrimaryStage):
         val scene = new Scene(1100, 700):
           root = homePage(
             viewModel = viewModel,
-            currentUser = account.getName,
-            currentUsername = account.getUsername,
-            onLogout = () =>
-              showLogin()
+            currentAccount = account,
+            onLogout = () => showLogin()
           )
 
         addPageStylesheets(

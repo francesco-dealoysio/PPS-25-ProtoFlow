@@ -3,7 +3,8 @@ package pkg.a.gui.views
 import pkg.a.gui.structures.{MenuAction, MenuItem}
 import pkg.a.gui.text.UiText.Menu
 import pkg.a.gui.traits.HomePage
-import pkg.b.logic.{ArchivedDocument, LoadedDocument, RegisteredDocument}
+import pkg.a.gui.views.HomePageAdminView.showProfileEdit
+import pkg.b.logic.{Account, ArchivedDocument, LoadedDocument, RegisteredDocument}
 
 object HomePageOperView extends HomePage:
 
@@ -22,18 +23,18 @@ object HomePageOperView extends HomePage:
       MenuItem(Menu.Logout, MenuAction.Logout)
     )
 
-  override protected def handleAction(action: MenuAction, navigator: Navigator, currentUsername: String): Unit =
+  override protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit =
     action match
       case MenuAction.NuovaPresaInCarico =>
-        showLoadedDocumentAdd(navigator, currentUsername)
+        showLoadedDocumentAdd(navigator, currentAccount.getUsername)
       case MenuAction.DocumentiDaProtocollare =>
-        showLoadedDocumentManagement(navigator, currentUsername)
+        showLoadedDocumentManagement(navigator, currentAccount.getUsername)
       case MenuAction.DocumentiDaArchiviare =>
-        showRegisteredDocumentManagement(navigator, currentUsername)
+        showRegisteredDocumentManagement(navigator, currentAccount.getUsername)
       case MenuAction.DocumentiArchiviati =>
         showArchivedDocumentManagement(navigator)
       case MenuAction.Profilo =>
-        navigator.show(createPlaceholder("Profilo"))
+        showProfileEdit(currentAccount, navigator)
       case _ =>
         ()
 
@@ -95,5 +96,14 @@ object HomePageOperView extends HomePage:
       ArchivedDocumentDetailsView(
         selectedDocument = selected,
         onExit = () => showArchivedDocumentManagement(navigator)
+      )
+    )
+
+  private def showProfileEdit(selected: Account, navigator: Navigator): Unit =
+    navigator.show(
+      AccountEditView.profile(
+        selectedAccount = selected,
+        onSaved = () => navigator.dashboard(),
+        onExit = () => navigator.dashboard()
       )
     )

@@ -1,6 +1,7 @@
 package pkg.a.gui.traits
 
 import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
+import pkg.b.logic.Account
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, TableColumn, TableView}
 import scalafx.scene.layout.*
@@ -11,7 +12,7 @@ trait HomePage extends Root:
   protected def roleDescription: String
   protected def menuItems: Seq[MenuItem]
 
-  protected def handleAction(action: MenuAction, navigator: Navigator, currentUsername: String): Unit
+  protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit
 
 
   protected final class Navigator(contentArea: StackPane, dashboardFactory: () => Pane):
@@ -24,8 +25,7 @@ trait HomePage extends Root:
 
   final def apply(
                    viewModel: HomePageViewModel,
-                   currentUser: String,
-                   currentUsername: String,
+                   currentAccount: Account,
                    onLogout: () => Unit = () => ()
                  ): BorderPane =
 
@@ -40,57 +40,50 @@ trait HomePage extends Root:
         dashboardFactory = () => dashboardContent()
       )
 
-    val sidebar =
-      createSidebar(
-        viewModel = viewModel,
-        currentUsername = currentUsername,
-        navigator = navigator,
-        onLogout = onLogout
-      )
+    def navigate(action: MenuAction): Unit =
+      action match
+        case MenuAction.Dashboard =>
+          viewModel.select(MenuAction.Dashboard)
+          navigator.dashboard()
+
+        case MenuAction.Logout =>
+          val confirmed =
+            askConfirmation(
+              titleText = "Conferma logout",
+              header = "Vuoi uscire da ProtoFlow?",
+              content = "La sessione corrente verrà terminata."
+            )
+
+          if confirmed then
+            viewModel.select(MenuAction.Logout)
+            onLogout()
+
+        case action =>
+          viewModel.select(action)
+
+          handleAction(
+            action = action,
+            navigator = navigator,
+            currentAccount = currentAccount
+          )
+
+    val sidebar = createSidebar(action => navigate(action))
 
     createRoot(
-      currentUser = currentUser,
+      currentUser = currentAccount.getUsername,
       roleDescription = roleDescription,
       contentArea = contentArea,
       menu = sidebar
     )
 
-  private def createSidebar(viewModel: HomePageViewModel, currentUsername: String, navigator: Navigator, onLogout: () => Unit): VBox =
-
+  private def createSidebar(onNavigate: MenuAction => Unit): VBox =
     val buttons =
       menuItems.map: item =>
         new Button(item.label):
           maxWidth = Double.MaxValue
           alignment = Pos.CenterLeft
           styleClass += "sidebar-button"
-
-          onAction = _ =>
-            item.action match
-
-              case MenuAction.Dashboard =>
-                viewModel.select(MenuAction.Dashboard)
-                navigator.dashboard()
-
-              case MenuAction.Logout =>
-                val confirmed =
-                  askConfirmation(
-                    titleText = "Conferma logout",
-                    header = "Vuoi uscire da ProtoFlow?",
-                    content = "La sessione corrente verrà terminata."
-                  )
-
-                if confirmed then
-                  viewModel.select(MenuAction.Logout)
-                  onLogout()
-
-              case action =>
-                viewModel.select(action)
-
-                handleAction(
-                  action = action,
-                  navigator = navigator,
-                  currentUsername = currentUsername
-                )
+          onAction = _ => onNavigate(item.action)
 
     new VBox:
       prefWidth = 230

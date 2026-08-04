@@ -54,6 +54,9 @@ class AccountViewModel:
       requirePassword
     ).isEmpty
 
+  def validateProfile(email: String): Seq[String] =
+    Seq(validateEmail(email)).flatten
+  
   private def validateRequired(
                                  errorMessage: String,
                                  value: String

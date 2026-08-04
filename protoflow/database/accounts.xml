@@ -1,17 +1,5 @@
 <accounts>
   <record>
-    <id>1</id>
-    <surname>de aloysio</surname>
-    <name>francesco</name>
-    <email>francesco.dealoysio@studio.unibo.it</email>
-    <phone>06/11111111</phone>
-    <role>admin</role>
-    <area>presidenza</area>
-    <assignment>presidente</assignment>
-    <username>frank</username>
-    <password>8f04a464e3660e912e8abaf8aefaa2fe</password>
-  </record>
-  <record>
     <id>2</id>
     <surname>testa</surname>
     <name>thomas</name>
@@ -34,5 +22,17 @@
     <assignment>capo ufficio</assignment>
     <username>robby</username>
     <password>4985b646b98460468e94d7d620af5e49</password>
+  </record>
+  <record>
+    <id>1</id>
+    <surname>de aloysio</surname>
+    <name>francesco</name>
+    <email>francesco.dealoysio@studio.unibo.it</email>
+    <phone>06/11111111</phone>
+    <role>admin</role>
+    <area>presidenza</area>
+    <assignment>presidente</assignment>
+    <username>frank</username>
+    <password>0c88028bf3aa6a6a143ed846f2be1ea4</password>
   </record>
 </accounts>
