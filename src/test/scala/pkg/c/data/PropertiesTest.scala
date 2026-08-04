@@ -37,14 +37,13 @@ class PropertiesTest:
     assertEquals("<not set>", getPropsFileProperty(propsFile, "inesistente"))
 
   @Test
-  def testRemovePropsFileProperty: Unit = {
+  def testRemovePropsFileProperty: Unit =
     clearPropsFileProperties(propsFile)
     removePropsFileProperty(propsFile, "colore") // inesistente
     setPropsFileProperty(propsFile, "colore", "rosso")
     assertEquals("rosso", getPropsFileProperty(propsFile, "colore"))
     removePropsFileProperty(propsFile, "colore")
     assertEquals("<not set>", getPropsFileProperty(propsFile, "colore"))
-  }
 
   @Test
   def testClearPropsFileProperties: Unit =

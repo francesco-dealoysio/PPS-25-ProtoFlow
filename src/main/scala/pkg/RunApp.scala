@@ -6,7 +6,7 @@ import pkg.a.gui.Navigator
 import scalafx.application.JFXApp3
 import scalafx.scene.image.Image
 
-object RunApp extends JFXApp3:
+object toRunApp extends JFXApp3:
 
   override def start(): Unit = {
     Init.init

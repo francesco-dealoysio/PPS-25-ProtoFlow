@@ -1,0 +1,76 @@
+.root {
+    -fx-background-color: #f5f7fb;
+}
+
+/* Header */
+.app-header {
+    /*-fx-background-color: #ffffff;*/
+    -fx-background-color: lightgray;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 15;
+    -fx-spacing: 20;
+}
+
+.app-logo {
+    -fx-font-size: 12px;
+}
+
+.app-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+/* Sidebar */
+.sidebar {
+    -fx-background-color: linear-gradient(to bottom, #08213f, #031526);
+    -fx-padding: 20 10 20 10;
+    -fx-spacing: 8;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 12;
+    -fx-alignment: center-left;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+}
+
+.sidebar-button:focused {
+    -fx-background-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Footer */
+.app-footer {
+    /*-fx-background-color: #f9fafb;*/
+    -fx-background-color: lightgrey;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 10;
+}
+
+.footer-text {
+    -fx-text-fill: #374151;
+    -fx-font-size: 13px;
+}
+
+/* Page Title */
+.operation-page-title {
+    -fx-background-color: grey;
+}
+
+.operation-page-title-lbl {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+/* Page Toolbar */
+.operation-page-toolbar {
+    -fx-background-color: grey;
+}

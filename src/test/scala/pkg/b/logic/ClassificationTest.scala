@@ -19,6 +19,7 @@ class ClassificationTest:
     xmlFilePathName = inTestFilePathName("test.xml")
     createEmptyXmlFile(xmlFilePathName, "test_records")
     empty = new Classification
+
     classification1 = Classification(
       "1",
       "amministrazione"
