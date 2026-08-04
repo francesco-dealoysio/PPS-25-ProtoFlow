@@ -3,7 +3,7 @@ package pkg.b.logic
 import org.junit.*
 import org.junit.Assert.*
 import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
-import pkg.d.util.Util.{inTestFilePathName, md5}
+import pkg.d.util.Util.{inTestFilePathName, cipher}
 
 class AccountTest:
 
@@ -26,7 +26,7 @@ class AccountTest:
     "presidenza",
     "presidente",
     "frank",
-    md5("topolino")
+    cipher("topolino")
   )
 
   val account2 = Account(
@@ -39,7 +39,7 @@ class AccountTest:
     "amministrazione",
     "contabile",
     "rosma",
-    md5("pippo")
+    cipher("pippo")
   )
 
   val account3 = Account(
@@ -52,7 +52,7 @@ class AccountTest:
     "segreteria",
     "assistente",
     "condor",
-    md5("paperino")
+    cipher("paperino")
   )
 
   @Test

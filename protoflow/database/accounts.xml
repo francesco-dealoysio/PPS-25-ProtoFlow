@@ -9,7 +9,7 @@
     <area>amministrazione</area>
     <assignment>tesoriere</assignment>
     <username>tommy</username>
-    <password>c380b0f52732254a94dfbbd38c59a339</password>
+    <password>16ba96eedfccdd8b8c847aba3cfb6001d9866123702f5bf9d1306bb6ccff2ce49ae5731523dd76de403462029982861a6b46504aa4191197f59af0a2adad0a7c</password>
   </record>
   <record>
     <id>3</id>
@@ -21,7 +21,7 @@
     <area>personale</area>
     <assignment>capo ufficio</assignment>
     <username>robby</username>
-    <password>4985b646b98460468e94d7d620af5e49</password>
+    <password>80c98e267ac4efab4d0e403d2114128a00c65b78a749643fd1005138b0c6b8f4afe3a32d9e150cd8462f68ce26840ac61f13e788ffb18e344ecaf09a6a7094bc</password>
   </record>
   <record>
     <id>1</id>
@@ -33,6 +33,6 @@
     <area>presidenza</area>
     <assignment>presidente</assignment>
     <username>frank</username>
-    <password>0c88028bf3aa6a6a143ed846f2be1ea4</password>
+    <password>03bb8ba244594956f513d61391d7946867731184ccc679373f66c8b7b80017be004f11c6790c7e7c749668c77e418bb04988923cbf7381b447b2357cc371911b</password>
   </record>
 </accounts>

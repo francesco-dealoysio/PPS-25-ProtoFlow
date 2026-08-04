@@ -3,7 +3,7 @@ package pkg.b.logic
 import pkg.b.logic.Entity
 import pkg.c.data.Xml.*
 import pkg.d.util.Logger.*
-import pkg.d.util.Util.md5
+import pkg.d.util.Util.cipher
 
 case class Account(
                  private var id: String = "",
@@ -29,7 +29,7 @@ case class Account(
   def setArea(value: String): Unit = area = value
   def setAssignment(value: String): Unit = assignment = value
   def setUsername(value: String): Unit = username = value
-  def setPassword(value: String): Unit = password = md5(value)
+  def setPassword(value: String): Unit = password = cipher(value)
 
   def getId: String = id
   def getSurname: String = surname

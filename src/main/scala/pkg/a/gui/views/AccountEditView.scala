@@ -5,7 +5,7 @@ import pkg.a.gui.traits.Form
 import pkg.a.gui.text.UiText
 import pkg.a.gui.text.UiText.{Accounts, Common, Fields}
 import pkg.b.logic.Account
-import pkg.d.util.Util.{inDatabaseFilePathName, md5}
+import pkg.d.util.Util.{inDatabaseFilePathName, cipher}
 import pkg.d.util.XmlToPdf
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
@@ -53,7 +53,7 @@ object AccountEditView extends Form:
             selectedAccount.getPassword
 
           case raw =>
-            md5(raw)
+            cipher(raw)
 
       Account(
         id = selectedAccount.getId,
@@ -124,7 +124,7 @@ object AccountEditView extends Form:
               selectedAccount.setEmail(email.value)
               selectedAccount.setPhone(phone.value)
               if password.value.nonEmpty then
-                selectedAccount.setPassword(md5(password.value))
+                selectedAccount.setPassword(password.value)
 
             onSaved()
 

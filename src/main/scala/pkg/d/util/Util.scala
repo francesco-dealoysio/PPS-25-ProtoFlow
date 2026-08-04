@@ -35,15 +35,17 @@ object Util:
         println(s"Image not found in resources: $imagePath")
         null
 
-  /** Compute MD5 hash of a given string and return it as a hex string */
-  def md5(text: String): String =
+  def cipher(text: String): String =
+    import java.nio.charset.StandardCharsets
     import java.security.MessageDigest
-    import scala.util.Try
 
     require(text != null, "Input text cannot be null")
-    val md = MessageDigest.getInstance("MD5")
-    val digestBytes = md.digest(text.getBytes("UTF-8"))
-    digestBytes.map("%02x".format(_)).mkString
+
+    val digest = MessageDigest.getInstance("SHA3-512")
+    val digestBytes =
+      digest.digest(text.getBytes(StandardCharsets.UTF_8))
+
+    digestBytes.map(byte => f"${byte & 0xff}%02x").mkString
 
   def inDatabaseFilePathName(fileName: String): String =
     inFolderFilePathName("database", fileName)
@@ -75,10 +77,10 @@ object Util:
     print("\nTest loadImage:\n\t")
     val image = loadImage("img/message.jpg")
 
-    // test md5
-    println("\nTest md5:")
-    println("\t" + md5(""))
-    println("\t" + md5("topolino"))
+    // test SHA3-512
+    println("\nTest SHA3-512:")
+    println("\t" + cipher(""))
+    println("\t" + cipher("topolino"))
 
 
     // test inDatabaseFilePathName

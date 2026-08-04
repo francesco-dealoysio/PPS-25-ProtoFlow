@@ -2,7 +2,7 @@ package pkg.b.logic
 
 import pkg.c.data.Xml.*
 import pkg.c.data.Properties.*
-import pkg.d.util.Util.md5
+import pkg.d.util.Util.cipher
 
 object LoginService:
 
@@ -26,7 +26,7 @@ object LoginService:
           Left(LoginError.InvalidCredentials)
 
   private def checkCredentials(username: String, password: String): Option[Account] =
-    accounts.find(account => account.getUsername == username && account.getPassword == md5(password))
+    accounts.find(account => account.getUsername == username && account.getPassword == cipher(password))
 
   private def accounts: Seq[Account] =
     val fs = java.io.File.separator

@@ -1,13 +1,13 @@
 package pkg.b.logic
 
 import scala.xml.Elem
-import pkg.d.util.Util.md5
+import pkg.d.util.Util.cipher
 
 object DummyData:
 
-  private val passwd1 = md5("topolino")
-  private val passwd2 = md5("tommy$123")
-  private val passwd3 = md5("robby$456")
+  private val passwd1 = cipher("topolino")
+  private val passwd2 = cipher("tommy$123")
+  private val passwd3 = cipher("robby$456")
 
   val accounts: Elem = <accounts>
     <record>
@@ -20,7 +20,7 @@ object DummyData:
       <area>presidenza</area>
       <assignment>presidente</assignment>
       <username>frank</username>
-      <password>{md5("topolino")}</password>
+      <password>{passwd1}</password>
     </record>
     <record>
       <id>2</id>

@@ -1,7 +1,7 @@
 package pkg.b.logic
 
 import pkg.d.util.IdGen
-import pkg.d.util.Util.{inDatabaseFilePathName, inIdsFilePathName, md5}
+import pkg.d.util.Util.{inDatabaseFilePathName, inIdsFilePathName, cipher}
 
 import scala.util.Random
 
@@ -96,7 +96,7 @@ class RegistrationRequestService(
             area = request.getArea,
             assignment = request.getAssignment,
             username = username,
-            password = md5(plainPassword)
+            password = cipher(plainPassword)
           )
 
         if !accountLogic.recordInsert(account, accountsFilePathName) then

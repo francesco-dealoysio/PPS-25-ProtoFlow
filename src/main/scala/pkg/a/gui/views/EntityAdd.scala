@@ -162,7 +162,7 @@ class EntityAdd(val user: Account) extends Operation:
 @main def tryEntityAdd: Unit =
   println("")
   import pkg.b.logic.Account
-  import pkg.d.util.Util.md5
+  import pkg.d.util.Util.cipher
 
   val account1 = Account(
     "1",
@@ -174,7 +174,7 @@ class EntityAdd(val user: Account) extends Operation:
     "presidenza",
     "presidente",
     "frank",
-    md5("topolino")
+    cipher("topolino")
   )
 
   EntityAdd(account1).main(Array.empty)

@@ -47,7 +47,7 @@ class ErrorLogTest:
       "2026-07-20",
       "22:19:13.86",
       "pkg.d.util.Util",
-      "md5",
+      "cipher",
       "115",
       "messaggio 3",
       "Stack trace 3"

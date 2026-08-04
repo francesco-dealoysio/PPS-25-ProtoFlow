@@ -5,7 +5,7 @@ import pkg.a.gui.text.UiText
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Account
 import pkg.d.util.IdGen
-import pkg.d.util.Util.{inIdsFilePathName, md5}
+import pkg.d.util.Util.{inIdsFilePathName, cipher}
 import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
@@ -46,7 +46,7 @@ object AccountAddView extends Form:
         area = area.value,
         assignment = assignment.value,
         username = username.value,
-        password = md5(password.value)
+        password = cipher(password.value)
       )
 
     def validateForm(): Boolean =

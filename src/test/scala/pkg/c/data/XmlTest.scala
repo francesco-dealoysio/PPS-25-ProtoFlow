@@ -4,7 +4,7 @@ import org.junit.*
 import org.junit.Assert.*
 import pkg.b.logic.{Account, Role}
 import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, getRecordsFromXML, insertElemIntoXML, removeElemFromXML, saveXML, searchFieldValue, updateElemOfXML}
-import pkg.d.util.Util.{inTestFilePathName, md5}
+import pkg.d.util.Util.{inTestFilePathName, cipher}
 import java.*
 import java.io.{File, IOException}
 import java.nio.*
@@ -17,7 +17,6 @@ import scala.xml.XML
 class XmlTest:
 
   private var xmlFilePathName: String = _
-  //private var tempDirectory: Path = _
   private var account: Account = _
   private var emptyAccount: Account = _
   private var role1: Role = _
@@ -28,8 +27,6 @@ class XmlTest:
 
   @Before
   def setUp(): Unit =
-    //tempDirectory = Files.createTempDirectory("protoflow-xml-test-")
-    //xmlFilePathName = tempDirectory.resolve("test.xml").toString
     xmlFilePathName = inTestFilePathName("test.xml")
     emptyAccount = new Account
 
@@ -43,7 +40,7 @@ class XmlTest:
       "presidenza",
       "presidente",
       "frank",
-      md5("topolino")
+      cipher("topolino")
     )
 
     role1 = Role(
@@ -78,20 +75,12 @@ class XmlTest:
         <assignment>presidente</assignment>
         <username>frank</username>
         <password>
-          {md5("topolino")}
+          {cipher("topolino")}
         </password>
       </record>
 
   @After
   def tearDown(): Unit =
-/*
-    def tearDown(): Unit =
-      Option(xmlFilePathName).foreach: fileName =>
-        Files.deleteIfExists(Path.of(fileName))
-
-      Option(tempDirectory).foreach: directory =>
-        Files.deleteIfExists(directory)
-*/
     Files.deleteIfExists(Paths.get(inTestFilePathName("file1.xml")))
     Files.deleteIfExists(Paths.get(inTestFilePathName("file2.xml")))
     Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
