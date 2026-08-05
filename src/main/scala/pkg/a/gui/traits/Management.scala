@@ -3,10 +3,11 @@ package pkg.a.gui.traits
 import pkg.a.gui.text.UiText.Common.Buttons.Print
 import pkg.a.gui.text.UiStyles.Common.*
 import scalafx.Includes.*
+import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Insets
 import scalafx.scene.Node
-import scalafx.scene.control.{Button, Label, TableView}
+import scalafx.scene.control.{Button, Label, TableColumn, TableView}
 import scalafx.scene.layout.{BorderPane, Priority, VBox}
 
 trait Management extends Common:

@@ -3,7 +3,7 @@ package pkg.a.gui.views
 import pkg.a.gui.structures.{MenuAction, MenuItem}
 import pkg.a.gui.text.UiText.Menu.*
 import pkg.a.gui.traits.HomePage
-import pkg.b.logic.{Account, Classification, Registration, Role}
+import pkg.b.logic.{Account, Classification, DocumentLog, Registration, Role}
 
 object HomePageAdminView extends HomePage:
 
@@ -35,7 +35,7 @@ object HomePageAdminView extends HomePage:
         navigator.show(createPlaceholder("Statistiche"))
 
       case MenuAction.Log =>
-        navigator.show(createPlaceholder("Log"))
+        showDocumentLogManagement(navigator)
 
       case MenuAction.ControlloGestione =>
         navigator.show(createPlaceholder("Controllo di gestione"))
@@ -91,8 +91,7 @@ object HomePageAdminView extends HomePage:
       AccountManagementView(
         onAdd = () => showAccountAdd(navigator),
         onEdit = selected => showAccountEdit(selected = selected, navigator = navigator),
-        onExit = () =>
-          navigator.dashboard()
+        onExit = () => navigator.dashboard()
       )
     )
 
@@ -171,5 +170,21 @@ object HomePageAdminView extends HomePage:
         selectedAccount = selected,
         onSaved = () => navigator.dashboard(),
         onExit = () => navigator.dashboard()
+      )
+    )
+
+  private def showDocumentLogManagement(navigator: Navigator): Unit =
+    navigator.show(
+      DocumentLogManagementView(
+        onView = selected => showDocumentLogDetails(selected, navigator),
+        onExit = () => navigator.dashboard()
+      )
+    )
+
+  private def showDocumentLogDetails(selected: DocumentLog, navigator: Navigator): Unit =
+    navigator.show(
+      DocumentLogDetailsView(
+        selectedLog = selected,
+        onExit = () => showDocumentLogManagement(navigator)
       )
     )
