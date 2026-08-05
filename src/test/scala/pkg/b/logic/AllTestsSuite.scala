@@ -13,7 +13,8 @@ import pkg.c.data.XmlTest
   classOf[ErrorLogTest],
   classOf[XmlTest],
   classOf[LoadedDocumentTest],
-  classOf[ArchivedDocumentTest]
+  classOf[ArchivedDocumentTest],
+  classOf[DocumentLogTest]
 ))
 
 class AllTestsSuite
