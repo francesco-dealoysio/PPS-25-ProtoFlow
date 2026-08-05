@@ -9,6 +9,7 @@ import scalafx.application.Platform
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText
 import pkg.a.gui.text.UiStyles.Common.*
+import pkg.a.gui.text.UiText.Validation.Role.*
 import UiText.{Fields, Roles}
 
 object RoleAddView extends Form:
@@ -41,9 +42,9 @@ object RoleAddView extends Form:
         )
 
       showFormFieldErrors(errors):
-        case RoleViewModel.RoleRequiredError | RoleViewModel.DuplicateRoleError =>
+        case RoleRequired | DuplicateRole =>
           role
-        case RoleViewModel.DescriptionRequiredError =>
+        case DescriptionRequired =>
           description
 
     def resetForm(): Unit =

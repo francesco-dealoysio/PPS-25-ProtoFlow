@@ -6,6 +6,7 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
 import scalafx.scene.layout.BorderPane
 import UiText.{Classifications, Fields}
+import pkg.a.gui.text.UiText.Validation.Classification.*
 
 object ClassificationEditView extends Form:
 
@@ -57,12 +58,8 @@ object ClassificationEditView extends Form:
         )
 
       showFormFieldErrors(errors):
-        case ClassificationViewModel.ClassificationRequiredError |
-             ClassificationViewModel.DuplicateClassificationError =>
-          classification
-
-        case ClassificationViewModel.DescriptionRequiredError =>
-          description
+        case ClassificationRequired | DuplicateClassification=>classification
+        case DescriptionRequired => description
 
     var formSaved = false
 

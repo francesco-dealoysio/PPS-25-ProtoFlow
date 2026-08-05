@@ -4,8 +4,9 @@ import pkg.a.gui.structures.RoleViewModel
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Role
 import scalafx.scene.layout.BorderPane
-import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiText
 import pkg.a.gui.text.UiStyles.Common.*
+import pkg.a.gui.text.UiText.Validation.Role.*
 import UiText.{Fields, Roles}
 
 object RoleEditView extends Form:
@@ -47,9 +48,9 @@ object RoleEditView extends Form:
         )
 
       showFormFieldErrors(errors):
-        case RoleViewModel.RoleRequiredError | RoleViewModel.DuplicateRoleError =>
+        case RoleRequired | DescriptionRequired =>
           role
-        case RoleViewModel.DescriptionRequiredError =>
+        case DuplicateRole =>
           description
 
     var formSaved = false

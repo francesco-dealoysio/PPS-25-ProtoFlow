@@ -4,6 +4,7 @@ import pkg.a.gui.structures.AccountViewModel
 import pkg.a.gui.traits.Form
 import pkg.a.gui.text.UiText.{Accounts, Common}
 import pkg.a.gui.text.UiText.Fields.*
+import pkg.a.gui.text.UiText.Validation.Account.*
 import pkg.b.logic.{Account, Role}
 import pkg.d.util.Util.{cipher, inDatabaseFilePathName}
 import pkg.d.util.XmlToPdf
@@ -93,16 +94,14 @@ object AccountEditView extends Form:
 
       if profileMode then
         showFormFieldErrors(errors):
-          case AccountViewModel.EmailRequiredError |
-               AccountViewModel.EmailInvalidError =>
-            email
+          case EmailRequired | EmailInvalid=> email
       else
         showFormFieldErrors(errors):
-          case AccountViewModel.SurnameRequiredError => surname
-          case AccountViewModel.NameRequiredError => name
-          case AccountViewModel.EmailRequiredError | AccountViewModel.EmailInvalidError => email
-          case AccountViewModel.RoleRequiredError => role
-          case AccountViewModel.UsernameRequiredError | AccountViewModel.DuplicateUsernameError => username
+          case SurnameRequired => surname
+          case NameRequired => name
+          case EmailRequired | EmailInvalid => email
+          case RoleRequired => role
+          case UsernameRequired | DuplicateUsername => username
 
     var formSaved = false
 

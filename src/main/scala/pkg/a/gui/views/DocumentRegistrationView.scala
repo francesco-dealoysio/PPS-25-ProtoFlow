@@ -2,6 +2,7 @@ package pkg.a.gui.views
 
 import pkg.a.gui.structures.LoadedDocumentViewModel
 import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiText.Validation.LoadedDocument.*
 import UiText.{Fields, LoadedDocuments, RegisteredDocuments}
 import pkg.a.gui.traits.Form
 import pkg.b.logic.{LoadedDocument, LoadedDocumentService}
@@ -59,13 +60,13 @@ object DocumentRegistrationView extends Form:
       clearErrors()
       val errors = viewModel.validate(editedDocument())
       showFormFieldErrors(errors):
-        case LoadedDocumentViewModel.DocumentDateRequiredError => documentDate
-        case LoadedDocumentViewModel.DocumentTimeRequiredError => documentTime
-        case LoadedDocumentViewModel.DocumentProtocolRequiredError => documentProtocol
-        case LoadedDocumentViewModel.DocumentTypeRequiredError => documentType
-        case LoadedDocumentViewModel.SenderRequiredError => sender
-        case LoadedDocumentViewModel.RecipientRequiredError => recipient
-        case LoadedDocumentViewModel.SubjectRequiredError => subject
+        case DocumentDateRequired => documentDate
+        case DocumentTimeRequired => documentTime
+        case DocumentProtocolRequired => documentProtocol
+        case DocumentTypeRequired => documentType
+        case SenderRequired => sender
+        case RecipientRequired => recipient
+        case SubjectRequired => subject
 
     def resetForm(): Unit =
       resetFields(monitoredFields*)

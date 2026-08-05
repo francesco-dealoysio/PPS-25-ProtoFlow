@@ -11,6 +11,7 @@ import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
 import UiText.Accounts
 import pkg.a.gui.text.UiText.Fields.*
+import pkg.a.gui.text.UiText.Validation.Account.*
 
 object AccountAddView extends Form:
 
@@ -61,12 +62,12 @@ object AccountAddView extends Form:
         )
 
       showFormFieldErrors(errors):
-        case AccountViewModel.SurnameRequiredError => surname
-        case AccountViewModel.NameRequiredError => name
-        case AccountViewModel.EmailRequiredError | AccountViewModel.EmailInvalidError => email
-        case AccountViewModel.RoleRequiredError => role
-        case AccountViewModel.UsernameRequiredError | AccountViewModel.DuplicateUsernameError => username
-        case AccountViewModel.PasswordRequiredError => password
+        case SurnameRequired => surname
+        case NameRequired => name
+        case EmailRequired | EmailInvalid => email
+        case RoleRequired => role
+        case UsernameRequired| DuplicateUsername => username
+        case PasswordRequired => password
 
     def resetForm(): Unit =
       resetFields(monitoredFields*)

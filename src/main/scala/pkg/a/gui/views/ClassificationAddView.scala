@@ -9,6 +9,7 @@ import pkg.d.util.Util.inIdsFilePathName
 import scalafx.application.Platform
 import scalafx.scene.layout.BorderPane
 import UiText.{Classifications, Fields}
+import pkg.a.gui.text.UiText.Validation.Classification.*
 
 object ClassificationAddView extends Form:
 
@@ -42,10 +43,8 @@ object ClassificationAddView extends Form:
         )
 
       showFormFieldErrors(errors):
-        case ClassificationViewModel.ClassificationRequiredError | ClassificationViewModel.DuplicateClassificationError =>
-          classification
-        case ClassificationViewModel.DescriptionRequiredError =>
-          description
+        case ClassificationRequired | DuplicateClassification => classification
+        case DescriptionRequired => description
 
     def resetForm(): Unit =
       resetFields(classification, description)
