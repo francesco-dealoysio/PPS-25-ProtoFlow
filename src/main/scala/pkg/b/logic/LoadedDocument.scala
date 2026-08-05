@@ -52,12 +52,30 @@ case class LoadedDocument(
   def getProcessedBy: String = processedBy
 
   override def xmlFile = "loaded.xml"
-  
+
   override protected def defaultXmlFilePathName: String =
-    val path = inDocumentsFilePathName(xmlFile)
-    if java.nio.file.Files.notExists(java.nio.file.Paths.get(path)) then
-      createEmptyXmlFile(path, "loadedDocuments")
-    path
+    inDocumentsFilePathName(xmlFile)
+
+  override def recordInsert[T](obj: T, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    var result = false
+    try
+      val record = obj.asInstanceOf[LoadedDocument]
+      val id = record.id
+      if !(fieldExists("id", id, xmlFilePathName)) then
+        result = insertElemIntoXML(xmlFilePathName, obj)
+        DocumentLog().writeDocumentOperationLog(
+          record.id,
+          "loading",
+          record.processedDate,
+          record.processedTime,
+          record.processedBy
+        )
+      else
+        throw new RuntimeException("Valore duplicato (id)!")
+    catch
+      case e: Exception =>
+        logger(e)
+    result
 
 @main def tryLoadedDocument: Unit =
   println("Tested in LoadedDocumentTest")

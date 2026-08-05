@@ -22,6 +22,7 @@ class DocumentLogTest:
 
     documentLog1 = DocumentLog(
       "1",
+      "3",
       "loading",
       "2026-07-10",
       "22:19:13.86",
@@ -30,6 +31,7 @@ class DocumentLogTest:
 
     documentLog2 = DocumentLog(
       "2",
+      "3",
       "registering",
       "2026-07-10",
       "22:19:13.86",
@@ -37,6 +39,7 @@ class DocumentLogTest:
     )
 
     documentLog3 = DocumentLog(
+      "3",
       "3",
       "archiving",
       "2026-07-10",
@@ -46,7 +49,8 @@ class DocumentLogTest:
 
   @After
   def tearDown(): Unit = {
-    Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
+    ()
+    //Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
   }
 
   @Test
@@ -175,3 +179,38 @@ class DocumentLogTest:
     record.setId("100")
     assertFalse(DocumentLog().recordDelete(record.getId, xmlFilePathName))
 
+  @Test
+  def testWriteDocumentOperationLog: Unit =
+    import pkg.b.logic.Account
+    import pkg.d.util.Util.cipher
+    val user = Account(
+      "1",
+      "Rossi",
+      "Mario",
+      "mario.rossi@studio.unibo.it",
+      "06/12345678",
+      "admin",
+      "Ufficio informatica",
+      "Tecnico informatico",
+      "tecnico1",
+      cipher("topolino")
+    )
+    val operationType = "loading"
+
+    val loadedDocument = LoadedDocument(
+      "1",
+      "2026-07-10",
+      "22:19:13.86",
+      "2024/002342/F.D.",
+      "email",
+      "ACEA",
+      "UNUCI/Tesoreria",
+      "Bollette energia elettrica",
+      "Alla attenzione del Tesoriere",
+      "loaded",
+      "2026-07-10",
+      "22:19:13.86",
+      "Rossi"
+    )
+
+    assertTrue(loadedDocument.recordInsert(loadedDocument, xmlFilePathName))

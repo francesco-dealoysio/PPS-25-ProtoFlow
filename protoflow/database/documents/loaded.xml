@@ -1,32 +1,17 @@
-<loadedDocuments>
+<loaded>
   <record>
-    <id>22</id>
-    <documentDate>2026-07-30</documentDate>
-    <documentTime>21:45:34.73</documentTime>
-    <documentProtocol>fdxgxf</documentProtocol>
-    <documentType>xcfvcx</documentType>
-    <sender>vxcvxc</sender>
-    <recipient>vxcvxc</recipient>
-    <subject>vxvxc</subject>
-    <remarks>vxcvx</remarks>
-    <state>loaded</state>
-    <processedDate>2026-07-30</processedDate>
-    <processedTime>21:46:43.18</processedTime>
-    <processedBy>tommy</processedBy>
-  </record>
-  <record>
-    <id>34</id>
-    <documentDate>2026-08-04</documentDate>
-    <documentTime></documentTime>
-    <documentProtocol>12345</documentProtocol>
-    <documentType>Email</documentType>
+    <id>47</id>
+    <documentDate>2026-08-05</documentDate>
+    <documentTime>11:01:17.72</documentTime>
+    <documentProtocol>123</documentProtocol>
+    <documentType>lettera</documentType>
     <sender>pippo</sender>
     <recipient>pluto</recipient>
-    <subject>oggetto</subject>
-    <remarks>descrizione</remarks>
-    <state>Loaded</state>
-    <processedDate>2026-08-04</processedDate>
-    <processedTime>11:53:01.59</processedTime>
-    <processedBy>Francesco de Aloysio</processedBy>
+    <subject>test</subject>
+    <remarks>testo note</remarks>
+    <state>loaded</state>
+    <processedDate>2026-08-05</processedDate>
+    <processedTime>11:01:44.17</processedTime>
+    <processedBy>tommy</processedBy>
   </record>
-</loadedDocuments>
+</loaded>
