@@ -2,10 +2,10 @@ package pkg.a.gui.views
 
 import pkg.a.gui.structures.AccountViewModel
 import pkg.a.gui.traits.Form
-import pkg.a.gui.text.UiText
-import pkg.a.gui.text.UiText.{Accounts, Common, Fields}
-import pkg.b.logic.Account
-import pkg.d.util.Util.{inDatabaseFilePathName, cipher}
+import pkg.a.gui.text.UiText.{Accounts, Common}
+import pkg.a.gui.text.UiText.Fields.*
+import pkg.b.logic.{Account, Role}
+import pkg.d.util.Util.{cipher, inDatabaseFilePathName}
 import pkg.d.util.XmlToPdf
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
@@ -24,18 +24,19 @@ object AccountEditView extends Form:
   private def edit(selectedAccount: Account, onSaved: () => Unit, onExit: () => Unit, mode: EditMode): BorderPane =
 
     val accountLogic = new Account()
+    val roleLogic = new Role()
     val viewModel = new AccountViewModel()
     val profileMode = mode == EditMode.Profile
 
-    val surname = stringField(Fields.Prompts.Surname, selectedAccount.getSurname)
-    val name = stringField(Fields.Prompts.Name, selectedAccount.getName)
-    val email = stringField(Fields.Prompts.Email, selectedAccount.getEmail)
-    val phone = stringField(Fields.Prompts.Phone, selectedAccount.getPhone)
-    val role = stringComboField(AccountViewModel.roles, Fields.Prompts.SelectRole, selectedAccount.getRole)
-    val area = stringField(Fields.Prompts.Area, selectedAccount.getArea)
-    val assignment = stringField(Fields.Prompts.Assignment, selectedAccount.getAssignment)
-    val username = stringField(Fields.Prompts.Username, selectedAccount.getUsername)
-    val password = passwordFormField(Fields.Prompts.KeepPassword)
+    val surname = stringField(Prompts.Surname, selectedAccount.getSurname)
+    val name = stringField(Prompts.Name, selectedAccount.getName)
+    val email = stringField(Prompts.Email, selectedAccount.getEmail)
+    val phone = stringField(Prompts.Phone, selectedAccount.getPhone)
+    val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), Prompts.SelectRole, selectedAccount.getRole)
+    val area = stringField(Prompts.Area, selectedAccount.getArea)
+    val assignment = stringField(Prompts.Assignment, selectedAccount.getAssignment)
+    val username = stringField(Prompts.Username, selectedAccount.getUsername)
+    val password = passwordFormField(Prompts.KeepPassword)
     val accountFields: Seq[FormField[? <: Node]] = Seq(surname, name, email, phone, role, area, assignment, username, password)
     val profileFields: Seq[FormField[? <: Node]] = Seq(email, phone, password)
 
@@ -152,22 +153,22 @@ object AccountEditView extends Form:
 
     val profileRows =
       Seq(
-        formRow(Fields.Labels.required(Fields.Labels.Email), email),
-        formRow(Fields.Labels.Phone, phone),
-        formRow(Fields.Labels.Password, password)
+        formRow(Labels.required(Labels.Email), email),
+        formRow(Labels.Phone, phone),
+        formRow(Labels.Password, password)
       )
 
     val accountRows =
       Seq(
-        formRow(Fields.Labels.required(Fields.Labels.Surname), surname),
-        formRow(Fields.Labels.required(Fields.Labels.Name), name),
-        formRow(Fields.Labels.required(Fields.Labels.Email), email),
-        formRow(Fields.Labels.Phone, phone),
-        formRow(Fields.Labels.required(Fields.Labels.Role), role),
-        formRow(Fields.Labels.Area, area),
-        formRow(Fields.Labels.Assignment, assignment),
-        formRow(Fields.Labels.required(Fields.Labels.Username), username),
-        formRow(Fields.Labels.Password, password)
+        formRow(Labels.required(Labels.Surname), surname),
+        formRow(Labels.required(Labels.Name), name),
+        formRow(Labels.required(Labels.Email), email),
+        formRow(Labels.Phone, phone),
+        formRow(Labels.required(Labels.Role), role),
+        formRow(Labels.Area, area),
+        formRow(Labels.Assignment, assignment),
+        formRow(Labels.required(Labels.Username), username),
+        formRow(Labels.Password, password)
       )
 
     val form = formGrid(if profileMode then profileRows else accountRows)

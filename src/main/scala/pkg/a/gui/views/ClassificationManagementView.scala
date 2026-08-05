@@ -2,7 +2,6 @@ package pkg.a.gui.views
 
 import pkg.a.gui.traits.Management
 import pkg.b.logic.Classification
-import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
@@ -10,7 +9,7 @@ import scalafx.scene.layout.*
 import pkg.d.util.Logger.*
 import pkg.d.util.Util.inDatabaseFilePathName
 import pkg.d.util.XmlToPdf
-import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiText
 import UiText.{Fields, Classifications, Common}
 
 object ClassificationManagementView extends Management:

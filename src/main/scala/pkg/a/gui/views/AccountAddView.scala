@@ -3,30 +3,32 @@ package pkg.a.gui.views
 import pkg.a.gui.structures.AccountViewModel
 import pkg.a.gui.text.UiText
 import pkg.a.gui.traits.Form
-import pkg.b.logic.Account
+import pkg.b.logic.{Account, Role}
 import pkg.d.util.IdGen
 import pkg.d.util.Util.{inIdsFilePathName, cipher}
 import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
-import UiText.{Accounts, Fields}
+import UiText.Accounts
+import pkg.a.gui.text.UiText.Fields.*
 
 object AccountAddView extends Form:
 
   def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val accountLogic = new Account()
+    val roleLogic = new Role()
     val viewModel = new AccountViewModel()
 
-    val surname = stringField(Fields.Prompts.Surname)
-    val name = stringField(Fields.Prompts.Name)
-    val email = stringField(Fields.Prompts.Email)
-    val phone = stringField(Fields.Prompts.Phone)
-    val role = stringComboField(AccountViewModel.roles, Fields.Prompts.SelectRole)
-    val area = stringField(Fields.Prompts.Area)
-    val assignment = stringField(Fields.Prompts.Assignment)
-    val username = stringField(Fields.Prompts.Username)
-    val password = passwordFormField(Fields.Prompts.Password)
+    val surname = stringField(Prompts.Surname)
+    val name = stringField(Prompts.Name)
+    val email = stringField(Prompts.Email)
+    val phone = stringField(Prompts.Phone)
+    val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), Prompts.SelectRole)
+    val area = stringField(Prompts.Area)
+    val assignment = stringField(Prompts.Assignment)
+    val username = stringField(Prompts.Username)
+    val password = passwordFormField(Prompts.Password)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(surname, name, email, phone, role, area, assignment, username, password)
     val resultMessage = messageLabel()
@@ -95,15 +97,15 @@ object AccountAddView extends Form:
     val form =
       formGrid(
         Seq(
-          formRow(Fields.Labels.required(Fields.Labels.Surname), surname),
-          formRow(Fields.Labels.required(Fields.Labels.Name), name),
-          formRow(Fields.Labels.required(Fields.Labels.Email), email),
-          formRow(Fields.Labels.Phone, phone),
-          formRow(Fields.Labels.required(Fields.Labels.Role), role),
-          formRow(Fields.Labels.Area, area),
-          formRow(Fields.Labels.Assignment, assignment),
-          formRow(Fields.Labels.required(Fields.Labels.Username), username),
-          formRow(Fields.Labels.required(Fields.Labels.Password), password)
+          formRow(Labels.required(Labels.Surname), surname),
+          formRow(Labels.required(Labels.Name), name),
+          formRow(Labels.required(Labels.Email), email),
+          formRow(Labels.Phone, phone),
+          formRow(Labels.required(Labels.Role), role),
+          formRow(Labels.Area, area),
+          formRow(Labels.Assignment, assignment),
+          formRow(Labels.required(Labels.Username), username),
+          formRow(Labels.required(Labels.Password), password)
         )
       )
 

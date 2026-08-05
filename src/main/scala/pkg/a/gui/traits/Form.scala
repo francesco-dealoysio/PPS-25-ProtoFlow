@@ -5,7 +5,8 @@ import scalafx.scene.Node
 import scalafx.scene.control.{Button, ComboBox, DatePicker, Label, PasswordField, TextArea, TextField}
 import scalafx.scene.layout.*
 import java.time.LocalDate
-import pkg.a.gui.text.UiStyles
+import pkg.a.gui.text.UiStyles.Common.*
+import pkg.a.gui.text.UiText.Common.Buttons.*
 
 trait Form extends Common:
 
@@ -31,8 +32,8 @@ trait Form extends Common:
 
       control match
         case styledControl: scalafx.scene.control.Control =>
-          if !styledControl.styleClass.contains(UiStyles.Common.FormFieldError) then
-            styledControl.styleClass += UiStyles.Common.FormFieldError
+          if !styledControl.styleClass.contains(FormFieldErrorStyle) then
+            styledControl.styleClass += FormFieldErrorStyle
 
         case _ =>
           ()
@@ -44,12 +45,12 @@ trait Form extends Common:
 
       control match
         case styledControl: scalafx.scene.control.Control =>
-          styledControl.styleClass.remove(UiStyles.Common.FormFieldError)
+          styledControl.styleClass.remove(FormFieldErrorStyle)
 
         case _ =>
           ()
 
-  protected def fieldErrorLabel(styleName: String = "field-error"): Label =
+  private def fieldErrorLabel(styleName: String = FieldErrorStyle): Label =
     new Label:
       visible = false
       managed = false
@@ -90,7 +91,7 @@ trait Form extends Common:
         text = initialValue
         promptText = prompt
         maxWidth = Double.MaxValue
-        styleClass += UiStyles.Common.FormField
+        styleClass += FormFieldStyle
     formField(control, initialValue)(
       readValue = _.text.value,
       writeValue = (field, value) => field.text = value
@@ -104,7 +105,7 @@ trait Form extends Common:
 
         promptText = prompt
         maxWidth = Double.MaxValue
-        styleClass += UiStyles.Common.FormField
+        styleClass += FormFieldStyle
 
     formField(control, initialValue)(
       readValue = combo =>
@@ -134,10 +135,10 @@ trait Form extends Common:
           add(row.field, 1, fieldRow)
           add(row.errorLabel, 1, fieldRow + 1)
 
-  protected def saveButton(onSave: () => Unit, text: String = "Salva"): Button =
+  protected def saveButton(onSave: () => Unit, text: String = Save): Button =
     primaryButton(text, onSave)
 
-  protected def resetButton(onReset: () => Unit, text: String = "Reset"): Button =
+  protected def resetButton(onReset: () => Unit, text: String = Reset): Button =
     secondaryButton(text, onReset)
 
   protected def showFormFieldErrors(errors: Seq[String])(mapping: PartialFunction[String, FormField[? <: Node]]): Boolean =
@@ -152,14 +153,14 @@ trait Form extends Common:
       text = initialText
       promptText = prompt
       maxWidth = Double.MaxValue
-      styleClass += UiStyles.Common.FormField
+      styleClass += FormFieldStyle
 
   protected def dateField(initialValue: LocalDate): FormField[DatePicker] =
 
     val control =
       new DatePicker(initialValue):
         maxWidth = Double.MaxValue
-        styleClass += UiStyles.Common.FormField
+        styleClass += FormFieldStyle
 
     formField(control, initialValue.toString)(
       readValue = picker =>
@@ -184,9 +185,9 @@ trait Form extends Common:
   protected def formPage(
                           titleText: String,
                           subtitleText: String,
-                          titleStyle: String = UiStyles.Common.Title,
-                          subtitleStyle: String = UiStyles.Common.Subtitle,
-                          rootStyle: String = UiStyles.Common.Root,
+                          titleStyle: String = TitleStyle,
+                          subtitleStyle: String = SubtitleStyle,
+                          rootStyle: String = RootStyle,
                           form: Node,
                           resultMessage: Label,
                           actions: HBox,

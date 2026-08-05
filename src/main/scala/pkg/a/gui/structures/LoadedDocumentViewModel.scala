@@ -1,15 +1,16 @@
 package pkg.a.gui.structures
 
 import pkg.b.logic.LoadedDocument
+import pkg.a.gui.text.UiText.Validation.LoadedDocument.*
 
 object LoadedDocumentViewModel:
-  val DocumentDateRequiredError = "Il campo Data documento è obbligatorio."
-  val DocumentTimeRequiredError = "Il campo Ora documento è obbligatorio."
-  val DocumentProtocolRequiredError = "Il campo Protocollo mittente è obbligatorio."
-  val DocumentTypeRequiredError = "Il campo Tipo documento è obbligatorio."
-  val SenderRequiredError = "Il campo Mittente è obbligatorio."
-  val RecipientRequiredError = "Il campo Destinatario è obbligatorio."
-  val SubjectRequiredError = "Il campo Oggetto è obbligatorio."
+  val DocumentDateRequiredError: String = DocumentDateRequired
+  val DocumentTimeRequiredError: String  = DocumentTimeRequired
+  val DocumentProtocolRequiredError: String  = DocumentProtocolRequired
+  val DocumentTypeRequiredError: String  = DocumentTypeRequired
+  val SenderRequiredError: String  = SenderRequired
+  val RecipientRequiredError: String  = RecipientRequired
+  val SubjectRequiredError: String  = SubjectRequired
 
 class LoadedDocumentViewModel:
 

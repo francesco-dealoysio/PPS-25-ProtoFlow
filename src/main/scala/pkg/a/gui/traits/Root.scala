@@ -6,10 +6,11 @@ import scalafx.beans.property.BooleanProperty
 import scalafx.geometry.Pos
 import scalafx.scene.control.Button
 import scalafx.scene.layout.*
+import pkg.a.gui.text.UiStyles.App.*
+import pkg.a.gui.text.UiText.Common.*
+
 
 trait Root extends Common:
-
-  private val applicationTitle: String = "ProtoFlow"
 
   protected def createRoot(currentUser: String, roleDescription: String, contentArea: StackPane, menu: VBox, onProfileOpen: () => Unit): BorderPane =
 
@@ -55,9 +56,9 @@ trait Root extends Common:
       .forall: check =>
         !check() ||
           askConfirmation(
-            titleText = "Modifiche non salvate",
-            header = "Vuoi uscire senza salvare?",
-            content = "Le informazioni inserite o modificate non verranno mantenute."
+            titleText = Dialogs.UnsavedChanges.TitleUnsavedChanges,
+            header = Dialogs.UnsavedChanges.HeaderUnSavedChanges,
+            content = Dialogs.UnsavedChanges.ContentUnSavedChanges
           )
 
   private def createHeader(currentUser: String, roleDescription: String, onMenuToggle: () => Unit): HBox =
@@ -65,23 +66,23 @@ trait Root extends Common:
     HBox.setHgrow(spacer, Priority.Always)
 
     val menuButton =
-      new Button("☰"):
-        styleClass += "menu-toggle-button"
+      new Button(MenuIcon):
+        styleClass += MenuToggleButtonStyle
         onAction = _ => onMenuToggle()
 
     new HBox:
       alignment = Pos.CenterLeft
-      styleClass += "app-header"
+      styleClass += HeaderStyle
       children = Seq(
         menuButton,
-        fieldLabel(applicationTitle, "app-title"),
+        fieldLabel(ApplicationName, TitleStyle),
         spacer,
-        fieldLabel(s"$currentUser\n$roleDescription", "user-info")
+        fieldLabel(headerUserInfo(currentUser, roleDescription), UserInfoStyle)
       )
 
   private def createFooter(currentUser: String, roleDescription: String,  onProfileOpen: () => Unit): HBox =
-    val dateTimeLabel = fieldLabel("", "footer-date-time")
-    val userInfoLabel = fieldLabel(s"👤 $currentUser ($roleDescription)", "footer-user-info")
+    val dateTimeLabel = fieldLabel("", FooterDateTimeStyle)
+    val userInfoLabel = fieldLabel(footerUserInfo(currentUser, roleDescription), FooterUserInfoStyle)
     
     dateTimeLabel.text <==
       DateTime.dynamicDateTimeProperty()
@@ -92,5 +93,5 @@ trait Root extends Common:
     new HBox:
       alignment = Pos.CenterRight
       spacing = 20
-      styleClass += "app-footer"
+      styleClass += FooterStyle
       children = Seq(userInfoLabel, dateTimeLabel)

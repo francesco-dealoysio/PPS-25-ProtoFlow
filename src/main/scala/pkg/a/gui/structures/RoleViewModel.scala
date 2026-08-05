@@ -1,11 +1,12 @@
 package pkg.a.gui.structures
 
 import pkg.b.logic.Role
+import pkg.a.gui.text.UiText.Validation.Role.*
 
 object RoleViewModel:
-  val RoleRequiredError = "Il campo Ruolo è obbligatorio."
-  val DescriptionRequiredError = "Il campo Descrizione è obbligatorio."
-  val DuplicateRoleError = "Esiste già un ruolo con questo nome."
+  val RoleRequiredError: String = RoleRequired
+  val DescriptionRequiredError: String = DescriptionRequired
+  val DuplicateRoleError: String = DuplicateRole
 
 class RoleViewModel:
 

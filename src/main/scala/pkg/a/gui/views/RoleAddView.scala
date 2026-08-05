@@ -7,7 +7,8 @@ import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
 import scalafx.application.Platform
 import scalafx.scene.layout.BorderPane
-import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiText
+import pkg.a.gui.text.UiStyles.Common.*
 import UiText.{Fields, Roles}
 
 object RoleAddView extends Form:
@@ -17,8 +18,8 @@ object RoleAddView extends Form:
     val roleLogic = new Role()
     val viewModel = new RoleViewModel()
     val role = stringField(Fields.Prompts.Role)
-    val description = areaField(Fields.Prompts.Description, UiStyles.Common.DescriptionArea)
-    val resultMessage = messageLabel(UiStyles.Common.Message)
+    val description = areaField(Fields.Prompts.Description, DescriptionAreaStyle)
+    val resultMessage = messageLabel(MessageStyle)
     val monitoredFields = Seq(role, description)
     def currentRole(id: String = ""): Role =
       Role(
@@ -65,8 +66,8 @@ object RoleAddView extends Form:
               else
                 Roles.Add.Error,
             success = saved,
-            successStyle = UiStyles.Common.MessageSuccess,
-            errorStyle = UiStyles.Common.MessageError
+            successStyle = MessageSuccessStyle,
+            errorStyle = MessageErrorStyle
           )
           if saved then
             formSaved = true

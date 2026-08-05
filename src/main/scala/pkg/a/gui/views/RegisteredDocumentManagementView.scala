@@ -4,7 +4,7 @@ import pkg.a.gui.traits.Management
 import pkg.b.logic.{LoadedDocumentService, RegisteredDocument}
 import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.XmlToPdf
-import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiText
 import UiText.{Common, RegisteredDocuments}
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer

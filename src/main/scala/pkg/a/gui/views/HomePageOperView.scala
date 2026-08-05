@@ -1,9 +1,8 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.structures.{MenuAction, MenuItem}
-import pkg.a.gui.text.UiText.Menu
+import pkg.a.gui.text.UiText.Menu.*
 import pkg.a.gui.traits.HomePage
-import pkg.a.gui.views.HomePageAdminView.showProfileEdit
 import pkg.b.logic.{Account, ArchivedDocument, LoadedDocument, RegisteredDocument}
 
 object HomePageOperView extends HomePage:
@@ -14,13 +13,13 @@ object HomePageOperView extends HomePage:
 
   override protected val menuItems: Seq[MenuItem] =
     Seq(
-      MenuItem(Menu.Dashboard, MenuAction.Dashboard),
-      MenuItem(Menu.Profile, MenuAction.Profilo),
-      MenuItem(Menu.NewAssignment, MenuAction.NuovaPresaInCarico),
-      MenuItem(Menu.DocumentsToRegister, MenuAction.DocumentiDaProtocollare),
-      MenuItem(Menu.DocumentsToArchive, MenuAction.DocumentiDaArchiviare),
-      MenuItem(Menu.ArchivedDocuments, MenuAction.DocumentiArchiviati),
-      MenuItem(Menu.Logout, MenuAction.Logout)
+      MenuItem(Dashboard, MenuAction.Dashboard),
+      MenuItem(Profile, MenuAction.Profilo),
+      MenuItem(NewAssignment, MenuAction.NuovaPresaInCarico),
+      MenuItem(DocumentsToRegister, MenuAction.DocumentiDaProtocollare),
+      MenuItem(DocumentsToArchive, MenuAction.DocumentiDaArchiviare),
+      MenuItem(ArchivedDocuments, MenuAction.DocumentiArchiviati),
+      MenuItem(Logout, MenuAction.Logout)
     )
 
   override protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit =

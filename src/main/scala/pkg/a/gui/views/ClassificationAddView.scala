@@ -18,7 +18,7 @@ object ClassificationAddView extends Form:
     val viewModel = new ClassificationViewModel()
 
     val classification = stringField(Fields.Prompts.Classification)
-    val description = areaField(Fields.Prompts.Description, UiStyles.Common.DescriptionArea)
+    val description = areaField(Fields.Prompts.Description, UiStyles.Common.DescriptionAreaStyle)
     val monitoredFields = Seq(classification, description)
     val resultMessage = messageLabel()
 
@@ -67,8 +67,8 @@ object ClassificationAddView extends Form:
               else
                 Classifications.Add.Error,
             success = saved,
-            successStyle = UiStyles.Common.MessageSuccess,
-            errorStyle = UiStyles.Common.MessageError
+            successStyle = UiStyles.Common.MessageSuccessStyle,
+            errorStyle = UiStyles.Common.MessageErrorStyle
           )
 
           if saved then

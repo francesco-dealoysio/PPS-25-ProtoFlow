@@ -1,7 +1,7 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.structures.{MenuAction, MenuItem}
-import pkg.a.gui.text.UiText.Menu
+import pkg.a.gui.text.UiText.Menu.*
 import pkg.a.gui.traits.HomePage
 import pkg.b.logic.{Account, Classification, Registration, Role}
 
@@ -13,16 +13,16 @@ object HomePageAdminView extends HomePage:
 
   override protected val menuItems: Seq[MenuItem] =
     Seq(
-      MenuItem(Menu.Dashboard, MenuAction.Dashboard),
-      MenuItem(Menu.Profile, MenuAction.Profilo),
-      MenuItem(Menu.Statistics, MenuAction.Statistiche),
-      MenuItem(Menu.Log, MenuAction.Log),
-      MenuItem(Menu.ManagementControl, MenuAction.ControlloGestione),
-      MenuItem(Menu.Registrations, MenuAction.Registrazioni),
-      MenuItem(Menu.UserAccounts, MenuAction.AccountUtenti),
-      MenuItem(Menu.Roles, MenuAction.Ruoli),
-      MenuItem(Menu.Classifications, MenuAction.Classifiche),
-      MenuItem(Menu.Logout, MenuAction.Logout)
+      MenuItem(Dashboard, MenuAction.Dashboard),
+      MenuItem(Profile, MenuAction.Profilo),
+      MenuItem(Statistics, MenuAction.Statistiche),
+      MenuItem(Log, MenuAction.Log),
+      MenuItem(ManagementControl, MenuAction.ControlloGestione),
+      MenuItem(Registrations, MenuAction.Registrazioni),
+      MenuItem(UserAccounts, MenuAction.AccountUtenti),
+      MenuItem(Roles, MenuAction.Ruoli),
+      MenuItem(Classifications, MenuAction.Classifiche),
+      MenuItem(Logout, MenuAction.Logout)
     )
 
   override protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit =

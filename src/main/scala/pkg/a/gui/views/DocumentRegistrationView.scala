@@ -28,7 +28,7 @@ object DocumentRegistrationView extends Form:
     val sender = stringField(LoadedDocuments.Prompts.Sender, selectedDocument.getSender)
     val recipient = stringField(LoadedDocuments.Prompts.Recipient, selectedDocument.getRecipient)
     val subject = stringField(LoadedDocuments.Prompts.Subject, selectedDocument.getSubject)
-    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Common.DescriptionArea, selectedDocument.getRemarks)
+    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Common.DescriptionAreaStyle, selectedDocument.getRemarks)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks)
 

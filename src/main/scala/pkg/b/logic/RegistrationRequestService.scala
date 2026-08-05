@@ -2,7 +2,7 @@ package pkg.b.logic
 
 import pkg.d.util.IdGen
 import pkg.d.util.Util.{inDatabaseFilePathName, inIdsFilePathName, cipher}
-
+import pkg.b.logic.Registration
 import scala.util.Random
 
 /** Esito dell'approvazione: la richiesta aggiornata, l'account creato e la password generata (in chiaro, solo per il report). */
@@ -92,7 +92,7 @@ class RegistrationRequestService(
             name = request.getName,
             email = request.getEmail,
             phone = request.getPhone,
-            role = mapRequestedRole(request.getRole),
+            role = request.getRole.trim,
             area = request.getArea,
             assignment = request.getAssignment,
             username = username,
@@ -149,13 +149,6 @@ class RegistrationRequestService(
       Left("Errore durante l'aggiornamento della richiesta")
     else
       Right(processedRequest)
-
-  private def mapRequestedRole(requestedRole: String): String =
-    requestedRole.trim.toLowerCase match
-      case "amministratore" => "admin"
-      case "operatore protocollo" => "oper"
-      case "viewer" => "viewer"
-      case other => other
 
   private def generateUsername(request: Registration, existingAccounts: Seq[Account]): String =
     val base =

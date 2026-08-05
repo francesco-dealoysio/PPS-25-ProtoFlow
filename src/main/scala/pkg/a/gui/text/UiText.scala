@@ -4,13 +4,42 @@ object UiText:
 
   object Common:
     val RequiredMarker = " *"
+    val ApplicationName = "ProtoFlow"
+    val MenuIcon = "☰"
+    val UserIcon = "👤"
+    val EmptyValue = "-"
+
+    def headerUserInfo(username: String, roleDescription: String): String =
+      s"$username\n$roleDescription"
+
+    def footerUserInfo(username: String, roleDescription: String): String =
+      s"$UserIcon $username ($roleDescription)"
+
+    object Dialogs:
+      object Logout:
+        val TitleDialog = "Conferma logout"
+        val HeaderDialog = "Vuoi uscire da ProtoFlow?"
+        val ContentDialog = "La sessione corrente verrà terminata."
+
+      object UnsavedChanges:
+        val TitleUnsavedChanges = "Modifiche non salvate"
+        val HeaderUnSavedChanges = "Vuoi uscire senza salvare?"
+        val ContentUnSavedChanges = "Le informazioni inserite o modificate non verranno mantenute."
+
+    object Documents:
+      val NoDocuments = "Nessun documento disponibile."
+
+    object WindowTitles:
+      val Login = s"${Common.ApplicationName} - Login"
+      val Registration = s"${Common.ApplicationName} - Registrazione"
+      val Home = Common.ApplicationName
 
     object Buttons:
       val Add = "Aggiungi"
       val Edit = "Modifica"
       val Delete = "Elimina"
       val Save = "Salva"
-      val Reset = "Ripristina"
+      val Reset = "Reset"
       val Clear = "Pulisci"
       val Close = "Chiudi"
       val Exit = "Esci"
@@ -371,3 +400,45 @@ object UiText:
       val Title = "Modifiche non salvate"
       val Header = "Vuoi uscire senza salvare?"
       val Content = "I dati inseriti nella richiesta di registrazione verranno persi."
+
+  object Validation:
+    object Account:
+      val SurnameRequired = "Il campo Cognome è obbligatorio."
+      val NameRequired = "Il campo Nome è obbligatorio."
+      val EmailRequired = "Il campo Email è obbligatorio."
+      val EmailInvalid = "Inserisci un indirizzo email valido."
+      val RoleRequired = "Il campo Ruolo è obbligatorio."
+      val UsernameRequired = "Il campo Username è obbligatorio."
+      val PasswordRequired = "Il campo Password è obbligatorio."
+      val DuplicateUsername = "Esiste già un account con questo username."
+
+    object Classification:
+      val ClassificationRequired = "Il campo Classifica è obbligatorio."
+      val DescriptionRequired = "Il campo Descrizione è obbligatorio."
+      val DuplicateClassification = "Esiste già una classifica con questo nome."
+
+    object Role:
+      val RoleRequired = "Il campo Ruolo è obbligatorio."
+      val DescriptionRequired = "Il campo Descrizione è obbligatorio."
+      val DuplicateRole = "Esiste già un ruolo con questo nome."
+
+    object LoadedDocument:
+      val DocumentDateRequired = "Il campo Data documento è obbligatorio."
+      val DocumentTimeRequired = "Il campo Ora documento è obbligatorio."
+      val DocumentProtocolRequired = "Il campo Protocollo mittente è obbligatorio."
+      val DocumentTypeRequired = "Il campo Tipo documento è obbligatorio."
+      val SenderRequired = "Il campo Mittente è obbligatorio."
+      val RecipientRequired = "Il campo Destinatario è obbligatorio."
+      val SubjectRequired = "Il campo Oggetto è obbligatorio."
+
+    object Registration:
+      val Name = "Nome"
+      val Surname = "Cognome"
+      val RequestedRole = "Ruolo richiesto"
+      val Area = "Area/Settore di appartenenza"
+      val Assignment = "Incarico"
+      val EmailRequired = "Il campo 'Indirizzo email' è obbligatorio."
+      val EmailInvalid = "L'indirizzo email non ha un formato valido."
+
+      def required(fieldName: String): String =
+        s"Il campo '$fieldName' è obbligatorio."

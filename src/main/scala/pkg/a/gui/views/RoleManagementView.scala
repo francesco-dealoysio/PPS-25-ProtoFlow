@@ -9,7 +9,7 @@ import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.BorderPane
-import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiText
 import UiText.{Common, Fields, Roles}
 
 object RoleManagementView extends Management:

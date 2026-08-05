@@ -1,17 +1,17 @@
 package pkg.a.gui.structures
 
 import pkg.b.logic.Account
+import pkg.a.gui.text.UiText.Validation.Account.*
 
 object AccountViewModel:
-  val SurnameRequiredError = "Il campo Cognome è obbligatorio."
-  val NameRequiredError = "Il campo Nome è obbligatorio."
-  val EmailRequiredError = "Il campo Email è obbligatorio."
-  val EmailInvalidError = "Inserisci un indirizzo email valido."
-  val RoleRequiredError = "Il campo Ruolo è obbligatorio."
-  val UsernameRequiredError = "Il campo Username è obbligatorio."
-  val PasswordRequiredError = "Il campo Password è obbligatorio."
-  val DuplicateUsernameError = "Esiste già un account con questo username."
-  val roles: Seq[String] = Seq("admin", "oper", "viewer")
+  val SurnameRequiredError: String = SurnameRequired
+  val NameRequiredError: String = NameRequired
+  val EmailRequiredError: String = EmailRequired
+  val EmailInvalidError: String = EmailInvalid
+  val RoleRequiredError: String = RoleRequired
+  val UsernameRequiredError: String = UsernameRequired
+  val PasswordRequiredError: String = PasswordRequired
+  val DuplicateUsernameError: String = DuplicateUsername
 
   private val emailPattern = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$".r
 
@@ -26,12 +26,12 @@ class AccountViewModel:
                 requirePassword: Boolean = true
               ): Seq[String] =
     Seq(
-      validateRequired(SurnameRequiredError, account.getSurname),
-      validateRequired(NameRequiredError, account.getName),
+      validateRequired(SurnameRequired, account.getSurname),
+      validateRequired(NameRequired, account.getName),
       validateEmail(account.getEmail),
-      validateRequired(RoleRequiredError, account.getRole),
-      validateRequired(UsernameRequiredError, account.getUsername),
-      if requirePassword then validateRequired(PasswordRequiredError, rawPassword) else None,
+      validateRequired(RoleRequired, account.getRole),
+      validateRequired(UsernameRequired, account.getUsername),
+      if requirePassword then validateRequired(PasswordRequired, rawPassword) else None,
       validateUniqueUsername(
         account.getUsername,
         existingAccounts,
@@ -56,7 +56,7 @@ class AccountViewModel:
 
   def validateProfile(email: String): Seq[String] =
     Seq(validateEmail(email)).flatten
-  
+
   private def validateRequired(
                                  errorMessage: String,
                                  value: String
@@ -67,9 +67,9 @@ class AccountViewModel:
   private def validateEmail(value: String): Option[String] =
     val normalized = value.trim
 
-    if normalized.isEmpty then Some(EmailRequiredError)
+    if normalized.isEmpty then Some(EmailRequired)
     else if emailPattern.matches(normalized) then None
-    else Some(EmailInvalidError)
+    else Some(EmailInvalid)
 
   private def validateUniqueUsername(
                                        username: String,
@@ -86,5 +86,5 @@ class AccountViewModel:
           !currentAccountId.contains(existing.getId) &&
             existing.getUsername.trim.equalsIgnoreCase(normalizedUsername)
 
-      if duplicateExists then Some(DuplicateUsernameError)
+      if duplicateExists then Some(DuplicateUsername)
       else None

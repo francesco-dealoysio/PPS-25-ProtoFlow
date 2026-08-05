@@ -1,13 +1,15 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.traits.Management
-import pkg.b.logic.{Registration, RegistrationApproval, RegistrationDates, RegistrationRequestService}
+import pkg.b.logic.{Registration, RegistrationDates, RegistrationRequestService}
 import pkg.d.util.XmlToPdf
 import scalafx.geometry.Insets
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
 import java.time.format.DateTimeFormatter
-import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiText
+import pkg.a.gui.text.UiStyles.Requests.*
+import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
 import UiText.{Fields, RegistrationRequests, Common}
 
 object RegistrationRequestProcessView extends Management:
@@ -30,7 +32,7 @@ object RegistrationRequestProcessView extends Management:
       hgap = 18
       vgap = 12
       padding = Insets(18)
-      styleClass += "request-details-grid"
+      styleClass += DetailsGridStyle
 
     val detailRows = Seq(
       Fields.Labels.Name -> request.getName,
@@ -53,26 +55,26 @@ object RegistrationRequestProcessView extends Management:
 
     val detailsCard = new VBox:
       spacing = 10
-      styleClass += "request-details-card"
+      styleClass += DetailsCardStyle
       children = Seq(
-        new Label("Dettaglio richiesta"):
-          styleClass += "request-details-title",
-        detailsGrid
+        new Label(RegistrationRequests.Process.DetailsTitle):
+          styleClass += DetailsTitleStyle,
+          detailsGrid
       )
 
     val motivationField =
       new TextArea:
-        promptText = "Obbligatoria per rifiutare la richiesta"
+        promptText = RegistrationRequests.Process.MotivationPrompt
         wrapText = true
         prefRowCount = 3
         maxWidth = Double.MaxValue
-        styleClass += "form-field"
+        styleClass += FormFieldStyle
 
     val motivationBox = new VBox:
       spacing = 8
-      styleClass += "request-details-card"
+      styleClass += DetailsCardStyle
       children = Seq(
-        fieldLabel("Motivazione rifiuto"),
+        fieldLabel(RegistrationRequests.Process.MotivationLabel),
         motivationField
       )
 
@@ -82,20 +84,20 @@ object RegistrationRequestProcessView extends Management:
           xmlPath = service.pendingRequestsFilePath,
           recordId = request.getId,
           pdfFileName = s"richiesta_${request.getId}",
-          title = "Scheda Richiesta di Registrazione"
+          title = RegistrationRequests.Process.PrintPendingTitle
         )
 
       result.show(
-        if printed then "Scheda stampata correttamente in PDF."
-        else "Errore durante la stampa della scheda.",
+        if printed then RegistrationRequests.Process.PrintSuccess
+        else RegistrationRequests.Process.PrintError,
         success = printed
       )
 
     def approve(): Unit =
       val confirmed =
         askConfirmation(
-          titleText = "Conferma approvazione",
-          header = "Approvare la richiesta selezionata?",
+          titleText = RegistrationRequests.Process.ApproveTitle,
+          header = RegistrationRequests.Process.ApproveHeader,
           content =
             s"""${request.getName} ${request.getSurname}
                |${request.getEmail}
@@ -109,12 +111,11 @@ object RegistrationRequestProcessView extends Management:
               xmlPath = service.acceptedRequestsFilePath,
               recordId = approval.request.getId,
               pdfFileName = s"richiesta_${approval.request.getId}_approvata",
-              title = "Esito Richiesta di Registrazione - Approvata"
+              title = RegistrationRequests.Process.PrintApprovedTitle
             )
 
             result.show(
-              s"Richiesta approvata. Account creato con username '${approval.account.getUsername}' " +
-                s"e password temporanea '${approval.generatedPassword}': comunicali al richiedente.",
+              RegistrationRequests.Process.approved(approval.account.getUsername, approval.generatedPassword),
               success = true
             )
 
@@ -127,12 +128,12 @@ object RegistrationRequestProcessView extends Management:
       val motivation = motivationField.text.value.trim
 
       if motivation.isEmpty then
-        result.show("Inserisci la motivazione del rifiuto.", success = false)
+        result.show(RegistrationRequests.Process.EmptyMotivationError, success = false)
       else
         val confirmed =
           askConfirmation(
-            titleText = "Conferma rifiuto",
-            header = "Rifiutare la richiesta selezionata?",
+            titleText = RegistrationRequests.Process.RejectTitle,
+            header = RegistrationRequests.Process.RejectHeader,
             content =
               s"""${request.getName} ${request.getSurname}
                  |${request.getEmail}
@@ -146,10 +147,10 @@ object RegistrationRequestProcessView extends Management:
                 xmlPath = service.rejectedRequestsFilePath,
                 recordId = rejected.getId,
                 pdfFileName = s"richiesta_${rejected.getId}_rifiutata",
-                title = "Esito Richiesta di Registrazione - Rifiutata"
+                title = RegistrationRequests.Process.PrintRejectedTitle
               )
 
-              result.show("Richiesta rifiutata correttamente.", success = true)
+              result.show(RegistrationRequests.Process.RejectSuccess, success = true)
               onProcessed()
 
             case Left(error) =>
@@ -176,10 +177,10 @@ object RegistrationRequestProcessView extends Management:
 
   private def detailLabel(text: String): Label =
     new Label(text):
-      styleClass += "request-detail-label"
+      styleClass += DetailLabelStyle
 
   private def detailValue(text: String): Label =
     new Label(if text.trim.isEmpty then "-" else text):
       wrapText = true
       maxWidth = Double.MaxValue
-      styleClass += "request-detail-value"
+      styleClass += DetailValueStyle

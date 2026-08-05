@@ -23,7 +23,7 @@ object ClassificationEditView extends Form:
     val description =
       areaField(
         prompt = Fields.Prompts.Description,
-        styleName = UiStyles.Common.DescriptionArea,
+        styleName = UiStyles.Common.DescriptionAreaStyle,
         initialValue = selectedClassification.getDescription
       )
 

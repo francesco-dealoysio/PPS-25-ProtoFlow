@@ -1,9 +1,8 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.structures.{MenuAction, MenuItem}
-import pkg.a.gui.text.UiText.Menu
+import pkg.a.gui.text.UiText.Menu.*
 import pkg.a.gui.traits.HomePage
-import pkg.a.gui.views.HomePageOperView.showProfileEdit
 import pkg.b.logic.Account
 
 object HomePageViewerView extends HomePage:
@@ -13,10 +12,10 @@ object HomePageViewerView extends HomePage:
 
   override protected val menuItems: Seq[MenuItem] =
     Seq(
-      MenuItem(Menu.Dashboard, MenuAction.Dashboard),
-      MenuItem(Menu.Profile, MenuAction.Profilo),
-      MenuItem(Menu.Protocols, MenuAction.VisualizzazioneProtocollazioni),
-      MenuItem(Menu.Logout, MenuAction.Logout)
+      MenuItem(Dashboard, MenuAction.Dashboard),
+      MenuItem(Profile, MenuAction.Profilo),
+      MenuItem(Protocols, MenuAction.VisualizzazioneProtocollazioni),
+      MenuItem(Logout, MenuAction.Logout)
     )
 
   override protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit =

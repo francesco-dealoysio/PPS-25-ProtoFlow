@@ -1,11 +1,12 @@
 package pkg.a.gui.structures
 
 import pkg.b.logic.Classification
+import pkg.a.gui.text.UiText.Validation.Classification.*
 
 object ClassificationViewModel:
-  val ClassificationRequiredError = "Il campo Classifica è obbligatorio."
-  val DescriptionRequiredError = "Il campo Descrizione è obbligatorio."
-  val DuplicateClassificationError = "Esiste già una classifica con questo nome."
+  val ClassificationRequiredError: String = ClassificationRequired
+  val DescriptionRequiredError: String = DescriptionRequired
+  val DuplicateClassificationError: String = DuplicateClassification
 
 class ClassificationViewModel:
   import ClassificationViewModel.*
@@ -18,11 +19,7 @@ class ClassificationViewModel:
     ).flatten
 
   def isValid(classification: Classification, existingClassifications: Seq[Classification], currentClassificationId: Option[String] = None): Boolean =
-    validate(
-      classification,
-      existingClassifications,
-      currentClassificationId
-    ).isEmpty
+    validate(classification, existingClassifications, currentClassificationId).isEmpty
 
   private def validateRequired(errorMessage: String, value: String): Option[String] =
     if value.trim.isEmpty then Some(errorMessage)

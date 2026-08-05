@@ -5,6 +5,7 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.Role
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiStyles.Common.*
 import UiText.{Fields, Roles}
 
 object RoleEditView extends Form:
@@ -13,10 +14,10 @@ object RoleEditView extends Form:
 
     val roleLogic = new Role()
     val viewModel = new RoleViewModel()
-    
+
     val role = stringField(Fields.Prompts.Role, selectedRole.getRole)
-    val descriptionArea = areaField(Fields.Prompts.Description, UiStyles.Common.DescriptionArea, selectedRole.getDescription)
-    val description = areaField(Fields.Prompts.Description, UiStyles.Common.DescriptionArea, selectedRole.getDescription)
+    val descriptionArea = areaField(Fields.Prompts.Description, DescriptionAreaStyle, selectedRole.getDescription)
+    val description = areaField(Fields.Prompts.Description, DescriptionAreaStyle, selectedRole.getDescription)
     val monitoredFields = Seq(role, description)
     val resultMessage = messageLabel()
 

@@ -1,8 +1,8 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.structures.LoadedDocumentViewModel
-import pkg.a.gui.text.{UiStyles, UiText}
-import UiText.{Fields, LoadedDocuments}
+import pkg.a.gui.text.UiText.{Fields, LoadedDocuments}
+import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.traits.Form
 import pkg.b.logic.LoadedDocument
 import pkg.d.util.IdGen
@@ -29,9 +29,9 @@ object LoadedDocumentAddView extends Form:
     val sender = stringField(LoadedDocuments.Prompts.Sender)
     val recipient = stringField(LoadedDocuments.Prompts.Recipient)
     val subject = stringField(LoadedDocuments.Prompts.Subject)
-    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Common.DescriptionArea)
+    val remarks = areaField(LoadedDocuments.Prompts.Remarks, DescriptionAreaStyle)
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks)
-    val resultMessage = messageLabel(UiStyles.Common.Message)
+    val resultMessage = messageLabel(MessageStyle)
 
     def clearErrors(): Unit =
       clearFormFieldErrors(monitoredFields*)

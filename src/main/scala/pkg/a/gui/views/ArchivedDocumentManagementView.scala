@@ -1,6 +1,6 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiText
 import pkg.a.gui.traits.Management
 import pkg.b.logic.{ArchivedDocument, ArchivedDocumentService}
 import pkg.d.util.Util.inDocumentsFilePathName

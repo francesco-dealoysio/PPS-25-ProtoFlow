@@ -1,10 +1,10 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.text.UiStyles
+import pkg.a.gui.text.UiStyles.Registration.*
 import pkg.a.gui.text.UiText.{Common, Fields, Registration}
 import pkg.a.gui.structures.RegistrationViewModel
 import pkg.a.gui.traits.Form
-import pkg.b.logic.{RegistrationRequestService, Registration as RegistrationModel}
+import pkg.b.logic.{RegistrationRequestService, Role, Registration as RegistrationModel}
 import scalafx.scene.Node
 import scalafx.scene.control.Button
 import scalafx.scene.layout.{BorderPane, GridPane}
@@ -17,17 +17,17 @@ object RegistrationView extends Form:
            ): BorderPane =
 
     val service = new RegistrationRequestService()
-
+    val roleLogic = new Role()
     val name = stringField(Registration.NamePrompt)
     val surname = stringField(Registration.SurnamePrompt)
     val email = stringField(Registration.EmailPrompt)
     val phone = stringField(Registration.PhonePrompt)
-    val role = stringComboField(Seq("Viewer", "Operatore Protocollo", "Amministratore"), Registration.RolePrompt)
+    val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), Registration.RolePrompt)
     val area = stringComboField(Seq("Urbanistica", "Personale", "Amministrazione", "Segreteria", "Finanziario", "Area Tecnica"), Registration.AreaPrompt)
     val assignment = stringField(Registration.AssignmentPrompt)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(name, surname, email, phone, role, area, assignment)
-    val resultMessage = messageLabel(UiStyles.Registration.Message)
+    val resultMessage = messageLabel(MessageStyle)
 
     def currentRequest(): RegistrationModel =
       RegistrationModel(
@@ -55,8 +55,8 @@ object RegistrationView extends Form:
       clearFields()
       clearMessage(
         resultMessage,
-        successStyle = UiStyles.Registration.MessageSuccess,
-        errorStyle = UiStyles.Registration.MessageError
+        successStyle = MessageSuccessStyle,
+        errorStyle = MessageErrorStyle
       )
 
     def submitRequest(): Unit =
@@ -72,8 +72,8 @@ object RegistrationView extends Form:
             ""
           ),
           success = false,
-          successStyle = UiStyles.Registration.MessageSuccess,
-          errorStyle = UiStyles.Registration.MessageError
+          successStyle = MessageSuccessStyle,
+          errorStyle = MessageErrorStyle
         )
       else
         service.submitRequest(
@@ -92,8 +92,8 @@ object RegistrationView extends Form:
               resultMessage,
               Registration.SubmitSuccess,
               success = true,
-              UiStyles.Registration.MessageSuccess,
-              UiStyles.Registration.MessageError
+              MessageSuccessStyle,
+              MessageErrorStyle
             )
 
           case Left(error) =>
@@ -101,8 +101,8 @@ object RegistrationView extends Form:
               resultMessage,
               error,
               success = false,
-              UiStyles.Registration.MessageSuccess,
-              UiStyles.Registration.MessageError
+              MessageSuccessStyle,
+              MessageErrorStyle
             )
 
     val submit = primaryButton(Common.Buttons.RequestRegistration, () => submitRequest())
@@ -126,7 +126,7 @@ object RegistrationView extends Form:
     val formGrid = new GridPane:
       hgap = 18
       vgap = 14
-      styleClass += UiStyles.Registration.Grid
+      styleClass += GridStyle
 
       add(fieldLabel(Fields.Labels.required(Fields.Labels.Name)), 0, 0)
       add(name.control, 0, 1)
@@ -154,10 +154,10 @@ object RegistrationView extends Form:
     formPage(
       titleText = Registration.Title,
       subtitleText = Registration.Subtitle,
-      titleStyle = UiStyles.Registration.Title,
-      subtitleStyle = UiStyles.Registration.Subtitle,
-      rootStyle = UiStyles.Registration.Root,
-      contentStyle = Some(UiStyles.Registration.Card),
+      titleStyle = TitleStyle,
+      subtitleStyle = SubtitleStyle,
+      rootStyle = RootStyle,
+      contentStyle = Some(CardStyle),
       form = formGrid,
       resultMessage = resultMessage,
       actions = buttonsBox

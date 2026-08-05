@@ -8,7 +8,9 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, Label, PasswordField, TextField}
 import scalafx.scene.input.KeyCode
 import scalafx.scene.layout.{BorderPane, Region, StackPane, VBox}
-import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiText
+import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
+import pkg.a.gui.text.UiStyles.Login.*
 import UiText.{Common, Fields, Login}
 
 object LoginView extends Form:
@@ -18,17 +20,17 @@ object LoginView extends Form:
     val usernameField = new TextField:
       maxWidth = 220
       promptText = Fields.Prompts.Username
-      styleClass += UiStyles.Common.FormField
+      styleClass += FormFieldStyle
 
     val passwordField = new PasswordField:
       maxWidth = 220
       promptText = Fields.Prompts.Password
-      styleClass += UiStyles.Common.FormField
+      styleClass += FormFieldStyle
 
     val result =
       createResultMessage(
-        baseStyle = UiStyles.Login.Message,
-        errorStyle = UiStyles.Login.MessageError
+        baseStyle = MessageStyle,
+        errorStyle = MessageErrorStyle
       )
 
     def clearFields(): Unit =
@@ -74,16 +76,16 @@ object LoginView extends Form:
       minHeight = 58
       maxWidth = 58
       maxHeight = 58
-      styleClass += UiStyles.Login.Logo
+      styleClass += LogoStyle
       children = new Label("PF"):
-        styleClass += UiStyles.Login.LogoText
+        styleClass += LogoTextStyle
 
     val titleSection =
       titleBox(
         titleText = Login.ApplicationTitle,
         subtitleText = Login.ApplicationSubtitle,
-        titleStyle = UiStyles.Login.Title,
-        subtitleStyle = UiStyles.Login.Subtitle
+        titleStyle = TitleStyle,
+        subtitleStyle = SubtitleStyle
       )
     titleSection.alignment = Pos.Center
 
@@ -125,7 +127,7 @@ object LoginView extends Form:
       alignment = Pos.Center
       spacing = 18
       padding = Insets(36, 46, 36, 46)
-      styleClass ++= Seq(UiStyles.Login.Card, UiStyles.Login.LoginCard)
+      styleClass ++= Seq(CardStyle, LoginCardStyle)
       children = Seq(
         header,
         formBox,
@@ -138,5 +140,5 @@ object LoginView extends Form:
       )
 
     new BorderPane:
-      styleClass += UiStyles.Login.Root
+      styleClass += RootStyle
       center = card

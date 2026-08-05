@@ -3,7 +3,7 @@ package pkg.a.gui.views
 import pkg.a.gui.traits.Management
 import pkg.b.logic.Account
 import pkg.d.util.Logger.*
-import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiText
 import UiText.{Accounts, Common, Fields}
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer

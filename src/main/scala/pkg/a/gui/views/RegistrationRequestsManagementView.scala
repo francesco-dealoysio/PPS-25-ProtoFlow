@@ -7,7 +7,7 @@ import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
-import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiText
 import UiText.{Common, Fields, RegistrationRequests}
 
 import java.time.format.DateTimeFormatter

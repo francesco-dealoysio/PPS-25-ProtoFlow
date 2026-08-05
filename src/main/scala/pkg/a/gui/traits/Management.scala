@@ -1,6 +1,7 @@
 package pkg.a.gui.traits
 
-import pkg.a.gui.text.UiStyles
+import pkg.a.gui.text.UiText.Common.Buttons.Print
+import pkg.a.gui.text.UiStyles.Common.*
 import scalafx.Includes.*
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Insets
@@ -14,7 +15,7 @@ trait Management extends Common:
     new TableView[T](items):
       columnResizePolicy = TableView.ConstrainedResizePolicy
       placeholder = new Label(emptyText)
-      styleClass += UiStyles.Common.Table
+      styleClass += TableStyle
 
   protected def selectedItem[T](table: TableView[T]): Option[T] =
     Option(table.selectionModel.value.selectedItem.value)
@@ -34,10 +35,10 @@ trait Management extends Common:
           if selected != null then
             result.clear()
 
-  protected def printButton(action: () => Unit, text: String = "Stampa"): Button =
+  protected def printButton(action: () => Unit, text: String = Print): Button =
     secondaryButton(text = text, action = action)
 
-  protected def managementPage(pageChildren: Seq[Node], growNode: Option[Node] = None, spacingValue: Double = 18, paddingValue: Insets = Insets(20), rootStyle: String = UiStyles.Common.Root): BorderPane =
+  protected def managementPage(pageChildren: Seq[Node], growNode: Option[Node] = None, spacingValue: Double = 18, paddingValue: Insets = Insets(20), rootStyle: String = RootStyle): BorderPane =
     val content =
       new VBox:
         spacing = spacingValue
