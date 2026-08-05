@@ -120,9 +120,9 @@ object Init:
 
     if (Files.notExists(Paths.get(inDocumentsFilePathName("loaded.xml"))))
       createEmptyXmlFile(inDocumentsFilePathName("loaded.xml"), "loaded")
-      
+
     if (Files.notExists(Paths.get(inLogFilePathName("documentOperations.xml"))))
-      createEmptyXmlFile(inDocumentsFilePathName("documentOperations.xml"), "operations")
+      createEmptyXmlFile(inLogFilePathName("documentOperations.xml"), "operations")
       
 /*
     if (Files.notExists(Paths.get(databaseFolder + fs + "registrations" + fs + "requests.xml")))

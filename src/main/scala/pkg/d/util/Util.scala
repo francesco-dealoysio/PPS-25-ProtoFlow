@@ -63,10 +63,16 @@ object Util:
     inFolderFilePathName("test", fileName)
 
   def inFolderFilePathName(folder: String, fileName: String): String =
+    import pkg.c.data.Xml.createEmptyXmlFile
     import pkg.c.data.Properties.getPropsFileProperty
+    import java.nio.file.{Files, Paths}
+
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-    getPropsFileProperty(baseFolder + fs + "protoflow.properties", folder + ".folder") + fs + fileName
+    val pathFileName = getPropsFileProperty(baseFolder + fs + "protoflow.properties", folder + ".folder") + fs + fileName
+    if (Files.notExists(Paths.get(pathFileName)))
+      createEmptyXmlFile(pathFileName, fileName.stripSuffix(".xml"))
+    pathFileName
 
   @main def tryUtil: Unit =
     import pkg.b.logic.ErrorLog.*

@@ -3,57 +3,67 @@ package pkg.b.logic
 import org.junit.*
 import org.junit.Assert.*
 import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
-import pkg.d.util.Util.{inTestFilePathName, cipher}
+import pkg.d.util.Util.{cipher, inTestFilePathName}
+
+import java.nio.file.{Files, Paths}
 
 class AccountTest:
 
   private var xmlFilePathName: String = _
+  private var account1: Account = _
+  private var account2: Account = _
+  private var account3: Account = _
   private var empty: Account = _
 
   @Before
   def setUp(): Unit =
+
     xmlFilePathName = inTestFilePathName("test.xml")
     createEmptyXmlFile(xmlFilePathName, "test_records")
     empty = new Account
 
-  val account1 = Account(
-    "1",
-    "de aloysio",
-    "francesco",
-    "francesco.dealoysio@studio.unibo.it",
-    "06/11111111",
-    "admin",
-    "presidenza",
-    "presidente",
-    "frank",
-    cipher("topolino")
-  )
+    account1 = Account(
+      "1",
+      "de aloysio",
+      "francesco",
+      "francesco.dealoysio@studio.unibo.it",
+      "06/11111111",
+      "admin",
+      "presidenza",
+      "presidente",
+      "frank",
+      cipher("topolino")
+    )
 
-  val account2 = Account(
-    "2",
-    "rossi",
-    "mario",
-    "mario.rossi@gmail.com",
-    "06/22222222",
-    "oper",
-    "amministrazione",
-    "contabile",
-    "rosma",
-    cipher("pippo")
-  )
+    account2 = Account(
+      "2",
+      "rossi",
+      "mario",
+      "mario.rossi@gmail.com",
+      "06/22222222",
+      "oper",
+      "amministrazione",
+      "contabile",
+      "rosma",
+      cipher("pippo")
+    )
 
-  val account3 = Account(
-    "3",
-    "bianchi",
-    "giovanni",
-    "giovanni.bianchi@gmail.com",
-    "06/33333333",
-    "viewer",
-    "segreteria",
-    "assistente",
-    "condor",
-    cipher("paperino")
-  )
+    account3 = Account(
+      "3",
+      "bianchi",
+      "giovanni",
+      "giovanni.bianchi@gmail.com",
+      "06/33333333",
+      "viewer",
+      "segreteria",
+      "assistente",
+      "condor",
+      cipher("paperino")
+    )
+
+  @After
+  def tearDown(): Unit =
+    Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =

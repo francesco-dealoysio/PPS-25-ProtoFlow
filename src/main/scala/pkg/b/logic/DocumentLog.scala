@@ -2,10 +2,11 @@ package pkg.b.logic
 
 import pkg.b.logic.Entity
 import pkg.d.util.Logger.*
-import pkg.d.util.Util.inLogFilePathName
+import pkg.d.util.Util.{inIdsFilePathName, inLogFilePathName}
 
 case class DocumentLog(
                      private var id: String = "",
+                     private var documentId: String = "",
                      private var operationType: String = "",
                      private var processedDate: String = "",
                      private var processedTime: String = "",
@@ -15,12 +16,14 @@ case class DocumentLog(
     this("", "", "", "", "")
 
   def setId(value: String): Unit = id = value
+  def setDocumentId(value: String): Unit = documentId = value
   def setOperationType(value: String): Unit = operationType = value
   def setProcessedDate(value: String): Unit = processedDate = value
   def setProcessedTime(value: String): Unit = processedTime = value
   def setProcessedBy(value: String): Unit = processedBy = value
 
   def getId: String = id
+  def getDocumentId: String = documentId
   def getOperationType: String = operationType
   def getProcessedDate: String = processedDate
   def getProcessedTime: String = processedTime
@@ -35,5 +38,54 @@ case class DocumentLog(
       case e: Exception =>
         logger(e); ""
 
+  def writeDocumentOperationLog(
+                         documentId: String,
+                         operationType: String,
+                         operationDate: String,
+                         operationTime: String,
+                         operator: String
+                       ): Boolean = {
+    import pkg.d.util.IdGen
+    import pkg.d.util.Util.{inIdsFilePathName, inLogFilePathName}
+    import pkg.d.util.DateTime._
+
+    val logDocumentOperation = DocumentLog(
+      IdGen(inIdsFilePathName("documentOperationlogId")),
+      documentId,
+      operationType,
+      operationDate,
+      operationTime,
+      operator
+    )
+
+    logDocumentOperation.recordInsert(logDocumentOperation,DocumentLog().defaultXmlFilePathName)
+  }
+
 @main def tryDocumentLog: Unit =
   println("Tested in DocumentLogTest.scala")
+  /*
+  import pkg.b.logic.Account
+  import pkg.d.util.Util.cipher
+  import pkg.d.util.DateTime.{localDate, localTime}
+  val user = Account(
+    "1",
+    "Rossi",
+    "Mario",
+    "mario.rossi@studio.unibo.it",
+    "06/12345678",
+    "admin",
+    "Ufficio informatica",
+    "Tecnico informatico",
+    "tecnico1",
+    cipher("topolino")
+  )
+  val documentId = "2"
+  val operationType = "loading"
+  DocumentLog().writeDocumentOperationLog(
+    documentId,
+    "loading",
+    localDate,
+    localTime,
+    user.getName + " " + user.getSurname
+  )
+*/
