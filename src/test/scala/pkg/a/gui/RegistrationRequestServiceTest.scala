@@ -110,8 +110,7 @@ class RegistrationRequestServiceTest
 
     assert(created.isRight)
 
-    val pendingRequests =
-      service.getPendingRequests
+    val pendingRequests = service.getPendingRequests
 
     assert(pendingRequests.size == 1)
     assert(
@@ -207,8 +206,7 @@ class RegistrationRequestServiceTest
       assignment = "Impiegato"
     )
 
-    val requests =
-      service.getPendingRequests
+    val requests = service.getPendingRequests
 
     assert(requests.nonEmpty)
     assert(
@@ -220,8 +218,7 @@ class RegistrationRequestServiceTest
   test("approveRequest cambia lo stato in Approved, crea un account e sposta la richiesta tra le accettate"):
     val requestId = submitLuigi()
 
-    val result =
-      service.approveRequest(requestId, operatorUsername = "admin")
+    val result = service.approveRequest(requestId, operatorUsername = "admin")
 
     assert(result.isRight)
 
@@ -231,21 +228,19 @@ class RegistrationRequestServiceTest
     assert(approval.request.getProcessedBy == "admin")
     assert(approval.request.getProcessedDate.nonEmpty)
     assert(approval.request.getAssignedUsername == approval.account.getUsername)
-    assert(approval.account.getRole == "viewer")
+    assert(approval.account.getRole == "Viewer")
     assert(approval.generatedPassword.nonEmpty)
 
     assert(service.getPendingRequests.isEmpty)
 
-    val storedAccounts =
-      new Account().getRecords[Account](tempAccountsXmlFile.toString)
+    val storedAccounts = new Account().getRecords[Account](tempAccountsXmlFile.toString)
 
     assert(storedAccounts.exists(_.getUsername == approval.account.getUsername))
 
   test("rejectRequest richiede una motivazione"):
     val requestId = submitLuigi()
 
-    val result =
-      service.rejectRequest(requestId, operatorUsername = "admin", motivation = "")
+    val result = service.rejectRequest(requestId, operatorUsername = "admin", motivation = "")
 
     assert(result == Left("La motivazione del rifiuto è obbligatoria"))
     assert(service.getPendingRequests.nonEmpty)
@@ -261,11 +256,9 @@ class RegistrationRequestServiceTest
       assignment = "Impiegata"
     )
 
-    val requestId =
-      created.toOption.get.getId
+    val requestId = created.toOption.get.getId
 
-    val result =
-      service.rejectRequest(requestId, operatorUsername = "admin", motivation = "Dati incompleti")
+    val result = service.rejectRequest(requestId, operatorUsername = "admin", motivation = "Dati incompleti")
 
     assert(result.isRight)
 
@@ -279,13 +272,11 @@ class RegistrationRequestServiceTest
     assert(service.getPendingRequests.isEmpty)
 
   test("approveRequest restituisce errore per id inesistente"):
-    val result =
-      service.approveRequest("id-inesistente", operatorUsername = "admin")
+    val result = service.approveRequest("id-inesistente", operatorUsername = "admin")
 
     assert(result == Left("Richiesta non trovata"))
 
   test("rejectRequest restituisce errore per id inesistente"):
-    val result =
-      service.rejectRequest("id-inesistente", operatorUsername = "admin", motivation = "Motivazione")
+    val result = service.rejectRequest("id-inesistente", operatorUsername = "admin", motivation = "Motivazione")
 
     assert(result == Left("Richiesta non trovata"))
