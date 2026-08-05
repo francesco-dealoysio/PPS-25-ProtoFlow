@@ -1,7 +1,8 @@
 package pkg.b.logic
 
 import pkg.b.logic.Entity
-import pkg.c.data.Xml.createEmptyXmlFile
+import pkg.d.util.Logger.*
+import pkg.c.data.Xml.{createEmptyXmlFile, insertElemIntoXML}
 import pkg.d.util.Util.inDocumentsFilePathName
 
 case class RegisteredDocument(
@@ -69,6 +70,27 @@ case class RegisteredDocument(
     if java.nio.file.Files.notExists(java.nio.file.Paths.get(path)) then
       createEmptyXmlFile(path, "registeredDocuments")
     path
+
+  override def recordInsert[T](obj: T, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    var result = false
+    try
+      val record = obj.asInstanceOf[RegisteredDocument]
+      val id = record.id
+      if !(fieldExists("id", id, xmlFilePathName)) then
+        result = insertElemIntoXML(xmlFilePathName, obj)
+        DocumentLog().writeDocumentOperationLog(
+          record.id,
+          "registering",
+          record.registeredDate,
+          record.registeredTime,
+          record.registeredBy
+        )
+      else
+        throw new RuntimeException("Valore duplicato (id)!")
+    catch
+      case e: Exception =>
+        logger(e)
+    result
 
 @main def tryRegisteredDocument: Unit =
   println("Tested in RegisteredDocumentTest")

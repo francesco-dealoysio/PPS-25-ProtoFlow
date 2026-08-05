@@ -81,8 +81,10 @@ class RegisteredDocumentTest:
     )
 
   @After
-  def tearDown(): Unit =
+  def tearDown(): Unit = {
+    println
     Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
+  }
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =

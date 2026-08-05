@@ -1,7 +1,7 @@
 package pkg.b.logic
 
 import pkg.b.logic.Entity
-import pkg.c.data.Xml.*
+import pkg.c.data.Xml.{createEmptyXmlFile, insertElemIntoXML}
 import pkg.d.util.Logger.*
 import pkg.d.util.Util.inDocumentsFilePathName
 

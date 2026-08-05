@@ -1,22 +1,6 @@
-<documentOperations>
+<operations>
   <record>
-    <id>29</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-08-05</processedDate>
-    <processedTime>10:23:12.69</processedTime>
-    <processedBy>Mario Rossi</processedBy>
-  </record>
-  <record>
-    <id>30</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-08-05</processedDate>
-    <processedTime>10:24:27.39</processedTime>
-    <processedBy>Mario Rossi</processedBy>
-  </record>
-  <record>
-    <id>31</id>
+    <id>378</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -24,7 +8,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>32</id>
+    <id>379</id>
     <documentId>2</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -32,7 +16,7 @@
     <processedBy>Bianchi</processedBy>
   </record>
   <record>
-    <id>33</id>
+    <id>380</id>
     <documentId>3</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -40,7 +24,7 @@
     <processedBy>Neri</processedBy>
   </record>
   <record>
-    <id>34</id>
+    <id>381</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -48,7 +32,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>35</id>
+    <id>382</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -56,7 +40,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>36</id>
+    <id>383</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -64,7 +48,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>37</id>
+    <id>384</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -72,7 +56,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>38</id>
+    <id>385</id>
     <documentId>2</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -80,7 +64,7 @@
     <processedBy>Bianchi</processedBy>
   </record>
   <record>
-    <id>39</id>
+    <id>386</id>
     <documentId>3</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -88,7 +72,7 @@
     <processedBy>Neri</processedBy>
   </record>
   <record>
-    <id>40</id>
+    <id>387</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -96,7 +80,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>41</id>
+    <id>388</id>
     <documentId>2</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -104,7 +88,7 @@
     <processedBy>Bianchi</processedBy>
   </record>
   <record>
-    <id>42</id>
+    <id>389</id>
     <documentId>3</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -112,7 +96,7 @@
     <processedBy>Neri</processedBy>
   </record>
   <record>
-    <id>43</id>
+    <id>390</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -120,7 +104,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>44</id>
+    <id>391</id>
     <documentId>2</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -128,7 +112,7 @@
     <processedBy>Bianchi</processedBy>
   </record>
   <record>
-    <id>45</id>
+    <id>392</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -136,7 +120,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>46</id>
+    <id>393</id>
     <documentId>2</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -144,7 +128,7 @@
     <processedBy>Bianchi</processedBy>
   </record>
   <record>
-    <id>47</id>
+    <id>394</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -152,7 +136,95 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>48</id>
+    <id>395</id>
+    <documentId>1</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>396</id>
+    <documentId>1</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>397</id>
+    <documentId>1</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>398</id>
+    <documentId>1</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>399</id>
+    <documentId>1</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>400</id>
+    <documentId>2</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>401</id>
+    <documentId>3</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>402</id>
+    <documentId>1</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>403</id>
+    <documentId>2</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>404</id>
+    <documentId>1</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>405</id>
+    <documentId>1</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>406</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -160,7 +232,119 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>49</id>
+    <id>407</id>
+    <documentId>1</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-07-11</processedDate>
+    <processedTime>09:00:00.00</processedTime>
+    <processedBy>Bianchi</processedBy>
+  </record>
+  <record>
+    <id>408</id>
+    <documentId>2</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-07-11</processedDate>
+    <processedTime>09:00:00.00</processedTime>
+    <processedBy>Neri</processedBy>
+  </record>
+  <record>
+    <id>409</id>
+    <documentId>3</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-07-11</processedDate>
+    <processedTime>09:00:00.00</processedTime>
+    <processedBy>Bianchi</processedBy>
+  </record>
+  <record>
+    <id>410</id>
+    <documentId>1</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-07-11</processedDate>
+    <processedTime>09:00:00.00</processedTime>
+    <processedBy>Bianchi</processedBy>
+  </record>
+  <record>
+    <id>411</id>
+    <documentId>1</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-07-11</processedDate>
+    <processedTime>09:00:00.00</processedTime>
+    <processedBy>Bianchi</processedBy>
+  </record>
+  <record>
+    <id>412</id>
+    <documentId>1</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-07-11</processedDate>
+    <processedTime>09:00:00.00</processedTime>
+    <processedBy>Bianchi</processedBy>
+  </record>
+  <record>
+    <id>413</id>
+    <documentId>1</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-07-11</processedDate>
+    <processedTime>09:00:00.00</processedTime>
+    <processedBy>Bianchi</processedBy>
+  </record>
+  <record>
+    <id>414</id>
+    <documentId>2</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-07-11</processedDate>
+    <processedTime>09:00:00.00</processedTime>
+    <processedBy>Neri</processedBy>
+  </record>
+  <record>
+    <id>415</id>
+    <documentId>3</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-07-11</processedDate>
+    <processedTime>09:00:00.00</processedTime>
+    <processedBy>Bianchi</processedBy>
+  </record>
+  <record>
+    <id>416</id>
+    <documentId>1</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-07-11</processedDate>
+    <processedTime>09:00:00.00</processedTime>
+    <processedBy>Bianchi</processedBy>
+  </record>
+  <record>
+    <id>417</id>
+    <documentId>1</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-07-11</processedDate>
+    <processedTime>09:00:00.00</processedTime>
+    <processedBy>Bianchi</processedBy>
+  </record>
+  <record>
+    <id>418</id>
+    <documentId>2</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-07-11</processedDate>
+    <processedTime>09:00:00.00</processedTime>
+    <processedBy>Neri</processedBy>
+  </record>
+  <record>
+    <id>419</id>
+    <documentId>2</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-07-11</processedDate>
+    <processedTime>09:00:00.00</processedTime>
+    <processedBy>Neri</processedBy>
+  </record>
+  <record>
+    <id>420</id>
+    <documentId>1</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-07-11</processedDate>
+    <processedTime>09:00:00.00</processedTime>
+    <processedBy>Bianchi</processedBy>
+  </record>
+  <record>
+    <id>421</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -168,7 +352,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>50</id>
+    <id>422</id>
     <documentId>2</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -176,7 +360,7 @@
     <processedBy>Bianchi</processedBy>
   </record>
   <record>
-    <id>51</id>
+    <id>423</id>
     <documentId>3</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -184,7 +368,7 @@
     <processedBy>Neri</processedBy>
   </record>
   <record>
-    <id>52</id>
+    <id>424</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -192,7 +376,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>53</id>
+    <id>425</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -200,7 +384,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>54</id>
+    <id>426</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -208,7 +392,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>55</id>
+    <id>427</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -216,7 +400,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>56</id>
+    <id>428</id>
     <documentId>2</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -224,7 +408,7 @@
     <processedBy>Bianchi</processedBy>
   </record>
   <record>
-    <id>57</id>
+    <id>429</id>
     <documentId>3</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -232,7 +416,7 @@
     <processedBy>Neri</processedBy>
   </record>
   <record>
-    <id>58</id>
+    <id>430</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -240,7 +424,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>59</id>
+    <id>431</id>
     <documentId>2</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -248,7 +432,7 @@
     <processedBy>Bianchi</processedBy>
   </record>
   <record>
-    <id>60</id>
+    <id>432</id>
     <documentId>3</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -256,7 +440,7 @@
     <processedBy>Neri</processedBy>
   </record>
   <record>
-    <id>61</id>
+    <id>433</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -264,7 +448,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>62</id>
+    <id>434</id>
     <documentId>2</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -272,7 +456,7 @@
     <processedBy>Bianchi</processedBy>
   </record>
   <record>
-    <id>63</id>
+    <id>435</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -280,7 +464,7 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>64</id>
+    <id>436</id>
     <documentId>2</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -288,7 +472,7 @@
     <processedBy>Bianchi</processedBy>
   </record>
   <record>
-    <id>65</id>
+    <id>437</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
@@ -296,603 +480,99 @@
     <processedBy>Rossi</processedBy>
   </record>
   <record>
-    <id>66</id>
+    <id>438</id>
     <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
   </record>
   <record>
-    <id>67</id>
+    <id>439</id>
     <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
   </record>
   <record>
-    <id>68</id>
+    <id>440</id>
+    <documentId>1</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>441</id>
+    <documentId>1</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>442</id>
+    <documentId>1</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>443</id>
     <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
   </record>
   <record>
-    <id>69</id>
+    <id>444</id>
     <documentId>3</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Neri</processedBy>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
   </record>
   <record>
-    <id>70</id>
+    <id>445</id>
     <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
   </record>
   <record>
-    <id>71</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>72</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>73</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>74</id>
+    <id>446</id>
     <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
   </record>
   <record>
-    <id>75</id>
-    <documentId>3</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Neri</processedBy>
+    <id>447</id>
+    <documentId>1</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
   </record>
   <record>
-    <id>76</id>
+    <id>448</id>
+    <documentId>1</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-07-12</processedDate>
+    <processedTime>10:00:00</processedTime>
+    <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>449</id>
     <documentId>1</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-07-10</processedDate>
     <processedTime>22:19:13.86</processedTime>
     <processedBy>Rossi</processedBy>
   </record>
-  <record>
-    <id>77</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>78</id>
-    <documentId>3</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Neri</processedBy>
-  </record>
-  <record>
-    <id>79</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>80</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>81</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>82</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>83</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>84</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>85</id>
-    <documentId>44</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-08-05</processedDate>
-    <processedTime>10:33:50.29</processedTime>
-    <processedBy>tommy</processedBy>
-  </record>
-  <record>
-    <id>86</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>87</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>88</id>
-    <documentId>3</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Neri</processedBy>
-  </record>
-  <record>
-    <id>89</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>90</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>91</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>92</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>93</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>94</id>
-    <documentId>3</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Neri</processedBy>
-  </record>
-  <record>
-    <id>95</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>96</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>97</id>
-    <documentId>3</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Neri</processedBy>
-  </record>
-  <record>
-    <id>98</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>99</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>100</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>101</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>102</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>103</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>104</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>105</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>106</id>
-    <documentId>3</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Neri</processedBy>
-  </record>
-  <record>
-    <id>107</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>108</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>109</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>110</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>111</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>112</id>
-    <documentId>3</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Neri</processedBy>
-  </record>
-  <record>
-    <id>113</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>114</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>115</id>
-    <documentId>3</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Neri</processedBy>
-  </record>
-  <record>
-    <id>116</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>117</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>118</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>119</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>120</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>121</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>122</id>
-    <documentId>47</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-08-05</processedDate>
-    <processedTime>11:01:44.17</processedTime>
-    <processedBy>tommy</processedBy>
-  </record>
-  <record>
-    <id>123</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>124</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>125</id>
-    <documentId>3</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Neri</processedBy>
-  </record>
-  <record>
-    <id>126</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>127</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>128</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>129</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>130</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>131</id>
-    <documentId>3</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Neri</processedBy>
-  </record>
-  <record>
-    <id>132</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>133</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>134</id>
-    <documentId>3</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Neri</processedBy>
-  </record>
-  <record>
-    <id>135</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>136</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>137</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>138</id>
-    <documentId>2</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Bianchi</processedBy>
-  </record>
-  <record>
-    <id>139</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-  <record>
-    <id>140</id>
-    <documentId>1</documentId>
-    <operationType>loading</operationType>
-    <processedDate>2026-07-10</processedDate>
-    <processedTime>22:19:13.86</processedTime>
-    <processedBy>Rossi</processedBy>
-  </record>
-</documentOperations>
+</operations>

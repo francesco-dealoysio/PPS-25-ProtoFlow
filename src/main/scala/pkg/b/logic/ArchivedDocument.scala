@@ -1,8 +1,8 @@
 package pkg.b.logic
 
-import pkg.c.data.Xml.createEmptyXmlFile
 import pkg.d.util.Util.inDocumentsFilePathName
-
+import pkg.c.data.Xml.{createEmptyXmlFile, insertElemIntoXML}
+import pkg.d.util.Logger.*
 import java.nio.file.{Files, Paths}
 
 case class ArchivedDocument(
@@ -95,6 +95,28 @@ case class ArchivedDocument(
     if Files.notExists(Paths.get(path)) then
       createEmptyXmlFile(path, "archivedDocuments")
     path
+
+  override def recordInsert[T](obj: T, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    var result = false
+    try
+      val record = obj.asInstanceOf[ArchivedDocument]
+      val id = record.id
+      if !(fieldExists("id", id, xmlFilePathName)) then
+        result = insertElemIntoXML(xmlFilePathName, obj)
+        DocumentLog().writeDocumentOperationLog(
+          record.id,
+          "archiving",
+          record.archivedDate,
+          record.archivedTime,
+          record.archivedBy
+        )
+      else
+        throw new RuntimeException("Valore duplicato (id)!")
+    catch
+      case e: Exception =>
+        logger(e)
+    result
+
 
 @main def tryArchivedDocument: Unit =
   println("Tested in ArchivedDocumentTest")

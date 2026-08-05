@@ -69,10 +69,13 @@ object Util:
 
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
+    getPropsFileProperty(baseFolder + fs + "protoflow.properties", folder + ".folder") + fs + fileName
+/*
     val pathFileName = getPropsFileProperty(baseFolder + fs + "protoflow.properties", folder + ".folder") + fs + fileName
     if (Files.notExists(Paths.get(pathFileName)))
       createEmptyXmlFile(pathFileName, fileName.stripSuffix(".xml"))
     pathFileName
+*/
 
   @main def tryUtil: Unit =
     import pkg.b.logic.ErrorLog.*

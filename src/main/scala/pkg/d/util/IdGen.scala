@@ -34,4 +34,4 @@ object IdGen:
       None
 
   @main def tryIdGen: Unit =
-    println(IdGen(inIdsFilePathName("errorlogId")))
+    println("")
