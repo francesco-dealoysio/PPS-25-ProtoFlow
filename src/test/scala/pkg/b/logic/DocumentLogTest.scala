@@ -48,10 +48,8 @@ class DocumentLogTest:
     )
 
   @After
-  def tearDown(): Unit = {
-    ()
-    //Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
-  }
+  def tearDown(): Unit =
+    Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
 
   @Test
   def testGetRecordsInexistentXmlFile: Unit =
