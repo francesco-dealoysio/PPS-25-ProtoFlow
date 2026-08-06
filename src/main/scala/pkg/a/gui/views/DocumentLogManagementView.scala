@@ -1,14 +1,13 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.text.UiText.{Common, DocumentLogs}
-import pkg.a.gui.text.UiText.DocumentLogs.Management.*
+import pkg.a.gui.text.UiText.Common.Buttons
+import pkg.a.gui.text.UiText.DocumentLogs
+import pkg.a.gui.text.UiText.DocumentLogs.{Fields, Management as Text}
 import pkg.a.gui.traits.Management
 import pkg.b.logic.DocumentLog
 import pkg.d.util.Util.inLogFilePathName
 import pkg.d.util.XmlToPdf
-import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
-import scalafx.scene.control.*
 import scalafx.scene.layout.BorderPane
 
 object DocumentLogManagementView extends Management:
@@ -19,21 +18,15 @@ object DocumentLogManagementView extends Management:
     val result = createResultMessage()
     val table = managementTable(logs, DocumentLogs.Management.Empty)
 
-    def stringColumn(title: String, columnWidth: Double)(value: DocumentLog => String): TableColumn[DocumentLog, String] =
-      new TableColumn[DocumentLog, String]:
-        text = title
-        prefWidth = columnWidth
-        cellValueFactory = cell =>
-          StringProperty(value(cell.value))
 
     table.columns ++= Seq(
-      stringColumn(DocumentLogs.Fields.Id, 90)(_.getId),
-      stringColumn(DocumentLogs.Fields.DocumentId, 120)(_.getDocumentId),
-      stringColumn(DocumentLogs.Fields.OperationType, 170): log =>
+      stringColumn[DocumentLog](Fields.Id, Some(90))(_.getId),
+      stringColumn[DocumentLog](Fields.DocumentId, Some(120))(_.getDocumentId),
+      stringColumn[DocumentLog](Fields.OperationType, Some(170)): log =>
         DocumentLogs.operationLabel(log.getOperationType),
-      stringColumn(DocumentLogs.Fields.ProcessedDate, 130)(_.getProcessedDate),
-      stringColumn(DocumentLogs.Fields.ProcessedTime, 120)(_.getProcessedTime),
-      stringColumn(DocumentLogs.Fields.ProcessedBy, 190)(_.getProcessedBy)
+      stringColumn[DocumentLog](Fields.ProcessedDate, Some(130))(_.getProcessedDate),
+      stringColumn[DocumentLog](Fields.ProcessedTime, Some(120))(_.getProcessedTime),
+      stringColumn[DocumentLog](Fields.ProcessedBy, Some(190))(_.getProcessedBy)
     )
 
     def loadLogs(): Unit =
@@ -72,21 +65,14 @@ object DocumentLogManagementView extends Management:
         )
 
       result.show(
-        if printed then PrintSuccess else PrintError,
+        if printed then Text.PrintSuccess else Text.PrintError,
         success = printed
       )
 
-    val exitButton =
-      closeButton(onExit)
+    val exitButton = closeButton(onExit)
+    val refreshButton = secondaryButton(Buttons.Refresh, () => loadLogs())
 
-    val refreshButton =
-      secondaryButton(
-        Common.Buttons.Refresh,
-        () => loadLogs()
-      )
-
-    val print =
-      printButton(() => printLogs())
+    val print = printButton(() => printLogs())
 
     val viewButton =
       primaryButton(
@@ -98,12 +84,12 @@ object DocumentLogManagementView extends Management:
               onView(selected)
 
             case None =>
-              result.show(SelectToView, success = false)
+              result.show(Text.SelectToView, success = false)
       )
 
     disableWithoutSelection(table, viewButton)
 
-    val header = titleBox(Title, Subtitle)
+    val header = titleBox(Text.Title, Text.Subtitle)
 
     val actions = actionBar(Seq(exitButton, refreshButton, print, viewButton))
 

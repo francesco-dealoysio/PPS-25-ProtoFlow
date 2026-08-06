@@ -1,7 +1,9 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.text.UiStyles.Registration.*
-import pkg.a.gui.text.UiText.{Common, Fields, Registration}
+import pkg.a.gui.text.UiText.Common.Buttons
+import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.Registration as Text
 import pkg.a.gui.structures.RegistrationViewModel
 import pkg.a.gui.traits.Form
 import pkg.b.logic.{RegistrationRequestService, Role, Registration as RegistrationModel}
@@ -11,20 +13,17 @@ import scalafx.scene.layout.{BorderPane, GridPane}
 
 object RegistrationView extends Form:
 
-  def apply(
-             viewModel: RegistrationViewModel,
-             onExit: () => Unit = () => ()
-           ): BorderPane =
+  def apply(viewModel: RegistrationViewModel, onExit: () => Unit = () => ()): BorderPane =
 
     val service = new RegistrationRequestService()
     val roleLogic = new Role()
-    val name = stringField(Registration.NamePrompt)
-    val surname = stringField(Registration.SurnamePrompt)
-    val email = stringField(Registration.EmailPrompt)
-    val phone = stringField(Registration.PhonePrompt)
-    val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), Registration.RolePrompt)
-    val area = stringComboField(Seq("Urbanistica", "Personale", "Amministrazione", "Segreteria", "Finanziario", "Area Tecnica"), Registration.AreaPrompt)
-    val assignment = stringField(Registration.AssignmentPrompt)
+    val name = stringField(Text.NamePrompt)
+    val surname = stringField(Text.SurnamePrompt)
+    val email = stringField(Text.EmailPrompt)
+    val phone = stringField(Text.PhonePrompt)
+    val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), Text.RolePrompt)
+    val area = stringComboField(Seq("Urbanistica", "Personale", "Amministrazione", "Segreteria", "Finanziario", "Area Tecnica"), Text.AreaPrompt)
+    val assignment = stringField(Text.AssignmentPrompt)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(name, surname, email, phone, role, area, assignment)
     val resultMessage = messageLabel(MessageStyle)
@@ -67,8 +66,8 @@ object RegistrationView extends Form:
         showMessage(
           label = resultMessage,
           message = errors.mkString(
-            Registration.ValidationHeader,
-            Registration.ValidationSeparator,
+            Text.ValidationHeader,
+            Text.ValidationSeparator,
             ""
           ),
           success = false,
@@ -90,7 +89,7 @@ object RegistrationView extends Form:
 
             showMessage(
               resultMessage,
-              Registration.SubmitSuccess,
+              Text.SubmitSuccess,
               success = true,
               MessageSuccessStyle,
               MessageErrorStyle
@@ -105,55 +104,55 @@ object RegistrationView extends Form:
               MessageErrorStyle
             )
 
-    val submit = primaryButton(Common.Buttons.RequestRegistration, () => submitRequest())
+    val submit = primaryButton(Buttons.RequestRegistration, () => submitRequest())
     val reset = resetButton(() => resetForm())
 
     def exitRegistration(): Unit =
       val canExit =
         if hasChanges then
           askConfirmation(
-            titleText = Registration.ExitDialog.Title,
-            header = Registration.ExitDialog.Header,
-            content = Registration.ExitDialog.Content
+            titleText = Text.ExitDialog.Title,
+            header = Text.ExitDialog.Header,
+            content = Text.ExitDialog.Content
           )
         else
           true
 
       if canExit then onExit()
 
-    val exit = closeButton(onExit = () => exitRegistration(), text = Common.Buttons.Close)
+    val exit = closeButton(onExit = () => exitRegistration(), text = Buttons.Close)
 
     val formGrid = new GridPane:
       hgap = 18
       vgap = 14
       styleClass += GridStyle
 
-      add(fieldLabel(Fields.Labels.required(Fields.Labels.Name)), 0, 0)
+      add(fieldLabel(Labels.required(Labels.Name)), 0, 0)
       add(name.control, 0, 1)
 
-      add(fieldLabel(Fields.Labels.required(Fields.Labels.Surname)), 1, 0)
+      add(fieldLabel(Labels.required(Labels.Surname)), 1, 0)
       add(surname.control, 1, 1)
 
-      add(fieldLabel(Fields.Labels.required(Fields.Labels.Email)), 0, 2)
+      add(fieldLabel(Labels.required(Labels.Email)), 0, 2)
       add(email.control, 0, 3)
 
-      add(fieldLabel(Fields.Labels.Phone), 1, 2)
+      add(fieldLabel(Labels.Phone), 1, 2)
       add(phone.control, 1, 3)
 
-      add(fieldLabel(Fields.Labels.required(Fields.Labels.Role)), 0, 4)
+      add(fieldLabel(Labels.required(Labels.Role)), 0, 4)
       add(role.control, 0, 5)
 
-      add(fieldLabel(Fields.Labels.required(Fields.Labels.Area)), 1, 4)
+      add(fieldLabel(Labels.required(Labels.Area)), 1, 4)
       add(area.control, 1, 5)
 
-      add(fieldLabel(Fields.Labels.required(Fields.Labels.Assignment)), 0, 6)
+      add(fieldLabel(Labels.required(Labels.Assignment)), 0, 6)
       add(assignment.control, 0, 7)
 
     val buttonsBox = actionBar(Seq(exit, reset, submit))
 
     formPage(
-      titleText = Registration.Title,
-      subtitleText = Registration.Subtitle,
+      titleText = Text.Title,
+      subtitleText = Text.Subtitle,
       titleStyle = TitleStyle,
       subtitleStyle = SubtitleStyle,
       rootStyle = RootStyle,

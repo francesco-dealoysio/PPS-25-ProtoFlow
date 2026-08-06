@@ -1,17 +1,18 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
+import pkg.a.gui.text.UiStyles.Login.*
+import pkg.a.gui.text.UiText.Common.Buttons
+import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Login
 import pkg.a.gui.traits.Form
 import pkg.b.logic.LoginService.LoginError
 import pkg.b.logic.{Account, LoginService}
 import scalafx.Includes.jfxKeyEvent2sfx
 import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.control.{Button, Label, PasswordField, TextField}
+import scalafx.scene.control.{Label, PasswordField, TextField}
 import scalafx.scene.input.KeyCode
 import scalafx.scene.layout.{BorderPane, Region, StackPane, VBox}
-import pkg.a.gui.text.UiText
-import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
-import pkg.a.gui.text.UiStyles.Login.*
-import UiText.{Common, Fields, Login}
 
 object LoginView extends Form:
 
@@ -19,12 +20,12 @@ object LoginView extends Form:
 
     val usernameField = new TextField:
       maxWidth = 220
-      promptText = Fields.Prompts.Username
+      promptText = Prompts.Username
       styleClass += FormFieldStyle
 
     val passwordField = new PasswordField:
       maxWidth = 220
-      promptText = Fields.Prompts.Password
+      promptText = Prompts.Password
       styleClass += FormFieldStyle
 
     val result =
@@ -61,7 +62,7 @@ object LoginView extends Form:
             passwordField.requestFocus()
 
           case Left(LoginError.UnknownRole(role)) =>
-            result.show(s"Application Error: ruolo '$role' non riconosciuto.", false)
+            result.show(Login.unknownRole(role), false)
 
     usernameField.onKeyPressed = event =>
       if event.code == KeyCode.Enter then
@@ -99,7 +100,7 @@ object LoginView extends Form:
       alignment = Pos.CenterLeft
       maxWidth = 220
       children = Seq(
-        fieldLabel(Fields.Labels.required(Fields.Labels.Username)),
+        fieldLabel(Labels.required(Labels.Username)),
         usernameField
       )
 
@@ -108,7 +109,7 @@ object LoginView extends Form:
       alignment = Pos.CenterLeft
       maxWidth = 220
       children = Seq(
-        fieldLabel(Fields.Labels.required(Fields.Labels.Password)),
+        fieldLabel(Labels.required(Labels.Password)),
         passwordField
       )
 
@@ -117,10 +118,10 @@ object LoginView extends Form:
       alignment = Pos.Center
       children = Seq(usernameBox, passwordBox)
 
-    val clearButton = resetButton(() => clearFields(), Common.Buttons.Clear)
-    val accessButton = primaryButton(Common.Buttons.Login, () => access())
+    val clearButton = resetButton(() => clearFields(), Buttons.Clear)
+    val accessButton = primaryButton(Buttons.Login, () => access())
     val buttonsBox = actionBar(Seq(clearButton, accessButton), barAlignment = Pos.Center)
-    val registrationButton = secondaryButton(Common.Buttons.RequestRegistration, () => onRegistrationRequest())
+    val registrationButton = secondaryButton(Buttons.RequestRegistration, () => onRegistrationRequest())
     registrationButton.maxWidth = 220
 
     val card = new VBox:

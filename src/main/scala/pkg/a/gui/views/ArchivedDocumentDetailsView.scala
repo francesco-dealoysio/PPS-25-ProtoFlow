@@ -1,7 +1,10 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.text.{UiStyles, UiText}
-import pkg.a.gui.text.UiText.{ArchivedDocuments, LoadedDocuments, RegisteredDocuments}
+import pkg.a.gui.text.UiText.ArchivedDocuments.{Details as Text, Fields as ArchiveFields, Prompts as ArchivePrompts}
+import pkg.a.gui.text.UiText.Common.Buttons
+import pkg.a.gui.text.UiText.LoadedDocuments.{Fields as DocumentFields, Prompts as DocumentPrompts}
+import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegistrationFields
+import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
 import pkg.a.gui.traits.Form
 import pkg.b.logic.ArchivedDocument
 import scalafx.geometry.Pos
@@ -13,20 +16,20 @@ import pkg.d.util.XmlToPdf
 object ArchivedDocumentDetailsView extends Form:
 
   def apply(selectedDocument: ArchivedDocument, onExit: () => Unit = () => ()): BorderPane =
-    val protocolNumber = stringField(RegisteredDocuments.Fields.ProtocolNumber, selectedDocument.getProtocolNumber)
-    val registeredDate = stringField(RegisteredDocuments.Fields.RegisteredDate, selectedDocument.getRegisteredDate)
-    val registeredTime = stringField(RegisteredDocuments.Fields.RegisteredTime, selectedDocument.getRegisteredTime)
-    val registeredBy = stringField(RegisteredDocuments.Fields.RegisteredBy, selectedDocument.getRegisteredBy)
-    val documentType = stringField(LoadedDocuments.Prompts.DocumentType, selectedDocument.getDocumentType)
-    val sender = stringField(LoadedDocuments.Prompts.Sender, selectedDocument.getSender)
-    val recipient = stringField(LoadedDocuments.Prompts.Recipient, selectedDocument.getRecipient)
-    val subject = stringField(LoadedDocuments.Prompts.Subject, selectedDocument.getSubject)
-    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Common.DescriptionAreaStyle, selectedDocument.getRemarks)
-    val archivedDate = stringField(ArchivedDocuments.Fields.ArchivedDate, selectedDocument.getArchivedDate)
-    val archivedTime = stringField(ArchivedDocuments.Prompts.ArchivedTime, selectedDocument.getArchivedTime)
-    val archivedBy = stringField(ArchivedDocuments.Prompts.ArchivedBy, selectedDocument.getArchivedBy)
-    val archiveLocation = stringField(ArchivedDocuments.Prompts.ArchiveLocation, selectedDocument.getArchiveLocation)
-    val archiveRemarks = areaField(ArchivedDocuments.Prompts.ArchiveRemarks, UiStyles.Common.DescriptionAreaStyle, selectedDocument.getArchiveRemarks)
+    val protocolNumber = stringField(RegistrationFields.ProtocolNumber, selectedDocument.getProtocolNumber)
+    val registeredDate = stringField(RegistrationFields.RegisteredDate, selectedDocument.getRegisteredDate)
+    val registeredTime = stringField(RegistrationFields.RegisteredTime, selectedDocument.getRegisteredTime)
+    val registeredBy = stringField(RegistrationFields.RegisteredBy, selectedDocument.getRegisteredBy)
+    val documentType = stringField(DocumentPrompts.DocumentType, selectedDocument.getDocumentType)
+    val sender = stringField(DocumentPrompts.Sender, selectedDocument.getSender)
+    val recipient = stringField(DocumentPrompts.Recipient, selectedDocument.getRecipient)
+    val subject = stringField(DocumentPrompts.Subject, selectedDocument.getSubject)
+    val remarks = areaField(DocumentPrompts.Remarks, DescriptionAreaStyle, selectedDocument.getRemarks)
+    val archivedDate = stringField(ArchivePrompts.ArchivedDate, selectedDocument.getArchivedDate)
+    val archivedTime = stringField(ArchivePrompts.ArchivedTime, selectedDocument.getArchivedTime)
+    val archivedBy = stringField(ArchivePrompts.ArchivedBy, selectedDocument.getArchivedBy)
+    val archiveLocation = stringField(ArchivePrompts.ArchiveLocation, selectedDocument.getArchiveLocation)
+    val archiveRemarks = areaField(ArchivePrompts.ArchiveRemarks, DescriptionAreaStyle, selectedDocument.getArchiveRemarks)
 
     val readOnlyFields: Seq[FormField[? <: Node]] =
       Seq(
@@ -52,26 +55,26 @@ object ArchivedDocumentDetailsView extends Form:
     val documentForm =
       formGrid(
         Seq(
-          formRow(RegisteredDocuments.Fields.ProtocolNumber, protocolNumber),
-          formRow(RegisteredDocuments.Fields.RegisteredDate, registeredDate),
-          formRow(RegisteredDocuments.Fields.RegisteredTime, registeredTime),
-          formRow(RegisteredDocuments.Fields.RegisteredBy, registeredBy),
-          formRow(LoadedDocuments.Fields.DocumentType, documentType),
-          formRow(LoadedDocuments.Fields.Sender, sender),
-          formRow(LoadedDocuments.Fields.Recipient, recipient),
-          formRow(LoadedDocuments.Fields.Subject, subject),
-          formRow(LoadedDocuments.Fields.Remarks, remarks)
+          formRow(RegistrationFields.ProtocolNumber, protocolNumber),
+          formRow(RegistrationFields.RegisteredDate, registeredDate),
+          formRow(RegistrationFields.RegisteredTime, registeredTime),
+          formRow(RegistrationFields.RegisteredBy, registeredBy),
+          formRow(DocumentFields.DocumentType, documentType),
+          formRow(DocumentFields.Sender, sender),
+          formRow(DocumentFields.Recipient, recipient),
+          formRow(DocumentFields.Subject, subject),
+          formRow(DocumentFields.Remarks, remarks)
         )
       )
 
     val archiveForm =
       formGrid(
         Seq(
-          formRow(ArchivedDocuments.Fields.ArchivedDate, archivedDate),
-          formRow(ArchivedDocuments.Fields.ArchivedTime, archivedTime),
-          formRow(ArchivedDocuments.Fields.ArchivedBy, archivedBy),
-          formRow(ArchivedDocuments.Fields.ArchiveLocation, archiveLocation),
-          formRow(ArchivedDocuments.Fields.ArchiveRemarks, archiveRemarks)
+          formRow(ArchiveFields.ArchivedDate, archivedDate),
+          formRow(ArchiveFields.ArchivedTime, archivedTime),
+          formRow(ArchiveFields.ArchivedBy, archivedBy),
+          formRow(ArchiveFields.ArchiveLocation, archiveLocation),
+          formRow(ArchiveFields.ArchiveRemarks, archiveRemarks)
         )
       )
 
@@ -102,25 +105,21 @@ object ArchivedDocumentDetailsView extends Form:
         XmlToPdf.printDetails(
           xmlPath = inDocumentsFilePathName("archived.xml"),
           recordId = selectedDocument.getId,
-          pdfFileName = s"${ArchivedDocuments.Details.PrintFileNamePrefix}_$safeProtocolNumber",
-          title = ArchivedDocuments.Details.PrintTitle
+          pdfFileName = s"${Text.PrintFileNamePrefix}_$safeProtocolNumber",
+          title = Text.PrintTitle
         )
 
       result.show(
-        message =
-          if printed then
-            ArchivedDocuments.Details.PrintSuccess
-          else
-            ArchivedDocuments.Details.PrintError,
+        message = if printed then Text.PrintSuccess else Text.PrintError,
         success = printed
       )
 
     val exitButton = closeButton(onExit)
-    val printButton = secondaryButton(UiText.Common.Buttons.Print, () => printDocumentDetails())
+    val printButton = secondaryButton(Buttons.Print, () => printDocumentDetails())
 
     formPage(
-      titleText = ArchivedDocuments.Details.Title,
-      subtitleText = ArchivedDocuments.Details.Subtitle,
+      titleText = Text.Title,
+      subtitleText = Text.Subtitle,
       form = form,
       resultMessage = result.label,
       actions = actionBar(Seq(exitButton, printButton))

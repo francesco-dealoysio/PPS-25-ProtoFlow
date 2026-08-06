@@ -17,6 +17,13 @@ trait Management extends Common:
       columnResizePolicy = TableView.ConstrainedResizePolicy
       placeholder = new Label(emptyText)
       styleClass += TableStyle
+      
+  protected def stringColumn[T](title: String, widthColumn: Option[Double] = None)(value: T => String): TableColumn[T, String] =
+    new TableColumn[T, String]:
+      text = title
+      widthColumn.foreach(prefWidth = _)
+      cellValueFactory = cell =>
+        StringProperty(value(cell.value))
 
   protected def selectedItem[T](table: TableView[T]): Option[T] =
     Option(table.selectionModel.value.selectedItem.value)

@@ -5,7 +5,7 @@ import pkg.b.logic.Account
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, TableColumn, TableView}
 import scalafx.scene.layout.*
-import pkg.a.gui.text.UiStyles
+import pkg.a.gui.text.UiStyles.HomePage.*
 import pkg.a.gui.text.UiText.Common.Dialogs.Logout.*
 import pkg.a.gui.text.UiText.Common.Documents.NoDocuments
 
@@ -34,7 +34,7 @@ trait HomePage extends Root:
 
     val contentArea =
       new StackPane:
-        styleClass +=  UiStyles.HomePage.ContentAreaStyle
+        styleClass += ContentAreaStyle
         children = Seq(dashboardContent())
 
     val navigator =
@@ -86,31 +86,31 @@ trait HomePage extends Root:
         new Button(item.label):
           maxWidth = Double.MaxValue
           alignment = Pos.CenterLeft
-          styleClass += UiStyles.HomePage.SidebarButtonStyle
+          styleClass += SidebarButtonStyle
           onAction = _ => onNavigate(item.action)
 
     new VBox:
       prefWidth = 230
-      styleClass += UiStyles.HomePage.SidebarStyle
+      styleClass += SidebarStyle
       children = buttons
 
   protected def createPlaceholder(title: String): VBox =
     new VBox:
-      styleClass += UiStyles.HomePage.PlaceholderContainerStyle
-      children = Seq(fieldLabel(title, UiStyles.HomePage.PlaceholderTitleStyle))
+      styleClass += PlaceholderContainerStyle
+      children = Seq(fieldLabel(title, PlaceholderTitleStyle))
 
   private def dashboardContent(): VBox =
     new VBox:
-      styleClass += UiStyles.HomePage.DashboardContainerStyle
+      styleClass += DashboardContainerStyle
       children = Seq(
-        fieldLabel(pageTitle, UiStyles.HomePage.PageTitleStyle),
+        fieldLabel(pageTitle, PageTitleStyle),
         createCards(),
         createDocumentsTable()
       )
 
   private def createCards(): HBox =
     new HBox:
-      styleClass += UiStyles.HomePage.CardsContainerStyle
+      styleClass += CardsContainerStyle
       children = Seq(
         statCard("Totale Documenti", "0", "Nessun documento"),
         statCard("In Carico", "0", "Nessun documento"),
@@ -121,17 +121,17 @@ trait HomePage extends Root:
   private def statCard(title: String, value: String, subtitle: String): VBox =
     new VBox:
       prefWidth = 190
-      styleClass += UiStyles.HomePage.StatCardStyle
+      styleClass += StatCardStyle
       children = Seq(
-        fieldLabel(title, UiStyles.HomePage.StatCardTitleStyle),
-        fieldLabel(value, UiStyles.HomePage.StatCardValueStyle),
-        fieldLabel(subtitle, UiStyles.HomePage.StatCardSubtitleStyle)
+        fieldLabel(title, StatCardTitleStyle),
+        fieldLabel(value, StatCardValueStyle),
+        fieldLabel(subtitle, StatCardSubtitleStyle)
       )
 
   private def createDocumentsTable(): TableView[Unit] =
     new TableView[Unit]:
-      styleClass += UiStyles.HomePage.DocumentsTableStyle
-      placeholder = fieldLabel(NoDocuments, UiStyles.HomePage.TablePlaceholderStyle)
+      styleClass += DocumentsTableStyle
+      placeholder = fieldLabel(NoDocuments, TablePlaceholderStyle)
       columns ++=
         Seq(
           "Protocollo",

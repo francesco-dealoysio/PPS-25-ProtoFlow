@@ -1,15 +1,16 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.structures.ClassificationViewModel
-import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
 import scalafx.application.Platform
 import scalafx.scene.layout.BorderPane
-import UiText.{Classifications, Fields}
-import pkg.a.gui.text.UiText.Validation.Classification.*
+import pkg.a.gui.text.UiText.Classifications.Add as Text
+import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Validation.Classification as Validation
 
 object ClassificationAddView extends Form:
 
@@ -18,8 +19,8 @@ object ClassificationAddView extends Form:
     val classificationLogic = new Classification()
     val viewModel = new ClassificationViewModel()
 
-    val classification = stringField(Fields.Prompts.Classification)
-    val description = areaField(Fields.Prompts.Description, UiStyles.Common.DescriptionAreaStyle)
+    val classification = stringField(Prompts.Classification)
+    val description = areaField(Prompts.Description, DescriptionAreaStyle)
     val monitoredFields = Seq(classification, description)
     val resultMessage = messageLabel()
 
@@ -43,8 +44,8 @@ object ClassificationAddView extends Form:
         )
 
       showFormFieldErrors(errors):
-        case ClassificationRequired | DuplicateClassification => classification
-        case DescriptionRequired => description
+        case Validation.ClassificationRequired | Validation.DuplicateClassification => classification
+        case Validation.DescriptionRequired => description
 
     def resetForm(): Unit =
       resetFields(classification, description)
@@ -60,14 +61,10 @@ object ClassificationAddView extends Form:
 
           showMessage(
             label = resultMessage,
-            message =
-              if saved then
-                Classifications.Add.Success
-              else
-                Classifications.Add.Error,
+            message = if saved then Text.Success else Text.Error,
             success = saved,
-            successStyle = UiStyles.Common.MessageSuccessStyle,
-            errorStyle = UiStyles.Common.MessageErrorStyle
+            successStyle = MessageSuccessStyle,
+            errorStyle = MessageErrorStyle
           )
 
           if saved then
@@ -80,8 +77,8 @@ object ClassificationAddView extends Form:
     val form =
       formGrid(
         Seq(
-          formRow(Fields.Labels.required(Fields.Labels.Classification), classification),
-          formRow(Fields.Labels.required(Fields.Labels.Description), description)
+          formRow(Labels.required(Labels.Classification), classification),
+          formRow(Labels.required(Labels.Description), description)
         )
       )
 
@@ -89,8 +86,8 @@ object ClassificationAddView extends Form:
       classification.requestFocus()
 
     formPage(
-      titleText = Classifications.Add.Title,
-      subtitleText = Classifications.Add.Subtitle,
+      titleText = Text.Title,
+      subtitleText = Text.Subtitle,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

@@ -3,12 +3,11 @@ package pkg.a.gui.views
 import pkg.a.gui.traits.Management
 import pkg.b.logic.Account
 import pkg.d.util.Logger.*
-import pkg.a.gui.text.UiText
-import UiText.{Accounts, Common, Fields}
-import scalafx.beans.property.StringProperty
+import pkg.a.gui.text.UiText.Accounts.Management as Text
+import pkg.a.gui.text.UiText.Common.Buttons
+import pkg.a.gui.text.UiText.Fields.Labels
 import scalafx.collections.ObservableBuffer
-import scalafx.scene.control.*
-import scalafx.scene.layout.*
+import scalafx.scene.layout.BorderPane
 
 object AccountManagementView extends Management:
 
@@ -23,57 +22,17 @@ object AccountManagementView extends Management:
 
     val result = createResultMessage()
 
-    val table = managementTable(accounts, Accounts.Management.Empty)
-
-    val surnameColumn = new TableColumn[Account, String]:
-      text = Fields.Labels.Surname
-      cellValueFactory = cell =>
-        StringProperty(cell.value.getSurname)
-
-    val nameColumn = new TableColumn[Account, String]:
-      text = Fields.Labels.Name
-      cellValueFactory = cell =>
-        StringProperty(cell.value.getName)
-
-    val usernameColumn = new TableColumn[Account, String]:
-      text = Fields.Labels.Username
-      cellValueFactory = cell =>
-        StringProperty(cell.value.getUsername)
-
-    val emailColumn = new TableColumn[Account, String]:
-      text = Fields.Labels.Email
-      cellValueFactory = cell =>
-        StringProperty(cell.value.getEmail)
-
-    val phoneColumn = new TableColumn[Account, String]:
-      text = Fields.Labels.Phone
-      cellValueFactory = cell =>
-        StringProperty(cell.value.getPhone)
-
-    val roleColumn = new TableColumn[Account, String]:
-      text = Fields.Labels.Role
-      cellValueFactory = cell =>
-        StringProperty(cell.value.getRole)
-
-    val areaColumn = new TableColumn[Account, String]:
-      text = Fields.Labels.Area
-      cellValueFactory = cell =>
-        StringProperty(cell.value.getArea)
-
-    val assignmentColumn = new TableColumn[Account, String]:
-      text = Fields.Labels.Assignment
-      cellValueFactory = cell =>
-        StringProperty(cell.value.getAssignment)
+    val table = managementTable(accounts, Text.Empty)
 
     table.columns ++= Seq(
-      surnameColumn,
-      nameColumn,
-      usernameColumn,
-      emailColumn,
-      phoneColumn,
-      roleColumn,
-      areaColumn,
-      assignmentColumn
+      stringColumn[Account](Labels.Surname)(_.getSurname),
+      stringColumn[Account](Labels.Name)(_.getName),
+      stringColumn[Account](Labels.Username)(_.getUsername),
+      stringColumn[Account](Labels.Email)(_.getEmail),
+      stringColumn[Account](Labels.Phone)(_.getPhone),
+      stringColumn[Account](Labels.Role)(_.getRole),
+      stringColumn[Account](Labels.Area)(_.getArea),
+      stringColumn[Account](Labels.Assignment)(_.getAssignment)
     )
 
     def loadAccounts(): Unit =
@@ -91,24 +50,24 @@ object AccountManagementView extends Management:
         accounts.setAll(loaded*)
         table.selectionModel.value.clearSelection()
         if loaded.isEmpty then
-          result.show(Accounts.Management.Empty, success = true)
+          result.show(Text.Empty, success = true)
 
       catch
         case exception: Exception =>
           accounts.clear()
-          result.show(Accounts.Management.LoadError, success = false)
+          result.show(Text.LoadError, success = false)
           logger(exception)
 
     def deleteSelectedAccount(): Unit =
       selectedItem(table) match
         case None =>
-          result.show(Accounts.Management.SelectToDelete, success = false)
+          result.show(Text.SelectToDelete, success = false)
 
         case Some(selected) =>
           val confirmed =
             askConfirmation(
-              titleText = Accounts.Management.DeleteTitle,
-              header = Accounts.Management.DeleteConfirmation,
+              titleText = Text.DeleteTitle,
+              header = Text.DeleteConfirmation,
               content =
                 s"""Account: ${selected.getUsername}
                    |Nominativo: ${selected.getName} ${selected.getSurname}
@@ -122,35 +81,35 @@ object AccountManagementView extends Management:
 
             if deleted then
               loadAccounts()
-              result.show(Accounts.Management.deleted(selected.getUsername), success = true)
+              result.show(Text.deletedAccount(selected.getUsername), success = true)
             else
-              result.show(Accounts.Management.DeleteError, success = false)
+              result.show(Text.DeleteError, success = false)
 
     clearResultOnSelection(table, result)
 
-    val addButton = primaryButton(Common.Buttons.Add, () =>
+    val addButton = primaryButton(Buttons.Add, () =>
       result.clear()
       onAdd())
 
     val editButton =
-      secondaryButton(Common.Buttons.Edit, () =>
+      secondaryButton(Buttons.Edit, () =>
         selectedItem(table) match
           case Some(selected) =>
             result.clear()
             onEdit(selected)
 
           case None =>
-            result.show(Accounts.Management.SelectToEdit, success = false)
+            result.show(Text.SelectToEdit, success = false)
       )
 
-    val deleteButton = dangerButton(Common.Buttons.Delete, () => deleteSelectedAccount())
+    val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedAccount())
     disableWithoutSelection(table, editButton, deleteButton)
 
     val exitButton = closeButton(onExit)
 
     val bottomActions = actionBar(Seq(exitButton, editButton, deleteButton, addButton))
 
-    val header = titleBox(Accounts.Management.Title, Accounts.Management.Subtitle)
+    val header = titleBox(Text.Title, Text.Subtitle)
 
     loadAccounts() // Prima lettura dal file XML.
 

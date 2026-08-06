@@ -2,15 +2,14 @@ package pkg.a.gui.views
 
 import pkg.a.gui.traits.Management
 import pkg.b.logic.Classification
-import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
-import scalafx.scene.control.*
-import scalafx.scene.layout.*
 import pkg.d.util.Logger.*
 import pkg.d.util.Util.inDatabaseFilePathName
 import pkg.d.util.XmlToPdf
-import pkg.a.gui.text.UiText
-import UiText.{Fields, Classifications, Common}
+import pkg.a.gui.text.UiText.Common.Buttons
+import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.Classifications.Management as Text
+import scalafx.scene.layout.BorderPane
 
 object ClassificationManagementView extends Management:
 
@@ -21,21 +20,11 @@ object ClassificationManagementView extends Management:
 
     val result = createResultMessage()
     
-    val table = managementTable(classifications, Classifications.Management.Empty)
-
-    val classificationColumn = new TableColumn[Classification, String]:
-        text = Fields.Labels.Classification
-        cellValueFactory = cell =>
-          StringProperty(cell.value.getClassification)
-
-    val descriptionColumn = new TableColumn[Classification, String]:
-        text = Fields.Labels.Description
-        cellValueFactory = cell =>
-          StringProperty(cell.value.getDescription)
+    val table = managementTable(classifications, Text.Empty)
 
     table.columns ++= Seq(
-      classificationColumn,
-      descriptionColumn
+      stringColumn[Classification](Labels.Classification)(_.getClassification),
+      stringColumn[Classification](Labels.Description)(_.getDescription)
     )
 
     def loadClassifications(): Unit =
@@ -56,24 +45,24 @@ object ClassificationManagementView extends Management:
           .clearSelection()
 
         if loaded.isEmpty then
-          result.show(Classifications.Management.Empty, success = true)
+          result.show(Text.Empty, success = true)
 
       catch
         case exception: Exception =>
           classifications.clear()
-          result.show(Classifications.Management.LoadError, success = false)
+          result.show(Text.LoadError, success = false)
           logger(exception)
 
     def deleteSelectedClassification(): Unit =
       selectedItem(table) match
         case None =>
-          result.show(Classifications.Management.SelectToDelete, success = false)
+          result.show(Text.SelectToDelete, success = false)
 
         case Some(selected) =>
           val confirmed =
             askConfirmation(
-              titleText = Classifications.Management.DeleteTitle,
-              header = Classifications.Management.DeleteConfirmation,
+              titleText = Text.DeleteTitle,
+              header = Text.DeleteConfirmation,
               content =
                 s"""Classifica: ${selected.getClassification}
                    |Codice: ${selected.getId}
@@ -87,52 +76,52 @@ object ClassificationManagementView extends Management:
             if deleted then
               loadClassifications()
 
-              result.show(Classifications.Management.deleted(selected.getClassification), success = true)
+              result.show(Text.deleted(selected.getClassification), success = true)
             else
-              result.show(Classifications.Management.DeleteError, success = false)
+              result.show(Text.DeleteError, success = false)
 
     def printClassifications(): Unit =
       if classifications.isEmpty then
-        result.show(Classifications.Management.PrintEmpty, success = false)
+        result.show(Text.PrintEmpty, success = false)
       else
         val printed =
           XmlToPdf.printList(
             xmlPath = inDatabaseFilePathName("classifications.xml"),
             pdfFileName = "elenco-classifiche.pdf",
-            title = Classifications.Management.PrintTitle
+            title = Text.PrintTitle
           )
 
         if printed then
-          result.show(Classifications.Management.PrintSuccess, success = true)
+          result.show(Text.PrintSuccess, success = true)
         else
-          result.show(Classifications.Management.PrintError, success = false)
+          result.show(Text.PrintError, success = false)
 
     clearResultOnSelection(table, result)
 
-    val addButton = primaryButton(text = Common.Buttons.Add, action = () =>
+    val addButton = primaryButton(Buttons.Add, () =>
       result.clear()
       onAdd())
 
     val editButton =
       secondaryButton(
-        text = Common.Buttons.Edit,
-        action = () =>
+        Buttons.Edit,
+        () =>
           selectedItem(table) match
             case Some(selected) =>
               result.clear()
               onEdit(selected)
 
             case None =>
-              result.show(Classifications.Management.SelectToEdit, success = false)
+              result.show(Text.SelectToEdit, success = false)
       )
 
-    val deleteButton = dangerButton(text = Common.Buttons.Delete, action = () => deleteSelectedClassification())
+    val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedClassification())
     val exitButton = closeButton(onExit)
-    val print = printButton(action = () => printClassifications())
+    val print = printButton(() => printClassifications())
     disableWithoutSelection(table, editButton, deleteButton)
     val bottomActions = actionBar(Seq(exitButton, print, editButton, deleteButton, addButton))
 
-    val header = titleBox(Classifications.Management.Title, Classifications.Management.Subtitle)
+    val header = titleBox(Text.Title, Text.Subtitle)
 
     loadClassifications() // Prima lettura dal file XML.
 

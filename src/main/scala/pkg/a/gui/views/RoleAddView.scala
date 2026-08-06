@@ -7,10 +7,10 @@ import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
 import scalafx.application.Platform
 import scalafx.scene.layout.BorderPane
-import pkg.a.gui.text.UiText
 import pkg.a.gui.text.UiStyles.Common.*
-import pkg.a.gui.text.UiText.Validation.Role.*
-import UiText.{Fields, Roles}
+import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Roles.Add as Text
+import pkg.a.gui.text.UiText.Validation.Role as Validation
 
 object RoleAddView extends Form:
 
@@ -18,8 +18,8 @@ object RoleAddView extends Form:
 
     val roleLogic = new Role()
     val viewModel = new RoleViewModel()
-    val role = stringField(Fields.Prompts.Role)
-    val description = areaField(Fields.Prompts.Description, DescriptionAreaStyle)
+    val role = stringField(Prompts.Role)
+    val description = areaField(Prompts.Description, DescriptionAreaStyle)
     val resultMessage = messageLabel(MessageStyle)
     val monitoredFields = Seq(role, description)
     def currentRole(id: String = ""): Role =
@@ -42,10 +42,8 @@ object RoleAddView extends Form:
         )
 
       showFormFieldErrors(errors):
-        case RoleRequired | DuplicateRole =>
-          role
-        case DescriptionRequired =>
-          description
+        case Validation.RoleRequired | Validation.DuplicateRole => role
+        case Validation.DescriptionRequired => description
 
     def resetForm(): Unit =
       resetFields(role, description)
@@ -61,11 +59,7 @@ object RoleAddView extends Form:
 
           showMessage(
             label = resultMessage,
-            message =
-              if saved then
-                Roles.Add.Success
-              else
-                Roles.Add.Error,
+            message = if saved then Text.Success else Text.Error,
             success = saved,
             successStyle = MessageSuccessStyle,
             errorStyle = MessageErrorStyle
@@ -80,8 +74,8 @@ object RoleAddView extends Form:
     val form =
       formGrid(
         Seq(
-          formRow(Fields.Labels.required(Fields.Labels.Role), role),
-          formRow(Fields.Labels.required(Fields.Labels.Description), description)
+          formRow(Labels.required(Labels.Role), role),
+          formRow(Labels.required(Labels.Description), description)
         )
       )
 
@@ -89,8 +83,8 @@ object RoleAddView extends Form:
       role.requestFocus()
 
     formPage(
-      titleText = Roles.Add.Title,
-      subtitleText = Roles.Add.Subtitle,
+      titleText = Text.Title,
+      subtitleText = Text.Subtitle,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

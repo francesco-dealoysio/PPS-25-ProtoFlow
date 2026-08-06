@@ -184,7 +184,7 @@ object UiText:
       val DeleteConfirmation = "Confermi l'eliminazione dell'account selezionato?"
       val DeleteError = "Non è stato possibile eliminare l'account."
 
-      def deleted(username: String): String =
+      def deletedAccount(username: String): String =
         s"L'account '$username' è stato eliminato correttamente."
 
   object RegistrationRequests:
@@ -273,6 +273,10 @@ object UiText:
   object RegisteredDocuments:
     object Fields:
       val ProtocolNumber = "Numero protocollo"
+      val Sender = "Mittente"
+      val Subject = "Oggetto"
+      val Type = "Tipo"
+      val ProtocolledBy = "Protocollato da"
       val RegisteredDate = "Data protocollo"
       val RegisteredTime = "Ora protocollo"
       val RegisteredBy = "Operatore protocollatore"
@@ -439,7 +443,7 @@ object UiText:
 
         case other =>
           other
-  
+
   object Validation:
     object Account:
       val SurnameRequired = "Il campo Cognome è obbligatorio."

@@ -2,9 +2,10 @@ package pkg.a.gui.views
 
 import pkg.a.gui.structures.AccountViewModel
 import pkg.a.gui.traits.Form
-import pkg.a.gui.text.UiText.{Accounts, Common}
-import pkg.a.gui.text.UiText.Fields.*
-import pkg.a.gui.text.UiText.Validation.Account.*
+import pkg.a.gui.text.UiText.Accounts.{Edit as EditText, Profile as ProfileText}
+import pkg.a.gui.text.UiText.Common.Buttons
+import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Validation.Account as Validation
 import pkg.b.logic.{Account, Role}
 import pkg.d.util.Util.{cipher, inDatabaseFilePathName}
 import pkg.d.util.XmlToPdf
@@ -94,14 +95,14 @@ object AccountEditView extends Form:
 
       if profileMode then
         showFormFieldErrors(errors):
-          case EmailRequired | EmailInvalid=> email
+          case Validation.EmailRequired | Validation.EmailInvalid=> email
       else
         showFormFieldErrors(errors):
-          case SurnameRequired => surname
-          case NameRequired => name
-          case EmailRequired | EmailInvalid => email
-          case RoleRequired => role
-          case UsernameRequired | DuplicateUsername => username
+          case Validation.SurnameRequired => surname
+          case Validation.NameRequired => name
+          case Validation.EmailRequired | Validation.EmailInvalid => email
+          case Validation.RoleRequired => role
+          case Validation.UsernameRequired | Validation.DuplicateUsername => username
 
     var formSaved = false
 
@@ -110,8 +111,8 @@ object AccountEditView extends Form:
         if validateForm() then
           val updated = accountLogic.recordUpdate(currentAccount())
           val (successMsg, errorMsg) =
-            if profileMode then (Accounts.Profile.Success, Accounts.Profile.Error)
-            else (Accounts.Edit.Success, Accounts.Edit.Error)
+            if profileMode then (ProfileText.Success, ProfileText.Error)
+            else (EditText.Success, EditText.Error)
           showMessage(
             label = resultMessage,
             message = if updated then successMsg else errorMsg,
@@ -133,19 +134,19 @@ object AccountEditView extends Form:
 
     val print =
       secondaryButton(
-        text = Common.Buttons.Print,
+        text = Buttons.Print,
         action = () =>
           val printed =
             XmlToPdf.printDetails(
               xmlPath = inDatabaseFilePathName("accounts.xml"),
               recordId = selectedAccount.getId,
               pdfFileName = s"account_${selectedAccount.getId}",
-              title = Accounts.Edit.PrintTitle
+              title = EditText.PrintTitle
             )
 
           showMessage(
             label = resultMessage,
-            message = if printed then Accounts.Edit.PrintSuccess else Accounts.Edit.PrintError,
+            message = if printed then EditText.PrintSuccess else EditText.PrintError,
             success = printed
           )
       )
@@ -175,8 +176,8 @@ object AccountEditView extends Form:
     val actions = Seq(Some(exit), Option.unless(profileMode)(print), Some(reset), Some(save)).flatten
 
     val (titleText, subtitleText) =
-      if profileMode then (Accounts.Profile.Title, Accounts.Profile.Subtitle)
-      else (Accounts.Edit.Title, Accounts.Edit.Subtitle)
+      if profileMode then (ProfileText.Title, ProfileText.Subtitle)
+      else (EditText.Title, EditText.Subtitle)
     formPage(
       titleText = titleText,
       subtitleText =subtitleText,

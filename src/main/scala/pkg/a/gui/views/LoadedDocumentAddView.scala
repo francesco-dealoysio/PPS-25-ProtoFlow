@@ -1,8 +1,10 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.structures.LoadedDocumentViewModel
-import pkg.a.gui.text.UiText.{Fields, LoadedDocuments}
-import pkg.a.gui.text.UiText.Validation.LoadedDocument.*
+import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Prompts}
+import pkg.a.gui.text.UiText.LoadedDocuments.Add as Text
+import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
 import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.traits.Form
 import pkg.b.logic.LoadedDocument
@@ -24,13 +26,13 @@ object LoadedDocumentAddView extends Form:
     val initialDate = LocalDate.now()
     val defaultTime = localTime
     val documentDate = dateField(initialDate)
-    val documentTime = stringField(LoadedDocuments.Prompts.DocumentTime, defaultTime)
-    val documentProtocol = stringField(LoadedDocuments.Prompts.DocumentProtocol)
-    val documentType = stringField(LoadedDocuments.Prompts.DocumentType)
-    val sender = stringField(LoadedDocuments.Prompts.Sender)
-    val recipient = stringField(LoadedDocuments.Prompts.Recipient)
-    val subject = stringField(LoadedDocuments.Prompts.Subject)
-    val remarks = areaField(LoadedDocuments.Prompts.Remarks, DescriptionAreaStyle)
+    val documentTime = stringField(Prompts.DocumentTime, defaultTime)
+    val documentProtocol = stringField(Prompts.DocumentProtocol)
+    val documentType = stringField(Prompts.DocumentType)
+    val sender = stringField(Prompts.Sender)
+    val recipient = stringField(Prompts.Recipient)
+    val subject = stringField(Prompts.Subject)
+    val remarks = areaField(Prompts.Remarks, DescriptionAreaStyle)
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks)
     val resultMessage = messageLabel(MessageStyle)
 
@@ -56,13 +58,13 @@ object LoadedDocumentAddView extends Form:
       clearErrors()
       val errors = viewModel.validate(currentDocument())
       showFormFieldErrors(errors):
-        case DocumentDateRequired => documentDate
-        case DocumentTimeRequired => documentTime
-        case DocumentProtocolRequired => documentProtocol
-        case DocumentTypeRequired => documentType
-        case SenderRequired => sender
-        case RecipientRequired => recipient
-        case SubjectRequired => subject
+        case Validation.DocumentDateRequired => documentDate
+        case Validation.DocumentTimeRequired => documentTime
+        case Validation.DocumentProtocolRequired => documentProtocol
+        case Validation.DocumentTypeRequired => documentType
+        case Validation.SenderRequired => sender
+        case Validation.RecipientRequired => recipient
+        case Validation.SubjectRequired => subject
 
     def resetForm(): Unit =
       resetFields(monitoredFields*)
@@ -76,8 +78,8 @@ object LoadedDocumentAddView extends Form:
         if validateForm() then
           val confirmed =
             askConfirmation(
-              titleText = LoadedDocuments.Add.SaveTitle,
-              header = LoadedDocuments.Add.SaveHeader,
+              titleText = Text.SaveTitle,
+              header = Text.SaveHeader,
               content =
                 s"""Mittente: ${sender.value}
                    |Oggetto: ${subject.value}""".stripMargin
@@ -96,20 +98,16 @@ object LoadedDocumentAddView extends Form:
 
             showMessage(
               label = resultMessage,
-              message =
-                if saved then
-                  LoadedDocuments.Add.Success
-                else
-                  LoadedDocuments.Add.Error,
+              message = if saved then Text.Success else Text.Error,
               success = saved
             )
 
             if saved then
               formSaved = true
               val alert = new Alert(Alert.AlertType.Information):
-                title = LoadedDocuments.Add.Title
+                title = Text.Title
                 headerText = None
-                contentText = LoadedDocuments.Add.Success
+                contentText = Text.Success
               alert.showAndWait()
 
               resetForm()
@@ -121,15 +119,14 @@ object LoadedDocumentAddView extends Form:
     val form =
       formGrid(
         Seq(
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentDate), documentDate),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentTime), documentTime),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentProtocol), documentProtocol),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentType), documentType),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.Sender), sender),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.Recipient), recipient),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.Subject), subject),
-          formRow(LoadedDocuments.Fields.Remarks, remarks
-          )
+          formRow(Labels.required(Fields.DocumentDate), documentDate),
+          formRow(Labels.required(Fields.DocumentTime), documentTime),
+          formRow(Labels.required(Fields.DocumentProtocol), documentProtocol),
+          formRow(Labels.required(Fields.DocumentType), documentType),
+          formRow(Labels.required(Fields.Sender), sender),
+          formRow(Labels.required(Fields.Recipient), recipient),
+          formRow(Labels.required(Fields.Subject), subject),
+          formRow(Fields.Remarks, remarks)
         )
       )
 
@@ -137,8 +134,8 @@ object LoadedDocumentAddView extends Form:
       documentProtocol.requestFocus()
 
     formPage(
-      titleText = LoadedDocuments.Add.Title,
-      subtitleText = LoadedDocuments.Add.Subtitle,
+      titleText = Text.Title,
+      subtitleText = Text.Subtitle,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

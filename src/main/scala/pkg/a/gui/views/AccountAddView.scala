@@ -1,7 +1,6 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.structures.AccountViewModel
-import pkg.a.gui.text.UiText
 import pkg.a.gui.traits.Form
 import pkg.b.logic.{Account, Role}
 import pkg.d.util.IdGen
@@ -9,9 +8,9 @@ import pkg.d.util.Util.{inIdsFilePathName, cipher}
 import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
-import UiText.Accounts
-import pkg.a.gui.text.UiText.Fields.*
-import pkg.a.gui.text.UiText.Validation.Account.*
+import pkg.a.gui.text.UiText.Accounts.Add as Text
+import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Validation.Account as Validation
 
 object AccountAddView extends Form:
 
@@ -62,12 +61,12 @@ object AccountAddView extends Form:
         )
 
       showFormFieldErrors(errors):
-        case SurnameRequired => surname
-        case NameRequired => name
-        case EmailRequired | EmailInvalid => email
-        case RoleRequired => role
-        case UsernameRequired| DuplicateUsername => username
-        case PasswordRequired => password
+        case Validation.SurnameRequired => surname
+        case Validation.NameRequired => name
+        case Validation.EmailRequired | Validation.EmailInvalid => email
+        case Validation.RoleRequired => role
+        case Validation.UsernameRequired| Validation.DuplicateUsername => username
+        case Validation.PasswordRequired => password
 
     def resetForm(): Unit =
       resetFields(monitoredFields*)
@@ -82,9 +81,7 @@ object AccountAddView extends Form:
           val saved = accountLogic.recordInsert(newAccount)
           showMessage(
             label = resultMessage,
-            message =
-              if saved then Accounts.Add.Success
-              else Accounts.Add.Error,
+            message = if saved then Text.Success else Text.Error,
             success = saved
           )
 
@@ -114,8 +111,8 @@ object AccountAddView extends Form:
       surname.requestFocus()
 
     formPage(
-      titleText = Accounts.Add.Title,
-      subtitleText = Accounts.Add.Subtitle,
+      titleText = Text.Title,
+      subtitleText = Text.Subtitle,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

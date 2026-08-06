@@ -1,6 +1,7 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.text.UiText.DocumentLogs
+import pkg.a.gui.text.UiText.DocumentLogs.{Details as Text, Fields}
 import pkg.a.gui.traits.Form
 import pkg.b.logic.DocumentLog
 import scalafx.scene.Node
@@ -25,21 +26,19 @@ object DocumentLogDetailsView extends Form:
     val form =
       formGrid(
         Seq(
-          formRow(DocumentLogs.Fields.Id, id),
-          formRow(DocumentLogs.Fields.DocumentId, documentId),
-          formRow(DocumentLogs.Fields.OperationType, operationType),
-          formRow(DocumentLogs.Fields.ProcessedDate, processedDate),
-          formRow(DocumentLogs.Fields.ProcessedTime, processedTime),
-          formRow(DocumentLogs.Fields.ProcessedBy, processedBy)
+          formRow(Fields.Id, id),
+          formRow(Fields.DocumentId, documentId),
+          formRow(Fields.OperationType, operationType),
+          formRow(Fields.ProcessedDate, processedDate),
+          formRow(Fields.ProcessedTime, processedTime),
+          formRow(Fields.ProcessedBy, processedBy)
         )
       )
 
     formPage(
-      titleText = DocumentLogs.Details.Title,
-      subtitleText = DocumentLogs.Details.Subtitle,
+      titleText = Text.Title,
+      subtitleText = Text.Subtitle,
       form = form,
       resultMessage = createResultMessage().label,
-      actions = actionBar(
-        Seq(closeButton(onExit))
-      )
+      actions = actionBar(Seq(closeButton(onExit)))
     )

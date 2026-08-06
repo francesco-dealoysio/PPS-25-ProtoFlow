@@ -1,14 +1,17 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.text.{UiStyles, UiText}
-import pkg.a.gui.text.UiText.{ArchivedDocuments, Fields, LoadedDocuments, RegisteredDocuments}
+import pkg.a.gui.text.UiStyles.Common.*
+import pkg.a.gui.text.UiText.ArchivedDocuments.{Errors as ArchiveErrors, Fields as ArchiveFields, Process as Text, Prompts as ArchivePrompts}
+import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.LoadedDocuments.{Fields as DocumentFields, Prompts as DocumentPrompts}
+import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegistrationFields
 import pkg.a.gui.traits.Form
 import pkg.b.logic.{ArchivedDocumentService, RegisteredDocument}
 import pkg.d.util.DateTime.{localDate, localTime}
 import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.geometry.Pos
-import scalafx.scene.layout.{BorderPane, HBox, Priority}
+import scalafx.scene.layout.{HBox, Priority}
 import scalafx.scene.layout.BorderPane
 
 import java.time.LocalDate
@@ -23,24 +26,24 @@ object ArchivedDocumentView extends Form:
            ): BorderPane =
 
     val service = new ArchivedDocumentService()
-    val protocolNumber = stringField(RegisteredDocuments.Fields.ProtocolNumber, selectedDocument.getProtocolNumber)
-    val registeredDate = stringField(RegisteredDocuments.Fields.RegisteredDate, selectedDocument.getRegisteredDate)
-    val registeredTime = stringField(RegisteredDocuments.Fields.RegisteredTime, selectedDocument.getRegisteredTime)
-    val registeredBy = stringField(RegisteredDocuments.Fields.RegisteredBy, selectedDocument.getRegisteredBy)
-    val documentType = stringField(LoadedDocuments.Prompts.DocumentType, selectedDocument.getDocumentType)
-    val sender = stringField(LoadedDocuments.Prompts.Sender, selectedDocument.getSender)
-    val recipient = stringField(LoadedDocuments.Prompts.Recipient, selectedDocument.getRecipient)
-    val subject = stringField(LoadedDocuments.Prompts.Subject, selectedDocument.getSubject)
-    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Common.DescriptionAreaStyle, selectedDocument.getRemarks)
+    val protocolNumber = stringField(RegistrationFields.ProtocolNumber, selectedDocument.getProtocolNumber)
+    val registeredDate = stringField(RegistrationFields.RegisteredDate, selectedDocument.getRegisteredDate)
+    val registeredTime = stringField(RegistrationFields.RegisteredTime, selectedDocument.getRegisteredTime)
+    val registeredBy = stringField(RegistrationFields.RegisteredBy, selectedDocument.getRegisteredBy)
+    val documentType = stringField(DocumentPrompts.DocumentType, selectedDocument.getDocumentType)
+    val sender = stringField(DocumentPrompts.Sender, selectedDocument.getSender)
+    val recipient = stringField(DocumentPrompts.Recipient, selectedDocument.getRecipient)
+    val subject = stringField(DocumentPrompts.Subject, selectedDocument.getSubject)
+    val remarks = areaField(DocumentPrompts.Remarks, DescriptionAreaStyle, selectedDocument.getRemarks)
 
     /*
      * Dati propri dell'archiviazione.
      */
     val archivedDate = dateField(LocalDate.parse(localDate))
-    val archivedTime = stringField(ArchivedDocuments.Prompts.ArchivedTime, localTime)
-    val archivedBy = stringField(ArchivedDocuments.Prompts.ArchivedBy, operatorUsername)
-    val archiveLocation = stringField(ArchivedDocuments.Prompts.ArchiveLocation)
-    val archiveRemarks = areaField(ArchivedDocuments.Prompts.ArchiveRemarks, UiStyles.Common.DescriptionAreaStyle)
+    val archivedTime = stringField(ArchivePrompts.ArchivedTime, localTime)
+    val archivedBy = stringField(ArchivePrompts.ArchivedBy, operatorUsername)
+    val archiveLocation = stringField(ArchivePrompts.ArchiveLocation)
+    val archiveRemarks = areaField(ArchivePrompts.ArchiveRemarks, DescriptionAreaStyle)
 
     /*
      * I dati già protocollati sono solamente visualizzati.
@@ -58,25 +61,25 @@ object ArchivedDocumentView extends Form:
     val archiveFields: Seq[FormField[? <: Node]] =
       Seq(archivedDate, archivedTime, archivedBy, archiveLocation, archiveRemarks)
 
-    val resultMessage = messageLabel(UiStyles.Common.MessageStyle)
+    val resultMessage = messageLabel(MessageStyle)
 
     def clearErrors(): Unit =
       clearFormFieldErrors(archiveFields*)
-      clearMessage(resultMessage, UiStyles.Common.MessageSuccessStyle, UiStyles.Common.MessageErrorStyle)
+      clearMessage(resultMessage, MessageSuccessStyle, MessageErrorStyle)
 
     def validateForm(): Boolean =
       clearErrors()
       var valid = true
       if archivedDate.value.isBlank then
-        archivedDate.showError(ArchivedDocuments.Errors.ArchivedDateRequired)
+        archivedDate.showError(ArchiveErrors.ArchivedDateRequired)
         valid = false
 
       if archivedTime.value.isBlank then
-        archivedTime.showError(ArchivedDocuments.Errors.ArchivedTimeRequired)
+        archivedTime.showError(ArchiveErrors.ArchivedTimeRequired)
         valid = false
 
       if archivedBy.value.isBlank then
-        archivedBy.showError(ArchivedDocuments.Errors.ArchivedByRequired)
+        archivedBy.showError(ArchiveErrors.ArchivedByRequired)
         valid = false
 
       valid
@@ -93,8 +96,8 @@ object ArchivedDocumentView extends Form:
         if validateForm() then
           val confirmed =
             askConfirmation(
-              titleText = ArchivedDocuments.Process.SaveTitle,
-              header = ArchivedDocuments.Process.SaveHeader,
+              titleText = Text.SaveTitle,
+              header = Text.SaveHeader,
               content =
                 s"""Numero protocollo: ${protocolNumber.value}
                    |Mittente: ${sender.value}
@@ -115,7 +118,7 @@ object ArchivedDocumentView extends Form:
 
                 showMessage(
                   label = resultMessage,
-                  message = ArchivedDocuments.Process.Success,
+                  message = Text.Success,
                   success = true
                 )
 
@@ -134,25 +137,25 @@ object ArchivedDocumentView extends Form:
     val documentForm =
       formGrid(
         Seq(
-          formRow(Fields.Labels.required(RegisteredDocuments.Fields.ProtocolNumber), protocolNumber),
-          formRow(Fields.Labels.required(RegisteredDocuments.Fields.RegisteredDate), registeredDate),
-          formRow(Fields.Labels.required(RegisteredDocuments.Fields.RegisteredTime), registeredTime),
-          formRow(Fields.Labels.required(RegisteredDocuments.Fields.RegisteredBy), registeredBy),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentType), documentType),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.Sender), sender),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.Recipient), recipient),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.Subject), subject),
-          formRow(LoadedDocuments.Fields.Remarks, remarks)
+          formRow(Labels.required(RegistrationFields.ProtocolNumber), protocolNumber),
+          formRow(Labels.required(RegistrationFields.RegisteredDate), registeredDate),
+          formRow(Labels.required(RegistrationFields.RegisteredTime), registeredTime),
+          formRow(Labels.required(RegistrationFields.RegisteredBy), registeredBy),
+          formRow(Labels.required(DocumentFields.DocumentType), documentType),
+          formRow(Labels.required(DocumentFields.Sender), sender),
+          formRow(Labels.required(DocumentFields.Recipient), recipient),
+          formRow(Labels.required(DocumentFields.Subject), subject),
+          formRow(DocumentFields.Remarks, remarks)
         )
       )
     val archiveForm =
       formGrid(
         Seq(
-          formRow(Fields.Labels.required(ArchivedDocuments.Fields.ArchivedDate), archivedDate),
-          formRow(Fields.Labels.required(ArchivedDocuments.Fields.ArchivedTime), archivedTime),
-          formRow(Fields.Labels.required(ArchivedDocuments.Fields.ArchivedBy), archivedBy),
-          formRow(ArchivedDocuments.Fields.ArchiveLocation, archiveLocation),
-          formRow(ArchivedDocuments.Fields.ArchiveRemarks, archiveRemarks)
+          formRow(Labels.required(ArchiveFields.ArchivedDate), archivedDate),
+          formRow(Labels.required(ArchiveFields.ArchivedTime), archivedTime),
+          formRow(Labels.required(ArchiveFields.ArchivedBy), archivedBy),
+          formRow(ArchiveFields.ArchiveLocation, archiveLocation),
+          formRow(ArchiveFields.ArchiveRemarks, archiveRemarks)
         )
       )
 
@@ -171,8 +174,8 @@ object ArchivedDocumentView extends Form:
       archiveLocation.requestFocus()
 
     formPage(
-      titleText = ArchivedDocuments.Process.Title,
-      subtitleText = ArchivedDocuments.Process.Subtitle,
+      titleText = Text.Title,
+      subtitleText = Text.Subtitle,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

@@ -1,16 +1,14 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.text.UiText
 import pkg.a.gui.traits.Management
 import pkg.b.logic.{ArchivedDocument, ArchivedDocumentService}
 import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.XmlToPdf
-import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.BorderPane
-
-import UiText.{ArchivedDocuments, Common}
+import pkg.a.gui.text.UiText.ArchivedDocuments.{Fields, Management as Text}
+import pkg.a.gui.text.UiText.Common.Buttons
 
 object ArchivedDocumentManagementView extends Management:
 
@@ -21,22 +19,15 @@ object ArchivedDocumentManagementView extends Management:
 
     val result = createResultMessage()
 
-    val table = managementTable(documents, ArchivedDocuments.Management.Empty)
-
-    def stringColumn(title: String, columnWidth: Double)(value: ArchivedDocument => String): TableColumn[ArchivedDocument, String] =
-      new TableColumn[ArchivedDocument, String]:
-        text = title
-        prefWidth = columnWidth
-        cellValueFactory = cell =>
-          StringProperty(value(cell.value))
+    val table = managementTable(documents, Text.Empty)
 
     table.columns ++= Seq(
-      stringColumn(ArchivedDocuments.Fields.ProtocolNumber, 140)(_.getProtocolNumber),
-      stringColumn(ArchivedDocuments.Fields.ArchivedDate, 120)(_.getArchivedDate),
-      stringColumn(ArchivedDocuments.Fields.ArchivedTime, 100)(_.getArchivedTime),
-      stringColumn(ArchivedDocuments.Fields.ArchivedBy, 150)(_.getArchivedBy),
-      stringColumn(ArchivedDocuments.Fields.Subject, 220)(_.getSubject),
-      stringColumn(ArchivedDocuments.Fields.ArchiveLocation, 180)(_.getArchiveLocation)
+      stringColumn[ArchivedDocument](Fields.ProtocolNumber, Some(140))(_.getProtocolNumber),
+      stringColumn[ArchivedDocument](Fields.ArchivedDate, Some(120))(_.getArchivedDate),
+      stringColumn[ArchivedDocument](Fields.ArchivedTime, Some(100))(_.getArchivedTime),
+      stringColumn[ArchivedDocument](Fields.ArchivedBy, Some(150))(_.getArchivedBy),
+      stringColumn[ArchivedDocument](Fields.Subject, Some(220))(_.getSubject),
+      stringColumn[ArchivedDocument](Fields.ArchiveLocation, Some(180))(_.getArchiveLocation)
     )
 
     def loadDocuments(): Unit =
@@ -54,7 +45,7 @@ object ArchivedDocumentManagementView extends Management:
       table.selectionModel.value.clearSelection()
 
       if archived.isEmpty then
-        result.show(ArchivedDocuments.Management.Empty, success = true)
+        result.show(Text.Empty, success = true)
 
     clearResultOnSelection(table, result)
 
@@ -62,31 +53,23 @@ object ArchivedDocumentManagementView extends Management:
       val printed =
         XmlToPdf.printList(
           xmlPath = inDocumentsFilePathName("archived.xml"),
-          pdfFileName = ArchivedDocuments.Management.PrintFileName,
-          title = ArchivedDocuments.Management.PrintTitle,
+          pdfFileName = Text.PrintFileName,
+          title = Text.PrintTitle,
           fields = Seq("protocolNumber", "archivedDate", "archivedTime", "archivedBy", "archiveLocation", "archiveRemarks")
         )
 
       result.show(
-        message =
-          if printed then
-            ArchivedDocuments.Management.PrintSuccess
-          else
-            ArchivedDocuments.Management.PrintError,
+        message = if printed then Text.PrintSuccess else Text.PrintError,
         success = printed
       )
 
-    val refreshButton =
-      secondaryButton(
-        Common.Buttons.Refresh,
-        () => loadDocuments()
-      )
+    val refreshButton = secondaryButton(Buttons.Refresh, () => loadDocuments())
 
     val print = printButton(action = () => printDocumentsList())
 
     val viewButton =
       primaryButton(
-        ArchivedDocuments.Management.View,
+        Text.View,
         () =>
           selectedItem(table) match
             case Some(selected) =>
@@ -94,17 +77,14 @@ object ArchivedDocumentManagementView extends Management:
               onView(selected)
 
             case None =>
-              result.show(
-                ArchivedDocuments.Management.SelectToView,
-                success = false
-              )
+              result.show(Text.SelectToView, success = false)
       )
 
     disableWithoutSelection(table, viewButton)
     val exitButton = closeButton(onExit)
     val bottomActions = actionBar(Seq(exitButton, refreshButton, print, viewButton))
 
-    val header = titleBox(ArchivedDocuments.Management.Title, ArchivedDocuments.Management.Subtitle)
+    val header = titleBox(Text.Title, Text.Subtitle)
 
     loadDocuments()
 
