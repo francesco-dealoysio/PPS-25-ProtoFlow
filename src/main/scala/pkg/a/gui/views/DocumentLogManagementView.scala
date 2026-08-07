@@ -184,18 +184,7 @@ object DocumentLogManagementView extends Management:
     val print = printButton(() => printLogs())
     val resetFilterButton = secondaryButton(Buttons.ResetFilter, () => resetFilters())
 
-    val viewButton =
-      primaryButton(
-        DocumentLogs.Management.View,
-        () =>
-          selectedItem(table) match
-            case Some(selected) =>
-              result.clear()
-              onView(selected)
-
-            case None =>
-              result.show(Text.SelectToView, success = false)
-      )
+    val viewButton = primaryButton(DocumentLogs.Management.View, () => withSelectedItem(table, result, Text.SelectToView)(onView))
 
     val filters =
       new HBox:

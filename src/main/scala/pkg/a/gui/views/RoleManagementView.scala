@@ -60,30 +60,26 @@ object RoleManagementView extends Management:
           logger(exception)
 
     def deleteSelectedRole(): Unit =
-      selectedItem(table) match
-        case None =>
-          result.show(Text.SelectToDelete, success = false)
+      withSelectedItem(table, result, Text.SelectToDelete): selected =>
+        val confirmed =
+          askConfirmation(
+            titleText = Text.DeleteTitle,
+            header = Text.DeleteConfirmation,
+            content =
+              s"""Ruolo: ${selected.getRole}
+                 |Codice: ${selected.getId}
+                 |Descrizione: ${selected.getDescription}
+                 |
+                 |L'operazione non può essere annullata.""".stripMargin
+          )
 
-        case Some(selected) =>
-          val confirmed =
-            askConfirmation(
-              titleText = Text.DeleteTitle,
-              header = Text.DeleteConfirmation,
-              content =
-                s"""Ruolo: ${selected.getRole}
-                   |Codice: ${selected.getId}
-                   |Descrizione: ${selected.getDescription}
-                   |
-                   |L'operazione non può essere annullata.""".stripMargin
-            )
-
-          if confirmed then
-            val deleted = roleLogic.recordDelete(selected.getId)
-            if deleted then
-              loadRoles()
-              result.show(Text.deleted(selected.getRole), success = true)
-            else
-              result.show(Text.DeleteError, success = false)
+        if confirmed then
+          val deleted = roleLogic.recordDelete(selected.getId)
+          if deleted then
+            loadRoles()
+            result.show(Text.deleted(selected.getRole), success = true)
+          else
+            result.show(Text.DeleteError, success = false)
 
     def printRoles(): Unit =
       val printed =
@@ -104,16 +100,7 @@ object RoleManagementView extends Management:
           onAdd()
       )
 
-    val editButton =
-      secondaryButton(Buttons.Edit, () =>
-        selectedItem(table) match
-            case Some(selected) =>
-              result.clear()
-              onEdit(selected)
-
-            case None =>
-              result.show(Text.SelectToEdit, success = false)
-      )
+    val editButton = secondaryButton(Buttons.Edit, () => withSelectedItem(table, result, Text.SelectToEdit)(onEdit))
 
     val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedRole())
     val exitButton = closeButton(onExit)

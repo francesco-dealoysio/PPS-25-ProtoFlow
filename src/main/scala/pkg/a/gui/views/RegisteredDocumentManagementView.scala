@@ -6,7 +6,6 @@ import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.XmlToPdf
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.RegisteredDocuments.{Fields, Management as Text}
-import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.BorderPane
@@ -46,27 +45,22 @@ object RegisteredDocumentManagementView extends Management:
     clearResultOnSelection(table, result)
 
     def deleteSelectedDocument(): Unit =
-      selectedItem(table) match
-        case None =>
-          result.show(Text.SelectToDelete, success = false)
-
-        case Some(selected) =>
-          val confirmed =
-            askConfirmation(
-              titleText = Text.DeleteTitle,
-              header = Text.DeleteConfirmation,
-              content =
-                s"""Numero protocollo: ${selected.getProtocolNumber}
-                   |Mittente: ${selected.getSender}
-                   |Oggetto: ${selected.getSubject}""".stripMargin
-            )
-
-          if confirmed then
-            if service.deleteRegisteredDocument(selected.getId) then
-              loadDocuments()
-              result.show(Text.Deleted, success = true)
-            else
-              result.show(Text.DeleteError, success = false)
+      withSelectedItem(table, result, Text.SelectToDelete): selected =>
+        val confirmed =
+          askConfirmation(
+            titleText = Text.DeleteTitle,
+            header = Text.DeleteConfirmation,
+            content =
+              s"""Numero protocollo: ${selected.getProtocolNumber}
+                 |Mittente: ${selected.getSender}
+                 |Oggetto: ${selected.getSubject}""".stripMargin
+          )
+        if confirmed then
+          if service.deleteRegisteredDocument(selected.getId) then
+            loadDocuments()
+            result.show(Text.Deleted, success = true)
+          else
+            result.show(Text.DeleteError, success = false)
 
     def printDocumentsList(): Unit =
       val printed =
@@ -85,16 +79,7 @@ object RegisteredDocumentManagementView extends Management:
     val refreshButton = secondaryButton(Buttons.Refresh, () => loadDocuments())
     val printListButton = printButton(action = () => printDocumentsList())
 
-    val archiveButton =
-      primaryButton(Buttons.Archive, () =>
-        selectedItem(table) match
-          case Some(selected) =>
-            result.clear()
-            onArchive(selected)
-
-          case None =>
-            result.show(Text.SelectToArchive, success = false)
-      )
+    val archiveButton = primaryButton(Buttons.Archive, () => withSelectedItem(table, result, Text.SelectToArchive)(onArchive))
 
     val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedDocument())
 

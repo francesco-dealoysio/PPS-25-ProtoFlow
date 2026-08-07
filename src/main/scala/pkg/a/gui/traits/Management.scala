@@ -46,6 +46,15 @@ trait Management extends Common:
   protected def printButton(action: () => Unit, text: String = Print): Button =
     secondaryButton(text = text, action = action)
 
+  protected def withSelectedItem[T](table: TableView[T], result: ResultMessage, noSelectionMessage: String)(action: T => Unit): Unit =
+    selectedItem(table) match
+      case Some(selected) =>
+        result.clear()
+        action(selected)
+
+      case None =>
+        result.show(noSelectionMessage, success = false)
+
   protected def managementPage(pageChildren: Seq[Node], growNode: Option[Node] = None, spacingValue: Double = 18, paddingValue: Insets = Insets(20), rootStyle: String = RootStyle): BorderPane =
     val content =
       new VBox:

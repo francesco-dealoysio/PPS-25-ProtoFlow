@@ -67,18 +67,7 @@ object ArchivedDocumentManagementView extends Management:
 
     val print = printButton(action = () => printDocumentsList())
 
-    val viewButton =
-      primaryButton(
-        Text.View,
-        () =>
-          selectedItem(table) match
-            case Some(selected) =>
-              result.clear()
-              onView(selected)
-
-            case None =>
-              result.show(Text.SelectToView, success = false)
-      )
+    val viewButton = primaryButton(Text.View, () => withSelectedItem(table, result, Text.SelectToView)(onView))
 
     disableWithoutSelection(table, viewButton)
     val exitButton = closeButton(onExit)

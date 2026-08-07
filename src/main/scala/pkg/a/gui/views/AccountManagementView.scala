@@ -59,31 +59,26 @@ object AccountManagementView extends Management:
           logger(exception)
 
     def deleteSelectedAccount(): Unit =
-      selectedItem(table) match
-        case None =>
-          result.show(Text.SelectToDelete, success = false)
+      withSelectedItem(table, result, Text.SelectToDelete): selected =>
+        val confirmed =
+          askConfirmation(
+            titleText = Text.DeleteTitle,
+            header = Text.DeleteConfirmation,
+            content =
+              s"""Account: ${selected.getUsername}
+                 |Nominativo: ${selected.getName} ${selected.getSurname}
+                 |Codice: ${selected.getId}
+                 |
+                 |L'operazione non può essere annullata.""".stripMargin
+          )
 
-        case Some(selected) =>
-          val confirmed =
-            askConfirmation(
-              titleText = Text.DeleteTitle,
-              header = Text.DeleteConfirmation,
-              content =
-                s"""Account: ${selected.getUsername}
-                   |Nominativo: ${selected.getName} ${selected.getSurname}
-                   |Codice: ${selected.getId}
-                   |
-                   |L'operazione non può essere annullata.""".stripMargin
-            )
-
-          if confirmed then
-            val deleted = accountLogic.recordDelete(selected.getId)
-
-            if deleted then
-              loadAccounts()
-              result.show(Text.deletedAccount(selected.getUsername), success = true)
-            else
-              result.show(Text.DeleteError, success = false)
+        if confirmed then
+          val deleted = accountLogic.recordDelete(selected.getId)
+          if deleted then
+            loadAccounts()
+            result.show(Text.deletedAccount(selected.getUsername), success = true)
+          else
+            result.show(Text.DeleteError, success = false)
 
     clearResultOnSelection(table, result)
 
@@ -91,16 +86,7 @@ object AccountManagementView extends Management:
       result.clear()
       onAdd())
 
-    val editButton =
-      secondaryButton(Buttons.Edit, () =>
-        selectedItem(table) match
-          case Some(selected) =>
-            result.clear()
-            onEdit(selected)
-
-          case None =>
-            result.show(Text.SelectToEdit, success = false)
-      )
+    val editButton = secondaryButton(Buttons.Edit, () => withSelectedItem(table, result, Text.SelectToEdit)(onEdit))
 
     val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedAccount())
     disableWithoutSelection(table, editButton, deleteButton)
