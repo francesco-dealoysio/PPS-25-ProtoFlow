@@ -2,7 +2,7 @@ package pkg.d.util
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.b.logic.{LoadedDocument, DocumentLog}
+import pkg.b.logic.{LoadedDocument, DocumentLog, ArchivedDocument}
 
 import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
 import pkg.d.util.Util.inTestFilePathName
@@ -24,12 +24,20 @@ class FiltersTest:
   private var documentLog8: DocumentLog = _
   private var documentLog9: DocumentLog = _
 
-  private var empty: DocumentLog = _
+  private var xmlFilePathName2: String = _
+
+  private var archivedDocuments: Seq[ArchivedDocument] = _
+  private var archivedDocument1: ArchivedDocument = _
+  private var archivedDocument2: ArchivedDocument = _
+  private var archivedDocument5: ArchivedDocument = _
+  private var archivedDocument11: ArchivedDocument = _
+  private var archivedDocument120: ArchivedDocument = _
 
   @Before
   def setUp(): Unit =
-    xmlFilePathName = inTestFilePathName("test.xml")
-    createEmptyXmlFile(xmlFilePathName, "test_records")
+
+    xmlFilePathName = inTestFilePathName("testDocumentLog.xml")
+    createEmptyXmlFile(xmlFilePathName, "testRecords")
 
     documentLog1 = DocumentLog("1", "3", "loading", "2026-07-10", "22:19:13.86", "Rossi")
     documentLog2 = DocumentLog("2", "3", "registering", "2026-07-14", "22:19:13.86", "Bianchi")
@@ -55,18 +63,44 @@ class FiltersTest:
 
     documentLogs.foreach(r => DocumentLog().recordInsert[DocumentLog](r, xmlFilePathName) )
 
+    // Test filter on ArchivedDocument
+    xmlFilePathName2 = inTestFilePathName("testAchivedDocument.xml")
+    createEmptyXmlFile(xmlFilePathName2, "testRecords")
+
+    archivedDocument1 = new ArchivedDocument("1", "", "", "", "", "", "", "Bollette", "",
+      "", "", "", "Neri", "", "2026/1/Amministrazione", "", "Neri", "2026-07-30", "", "Rossi")
+    archivedDocument2 = new ArchivedDocument("2", "", "", "", "", "", "", "Documetazione caratteristica 2025", "",
+      "", "", "", "Neri", "", "2026/2/Personale", "", "Neri", "2026-08-14", "", "Neri")
+    archivedDocument5 = new ArchivedDocument("5", "", "", "", "", "", "", "CUD 2025", "",
+      "", "", "", "Bianchi", "", "2026/5/Amministrazione", "", "Rossi", "2026-08-21", "", "Neri")
+    archivedDocument11 = new ArchivedDocument("11", "", "", "", "", "", "", "Piano ferie", "",
+      "", "", "", "Rossi", "", "2026/11/Segreteria", "", "Bianchi", "2026-09-15", "", "Neri")
+    archivedDocument120 = new ArchivedDocument("120", "", "", "", "", "", "", "Onorificenze", "",
+      "", "", "", "", "Bianchi", "2026/120/Presidenza", "", "Rossi", "2026-10-28", "", "Bianchi")
+
+    archivedDocuments = Seq(
+      archivedDocument1,
+      archivedDocument2,
+      archivedDocument5,
+      archivedDocument11,
+      archivedDocument120
+    )
+
+    archivedDocuments.foreach(r => ArchivedDocument().recordInsert[ArchivedDocument](r, xmlFilePathName2))
+
   @After
   def tearDown(): Unit = {
     //()
-    Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
+    Files.deleteIfExists(Paths.get(inTestFilePathName("testDocumentLog.xml")))
+    Files.deleteIfExists(Paths.get(inTestFilePathName("testArchivedDocument.xml")))
   }
 
+  /**
+   * Filter criteria test on DocumentLog
+   */
   @Test
   def testFilterByIdNotFound: Unit =
-    val expectedSequence = Seq(
-      empty
-    )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getDocumentId", "=", List("10"))
       )
@@ -82,7 +116,7 @@ class FiltersTest:
       documentLog5,
       documentLog6
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getDocumentId", "<", List("5"))
       )
@@ -98,7 +132,7 @@ class FiltersTest:
       documentLog5,
       documentLog6
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getDocumentId", "<=", List("4"))
       )
@@ -112,7 +146,7 @@ class FiltersTest:
       documentLog2,
       documentLog5
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getDocumentId", "=", List("3"))
       )
@@ -125,7 +159,7 @@ class FiltersTest:
       documentLog7,
       documentLog8
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getDocumentId", ">", List("5"))
       )
@@ -140,7 +174,7 @@ class FiltersTest:
       documentLog8,
       documentLog9
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getDocumentId", ">=", List("5"))
       )
@@ -157,22 +191,9 @@ class FiltersTest:
       documentLog6,
       documentLog8
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getDocumentId", "contains", List("3", "4", "7"))
-      )
-    )
-    assertEquals(DocumentLog().getRecordsByFilter[DocumentLog](predicate, xmlFilePathName), expectedSequence)
-
-  @Test
-  def testFilterByDate: Unit =
-    val expectedSequence = Seq(
-      documentLog2,
-      documentLog3
-    )
-    val predicate = getDocumentLogPredicate(
-      List(
-        ("getProcessedDate", "=", List("2026-07-14"))
       )
     )
     assertEquals(DocumentLog().getRecordsByFilter[DocumentLog](predicate, xmlFilePathName), expectedSequence)
@@ -182,7 +203,7 @@ class FiltersTest:
     val expectedSequence = Seq(
       documentLog1
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getProcessedDate", "<", List("2026-07-14"))
       )
@@ -196,9 +217,36 @@ class FiltersTest:
       documentLog2,
       documentLog3
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getProcessedDate", "<=", List("2026-07-14"))
+      )
+    )
+    assertEquals(DocumentLog().getRecordsByFilter[DocumentLog](predicate, xmlFilePathName), expectedSequence)
+
+  @Test
+  def testFilterByDate: Unit =
+    val expectedSequence = Seq(
+      documentLog2,
+      documentLog3
+    )
+    val predicate = getDocumentOperationsLogPredicate(
+      List(
+        ("getProcessedDate", "=", List("2026-07-14"))
+      )
+    )
+    assertEquals(DocumentLog().getRecordsByFilter[DocumentLog](predicate, xmlFilePathName), expectedSequence)
+
+  @Test
+  def testFilterByDateGreaterThanOrEqualTo: Unit =
+    val expectedSequence = Seq(
+      documentLog7,
+      documentLog8,
+      documentLog9
+    )
+    val predicate = getDocumentOperationsLogPredicate(
+      List(
+        ("getProcessedDate", ">=", List("2026-08-20"))
       )
     )
     assertEquals(DocumentLog().getRecordsByFilter[DocumentLog](predicate, xmlFilePathName), expectedSequence)
@@ -209,9 +257,9 @@ class FiltersTest:
       documentLog8,
       documentLog9
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
-        ("getProcessedDate", ">=", List("2026-09-27"))
+        ("getProcessedDate", ">", List("2026-09-27"))
       )
     )
     assertEquals(DocumentLog().getRecordsByFilter[DocumentLog](predicate, xmlFilePathName), expectedSequence)
@@ -223,7 +271,7 @@ class FiltersTest:
       documentLog5,
       documentLog6
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getProcessedDate", ">=", List("2026-07-15")),
         ("getProcessedDate", "<=", List("2026-08-12"))
@@ -238,7 +286,7 @@ class FiltersTest:
       documentLog3,
       documentLog8
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getProcessedDate", "contains", List("   2026-07-14", "2026-09-28   "))
       )
@@ -252,7 +300,7 @@ class FiltersTest:
       documentLog6,
       documentLog9
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getOperationType", "=", List("registering"))
       )
@@ -267,7 +315,7 @@ class FiltersTest:
       documentLog6,
       documentLog9
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getOperationType", "contains", List("registering", "archiving"))
       )
@@ -281,7 +329,7 @@ class FiltersTest:
       documentLog6,
       documentLog9
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getOperationType", "!=", List("loaDing")),
         ("getOperationType", "!=", List("  archiviNG"))
@@ -299,7 +347,7 @@ class FiltersTest:
       documentLog7,
       documentLog9
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getProcessedBy", "contains", List("NeRI ", "  rOSsi"))
       )
@@ -311,7 +359,7 @@ class FiltersTest:
     val expectedSequence = Seq(
       documentLog7
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getDocumentId", ">", List("3")),
         ("getDocumentId", "<=", List("7")),
@@ -332,7 +380,7 @@ class FiltersTest:
       documentLog6,
       documentLog7
     )
-    val predicate = getDocumentLogPredicate(
+    val predicate = getDocumentOperationsLogPredicate(
       List(
         ("getProcessedDate", ">=", List("2026-06-01")),
         ("getProcessedDate", "<=", List("2026-09-30")),
@@ -342,6 +390,264 @@ class FiltersTest:
     )
     assertEquals(DocumentLog().getRecordsByFilter[DocumentLog](predicate, xmlFilePathName), expectedSequence)
 
+  /**
+   * Test2 Filter criteria test on ArchivedDocument
+   */
+  @Test
+  def test2FilterByIdNotFound: Unit =
+    val predicate = getDocumentPredicate(
+      List(
+        ("getId", "=", List("?"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), Seq.empty[ArchivedDocument])
+
+  @Test
+  def test2FilterIDLessThan: Unit =
+    val expectedSequence = Seq(
+      archivedDocument1,
+      archivedDocument2
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getId", "<", List("5"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterIDLessThanOrEqual: Unit =
+    val expectedSequence = Seq(
+      archivedDocument1,
+      archivedDocument2,
+      archivedDocument5
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getId", "<=", List("5"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterById: Unit =
+    val expectedSequence = Seq(
+      archivedDocument11
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getId", "=", List("11"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterIdGreaterThan: Unit =
+    val expectedSequence = Seq(
+      archivedDocument11,
+      archivedDocument120
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getId", ">", List("5"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterIdGreaterThanOrEqualTo: Unit =
+    val expectedSequence = Seq(
+      archivedDocument5,
+      archivedDocument11,
+      archivedDocument120
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getId", ">=", List("5"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterContainsIds: Unit =
+    val expectedSequence = Seq(
+      archivedDocument2,
+      archivedDocument120
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getId", "contains", List("2", "0", "120"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  // new +++++++++++++++++++++++++++++++++++++++
+
+  @Test
+  def test2FilterByDateLessThan: Unit =
+    val expectedSequence = Seq(
+      archivedDocument1,
+      archivedDocument2
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getArchivedDate", "<", List("2026-08-15"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterByDateLessThanOrEqual: Unit =
+    val expectedSequence = Seq(
+      archivedDocument1,
+      archivedDocument2,
+      archivedDocument5
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getArchivedDate", "<=", List("2026-08-22"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterByDate: Unit =
+    val expectedSequence = Seq(
+      archivedDocument11
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getArchivedDate", "=", List("2026-09-15"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterByDateGreaterThanOrEqualTo: Unit =
+    val expectedSequence = Seq(
+      archivedDocument11,
+      archivedDocument120
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getArchivedDate", ">=", List("2026-09-10"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterByDateGreater: Unit =
+    val expectedSequence = Seq(
+      archivedDocument5,
+      archivedDocument11,
+      archivedDocument120
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getArchivedDate", ">", List("2026-08-20"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterByDateInterval: Unit =
+    val expectedSequence = Seq(
+      archivedDocument2,
+      archivedDocument5,
+      archivedDocument11
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getArchivedDate", ">=", List("2026-08-02")),
+        ("getArchivedDate", "<=", List("2026-09-20"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterContainsDate: Unit =
+    val expectedSequence = Seq(
+      archivedDocument2,
+      archivedDocument11
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getArchivedDate", "contains", List("   2026-08-14", "2026-09-15   "))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterContainsArchivedBy: Unit =
+    val expectedSequence = Seq(
+      archivedDocument1,
+      archivedDocument120
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getArchivedBy", "contains", List("RoSSi ", "  Bianchi"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterByOperators: Unit =
+    val expectedSequence = Seq(
+      archivedDocument11
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getLoadedBy", "=", List("RoSSi")),
+        ("getRegisteredBy", "=", List("bianchi")),
+        ("getArchivedBy", "=", List("NERI"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterTextInSubject: Unit =
+    val expectedSequence = Seq(
+      archivedDocument2,
+      archivedDocument5
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getSubject", "contains", List("2025"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterCombined1: Unit =
+    val expectedSequence = Seq(
+      archivedDocument1
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getId", ">=", List("1")),
+        ("getId", "<", List("110")),
+        ("getArchivedDate", ">=", List("2026-06-01")),
+        ("getArchivedDate", "<=", List("2026-09-10")),
+        ("getArchivedBy", "=", List("Rossi"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
+
+  @Test
+  def test2FilterCombined2: Unit =
+    val expectedSequence = Seq(
+      archivedDocument2,
+      archivedDocument5
+    )
+    val predicate = getDocumentPredicate(
+      List(
+        ("getId", ">=", List("2")),
+        ("getId", "<", List("110")),
+        ("getArchivedDate", ">=", List("2026-06-01")),
+        ("getArchivedDate", "<=", List("2026-09-10"))
+      )
+    )
+    assertEquals(ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate, xmlFilePathName2), expectedSequence)
 
 
 

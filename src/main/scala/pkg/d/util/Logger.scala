@@ -6,7 +6,7 @@ import java.nio.file.{Files, Path, Paths}
 import pkg.d.util.DateTime.{localDate, localDateTime, localTime}
 
 object Logger:
-
+/*
   private def logFilePath: Path =
     val configuredPath = Paths.get(inLogFilePathName("errors.xml"))
     val parent = configuredPath.getParent
@@ -19,7 +19,7 @@ object Logger:
         .resolve("protoflow")
         .resolve("log")
         .resolve("errors.xml")
-
+*/
   // Evita che un errore avvenuto durante il logging stesso (es. scrittura di errors.xml)
   // inneschi una ricorsione infinita richiamando logger() su se stesso.
   private val loggingInProgress = new ThreadLocal[Boolean]:
@@ -54,7 +54,7 @@ object Logger:
       try
         import java.nio.file.{Files, Path, Paths}
         import pkg.c.data.Xml.createEmptyXmlFile
-
+/*
         val configuredPath = Paths.get(inLogFilePathName("errors.xml"))
         val logPath: Path =
           val parent = configuredPath.getParent
@@ -74,22 +74,23 @@ object Logger:
         if Files.notExists(logPath) then
           createEmptyXmlFile(logPath.toString, "errors")
           ErrorLog().recordInsert(getErrorLog(ex), logPath.toString)
+*/
+
+        if (Files.notExists(Paths.get(inLogFilePathName("errors.xml"))))
+          createEmptyXmlFile(inLogFilePathName("errors.xml"), "errors")
+
+        ErrorLog().recordInsert(getErrorLog(ex), inLogFilePathName("errors.xml"))
 
         if console then
-          val methodName =
-            ex.getStackTrace
-              .headOption
-              .map(_.getMethodName.stripSuffix("$1"))
+          val methodName = ex.getStackTrace.headOption.map(_.getMethodName.stripSuffix("$1"))
 
           methodName match
-            case Some(name) =>
-              println(name)
-            case None =>
-              println(s"Errore: ${ex.getMessage}")
+            case Some(name) => println(name)
+            case None => println(s"Errore: ${ex.getMessage}")
+            
       finally
         loggingInProgress.set(false)
 
   private def indent(stackTrace: Array[StackTraceElement]): String =
     stackTrace
       .map(elem => s"at $elem".indent(6)).mkString("")
-      //.map(elem => " ".repeat(6) + s"at $elem").mkString("\n")

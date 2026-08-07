@@ -3,7 +3,7 @@ package pkg.b.logic
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 import pkg.c.data.XmlTest
-import pkg.d.util._
+import pkg.d.util.FiltersTest
 
 @RunWith(classOf[Suite])
 @Suite.SuiteClasses(Array(
