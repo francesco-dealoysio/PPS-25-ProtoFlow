@@ -10,8 +10,15 @@ object XmlToPdf:
 
   private val printsFolder = new File(System.getProperty("user.dir"), "protoflow/prints")
 
-  def printList(xmlPath: String, pdfFileName: String, title: String, fields: Seq[String] = Seq.empty): Boolean =
-    val records = loadRecords(xmlPath)
+  def printList(xmlPath: String, pdfFileName: String, title: String, fields: Seq[String] = Seq.empty, recordIds: Seq[String] = Seq.empty): Boolean =
+    val allRecords = loadRecords(xmlPath)
+
+    val records =
+      if recordIds.nonEmpty then
+        allRecords.filter: record =>
+          recordIds.contains((record \ "id").text.trim)
+      else
+        allRecords
 
     if records.isEmpty then
       false

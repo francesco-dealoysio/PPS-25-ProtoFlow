@@ -141,7 +141,7 @@ object DocumentLogManagementView extends Management:
 
       val sortedLogs = filteredLogs.sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
-      logs.setAll(sortedLogs *)
+      logs.setAll(sortedLogs*)
       table.selectionModel.value.clearSelection()
 
       if sortedLogs.isEmpty then
@@ -162,7 +162,8 @@ object DocumentLogManagementView extends Management:
             "processedDate",
             "processedTime",
             "processedBy"
-          )
+          ),
+          recordIds = logs.map(_.getId).toSeq
         )
 
       result.show(

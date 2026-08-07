@@ -1,9 +1,13 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.DocumentLogs
 import pkg.a.gui.text.UiText.DocumentLogs.{Details as Text, Fields}
 import pkg.a.gui.traits.Form
 import pkg.b.logic.DocumentLog
+import pkg.d.util.Util.inLogFilePathName
+import pkg.d.util.XmlToPdf
+
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
 
@@ -35,10 +39,29 @@ object DocumentLogDetailsView extends Form:
         )
       )
 
+    val result = createResultMessage()
+
+    def printLogDetails(): Unit =
+      val printed =
+        XmlToPdf.printDetails(
+          xmlPath = inLogFilePathName("documentOperations.xml"),
+          recordId = selectedLog.getId,
+          pdfFileName = s"log_documento_${selectedLog.getId}",
+          title = Text.PrintTitle
+        )
+
+      result.show(
+        if printed then Text.PrintSuccess else Text.PrintError,
+        success = printed
+      )
+
+    val exitButton = closeButton(onExit)
+    val printButton = secondaryButton(Buttons.Print, () => printLogDetails())
+
     formPage(
       titleText = Text.Title,
       subtitleText = Text.Subtitle,
       form = form,
-      resultMessage = createResultMessage().label,
-      actions = actionBar(Seq(closeButton(onExit)))
+      resultMessage = result.label,
+      actions = actionBar(Seq(exitButton, printButton))
     )

@@ -431,6 +431,9 @@ object UiText:
     object Details:
       val Title = "Dettaglio log documento"
       val Subtitle = "Visualizza i dati del log selezionato."
+      val PrintTitle = "Dettaglio Log Operazione Documento"
+      val PrintSuccess = "Dettaglio del log stampato correttamente in PDF."
+      val PrintError = "Errore durante la stampa del dettaglio del log."
 
     def operationLabel(operationType: String): String =
       operationType match
