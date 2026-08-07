@@ -28,25 +28,11 @@ object ClassificationManagementView extends Management:
     )
 
     def loadClassifications(): Unit =
-      result.clear()
       try
-        val loaded =
+        loadTableItems(table, classifications, result, Text.Empty):
           classificationLogic
             .getRecords[Classification]()
-            .sortBy: classification =>
-              classification
-                .getId
-                .toIntOption
-                .getOrElse(Int.MaxValue)
-
-        classifications.setAll(loaded*)
-
-        table.selectionModel.value
-          .clearSelection()
-
-        if loaded.isEmpty then
-          result.show(Text.Empty, success = true)
-
+            .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
       catch
         case exception: Exception =>
           classifications.clear()

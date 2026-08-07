@@ -36,22 +36,11 @@ object AccountManagementView extends Management:
     )
 
     def loadAccounts(): Unit =
-      result.clear()
       try
-        val loaded =
+        loadTableItems(table, accounts, result, Text.Empty):
           accountLogic
             .getRecords[Account]()
-            .sortBy: account =>
-              account
-                .getId
-                .toIntOption
-                .getOrElse(Int.MaxValue)
-
-        accounts.setAll(loaded*)
-        table.selectionModel.value.clearSelection()
-        if loaded.isEmpty then
-          result.show(Text.Empty, success = true)
-
+            .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
       catch
         case exception: Exception =>
           accounts.clear()

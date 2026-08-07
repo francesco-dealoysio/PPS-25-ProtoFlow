@@ -31,21 +31,10 @@ object ArchivedDocumentManagementView extends Management:
     )
 
     def loadDocuments(): Unit =
-      result.clear()
-      val archived =
+      loadTableItems(table, documents, result, Text.Empty):
         service
           .getArchivedDocuments
-          .sortBy: document =>
-            document
-              .getId
-              .toIntOption
-              .getOrElse(Int.MaxValue)
-
-      documents.setAll(archived*)
-      table.selectionModel.value.clearSelection()
-
-      if archived.isEmpty then
-        result.show(Text.Empty, success = true)
+          .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
     clearResultOnSelection(table, result)
 

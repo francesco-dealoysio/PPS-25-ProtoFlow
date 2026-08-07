@@ -33,17 +33,10 @@ object LoadedDocumentManagementView extends Management:
     )
 
     def loadDocuments(): Unit =
-      result.clear()
-
-      val loaded =
-        service.getLoadedDocuments()
+      loadTableItems(table, documents, result, Text.Empty):
+        service
+          .getLoadedDocuments()
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
-
-      documents.setAll(loaded*)
-      table.selectionModel.value.clearSelection()
-
-      if loaded.isEmpty then
-        result.show(Text.Empty, success = true)
 
     clearResultOnSelection(table, result)
 

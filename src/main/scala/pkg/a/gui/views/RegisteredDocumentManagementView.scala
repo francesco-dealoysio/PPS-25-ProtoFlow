@@ -30,17 +30,10 @@ object RegisteredDocumentManagementView extends Management:
     )
 
     def loadDocuments(): Unit =
-      result.clear()
-
-      val registered =
-        service.getRegisteredDocuments()
+      loadTableItems(table, documents, result, Text.Empty):
+        service
+          .getRegisteredDocuments()
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
-
-      documents.setAll(registered*)
-      table.selectionModel.value.clearSelection()
-
-      if registered.isEmpty then
-        result.show(Text.Empty, success = true)
 
     clearResultOnSelection(table, result)
 

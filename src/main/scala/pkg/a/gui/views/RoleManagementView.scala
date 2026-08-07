@@ -33,26 +33,11 @@ object RoleManagementView extends Management:
     )
 
     def loadRoles(): Unit =
-      result.clear()
-
       try
-        val loaded =
+        loadTableItems(table, roles, result, Text.Empty):
           roleLogic
             .getRecords[Role]()
-            .sortBy: role =>
-              role
-                .getId
-                .toIntOption
-                .getOrElse(Int.MaxValue)
-
-        roles.setAll(loaded*)
-
-        table.selectionModel.value
-          .clearSelection()
-
-        if loaded.isEmpty then
-          result.show(Text.Empty, success = true)
-
+            .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
       catch
         case exception: Exception =>
           roles.clear()

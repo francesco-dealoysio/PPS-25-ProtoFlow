@@ -39,14 +39,10 @@ object RegistrationRequestsManagementView extends Management:
     )
 
     def loadPendingRequests(): Unit =
-      result.clear()
-
-      val pending = service.getPendingRequests
-      requests.setAll(pending.sortBy(_.getDate)*)
-      table.selectionModel.value.clearSelection()
-
-      if pending.isEmpty then
-        result.show(Text.Empty, success = true)
+      loadTableItems(table, requests, result, Text.Empty):
+        service
+          .getPendingRequests
+          .sortBy(_.getDate)
 
     clearResultOnSelection(table, result)
 

@@ -55,6 +55,14 @@ trait Management extends Common:
       case None =>
         result.show(noSelectionMessage, success = false)
 
+  protected def loadTableItems[T](table: TableView[T], items: ObservableBuffer[T], result: ResultMessage, emptyMessage: String)(load: => Seq[T]): Unit =
+    result.clear()
+    val loaded = load
+    items.setAll(loaded *)
+    table.selectionModel.value.clearSelection()
+    if loaded.isEmpty then
+      result.show(emptyMessage, success = true)
+
   protected def managementPage(pageChildren: Seq[Node], growNode: Option[Node] = None, spacingValue: Double = 18, paddingValue: Insets = Insets(20), rootStyle: String = RootStyle): BorderPane =
     val content =
       new VBox:
