@@ -4,9 +4,8 @@ import pkg.a.gui.traits.Management
 import pkg.b.logic.{LoadedDocument, LoadedDocumentService}
 import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.XmlToPdf
-import pkg.a.gui.text.UiText
-import UiText.{Common, LoadedDocuments}
-import scalafx.beans.property.StringProperty
+import pkg.a.gui.text.UiText.Common.Buttons
+import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Management as Text}
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.BorderPane
@@ -23,21 +22,14 @@ object LoadedDocumentManagementView extends Management:
 
     val result = createResultMessage()
 
-    val table = managementTable(documents, LoadedDocuments.Management.Empty)
-
-    def stringColumn(title: String, colWidth: Double)(value: LoadedDocument => String): TableColumn[LoadedDocument, String] =
-      new TableColumn[LoadedDocument, String]:
-        text = title
-        prefWidth = colWidth
-        cellValueFactory = cell =>
-          StringProperty(value(cell.value))
+    val table = managementTable(documents, Text.Empty)
 
     table.columns ++= Seq(
-      stringColumn(LoadedDocuments.Fields.Sender, 160)(_.getSender),
-      stringColumn(LoadedDocuments.Fields.Subject, 220)(_.getSubject),
-      stringColumn(LoadedDocuments.Fields.DocumentType, 110)(_.getDocumentType),
-      stringColumn(LoadedDocuments.Fields.DocumentDate, 110)(_.getDocumentDate),
-      stringColumn(LoadedDocuments.Fields.ProcessedBy, 140)(_.getProcessedBy)
+      stringColumn[LoadedDocument](Fields.Sender, Some(160))(_.getSender),
+      stringColumn[LoadedDocument](Fields.Subject, Some(220))(_.getSubject),
+      stringColumn[LoadedDocument](Fields.DocumentType, Some(110))(_.getDocumentType),
+      stringColumn[LoadedDocument](Fields.DocumentDate, Some(110))(_.getDocumentDate),
+      stringColumn[LoadedDocument](Fields.ProcessedBy, Some(140))(_.getProcessedBy)
     )
 
     def loadDocuments(): Unit =
@@ -51,20 +43,20 @@ object LoadedDocumentManagementView extends Management:
       table.selectionModel.value.clearSelection()
 
       if loaded.isEmpty then
-        result.show(LoadedDocuments.Management.Empty, success = true)
+        result.show(Text.Empty, success = true)
 
     clearResultOnSelection(table, result)
 
     def deleteSelectedDocument(): Unit =
       selectedItem(table) match
         case None =>
-          result.show(LoadedDocuments.Management.SelectToDelete, success = false)
+          result.show(Text.SelectToDelete, success = false)
 
         case Some(selected) =>
           val confirmed =
             askConfirmation(
-              titleText = LoadedDocuments.Management.DeleteTitle,
-              header = LoadedDocuments.Management.DeleteConfirmation,
+              titleText = Text.DeleteTitle,
+              header = Text.DeleteConfirmation,
               content =
                 s"""Mittente: ${selected.getSender}
                    |Oggetto: ${selected.getSubject}""".stripMargin
@@ -73,39 +65,39 @@ object LoadedDocumentManagementView extends Management:
           if confirmed then
             if service.deleteLoadedDocument(selected.getId) then
               loadDocuments()
-              result.show(LoadedDocuments.Management.Deleted, success = true)
+              result.show(Text.Deleted, success = true)
             else
-              result.show(LoadedDocuments.Management.DeleteError, success = false)
+              result.show(Text.DeleteError, success = false)
 
     def printDocumentsList(): Unit =
       val printed =
         XmlToPdf.printList(
           xmlPath = inDocumentsFilePathName("loaded.xml"),
-          pdfFileName = LoadedDocuments.Management.PrintFileName,
-          title = LoadedDocuments.Management.PrintTitle
+          pdfFileName = Text.PrintFileName,
+          title = Text.PrintTitle
         )
 
       result.show(
-        if printed then LoadedDocuments.Management.PrintSuccess
-        else LoadedDocuments.Management.PrintError,
+        if printed then Text.PrintSuccess
+        else Text.PrintError,
         success = printed
       )
 
-    val refreshButton = secondaryButton(Common.Buttons.Refresh, () => loadDocuments())
+    val refreshButton = secondaryButton(Buttons.Refresh, () => loadDocuments())
     val printListButton = printButton(action = () => printDocumentsList())
 
     val registerButton =
-      primaryButton(Common.Buttons.Register, () =>
+      primaryButton(Buttons.Register, () =>
         selectedItem(table) match
           case Some(selected) =>
             result.clear()
             onRegister(selected)
 
           case None =>
-            result.show(LoadedDocuments.Management.SelectToRegister, success = false)
+            result.show(Text.SelectToRegister, success = false)
       )
 
-    val deleteButton = dangerButton(Common.Buttons.Delete, () => deleteSelectedDocument())
+    val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedDocument())
 
     disableWithoutSelection(table, registerButton, deleteButton)
 
@@ -114,7 +106,7 @@ object LoadedDocumentManagementView extends Management:
     val bottomActions =
       actionBar(Seq(exitButton, refreshButton, printListButton, deleteButton, registerButton))
 
-    val header = titleBox(LoadedDocuments.Management.Title, LoadedDocuments.Management.Subtitle)
+    val header = titleBox(Text.Title, Text.Subtitle)
 
     loadDocuments()
 

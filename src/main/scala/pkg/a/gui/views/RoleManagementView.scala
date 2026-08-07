@@ -5,12 +5,11 @@ import pkg.b.logic.Role
 import pkg.d.util.Logger.*
 import pkg.d.util.Util.inDatabaseFilePathName
 import pkg.d.util.XmlToPdf
-import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
-import scalafx.scene.control.*
 import scalafx.scene.layout.BorderPane
-import pkg.a.gui.text.UiText
-import UiText.{Common, Fields, Roles}
+import pkg.a.gui.text.UiText.Common.Buttons
+import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.Roles.Management as Text
 
 object RoleManagementView extends Management:
 
@@ -26,24 +25,11 @@ object RoleManagementView extends Management:
 
     val result = createResultMessage()
     
-    val table = managementTable(roles, Roles.Management.Empty)
-
-    val roleColumn =
-      new TableColumn[Role, String]:
-        text = Fields.Labels.Role
-        cellValueFactory = cell =>
-          StringProperty(cell.value.getRole)
-
-    val descriptionColumn =
-      new TableColumn[Role, String]:
-        text = Fields.Labels.Description
-
-        cellValueFactory = cell =>
-          StringProperty(cell.value.getDescription)
+    val table = managementTable(roles, Text.Empty)
 
     table.columns ++= Seq(
-      roleColumn,
-      descriptionColumn
+      stringColumn[Role](Labels.Role)(_.getRole),
+      stringColumn[Role](Labels.Description)(_.getDescription)
     )
 
     def loadRoles(): Unit =
@@ -65,24 +51,24 @@ object RoleManagementView extends Management:
           .clearSelection()
 
         if loaded.isEmpty then
-          result.show(Roles.Management.Empty, success = true)
+          result.show(Text.Empty, success = true)
 
       catch
         case exception: Exception =>
           roles.clear()
-          result.show(Roles.Management.LoadError, success = false)
+          result.show(Text.LoadError, success = false)
           logger(exception)
 
     def deleteSelectedRole(): Unit =
       selectedItem(table) match
         case None =>
-          result.show(Roles.Management.SelectToDelete, success = false)
+          result.show(Text.SelectToDelete, success = false)
 
         case Some(selected) =>
           val confirmed =
             askConfirmation(
-              titleText = Roles.Management.DeleteTitle,
-              header = Roles.Management.DeleteConfirmation,
+              titleText = Text.DeleteTitle,
+              header = Text.DeleteConfirmation,
               content =
                 s"""Ruolo: ${selected.getRole}
                    |Codice: ${selected.getId}
@@ -95,41 +81,41 @@ object RoleManagementView extends Management:
             val deleted = roleLogic.recordDelete(selected.getId)
             if deleted then
               loadRoles()
-              result.show(Roles.Management.deleted(selected.getRole), success = true)
+              result.show(Text.deleted(selected.getRole), success = true)
             else
-              result.show(Roles.Management.DeleteError, success = false)
+              result.show(Text.DeleteError, success = false)
 
     def printRoles(): Unit =
       val printed =
         XmlToPdf.printList(
           xmlPath = inDatabaseFilePathName("roles.xml"),
           pdfFileName = "elenco-ruoli.pdf",
-          title = Roles.Management.PrintTitle
+          title = Text.PrintTitle
         )
       if printed then
-        result.show(Roles.Management.PrintSuccess, success = true)
+        result.show(Text.PrintSuccess, success = true)
       else
-        result.show(Roles.Management.PrintError, success = false)
+        result.show(Text.PrintError, success = false)
 
     clearResultOnSelection(table, result)
 
-    val addButton = primaryButton(Common.Buttons.Add, () =>
+    val addButton = primaryButton(Buttons.Add, () =>
           result.clear()
           onAdd()
       )
 
     val editButton =
-      secondaryButton(Common.Buttons.Edit, () =>
+      secondaryButton(Buttons.Edit, () =>
         selectedItem(table) match
             case Some(selected) =>
               result.clear()
               onEdit(selected)
 
             case None =>
-              result.show(Roles.Management.SelectToEdit, success = false)
+              result.show(Text.SelectToEdit, success = false)
       )
 
-    val deleteButton = dangerButton(Common.Buttons.Delete, () => deleteSelectedRole())
+    val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedRole())
     val exitButton = closeButton(onExit)
     disableWithoutSelection(table, editButton, deleteButton)
 
@@ -137,7 +123,7 @@ object RoleManagementView extends Management:
 
     val bottomActions = actionBar(Seq(exitButton, print, editButton, deleteButton, addButton))
 
-    val header = titleBox(Roles.Management.Title, Roles.Management.Subtitle)
+    val header = titleBox(Text.Title, Text.Subtitle)
 
     loadRoles()
 

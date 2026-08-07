@@ -7,8 +7,9 @@ import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
-import pkg.a.gui.text.UiText
-import UiText.{Common, Fields, RegistrationRequests}
+import pkg.a.gui.text.UiText.Common.Buttons
+import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.RegistrationRequests.Management as Text
 
 import java.time.format.DateTimeFormatter
 
@@ -26,23 +27,16 @@ object RegistrationRequestsManagementView extends Management:
 
     val result = createResultMessage()
 
-    val table = managementTable(requests, RegistrationRequests.Management.Empty)
-
-    def stringColumn(title: String, colWidth: Double)(value: Registration => String): TableColumn[Registration, String] =
-      new TableColumn[Registration, String]:
-        text = title
-        prefWidth = colWidth
-        cellValueFactory = cell =>
-          StringProperty(value(cell.value))
+    val table = managementTable(requests, Text.Empty)
 
     table.columns ++= Seq(
-      stringColumn(Fields.Labels.Name, 110)(_.getName),
-      stringColumn(Fields.Labels.Surname, 120)(_.getSurname),
-      stringColumn(Fields.Labels.Email, 210)(_.getEmail),
-      stringColumn(Fields.Labels.Role, 150)(_.getRole),
-      stringColumn(Fields.Labels.Area, 140)(_.getArea),
-      stringColumn(Fields.Labels.Assignment, 140)(_.getAssignment),
-      stringColumn(Fields.Labels.Date, 150)(request => RegistrationDates.parse(request.getDate).format(dateFormatter))
+      stringColumn[Registration](Labels.Name, Some(110))(_.getName),
+      stringColumn[Registration](Labels.Surname, Some(120))(_.getSurname),
+      stringColumn[Registration](Labels.Email, Some(210))(_.getEmail),
+      stringColumn[Registration](Labels.Role, Some(150))(_.getRole),
+      stringColumn[Registration](Labels.Area, Some(140))(_.getArea),
+      stringColumn[Registration](Labels.Assignment, Some(140))(_.getAssignment),
+      stringColumn[Registration](Labels.Date, Some(150))(request => RegistrationDates.parse(request.getDate).format(dateFormatter))
     )
 
     def loadPendingRequests(): Unit =
@@ -53,7 +47,7 @@ object RegistrationRequestsManagementView extends Management:
       table.selectionModel.value.clearSelection()
 
       if pending.isEmpty then
-        result.show(RegistrationRequests.Management.Empty, success = true)
+        result.show(Text.Empty, success = true)
 
     clearResultOnSelection(table, result)
 
@@ -61,37 +55,34 @@ object RegistrationRequestsManagementView extends Management:
       val printed =
         XmlToPdf.printList(
           xmlPath = service.pendingRequestsFilePath,
-          pdfFileName = RegistrationRequests.Management.PrintFileName,
-          title = RegistrationRequests.Management.PrintTitle
+          pdfFileName = Text.PrintFileName,
+          title = Text.PrintTitle
         )
 
       result.show(
-        if printed then
-          RegistrationRequests.Management.PrintSuccess
-        else
-          RegistrationRequests.Management.PrintError,
+        if printed then Text.PrintSuccess else Text.PrintError,
         success = printed
       )
 
-    val refreshButton = secondaryButton(Common.Buttons.Refresh, () => loadPendingRequests())
-    val printButton = secondaryButton(Common.Buttons.PrintList, () => printPendingList())
+    val refreshButton = secondaryButton(Buttons.Refresh, () => loadPendingRequests())
+    val printButton = secondaryButton(Buttons.PrintList, () => printPendingList())
 
     val processButton =
-      primaryButton(Common.Buttons.Process, () =>
+      primaryButton(Buttons.Process, () =>
         selectedItem(table) match
           case Some(selected) =>
             result.clear()
             onProcess(selected)
 
           case None =>
-            result.show(RegistrationRequests.Management.SelectToProcess, success = false)
+            result.show(Text.SelectToProcess, success = false)
       )
 
     disableWithoutSelection(table, processButton)
     val exitButton = closeButton(onExit)
     val bottomActions = actionBar(Seq(exitButton, refreshButton, printButton, processButton))
 
-    val header = titleBox(RegistrationRequests.Process.Title, RegistrationRequests.Process.Subtitle)
+    val header = titleBox(Text.Title, Text.Subtitle)
 
     loadPendingRequests()
 

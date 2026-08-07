@@ -4,9 +4,10 @@ import pkg.a.gui.structures.RoleViewModel
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Role
 import scalafx.scene.layout.BorderPane
-import pkg.a.gui.text.{UiStyles, UiText}
 import pkg.a.gui.text.UiStyles.Common.*
-import UiText.{Fields, Roles}
+import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Roles.Edit as Text
+import pkg.a.gui.text.UiText.Validation.Role as Validation
 
 object RoleEditView extends Form:
 
@@ -15,9 +16,9 @@ object RoleEditView extends Form:
     val roleLogic = new Role()
     val viewModel = new RoleViewModel()
 
-    val role = stringField(Fields.Prompts.Role, selectedRole.getRole)
-    val descriptionArea = areaField(Fields.Prompts.Description, DescriptionAreaStyle, selectedRole.getDescription)
-    val description = areaField(Fields.Prompts.Description, DescriptionAreaStyle, selectedRole.getDescription)
+    val role = stringField(Prompts.Role, selectedRole.getRole)
+    val descriptionArea = areaField(Prompts.Description, DescriptionAreaStyle, selectedRole.getDescription)
+    val description = areaField(Prompts.Description, DescriptionAreaStyle, selectedRole.getDescription)
     val monitoredFields = Seq(role, description)
     val resultMessage = messageLabel()
 
@@ -47,10 +48,8 @@ object RoleEditView extends Form:
         )
 
       showFormFieldErrors(errors):
-        case RoleViewModel.RoleRequiredError | RoleViewModel.DuplicateRoleError =>
-          role
-        case RoleViewModel.DescriptionRequiredError =>
-          description
+        case Validation.RoleRequired | Validation.DescriptionRequired => role
+        case Validation.DuplicateRole => description
 
     var formSaved = false
     val save =
@@ -60,11 +59,7 @@ object RoleEditView extends Form:
 
           showMessage(
             label = resultMessage,
-            message =
-              if updated then
-                Roles.Edit.Success
-              else
-                Roles.Edit.Error,
+            message = if updated then Text.Success else Text.Error,
             success = updated
           )
 
@@ -78,14 +73,14 @@ object RoleEditView extends Form:
     val form =
       formGrid(
         Seq(
-          formRow(Fields.Labels.required(Fields.Labels.Role), role),
-          formRow(Fields.Labels.required(Fields.Labels.Description), description),
+          formRow(Labels.required(Labels.Role), role),
+          formRow(Labels.required(Labels.Description), description),
         )
       )
 
     formPage(
-      titleText = Roles.Edit.Title,
-      subtitleText = Roles.Edit.Subtitle,
+      titleText = Text.Title,
+      subtitleText = Text.Subtitle,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

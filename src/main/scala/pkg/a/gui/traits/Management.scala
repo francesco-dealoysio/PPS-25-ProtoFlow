@@ -3,10 +3,11 @@ package pkg.a.gui.traits
 import pkg.a.gui.text.UiText.Common.Buttons.Print
 import pkg.a.gui.text.UiStyles.Common.*
 import scalafx.Includes.*
+import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Insets
 import scalafx.scene.Node
-import scalafx.scene.control.{Button, Label, TableView}
+import scalafx.scene.control.{Button, Label, TableColumn, TableView}
 import scalafx.scene.layout.{BorderPane, Priority, VBox}
 
 trait Management extends Common:
@@ -16,6 +17,13 @@ trait Management extends Common:
       columnResizePolicy = TableView.ConstrainedResizePolicy
       placeholder = new Label(emptyText)
       styleClass += TableStyle
+      
+  protected def stringColumn[T](title: String, widthColumn: Option[Double] = None)(value: T => String): TableColumn[T, String] =
+    new TableColumn[T, String]:
+      text = title
+      widthColumn.foreach(prefWidth = _)
+      cellValueFactory = cell =>
+        StringProperty(value(cell.value))
 
   protected def selectedItem[T](table: TableView[T]): Option[T] =
     Option(table.selectionModel.value.selectedItem.value)

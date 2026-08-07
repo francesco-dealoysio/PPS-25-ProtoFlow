@@ -1,8 +1,11 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.structures.LoadedDocumentViewModel
-import pkg.a.gui.text.{UiStyles, UiText}
-import UiText.{Fields, LoadedDocuments, RegisteredDocuments}
+import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
+import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Prompts}
+import pkg.a.gui.text.UiText.RegisteredDocuments.Process as Text
+import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
 import pkg.a.gui.traits.Form
 import pkg.b.logic.{LoadedDocument, LoadedDocumentService}
 import scalafx.application.Platform
@@ -22,13 +25,13 @@ object DocumentRegistrationView extends Form:
     val service = new LoadedDocumentService()
     val viewModel = new LoadedDocumentViewModel()
     val documentDate = dateField(LocalDate.parse(selectedDocument.getDocumentDate))
-    val documentTime = stringField(LoadedDocuments.Prompts.DocumentTime, selectedDocument.getDocumentTime)
-    val documentProtocol = stringField(LoadedDocuments.Prompts.DocumentProtocol, selectedDocument.getDocumentProtocol)
-    val documentType = stringField(LoadedDocuments.Prompts.DocumentType, selectedDocument.getDocumentType)
-    val sender = stringField(LoadedDocuments.Prompts.Sender, selectedDocument.getSender)
-    val recipient = stringField(LoadedDocuments.Prompts.Recipient, selectedDocument.getRecipient)
-    val subject = stringField(LoadedDocuments.Prompts.Subject, selectedDocument.getSubject)
-    val remarks = areaField(LoadedDocuments.Prompts.Remarks, UiStyles.Common.DescriptionAreaStyle, selectedDocument.getRemarks)
+    val documentTime = stringField(Prompts.DocumentTime, selectedDocument.getDocumentTime)
+    val documentProtocol = stringField(Prompts.DocumentProtocol, selectedDocument.getDocumentProtocol)
+    val documentType = stringField(Prompts.DocumentType, selectedDocument.getDocumentType)
+    val sender = stringField(Prompts.Sender, selectedDocument.getSender)
+    val recipient = stringField(Prompts.Recipient, selectedDocument.getRecipient)
+    val subject = stringField(Prompts.Subject, selectedDocument.getSubject)
+    val remarks = areaField(Prompts.Remarks, DescriptionAreaStyle, selectedDocument.getRemarks)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks)
 
@@ -59,13 +62,13 @@ object DocumentRegistrationView extends Form:
       clearErrors()
       val errors = viewModel.validate(editedDocument())
       showFormFieldErrors(errors):
-        case LoadedDocumentViewModel.DocumentDateRequiredError => documentDate
-        case LoadedDocumentViewModel.DocumentTimeRequiredError => documentTime
-        case LoadedDocumentViewModel.DocumentProtocolRequiredError => documentProtocol
-        case LoadedDocumentViewModel.DocumentTypeRequiredError => documentType
-        case LoadedDocumentViewModel.SenderRequiredError => sender
-        case LoadedDocumentViewModel.RecipientRequiredError => recipient
-        case LoadedDocumentViewModel.SubjectRequiredError => subject
+        case Validation.DocumentDateRequired => documentDate
+        case Validation.DocumentTimeRequired => documentTime
+        case Validation.DocumentProtocolRequired => documentProtocol
+        case Validation.DocumentTypeRequired => documentType
+        case Validation.SenderRequired => sender
+        case Validation.RecipientRequired => recipient
+        case Validation.SubjectRequired => subject
 
     def resetForm(): Unit =
       resetFields(monitoredFields*)
@@ -79,8 +82,8 @@ object DocumentRegistrationView extends Form:
         if validateForm() then
           val confirmed =
             askConfirmation(
-              titleText = RegisteredDocuments.Process.SaveTitle,
-              header = RegisteredDocuments.Process.SaveHeader,
+              titleText = Text.SaveTitle,
+              header = Text.SaveHeader,
               content =
                 s"""Mittente: ${sender.value}
                    |Oggetto: ${subject.value}""".stripMargin
@@ -95,7 +98,7 @@ object DocumentRegistrationView extends Form:
               case Right(registered) =>
                 showMessage(
                   label = resultMessage,
-                  message = s"${RegisteredDocuments.Process.Success} Numero di protocollo: ${registered.getProtocolNumber}.",
+                  message = s"${Text.Success} Numero di protocollo: ${registered.getProtocolNumber}.",
                   success = true
                 )
 
@@ -114,14 +117,14 @@ object DocumentRegistrationView extends Form:
     val form =
       formGrid(
         Seq(
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentDate), documentDate),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentTime), documentTime),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentProtocol), documentProtocol),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.DocumentType), documentType),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.Sender), sender),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.Recipient), recipient),
-          formRow(Fields.Labels.required(LoadedDocuments.Fields.Subject), subject),
-          formRow(LoadedDocuments.Fields.Remarks, remarks)
+          formRow(Labels.required(Fields.DocumentDate), documentDate),
+          formRow(Labels.required(Fields.DocumentTime), documentTime),
+          formRow(Labels.required(Fields.DocumentProtocol), documentProtocol),
+          formRow(Labels.required(Fields.DocumentType), documentType),
+          formRow(Labels.required(Fields.Sender), sender),
+          formRow(Labels.required(Fields.Recipient), recipient),
+          formRow(Labels.required(Fields.Subject), subject),
+          formRow(Fields.Remarks, remarks)
         )
       )
 
@@ -129,8 +132,8 @@ object DocumentRegistrationView extends Form:
       documentProtocol.requestFocus()
 
     formPage(
-      titleText = RegisteredDocuments.Process.Title,
-      subtitleText = RegisteredDocuments.Process.Subtitle,
+      titleText = Text.Title,
+      subtitleText = Text.Subtitle,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

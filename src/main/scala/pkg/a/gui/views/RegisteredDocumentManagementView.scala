@@ -4,8 +4,8 @@ import pkg.a.gui.traits.Management
 import pkg.b.logic.{LoadedDocumentService, RegisteredDocument}
 import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.XmlToPdf
-import pkg.a.gui.text.UiText
-import UiText.{Common, RegisteredDocuments}
+import pkg.a.gui.text.UiText.Common.Buttons
+import pkg.a.gui.text.UiText.RegisteredDocuments.{Fields, Management as Text}
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
@@ -20,21 +20,14 @@ object RegisteredDocumentManagementView extends Management:
 
     val result = createResultMessage()
 
-    val table = managementTable(documents, RegisteredDocuments.Management.Empty)
-
-    def stringColumn(title: String, colWidth: Double)(value: RegisteredDocument => String): TableColumn[RegisteredDocument, String] =
-      new TableColumn[RegisteredDocument, String]:
-        text = title
-        prefWidth = colWidth
-        cellValueFactory = cell =>
-          StringProperty(value(cell.value))
+    val table = managementTable(documents, Text.Empty)
 
     table.columns ++= Seq(
-      stringColumn("Numero protocollo", 140)(_.getProtocolNumber),
-      stringColumn("Mittente", 150)(_.getSender),
-      stringColumn("Oggetto", 220)(_.getSubject),
-      stringColumn("Tipo", 90)(_.getDocumentType),
-      stringColumn("Protocollato da", 130)(_.getRegisteredBy)
+      stringColumn[RegisteredDocument](Fields.ProtocolNumber, Some(140))(_.getProtocolNumber),
+      stringColumn[RegisteredDocument](Fields.Sender, Some(150))(_.getSender),
+      stringColumn[RegisteredDocument](Fields.Subject, Some(220))(_.getSubject),
+      stringColumn[RegisteredDocument](Fields.Type, Some(90))(_.getDocumentType),
+      stringColumn[RegisteredDocument](Fields.ProtocolledBy, Some(130))(_.getRegisteredBy)
     )
 
     def loadDocuments(): Unit =
@@ -48,20 +41,20 @@ object RegisteredDocumentManagementView extends Management:
       table.selectionModel.value.clearSelection()
 
       if registered.isEmpty then
-        result.show(RegisteredDocuments.Management.Empty, success = true)
+        result.show(Text.Empty, success = true)
 
     clearResultOnSelection(table, result)
 
     def deleteSelectedDocument(): Unit =
       selectedItem(table) match
         case None =>
-          result.show(RegisteredDocuments.Management.SelectToDelete, success = false)
+          result.show(Text.SelectToDelete, success = false)
 
         case Some(selected) =>
           val confirmed =
             askConfirmation(
-              titleText = RegisteredDocuments.Management.DeleteTitle,
-              header = RegisteredDocuments.Management.DeleteConfirmation,
+              titleText = Text.DeleteTitle,
+              header = Text.DeleteConfirmation,
               content =
                 s"""Numero protocollo: ${selected.getProtocolNumber}
                    |Mittente: ${selected.getSender}
@@ -71,46 +64,45 @@ object RegisteredDocumentManagementView extends Management:
           if confirmed then
             if service.deleteRegisteredDocument(selected.getId) then
               loadDocuments()
-              result.show(RegisteredDocuments.Management.Deleted, success = true)
+              result.show(Text.Deleted, success = true)
             else
-              result.show(RegisteredDocuments.Management.DeleteError, success = false)
+              result.show(Text.DeleteError, success = false)
 
     def printDocumentsList(): Unit =
       val printed =
         XmlToPdf.printList(
           xmlPath = inDocumentsFilePathName("registered.xml"),
-          pdfFileName = RegisteredDocuments.Management.PrintFileName,
-          title = RegisteredDocuments.Management.PrintTitle,
+          pdfFileName = Text.PrintFileName,
+          title = Text.PrintTitle,
           fields = Seq("protocolNumber", "registeredDate", "registeredTime", "registeredBy", "documentType", "sender", "recipient", "subject")
         )
 
       result.show(
-        if printed then RegisteredDocuments.Management.PrintSuccess
-        else RegisteredDocuments.Management.PrintError,
+        if printed then Text.PrintSuccess else Text.PrintError,
         success = printed
       )
 
-    val refreshButton = secondaryButton(Common.Buttons.Refresh, () => loadDocuments())
+    val refreshButton = secondaryButton(Buttons.Refresh, () => loadDocuments())
     val printListButton = printButton(action = () => printDocumentsList())
 
     val archiveButton =
-      primaryButton(Common.Buttons.Archive, () =>
+      primaryButton(Buttons.Archive, () =>
         selectedItem(table) match
           case Some(selected) =>
             result.clear()
             onArchive(selected)
 
           case None =>
-            result.show(RegisteredDocuments.Management.SelectToArchive, success = false)
+            result.show(Text.SelectToArchive, success = false)
       )
 
-    val deleteButton = dangerButton(Common.Buttons.Delete, () => deleteSelectedDocument())
+    val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedDocument())
 
     disableWithoutSelection(table, archiveButton, deleteButton)
 
     val exitButton = closeButton(onExit)
     val bottomActions = actionBar(Seq(exitButton, refreshButton, printListButton, deleteButton, archiveButton))
-    val header = titleBox(RegisteredDocuments.Management.Title, RegisteredDocuments.Management.Subtitle)
+    val header = titleBox(Text.Title, Text.Subtitle)
 
     loadDocuments()
 

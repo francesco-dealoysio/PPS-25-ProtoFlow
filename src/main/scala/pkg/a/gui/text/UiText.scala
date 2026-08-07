@@ -184,7 +184,7 @@ object UiText:
       val DeleteConfirmation = "Confermi l'eliminazione dell'account selezionato?"
       val DeleteError = "Non è stato possibile eliminare l'account."
 
-      def deleted(username: String): String =
+      def deletedAccount(username: String): String =
         s"L'account '$username' è stato eliminato correttamente."
 
   object RegistrationRequests:
@@ -273,6 +273,10 @@ object UiText:
   object RegisteredDocuments:
     object Fields:
       val ProtocolNumber = "Numero protocollo"
+      val Sender = "Mittente"
+      val Subject = "Oggetto"
+      val Type = "Tipo"
+      val ProtocolledBy = "Protocollato da"
       val RegisteredDate = "Data protocollo"
       val RegisteredTime = "Ora protocollo"
       val RegisteredBy = "Operatore protocollatore"
@@ -400,6 +404,45 @@ object UiText:
       val Title = "Modifiche non salvate"
       val Header = "Vuoi uscire senza salvare?"
       val Content = "I dati inseriti nella richiesta di registrazione verranno persi."
+
+  object DocumentLogs:
+
+    object Fields:
+      val Id = "ID log"
+      val DocumentId = "ID documento"
+      val OperationType = "Operazione"
+      val ProcessedDate = "Data operazione"
+      val ProcessedTime = "Ora operazione"
+      val ProcessedBy = "Operatore"
+
+    object Management:
+      val Title = "Gestione Log"
+      val Subtitle = "Visualizza le operazioni effettuate sui documenti."
+      val Empty = "Non sono presenti log relativi ai documenti."
+      val View = "Visualizza"
+      val SelectToView = "Seleziona un log da visualizzare."
+      val PrintTitle = "Elenco Log Operazioni Documenti"
+      val PrintFileName = "log_operazioni_documenti_elenco"
+      val PrintSuccess = "Elenco dei log stampato correttamente in PDF."
+      val PrintError = "Errore durante la stampa dell'elenco dei log."
+
+    object Details:
+      val Title = "Dettaglio log documento"
+      val Subtitle = "Visualizza i dati del log selezionato."
+
+    def operationLabel(operationType: String): String =
+      operationType match
+        case "loading" =>
+          "Presa in carico"
+
+        case "registering" =>
+          "Protocollazione"
+
+        case "archiving" =>
+          "Archiviazione"
+
+        case other =>
+          other
 
   object Validation:
     object Account:

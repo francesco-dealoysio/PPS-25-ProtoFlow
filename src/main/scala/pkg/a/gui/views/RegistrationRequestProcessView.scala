@@ -7,10 +7,11 @@ import scalafx.geometry.Insets
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
 import java.time.format.DateTimeFormatter
-import pkg.a.gui.text.UiText
+import pkg.a.gui.text.UiText.Common.Buttons
+import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.RegistrationRequests.{Management as ManagementText, Process as Text}
 import pkg.a.gui.text.UiStyles.Requests.*
 import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
-import UiText.{Fields, RegistrationRequests, Common}
 
 object RegistrationRequestProcessView extends Management:
 
@@ -35,14 +36,14 @@ object RegistrationRequestProcessView extends Management:
       styleClass += DetailsGridStyle
 
     val detailRows = Seq(
-      Fields.Labels.Name -> request.getName,
-      Fields.Labels.Surname-> request.getSurname,
-      Fields.Labels.Email -> request.getEmail,
-      Fields.Labels.Phone -> request.getPhone,
-      Fields.Labels.Role -> request.getRole,
-      Fields.Labels.Area -> request.getArea,
-      Fields.Labels.Assignment -> request.getAssignment,
-      Fields.Labels.Date -> RegistrationDates.parse(request.getDate).format(dateFormatter)
+      Labels.Name -> request.getName,
+      Labels.Surname-> request.getSurname,
+      Labels.Email -> request.getEmail,
+      Labels.Phone -> request.getPhone,
+      Labels.Role -> request.getRole,
+      Labels.Area -> request.getArea,
+      Labels.Assignment -> request.getAssignment,
+      Labels.Date -> RegistrationDates.parse(request.getDate).format(dateFormatter)
     )
 
     detailRows.zipWithIndex.foreach:
@@ -57,14 +58,14 @@ object RegistrationRequestProcessView extends Management:
       spacing = 10
       styleClass += DetailsCardStyle
       children = Seq(
-        new Label(RegistrationRequests.Process.DetailsTitle):
+        new Label(Text.DetailsTitle):
           styleClass += DetailsTitleStyle,
           detailsGrid
       )
 
     val motivationField =
       new TextArea:
-        promptText = RegistrationRequests.Process.MotivationPrompt
+        promptText = Text.MotivationPrompt
         wrapText = true
         prefRowCount = 3
         maxWidth = Double.MaxValue
@@ -74,7 +75,7 @@ object RegistrationRequestProcessView extends Management:
       spacing = 8
       styleClass += DetailsCardStyle
       children = Seq(
-        fieldLabel(RegistrationRequests.Process.MotivationLabel),
+        fieldLabel(Text.MotivationLabel),
         motivationField
       )
 
@@ -84,20 +85,19 @@ object RegistrationRequestProcessView extends Management:
           xmlPath = service.pendingRequestsFilePath,
           recordId = request.getId,
           pdfFileName = s"richiesta_${request.getId}",
-          title = RegistrationRequests.Process.PrintPendingTitle
+          title = Text.PrintPendingTitle
         )
 
       result.show(
-        if printed then RegistrationRequests.Process.PrintSuccess
-        else RegistrationRequests.Process.PrintError,
+        if printed then Text.PrintSuccess else Text.PrintError,
         success = printed
       )
 
     def approve(): Unit =
       val confirmed =
         askConfirmation(
-          titleText = RegistrationRequests.Process.ApproveTitle,
-          header = RegistrationRequests.Process.ApproveHeader,
+          titleText = Text.ApproveTitle,
+          header = Text.ApproveHeader,
           content =
             s"""${request.getName} ${request.getSurname}
                |${request.getEmail}
@@ -111,11 +111,11 @@ object RegistrationRequestProcessView extends Management:
               xmlPath = service.acceptedRequestsFilePath,
               recordId = approval.request.getId,
               pdfFileName = s"richiesta_${approval.request.getId}_approvata",
-              title = RegistrationRequests.Process.PrintApprovedTitle
+              title = Text.PrintApprovedTitle
             )
 
             result.show(
-              RegistrationRequests.Process.approved(approval.account.getUsername, approval.generatedPassword),
+              Text.approved(approval.account.getUsername, approval.generatedPassword),
               success = true
             )
 
@@ -128,12 +128,12 @@ object RegistrationRequestProcessView extends Management:
       val motivation = motivationField.text.value.trim
 
       if motivation.isEmpty then
-        result.show(RegistrationRequests.Process.EmptyMotivationError, success = false)
+        result.show(Text.EmptyMotivationError, success = false)
       else
         val confirmed =
           askConfirmation(
-            titleText = RegistrationRequests.Process.RejectTitle,
-            header = RegistrationRequests.Process.RejectHeader,
+            titleText = Text.RejectTitle,
+            header = Text.RejectHeader,
             content =
               s"""${request.getName} ${request.getSurname}
                  |${request.getEmail}
@@ -147,23 +147,23 @@ object RegistrationRequestProcessView extends Management:
                 xmlPath = service.rejectedRequestsFilePath,
                 recordId = rejected.getId,
                 pdfFileName = s"richiesta_${rejected.getId}_rifiutata",
-                title = RegistrationRequests.Process.PrintRejectedTitle
+                title = Text.PrintRejectedTitle
               )
 
-              result.show(RegistrationRequests.Process.RejectSuccess, success = true)
+              result.show(Text.RejectSuccess, success = true)
               onProcessed()
 
             case Left(error) =>
               result.show(error, success = false)
 
-    val printButton = secondaryButton(Common.Buttons.Print, () => printPendingRequest())
-    val rejectButton = dangerButton(Common.Buttons.Reject, () => reject())
-    val approveButton = primaryButton(Common.Buttons.Approve, () => approve())
+    val printButton = secondaryButton(Buttons.Print, () => printPendingRequest())
+    val rejectButton = dangerButton(Buttons.Reject, () => reject())
+    val approveButton = primaryButton(Buttons.Approve, () => approve())
     val exitButton = closeButton(onExit)
 
     val actionsBox = actionBar(Seq(exitButton, printButton, rejectButton, approveButton))
 
-    val header = titleBox(RegistrationRequests.Management.Title, RegistrationRequests.Management.Subtitle)
+    val header = titleBox(ManagementText.Title, ManagementText.Subtitle)
 
     managementPage(
       pageChildren = Seq(

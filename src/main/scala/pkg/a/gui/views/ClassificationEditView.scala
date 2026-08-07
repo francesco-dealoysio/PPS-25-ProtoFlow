@@ -1,11 +1,13 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.structures.ClassificationViewModel
-import pkg.a.gui.text.{UiStyles, UiText}
+import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
 import scalafx.scene.layout.BorderPane
-import UiText.{Classifications, Fields}
+import pkg.a.gui.text.UiText.Classifications.Edit as Text
+import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Validation.Classification as Validation
 
 object ClassificationEditView extends Form:
 
@@ -16,14 +18,14 @@ object ClassificationEditView extends Form:
 
     val classification =
       stringField(
-        prompt = Fields.Prompts.Classification,
+        prompt = Prompts.Classification,
         initialValue = selectedClassification.getClassification
       )
 
     val description =
       areaField(
-        prompt = Fields.Prompts.Description,
-        styleName = UiStyles.Common.DescriptionAreaStyle,
+        prompt = Prompts.Description,
+        styleName = DescriptionAreaStyle,
         initialValue = selectedClassification.getDescription
       )
 
@@ -57,12 +59,8 @@ object ClassificationEditView extends Form:
         )
 
       showFormFieldErrors(errors):
-        case ClassificationViewModel.ClassificationRequiredError |
-             ClassificationViewModel.DuplicateClassificationError =>
-          classification
-
-        case ClassificationViewModel.DescriptionRequiredError =>
-          description
+        case Validation.ClassificationRequired | Validation.DuplicateClassification => classification
+        case Validation.DescriptionRequired => description
 
     var formSaved = false
 
@@ -72,9 +70,7 @@ object ClassificationEditView extends Form:
           val updated = classificationLogic.recordUpdate[Classification](currentClassification())
           showMessage(
             label = resultMessage,
-            message =
-              if updated then Classifications.Edit.Success
-              else Classifications.Edit.Error,
+            message = if updated then Text.Success else Text.Error,
             success = updated
           )
           if updated then
@@ -87,14 +83,14 @@ object ClassificationEditView extends Form:
     val form =
       formGrid(
         Seq(
-          formRow(Fields.Labels.required(Fields.Labels.Classification), classification),
-          formRow(Fields.Labels.required(Fields.Labels.Description), description)
+          formRow(Labels.required(Labels.Classification), classification),
+          formRow(Labels.required(Labels.Description), description)
         )
       )
 
     formPage(
-      titleText = Classifications.Edit.Title,
-      subtitleText = Classifications.Edit.Subtitle,
+      titleText = Text.Title,
+      subtitleText = Text.Subtitle,
       form = form,
       resultMessage = resultMessage,
       actions = actionBar(Seq(exit, reset, save)),

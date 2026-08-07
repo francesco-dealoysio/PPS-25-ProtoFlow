@@ -3,19 +3,12 @@ package pkg.a.gui.structures
 import pkg.b.logic.Role
 import pkg.a.gui.text.UiText.Validation.Role.*
 
-object RoleViewModel:
-  val RoleRequiredError: String = RoleRequired
-  val DescriptionRequiredError: String = DescriptionRequired
-  val DuplicateRoleError: String = DuplicateRole
-
 class RoleViewModel:
-
-  import RoleViewModel.*
 
   def validate(role: Role, existingRoles: Seq[Role], currentRoleId: Option[String] = None): Seq[String] =
     Seq(
-      validateRequired(RoleRequiredError, role.getRole),
-      validateRequired(DescriptionRequiredError, role.getDescription),
+      validateRequired(RoleRequired, role.getRole),
+      validateRequired(DescriptionRequired, role.getDescription),
       validateUniqueRole(role.getRole, existingRoles, currentRoleId)
     ).flatten
 
@@ -48,6 +41,6 @@ class RoleViewModel:
               .equalsIgnoreCase(normalizedName)
 
       if duplicateExists then
-        Some(DuplicateRoleError)
+        Some(DuplicateRole)
       else
         None

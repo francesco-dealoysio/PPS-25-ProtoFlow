@@ -3,21 +3,9 @@ package pkg.a.gui.structures
 import pkg.b.logic.Account
 import pkg.a.gui.text.UiText.Validation.Account.*
 
-object AccountViewModel:
-  val SurnameRequiredError: String = SurnameRequired
-  val NameRequiredError: String = NameRequired
-  val EmailRequiredError: String = EmailRequired
-  val EmailInvalidError: String = EmailInvalid
-  val RoleRequiredError: String = RoleRequired
-  val UsernameRequiredError: String = UsernameRequired
-  val PasswordRequiredError: String = PasswordRequired
-  val DuplicateUsernameError: String = DuplicateUsername
+class AccountViewModel:
 
   private val emailPattern = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$".r
-
-class AccountViewModel:
-  import AccountViewModel.*
-
   def validate(
                 account: Account,
                 rawPassword: String,

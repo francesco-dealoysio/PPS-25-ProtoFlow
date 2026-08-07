@@ -3,18 +3,12 @@ package pkg.a.gui.structures
 import pkg.b.logic.Classification
 import pkg.a.gui.text.UiText.Validation.Classification.*
 
-object ClassificationViewModel:
-  val ClassificationRequiredError: String = ClassificationRequired
-  val DescriptionRequiredError: String = DescriptionRequired
-  val DuplicateClassificationError: String = DuplicateClassification
-
 class ClassificationViewModel:
-  import ClassificationViewModel.*
 
   def validate(classification: Classification, existingClassifications: Seq[Classification], currentClassificationId: Option[String] = None): Seq[String] =
     Seq(
-      validateRequired(ClassificationRequiredError, classification.getClassification),
-      validateRequired(DescriptionRequiredError, classification.getDescription),
+      validateRequired(ClassificationRequired, classification.getClassification),
+      validateRequired(DescriptionRequired, classification.getDescription),
       validateUniqueClassification(classification.getClassification, existingClassifications, currentClassificationId)
     ).flatten
 
@@ -36,5 +30,5 @@ class ClassificationViewModel:
           !currentClassificationId.contains(existing.getId) &&
             existing.getClassification.trim.equalsIgnoreCase(normalizedName)
 
-      if duplicateExists then Some(DuplicateClassificationError)
+      if duplicateExists then Some(DuplicateClassification)
       else None
