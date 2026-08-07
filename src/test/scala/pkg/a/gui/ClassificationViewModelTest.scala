@@ -3,6 +3,7 @@ package pkg.a.gui
 import org.scalatest.funsuite.AnyFunSuite
 import pkg.a.gui.structures.ClassificationViewModel
 import pkg.b.logic.Classification
+import pkg.a.gui.text.UiText.Validation.Classification.*
 
 class ClassificationViewModelTest extends AnyFunSuite:
 
@@ -10,23 +11,20 @@ class ClassificationViewModelTest extends AnyFunSuite:
 
   test("validazione form: caso valido e campo vuoto/spazi"):
     assertValid(validForm())
-    assertInvalid(validForm().copy(classification = "   "))(ClassificationViewModel.ClassificationRequiredError)
-    assertInvalid(validForm().copy(description = ""))(ClassificationViewModel.DescriptionRequiredError)
+    assertInvalid(validForm().copy(classification = "   "))(ClassificationRequired)
+    assertInvalid(validForm().copy(description = ""))(DescriptionRequired)
 
   test("validazione form: errori multipli quando tutto è vuoto"):
-    assertInvalid(Classification())(
-      ClassificationViewModel.ClassificationRequiredError,
-      ClassificationViewModel.DescriptionRequiredError
-    )
+    assertInvalid(Classification())(ClassificationRequired, DescriptionRequired)
 
   test("gestione duplicati: rileva duplicati (anche con spazi e case-insensitive)"):
-    assertInvalid(validForm().copy(classification = "Amministrazione"))(ClassificationViewModel.DuplicateClassificationError)
-    assertInvalid(validForm().copy(classification = "  amministrazione  "))(ClassificationViewModel.DuplicateClassificationError)
+    assertInvalid(validForm().copy(classification = "Amministrazione"))(DuplicateClassification)
+    assertInvalid(validForm().copy(classification = "  amministrazione  "))(DuplicateClassification)
 
   test("gestione duplicati in modifica: permette se stesso, blocca altri"):
     val updated = Classification(classification = "Amministrazione", description = "Descrizione")
     assertValid(updated, currentId = Some("1"))
-    assertInvalid(updated.copy(classification = "Personale"), currentId = Some("1"))(ClassificationViewModel.DuplicateClassificationError)
+    assertInvalid(updated.copy(classification = "Personale"), currentId = Some("1"))(DuplicateClassification)
 
   // Test Helpers
   private def assertValid(classification: Classification, currentId: Option[String] = None): Unit =

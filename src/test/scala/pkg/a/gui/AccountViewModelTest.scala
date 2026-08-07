@@ -3,6 +3,7 @@ package pkg.a.gui
 import org.scalatest.funsuite.AnyFunSuite
 import pkg.a.gui.structures.AccountViewModel
 import pkg.b.logic.Account
+import pkg.a.gui.text.UiText.Validation.Account.*
 
 class AccountViewModelTest extends AnyFunSuite:
 
@@ -21,7 +22,7 @@ class AccountViewModelTest extends AnyFunSuite:
 
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
 
-    assert(errors.contains(AccountViewModel.SurnameRequiredError))
+    assert(errors.contains(SurnameRequired))
     assert(!viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
   test("il campo Cognome contenente solo spazi non è valido"):
@@ -29,14 +30,14 @@ class AccountViewModelTest extends AnyFunSuite:
 
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
 
-    assert(errors.contains(AccountViewModel.SurnameRequiredError))
+    assert(errors.contains(SurnameRequired))
 
   test("il campo Nome è obbligatorio"):
     val accountToValidate = validForm().copy(name = "")
 
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
 
-    assert(errors.contains(AccountViewModel.NameRequiredError))
+    assert(errors.contains(NameRequired))
     assert(!viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
   test("il campo Email è obbligatorio"):
@@ -44,7 +45,7 @@ class AccountViewModelTest extends AnyFunSuite:
 
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
 
-    assert(errors.contains(AccountViewModel.EmailRequiredError))
+    assert(errors.contains(EmailRequired))
     assert(!viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
   test("un'email senza chiocciola non è valida"):
@@ -52,7 +53,7 @@ class AccountViewModelTest extends AnyFunSuite:
 
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
 
-    assert(errors.contains(AccountViewModel.EmailInvalidError))
+    assert(errors.contains(EmailInvalid))
     assert(!viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
   test("un'email senza dominio non è valida"):
@@ -60,14 +61,14 @@ class AccountViewModelTest extends AnyFunSuite:
 
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
 
-    assert(errors.contains(AccountViewModel.EmailInvalidError))
+    assert(errors.contains(EmailInvalid))
 
   test("il campo Ruolo è obbligatorio"):
     val accountToValidate = validForm().copy(role = "")
 
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
 
-    assert(errors.contains(AccountViewModel.RoleRequiredError))
+    assert(errors.contains(RoleRequired))
     assert(!viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
   test("il campo Username è obbligatorio"):
@@ -75,7 +76,7 @@ class AccountViewModelTest extends AnyFunSuite:
 
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
 
-    assert(errors.contains(AccountViewModel.UsernameRequiredError))
+    assert(errors.contains(UsernameRequired))
     assert(!viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
   test("il campo Password è obbligatorio in fase di aggiunta"):
@@ -83,7 +84,7 @@ class AccountViewModelTest extends AnyFunSuite:
 
     val errors = viewModel.validate(accountToValidate, "", existingAccounts, requirePassword = true)
 
-    assert(errors.contains(AccountViewModel.PasswordRequiredError))
+    assert(errors.contains(PasswordRequired))
     assert(!viewModel.isValid(accountToValidate, "", existingAccounts, requirePassword = true))
 
   test("il campo Password può essere lasciato vuoto in fase di modifica"):
@@ -99,7 +100,7 @@ class AccountViewModelTest extends AnyFunSuite:
 
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
 
-    assert(errors.contains(AccountViewModel.DuplicateUsernameError))
+    assert(errors.contains(DuplicateUsername))
     assert(!viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
   test("il controllo dei duplicati ignora maiuscole e minuscole"):
@@ -107,14 +108,14 @@ class AccountViewModelTest extends AnyFunSuite:
 
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
 
-    assert(errors.contains(AccountViewModel.DuplicateUsernameError))
+    assert(errors.contains(DuplicateUsername))
 
   test("il controllo dei duplicati ignora gli spazi iniziali e finali"):
     val accountToValidate = validForm().copy(username = "  rosma  ")
 
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
 
-    assert(errors.contains(AccountViewModel.DuplicateUsernameError))
+    assert(errors.contains(DuplicateUsername))
 
   test("durante la modifica l'account non deve essere considerato duplicato di se stesso"):
     val accountToValidate = validForm().copy(id = "1", username = "frank")
@@ -147,7 +148,7 @@ class AccountViewModelTest extends AnyFunSuite:
       requirePassword = false
     )
 
-    assert(errors.contains(AccountViewModel.DuplicateUsernameError))
+    assert(errors.contains(DuplicateUsername))
     assert(!viewModel.isValid(
       account = accountToValidate,
       rawPassword = "",
@@ -161,12 +162,12 @@ class AccountViewModelTest extends AnyFunSuite:
 
     val errors = viewModel.validate(accountToValidate, "", existingAccounts)
 
-    assert(errors.contains(AccountViewModel.SurnameRequiredError))
-    assert(errors.contains(AccountViewModel.NameRequiredError))
-    assert(errors.contains(AccountViewModel.EmailRequiredError))
-    assert(errors.contains(AccountViewModel.RoleRequiredError))
-    assert(errors.contains(AccountViewModel.UsernameRequiredError))
-    assert(errors.contains(AccountViewModel.PasswordRequiredError))
+    assert(errors.contains(SurnameRequired))
+    assert(errors.contains(NameRequired))
+    assert(errors.contains(EmailRequired))
+    assert(errors.contains(RoleRequired))
+    assert(errors.contains(UsernameRequired))
+    assert(errors.contains(PasswordRequired))
 
   private def validForm(): Account =
     Account(
