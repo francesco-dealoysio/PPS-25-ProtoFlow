@@ -51,6 +51,8 @@ object UiText:
       val Process = "Elabora"
       val Register = "Protocolla"
       val Archive = "Archivia"
+      val Search = "Cerca"
+      val ResetFilter = "Azzera filtri"
       val Login = "Accedi"
       val RequestRegistration = "Richiedi registrazione"
 
