@@ -417,10 +417,38 @@ object UiText:
       val ProcessedTime = "Ora operazione"
       val ProcessedBy = "Operatore"
 
+    object Operations:
+      val Loading = "loading"
+      val Registering = "registering"
+      val Archiving = "archiving"
+      val LoadingLabel = "Presa in carico"
+      val RegisteringLabel = "Protocollazione"
+      val ArchivingLabel = "Archiviazione"
+
+      val values: Seq[(String, String)] = Seq(
+        Loading -> LoadingLabel,
+        Registering -> RegisteringLabel,
+        Archiving -> ArchivingLabel
+      )
+
+      def labelOf(operationType: String): String =
+        values
+          .find(_._1 == operationType)
+          .map(_._2)
+          .getOrElse(operationType)
+
+      def valueOf(label: String): Option[String] =
+        values
+          .find(_._2 == label)
+          .map(_._1)
+
     object Management:
       val Title = "Gestione Log"
       val Subtitle = "Visualizza le operazioni effettuate sui documenti."
       val Empty = "Non sono presenti log relativi ai documenti."
+      val AllOperations = "Tutte"
+      val AllOperators = "Tutti gli operatori"
+      val NoFilterResults = "Nessun log corrisponde ai filtri selezionati."
       val View = "Visualizza"
       val SelectToView = "Seleziona un log da visualizzare."
       val PrintTitle = "Elenco Log Operazioni Documenti"
@@ -434,20 +462,6 @@ object UiText:
       val PrintTitle = "Dettaglio Log Operazione Documento"
       val PrintSuccess = "Dettaglio del log stampato correttamente in PDF."
       val PrintError = "Errore durante la stampa del dettaglio del log."
-
-    def operationLabel(operationType: String): String =
-      operationType match
-        case "loading" =>
-          "Presa in carico"
-
-        case "registering" =>
-          "Protocollazione"
-
-        case "archiving" =>
-          "Archiviazione"
-
-        case other =>
-          other
 
   object Validation:
     object Account:

@@ -6,7 +6,7 @@ import pkg.a.gui.text.UiText.Fields.Labels
 import pkg.a.gui.text.UiText.Registration as Text
 import pkg.a.gui.structures.RegistrationViewModel
 import pkg.a.gui.traits.Form
-import pkg.b.logic.{RegistrationRequestService, Role, Registration as RegistrationModel}
+import pkg.b.logic.{Classification, RegistrationRequestService, Role, Registration as RegistrationModel}
 import scalafx.scene.Node
 import scalafx.scene.control.Button
 import scalafx.scene.layout.{BorderPane, GridPane}
@@ -17,12 +17,13 @@ object RegistrationView extends Form:
 
     val service = new RegistrationRequestService()
     val roleLogic = new Role()
+    val classificationLogic = new Classification()
     val name = stringField(Text.NamePrompt)
     val surname = stringField(Text.SurnamePrompt)
     val email = stringField(Text.EmailPrompt)
     val phone = stringField(Text.PhonePrompt)
     val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), Text.RolePrompt)
-    val area = stringComboField(Seq("Urbanistica", "Personale", "Amministrazione", "Segreteria", "Finanziario", "Area Tecnica"), Text.AreaPrompt)
+    val area = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), Text.AreaPrompt)
     val assignment = stringField(Text.AssignmentPrompt)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(name, surname, email, phone, role, area, assignment)

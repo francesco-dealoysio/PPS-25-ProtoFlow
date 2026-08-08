@@ -1,8 +1,7 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.text.UiText.Common.Buttons
-import pkg.a.gui.text.UiText.DocumentLogs
-import pkg.a.gui.text.UiText.DocumentLogs.{Details as Text, Fields}
+import pkg.a.gui.text.UiText.DocumentLogs.{Details as Text, Fields, Operations}
 import pkg.a.gui.traits.Form
 import pkg.b.logic.DocumentLog
 import pkg.d.util.Util.inLogFilePathName
@@ -17,7 +16,7 @@ object DocumentLogDetailsView extends Form:
 
     val id = stringField("", selectedLog.getId)
     val documentId = stringField("", selectedLog.getDocumentId)
-    val operationType = stringField("", DocumentLogs.operationLabel(selectedLog.getOperationType))
+    val operationType = stringField("",  Operations.labelOf(selectedLog.getOperationType))
     val processedDate = stringField("", selectedLog.getProcessedDate)
     val processedTime = stringField("", selectedLog.getProcessedTime)
     val processedBy = stringField("", selectedLog.getProcessedBy)

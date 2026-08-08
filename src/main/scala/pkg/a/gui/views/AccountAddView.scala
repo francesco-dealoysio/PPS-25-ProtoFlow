@@ -2,7 +2,7 @@ package pkg.a.gui.views
 
 import pkg.a.gui.structures.AccountViewModel
 import pkg.a.gui.traits.Form
-import pkg.b.logic.{Account, Role}
+import pkg.b.logic.{Account, Classification, Role}
 import pkg.d.util.IdGen
 import pkg.d.util.Util.{inIdsFilePathName, cipher}
 import scalafx.application.Platform
@@ -18,6 +18,7 @@ object AccountAddView extends Form:
 
     val accountLogic = new Account()
     val roleLogic = new Role()
+    val classificationLogic = new Classification()
     val viewModel = new AccountViewModel()
 
     val surname = stringField(Prompts.Surname)
@@ -25,7 +26,7 @@ object AccountAddView extends Form:
     val email = stringField(Prompts.Email)
     val phone = stringField(Prompts.Phone)
     val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), Prompts.SelectRole)
-    val area = stringField(Prompts.Area)
+    val area = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), Prompts.Area)
     val assignment = stringField(Prompts.Assignment)
     val username = stringField(Prompts.Username)
     val password = passwordFormField(Prompts.Password)
