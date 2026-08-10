@@ -1,23 +1,23 @@
-package pkg.a.gui.views
+package pkg.e.ui.operations
 
-import pkg.a.gui.traits.Operation
+import javafx.collections.FXCollections
 import pkg.b.logic.{Account, LoadedDocument}
+import pkg.d.util.DateTime.{localDate, localTime}
 import pkg.d.util.IdGen
 import pkg.d.util.Util.{inDocumentsFilePathName, inIdsFilePathName}
-import pkg.d.util.DateTime.{localDate, localTime}
-import scala.util.{Failure, Success, Try}
-import scalafx.scene.control.{Control, Alert, ComboBox, DatePicker, Label, TextArea, TextField}
-import javafx.collections.FXCollections
+import pkg.e.ui.traits.{GUI, Homepage, Operation}
+import scalafx.scene.control.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import scala.util.{Failure, Success, Try}
 
-class EntityAdd(val user: Account) extends Operation:
+class DocumentLoad(val user: Account, val parentMask: Homepage) extends Operation:
 
-  override val Title: String = "Aggiunta Entità"
+  override val Title: String = "Presa in carico documento"
   override val Width = 780
   override val Height = 600
 
-  pageTitle = "Aggiunta Entità"
+  pageTitle = "Presa in carico documento"
   operationType = "insert"
   objEntity = new LoadedDocument
   xmlFilePathName = inDocumentsFilePathName("loaded.xml")
@@ -38,7 +38,7 @@ class EntityAdd(val user: Account) extends Operation:
   var remarksFld: TextArea = _
 
   override def start(): Unit =
-
+    
     dateLbl = new Label("Data *")
     dateFld = new DatePicker(LocalDate.now())
     protocolLbl = new Label("Protocollo")
@@ -76,6 +76,7 @@ class EntityAdd(val user: Account) extends Operation:
     setDirtyOnChange(controls)
 
     super.start()
+
 
   def fieldsLoad: Unit =
 
@@ -177,4 +178,4 @@ class EntityAdd(val user: Account) extends Operation:
     cipher("topolino")
   )
 
-  EntityAdd(account1).main(Array.empty)
+  //DocumentLoad(account1).main(Array.empty)

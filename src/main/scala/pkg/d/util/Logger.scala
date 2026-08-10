@@ -6,20 +6,7 @@ import java.nio.file.{Files, Path, Paths}
 import pkg.d.util.DateTime.{localDate, localDateTime, localTime}
 
 object Logger:
-/*
-  private def logFilePath: Path =
-    val configuredPath = Paths.get(inLogFilePathName("errors.xml"))
-    val parent = configuredPath.getParent
 
-    if parent != null && Files.exists(parent) then
-      configuredPath
-    else
-      Paths
-        .get(System.getProperty("java.io.tmpdir"))
-        .resolve("protoflow")
-        .resolve("log")
-        .resolve("errors.xml")
-*/
   // Evita che un errore avvenuto durante il logging stesso (es. scrittura di errors.xml)
   // inneschi una ricorsione infinita richiamando logger() su se stesso.
   private val loggingInProgress = new ThreadLocal[Boolean]:
@@ -54,27 +41,6 @@ object Logger:
       try
         import java.nio.file.{Files, Path, Paths}
         import pkg.c.data.Xml.createEmptyXmlFile
-/*
-        val configuredPath = Paths.get(inLogFilePathName("errors.xml"))
-        val logPath: Path =
-          val parent = configuredPath.getParent
-
-          if parent != null && Files.exists(parent) then
-            configuredPath
-          else
-            Paths
-              .get(System.getProperty("java.io.tmpdir"))
-              .resolve("protoflow")
-              .resolve("log")
-              .resolve("errors.xml")
-
-        Option(logPath.getParent).foreach: parent =>
-          Files.createDirectories(parent)
-
-        if Files.notExists(logPath) then
-          createEmptyXmlFile(logPath.toString, "errors")
-          ErrorLog().recordInsert(getErrorLog(ex), logPath.toString)
-*/
 
         if (Files.notExists(Paths.get(inLogFilePathName("errors.xml"))))
           createEmptyXmlFile(inLogFilePathName("errors.xml"), "errors")

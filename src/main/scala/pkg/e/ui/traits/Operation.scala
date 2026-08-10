@@ -1,8 +1,10 @@
-package pkg.a.gui.traits
+package pkg.e.ui.traits
 
 import pkg.b.logic.Entity
+import pkg.e.ui.traits.GUI
+import pkg.e.ui.homepages.OperatorHomepage
 import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.control.{Alert, Button, ButtonType, ComboBox, Control, DatePicker, Label, TextArea, TextField}
+import scalafx.scene.control.*
 import scalafx.scene.layout.{BorderPane, GridPane, HBox, VBox}
 import scalafx.scene.paint.Color
 import scalafx.scene.text.TextAlignment
@@ -36,11 +38,6 @@ trait Operation extends GUI:
     minWidth = 160
     prefWidth = 160
     maxWidth = 160
-    /*
-    minWidth = 0
-    prefWidth = 0
-    maxWidth = 0
-    */
 
     val dashboardBtn = new Button("Dashboard")
     val profileBtn = new Button("Profilo")
@@ -115,6 +112,10 @@ trait Operation extends GUI:
     var operationText = ""
 
     operationType match
+      /*
+      case "login" =>
+        execBtnText = "Accedi"
+      */
       case "insert" =>
         askConfirmationText = "aggiunto"
         operationText = "Aggiunta"
@@ -130,16 +131,25 @@ trait Operation extends GUI:
       disable = true
       onAction = _ =>
         if valid then
-          val confirmed =
-            askConfirmation(
-              titleText = "Richiesta conferma",
-              header = "Confermi l'operazione?",
-              content = "Il record verrà " + askConfirmationText
-            )
+
+          var confirmed = true
+          if operationType != "login" then
+            confirmed =
+              askConfirmation(
+                titleText = "Richiesta conferma",
+                header = "Confermi l'operazione?",
+                content = "Il record verrà " + askConfirmationText
+              )
 
           val operationResult = false
           if confirmed then
             val operationResult = operationType match
+              /*
+              case "login" =>
+                println(user.getSurname)
+                OperatorHome(user).main(Array.empty)
+                false
+              */
               case "insert" =>
                 objUpdate
                 objEntity.recordInsert(objEntity, xmlFilePathName)
@@ -157,7 +167,7 @@ trait Operation extends GUI:
                 headerText = operationText + " Record"
                 contentText = "Operazione eseguita con successo!"
               }.showAndWait()
-            stage.close()
+            parentMask.start()
     }
 
     resetBtn = new Button("Ripristina") {
@@ -179,10 +189,18 @@ trait Operation extends GUI:
               header = "Il record non è stato salvato, confermi l'operazione?",
               content = "La maschera verrà chiusa"
             )
-          if confirmed then
-            stage.close()
-        else
-          stage.close()
+          if confirmed then {
+            if operationType == "login" then
+              sys.exit()
+            else
+              parentMask.start()
+          }
+        else {
+          if operationType == "login" then
+            sys.exit()
+          else
+            parentMask.start()
+        }
     }
 
     children = Seq(

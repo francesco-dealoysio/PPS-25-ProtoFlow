@@ -14,4 +14,34 @@
     <processedTime>11:01:44.17</processedTime>
     <processedBy>tommy</processedBy>
   </record>
+  <record>
+    <id>69</id>
+    <documentDate>2026-08-09</documentDate>
+    <documentTime/>
+    <documentProtocol>2026/123/INPS</documentProtocol>
+    <documentType>Lettera</documentType>
+    <sender>INPS</sender>
+    <recipient>UNUCI - Addestramento</recipient>
+    <subject>Poligono di tiro</subject>
+    <remarks>All'attenzione della Sezione Addestramento</remarks>
+    <state>Loaded</state>
+    <processedDate>2026-08-09</processedDate>
+    <processedTime>08:41:23.78</processedTime>
+    <processedBy>Francesco de Aloysio</processedBy>
+  </record>
+  <record>
+    <id>71</id>
+    <documentDate>2026-08-09</documentDate>
+    <documentTime></documentTime>
+    <documentProtocol>2026/125/ACEA</documentProtocol>
+    <documentType>Email</documentType>
+    <sender>ACEA</sender>
+    <recipient>UNUCI Amministrazione</recipient>
+    <subject>Bollette energia elettrica</subject>
+    <remarks>Attenzione Tesoriere</remarks>
+    <state>Loaded</state>
+    <processedDate>2026-08-09</processedDate>
+    <processedTime>08:52:27.76</processedTime>
+    <processedBy>Francesco de Aloysio</processedBy>
+  </record>
 </loaded>

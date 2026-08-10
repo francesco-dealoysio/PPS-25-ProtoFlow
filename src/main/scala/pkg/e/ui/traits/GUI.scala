@@ -1,14 +1,13 @@
-package pkg.a.gui.traits
+package pkg.e.ui.traits
 
-import scalafx.application.JFXApp3
 import pkg.b.logic.Account
 import pkg.d.util.DateTime
-import scalafx.scene.layout.BorderPane
+import scalafx.application.JFXApp3
+import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Scene
-import scalafx.scene.layout.HBox
-import scalafx.geometry.{Pos, Insets}
 import scalafx.scene.control.{Button, Label}
 import scalafx.scene.image.Image
+import scalafx.scene.layout.{BorderPane, HBox}
 
 /**
  * An interface modelling a basic GUI for the project.
@@ -20,6 +19,7 @@ import scalafx.scene.image.Image
 trait GUI extends JFXApp3:
 
   val user: Account
+  val parentMask: JFXApp3
 
   def Title: String = "GUI Trait"
   def Width: Int = 800
@@ -73,7 +73,7 @@ trait GUI extends JFXApp3:
           prefHeight = 40
           maxHeight = 40
           styleClass += "app-footer"
-          alignment = Pos.CenterRight
+          alignment = Pos.CenterLeft
           padding = Insets(10)
 
           val dateTime = new Label("")
@@ -83,7 +83,7 @@ trait GUI extends JFXApp3:
             case "admin" => "Amministratore"
             case "oper" => "Operatore Protocollo"
             case "viewer" => "Visualizzatore"
-            case _ => "Ruolo sconosciuto"
+            case _ => "Ospite"
           }
 
           children = Seq(
