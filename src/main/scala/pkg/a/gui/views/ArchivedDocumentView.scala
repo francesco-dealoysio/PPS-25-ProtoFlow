@@ -26,6 +26,8 @@ object ArchivedDocumentView extends Form:
            ): BorderPane =
 
     val service = new ArchivedDocumentService()
+    val result = createResultMessage()
+
     val protocolNumber = stringField(RegistrationFields.ProtocolNumber, selectedDocument.getProtocolNumber)
     val registeredDate = stringField(RegistrationFields.RegisteredDate, selectedDocument.getRegisteredDate)
     val registeredTime = stringField(RegistrationFields.RegisteredTime, selectedDocument.getRegisteredTime)
@@ -61,11 +63,9 @@ object ArchivedDocumentView extends Form:
     val archiveFields: Seq[FormField[? <: Node]] =
       Seq(archivedDate, archivedTime, archivedBy, archiveLocation, archiveRemarks)
 
-    val resultMessage = messageLabel(MessageStyle)
-
     def clearErrors(): Unit =
       clearFormFieldErrors(archiveFields*)
-      clearMessage(resultMessage, MessageSuccessStyle, MessageErrorStyle)
+      result.clear()
 
     def validateForm(): Boolean =
       clearErrors()
@@ -115,18 +115,14 @@ object ArchivedDocumentView extends Form:
             ) match
               case Right(_) =>
                 formSaved = true
-
-                showMessage(
-                  label = resultMessage,
+                result.show(
                   message = Text.Success,
                   success = true
                 )
-
                 onArchived()
 
               case Left(error) =>
-                showMessage(
-                  label = resultMessage,
+                result.show(
                   message = error,
                   success = false
                 )
@@ -177,7 +173,7 @@ object ArchivedDocumentView extends Form:
       titleText = Text.Title,
       subtitleText = Text.Subtitle,
       form = form,
-      resultMessage = resultMessage,
+      resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
       hasUnsavedChanges = () => hasFormChanges(formSaved, editableFields)
     )

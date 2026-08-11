@@ -6,7 +6,7 @@ import pkg.a.gui.text.UiText.Accounts.{Edit as EditText, Profile as ProfileText}
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Validation.Account as Validation
-import pkg.b.logic.{Account, Role}
+import pkg.b.logic.{Account, Classification, Role}
 import pkg.d.util.Util.{cipher, inDatabaseFilePathName}
 import pkg.d.util.XmlToPdf
 import scalafx.scene.Node
@@ -27,6 +27,7 @@ object AccountEditView extends Form:
 
     val accountLogic = new Account()
     val roleLogic = new Role()
+    val classificationLogic = new Classification()
     val viewModel = new AccountViewModel()
     val profileMode = mode == EditMode.Profile
 
@@ -35,7 +36,7 @@ object AccountEditView extends Form:
     val email = stringField(Prompts.Email, selectedAccount.getEmail)
     val phone = stringField(Prompts.Phone, selectedAccount.getPhone)
     val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), Prompts.SelectRole, selectedAccount.getRole)
-    val area = stringField(Prompts.Area, selectedAccount.getArea)
+    val area = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), Prompts.Area, selectedAccount.getArea)
     val assignment = stringField(Prompts.Assignment, selectedAccount.getAssignment)
     val username = stringField(Prompts.Username, selectedAccount.getUsername)
     val password = passwordFormField(Prompts.KeepPassword)
@@ -43,11 +44,11 @@ object AccountEditView extends Form:
     val profileFields: Seq[FormField[? <: Node]] = Seq(email, phone, password)
 
     val monitoredFields = if profileMode then profileFields else accountFields
-    val resultMessage = messageLabel()
+    val result = createResultMessage()
 
     def clearErrors(): Unit =
       clearFormFieldErrors(monitoredFields*)
-      clearMessage(resultMessage)
+      result.clear()
 
     def currentAccount(): Account =
       val updatedPassword =
@@ -113,8 +114,8 @@ object AccountEditView extends Form:
           val (successMsg, errorMsg) =
             if profileMode then (ProfileText.Success, ProfileText.Error)
             else (EditText.Success, EditText.Error)
-          showMessage(
-            label = resultMessage,
+
+          result.show(
             message = if updated then successMsg else errorMsg,
             success = updated
           )
@@ -144,8 +145,7 @@ object AccountEditView extends Form:
               title = EditText.PrintTitle
             )
 
-          showMessage(
-            label = resultMessage,
+          result.show(
             message = if printed then EditText.PrintSuccess else EditText.PrintError,
             success = printed
           )
@@ -182,7 +182,7 @@ object AccountEditView extends Form:
       titleText = titleText,
       subtitleText =subtitleText,
       form = form,
-      resultMessage = resultMessage,
+      resultMessage = result.label,
       actions = actionBar(actions),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

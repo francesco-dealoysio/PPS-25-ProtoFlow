@@ -2,7 +2,7 @@ package pkg.a.gui.views
 
 import pkg.a.gui.structures.AccountViewModel
 import pkg.a.gui.traits.Form
-import pkg.b.logic.{Account, Role}
+import pkg.b.logic.{Account, Classification, Role}
 import pkg.d.util.IdGen
 import pkg.d.util.Util.{inIdsFilePathName, cipher}
 import scalafx.application.Platform
@@ -18,6 +18,7 @@ object AccountAddView extends Form:
 
     val accountLogic = new Account()
     val roleLogic = new Role()
+    val classificationLogic = new Classification()
     val viewModel = new AccountViewModel()
 
     val surname = stringField(Prompts.Surname)
@@ -25,17 +26,17 @@ object AccountAddView extends Form:
     val email = stringField(Prompts.Email)
     val phone = stringField(Prompts.Phone)
     val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), Prompts.SelectRole)
-    val area = stringField(Prompts.Area)
+    val area = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), Prompts.Area)
     val assignment = stringField(Prompts.Assignment)
     val username = stringField(Prompts.Username)
     val password = passwordFormField(Prompts.Password)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(surname, name, email, phone, role, area, assignment, username, password)
-    val resultMessage = messageLabel()
+    val result = createResultMessage()
 
     def clearErrors(): Unit =
       clearFormFieldErrors(monitoredFields*)
-      clearMessage(resultMessage)
+      result.clear()
 
     def currentAccount(id: String = ""): Account =
       Account(
@@ -79,8 +80,7 @@ object AccountAddView extends Form:
         if validateForm() then
           val newAccount = currentAccount(IdGen(inIdsFilePathName("accountId")))
           val saved = accountLogic.recordInsert(newAccount)
-          showMessage(
-            label = resultMessage,
+          result.show(
             message = if saved then Text.Success else Text.Error,
             success = saved
           )
@@ -114,7 +114,7 @@ object AccountAddView extends Form:
       titleText = Text.Title,
       subtitleText = Text.Subtitle,
       form = form,
-      resultMessage = resultMessage,
+      resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

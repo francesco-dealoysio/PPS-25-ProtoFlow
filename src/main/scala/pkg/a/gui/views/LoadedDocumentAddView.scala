@@ -34,11 +34,11 @@ object LoadedDocumentAddView extends Form:
     val subject = stringField(Prompts.Subject)
     val remarks = areaField(Prompts.Remarks, DescriptionAreaStyle)
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks)
-    val resultMessage = messageLabel(MessageStyle)
+    val result = createResultMessage()
 
     def clearErrors(): Unit =
       clearFormFieldErrors(monitoredFields*)
-      clearMessage(resultMessage)
+      result.clear()
 
     def currentDocument(id: String = ""): LoadedDocument =
       LoadedDocument(
@@ -96,8 +96,7 @@ object LoadedDocumentAddView extends Form:
 
             val saved = documentLogic.recordInsert(newDocument)
 
-            showMessage(
-              label = resultMessage,
+            result.show(
               message = if saved then Text.Success else Text.Error,
               success = saved
             )
@@ -137,7 +136,7 @@ object LoadedDocumentAddView extends Form:
       titleText = Text.Title,
       subtitleText = Text.Subtitle,
       form = form,
-      resultMessage = resultMessage,
+      resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

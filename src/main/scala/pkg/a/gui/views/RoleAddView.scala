@@ -20,7 +20,7 @@ object RoleAddView extends Form:
     val viewModel = new RoleViewModel()
     val role = stringField(Prompts.Role)
     val description = areaField(Prompts.Description, DescriptionAreaStyle)
-    val resultMessage = messageLabel(MessageStyle)
+    val result = createResultMessage()
     val monitoredFields = Seq(role, description)
     def currentRole(id: String = ""): Role =
       Role(
@@ -31,7 +31,7 @@ object RoleAddView extends Form:
 
     def clearErrors(): Unit =
       clearFormFieldErrors(role, description)
-      clearMessage(resultMessage)
+      result.clear()
 
     def validateForm(): Boolean =
       clearErrors()
@@ -57,12 +57,9 @@ object RoleAddView extends Form:
           val newRole = currentRole(IdGen(inIdsFilePathName("roleId")))
           val saved = roleLogic.recordInsert(newRole)
 
-          showMessage(
-            label = resultMessage,
+          result.show(
             message = if saved then Text.Success else Text.Error,
-            success = saved,
-            successStyle = MessageSuccessStyle,
-            errorStyle = MessageErrorStyle
+            success = saved
           )
           if saved then
             formSaved = true
@@ -86,7 +83,7 @@ object RoleAddView extends Form:
       titleText = Text.Title,
       subtitleText = Text.Subtitle,
       form = form,
-      resultMessage = resultMessage,
+      resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

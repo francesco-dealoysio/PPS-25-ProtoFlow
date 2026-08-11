@@ -33,41 +33,29 @@ object LoadedDocumentManagementView extends Management:
     )
 
     def loadDocuments(): Unit =
-      result.clear()
-
-      val loaded =
-        service.getLoadedDocuments()
+      loadTableItemsSafely(table, documents, result, Text.Empty, Text.LoadError):
+        service
+          .getLoadedDocuments()
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
-
-      documents.setAll(loaded*)
-      table.selectionModel.value.clearSelection()
-
-      if loaded.isEmpty then
-        result.show(Text.Empty, success = true)
 
     clearResultOnSelection(table, result)
 
     def deleteSelectedDocument(): Unit =
-      selectedItem(table) match
-        case None =>
-          result.show(Text.SelectToDelete, success = false)
-
-        case Some(selected) =>
-          val confirmed =
-            askConfirmation(
-              titleText = Text.DeleteTitle,
-              header = Text.DeleteConfirmation,
-              content =
-                s"""Mittente: ${selected.getSender}
-                   |Oggetto: ${selected.getSubject}""".stripMargin
-            )
-
-          if confirmed then
-            if service.deleteLoadedDocument(selected.getId) then
-              loadDocuments()
-              result.show(Text.Deleted, success = true)
-            else
-              result.show(Text.DeleteError, success = false)
+      withSelectedItem(table, result, Text.SelectToDelete): selected =>
+        val confirmed =
+          askConfirmation(
+            titleText = Text.DeleteTitle,
+            header = Text.DeleteConfirmation,
+            content =
+              s"""Mittente: ${selected.getSender}
+                 |Oggetto: ${selected.getSubject}""".stripMargin
+          )
+        if confirmed then
+          if service.deleteLoadedDocument(selected.getId) then
+            loadDocuments()
+            result.show(Text.Deleted, success = true)
+          else
+            result.show(Text.DeleteError, success = false)
 
     def printDocumentsList(): Unit =
       val printed =
@@ -86,16 +74,7 @@ object LoadedDocumentManagementView extends Management:
     val refreshButton = secondaryButton(Buttons.Refresh, () => loadDocuments())
     val printListButton = printButton(action = () => printDocumentsList())
 
-    val registerButton =
-      primaryButton(Buttons.Register, () =>
-        selectedItem(table) match
-          case Some(selected) =>
-            result.clear()
-            onRegister(selected)
-
-          case None =>
-            result.show(Text.SelectToRegister, success = false)
-      )
+    val registerButton = primaryButton(Buttons.Register, () => withSelectedItem(table, result, Text.SelectToRegister)(onRegister))
 
     val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedDocument())
 
@@ -103,8 +82,7 @@ object LoadedDocumentManagementView extends Management:
 
     val exitButton = closeButton(onExit)
 
-    val bottomActions =
-      actionBar(Seq(exitButton, refreshButton, printListButton, deleteButton, registerButton))
+    val bottomActions = actionBar(Seq(exitButton, refreshButton, printListButton, deleteButton, registerButton))
 
     val header = titleBox(Text.Title, Text.Subtitle)
 

@@ -30,7 +30,7 @@ object ClassificationEditView extends Form:
       )
 
     val monitoredFields = Seq(classification, description)
-    val resultMessage = messageLabel()
+    val result = createResultMessage()
 
     def currentClassification(): Classification =
       Classification(
@@ -41,7 +41,7 @@ object ClassificationEditView extends Form:
 
     def clearErrors(): Unit =
       clearFormFieldErrors(classification, description)
-      clearMessage(resultMessage)
+      result.clear()
 
     def resetForm(): Unit =
       resetFields(classification, description)
@@ -68,8 +68,7 @@ object ClassificationEditView extends Form:
       saveButton: () =>
         if validateForm() then
           val updated = classificationLogic.recordUpdate[Classification](currentClassification())
-          showMessage(
-            label = resultMessage,
+          result.show(
             message = if updated then Text.Success else Text.Error,
             success = updated
           )
@@ -92,7 +91,7 @@ object ClassificationEditView extends Form:
       titleText = Text.Title,
       subtitleText = Text.Subtitle,
       form = form,
-      resultMessage = resultMessage,
+      resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )
