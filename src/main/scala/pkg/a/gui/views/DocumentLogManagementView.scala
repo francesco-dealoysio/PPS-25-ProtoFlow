@@ -6,7 +6,7 @@ import pkg.a.gui.text.UiText.DocumentLogs.{Fields, Management as Text}
 import pkg.a.gui.traits.Management
 import pkg.b.logic.DocumentLog
 import pkg.d.util.Util.inLogFilePathName
-import pkg.d.util.{XmlToPdf, getDocumentLogPredicate}
+import pkg.d.util.{XmlToPdf, getDocumentPredicate}
 
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.{ComboBox, DatePicker, TextField}
@@ -135,7 +135,7 @@ object DocumentLogManagementView extends Management:
         if criteria.isEmpty then
           DocumentLog().getRecords[DocumentLog]()
         else
-          val predicate = getDocumentLogPredicate(criteria)
+          val predicate = getDocumentPredicate(criteria)
 
           DocumentLog().getRecordsByFilter[DocumentLog](predicate)
 
