@@ -15,7 +15,6 @@ class ArchivedDocumentService:
   def getRegisteredDocuments: List[RegisteredDocument] =
     registeredDocumentLogic
       .getRecords[RegisteredDocument]()
-      .filter(_.getState.equalsIgnoreCase("registered"))
       .toList
 
   def getArchivedDocuments: List[ArchivedDocument] =
@@ -31,8 +30,7 @@ class ArchivedDocumentService:
                        archivedDate: String,
                        archivedTime: String,
                        operatorUsername: String,
-                       archiveLocation: String,
-                       archiveRemarks: String
+                       archiveLocation: String
                      ): Either[String, ArchivedDocument] =
 
     validateArchiving(
@@ -52,8 +50,7 @@ class ArchivedDocumentService:
               archivedDate = archivedDate,
               archivedTime = archivedTime,
               operatorUsername = operatorUsername,
-              archiveLocation = archiveLocation,
-              archiveRemarks = archiveRemarks
+              archiveLocation = archiveLocation
             )
           saveArchivedDocument(source, archived)
 
@@ -73,8 +70,6 @@ class ArchivedDocumentService:
       Some("Documento protocollato non valido")
     else if source.getId.trim.isEmpty then
       Some("Documento protocollato non valido")
-    else if !source.getState.equalsIgnoreCase("registered") then
-      Some("Il documento non risulta protocollato")
     else if isAlreadyArchived(source) then
       Some("Il documento risulta già archiviato")
     else if operatorUsername.trim.isEmpty then
@@ -98,8 +93,7 @@ class ArchivedDocumentService:
                                      archivedDate: String,
                                      archivedTime: String,
                                      operatorUsername: String,
-                                     archiveLocation: String,
-                                     archiveRemarks: String
+                                     archiveLocation: String
                                    ): ArchivedDocument =
     
     ArchivedDocument(
@@ -111,8 +105,6 @@ class ArchivedDocumentService:
       sender = source.getSender,
       recipient = source.getRecipient,
       subject = source.getSubject,
-      remarks = source.getRemarks,
-      state = "archived",
       loadedDate = source.getLoadedDate,
       loadedTime = source.getLoadedTime,
       loadedBy = source.getLoadedBy,
@@ -123,8 +115,7 @@ class ArchivedDocumentService:
       archivedDate = archivedDate.trim,
       archivedTime = archivedTime.trim,
       archivedBy = operatorUsername.trim,
-      archiveLocation = archiveLocation.trim,
-      archiveRemarks = archiveRemarks.trim
+      archiveLocation = archiveLocation.trim
     )
 
   private def saveArchivedDocument(source: RegisteredDocument, archived: ArchivedDocument): Either[String, ArchivedDocument] =

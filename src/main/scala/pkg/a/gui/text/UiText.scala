@@ -32,7 +32,7 @@ object UiText:
     object WindowTitles:
       val Login = s"${Common.ApplicationName} - Login"
       val Registration = s"${Common.ApplicationName} - Registrazione"
-      val Home = Common.ApplicationName
+      val Home = s"${Common.ApplicationName} - Homepage"
 
     object Buttons:
       val Add = "Aggiungi"
@@ -331,14 +331,12 @@ object UiText:
       val Recipient = "Destinatario"
       val Subject = "Oggetto"
       val ArchiveLocation = "Collocazione archivistica"
-      val ArchiveRemarks = "Note di archiviazione"
 
     object Prompts:
       val ArchivedTime = "Inserisci l'ora di archiviazione"
-      val ArchivedDate = ""
+      val ArchivedDate = "Inserisci la data di archiviazione"
       val ArchivedBy = "Operatore archiviatore"
       val ArchiveLocation = "Inserisci la collocazione archivistica"
-      val ArchiveRemarks = "Inserisci eventuali note di archiviazione"
 
     object Errors:
       val ArchivedDateRequired = "La data di archiviazione è obbligatoria"

@@ -29,7 +29,6 @@ object ArchivedDocumentDetailsView extends Form:
     val archivedTime = stringField(ArchivePrompts.ArchivedTime, selectedDocument.getArchivedTime)
     val archivedBy = stringField(ArchivePrompts.ArchivedBy, selectedDocument.getArchivedBy)
     val archiveLocation = stringField(ArchivePrompts.ArchiveLocation, selectedDocument.getArchiveLocation)
-    val archiveRemarks = areaField(ArchivePrompts.ArchiveRemarks, DescriptionAreaStyle, selectedDocument.getArchiveRemarks)
 
     val readOnlyFields: Seq[FormField[? <: Node]] =
       Seq(
@@ -45,8 +44,7 @@ object ArchivedDocumentDetailsView extends Form:
         archivedDate,
         archivedTime,
         archivedBy,
-        archiveLocation,
-        archiveRemarks
+        archiveLocation
       )
 
     readOnlyFields.foreach: field =>
@@ -73,8 +71,7 @@ object ArchivedDocumentDetailsView extends Form:
           formRow(ArchiveFields.ArchivedDate, archivedDate),
           formRow(ArchiveFields.ArchivedTime, archivedTime),
           formRow(ArchiveFields.ArchivedBy, archivedBy),
-          formRow(ArchiveFields.ArchiveLocation, archiveLocation),
-          formRow(ArchiveFields.ArchiveRemarks, archiveRemarks)
+          formRow(ArchiveFields.ArchiveLocation, archiveLocation)
         )
       )
 

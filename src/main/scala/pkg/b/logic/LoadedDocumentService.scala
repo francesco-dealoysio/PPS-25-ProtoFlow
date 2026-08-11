@@ -2,7 +2,7 @@ package pkg.b.logic
 
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
-import pkg.d.util.DateTime.{localDate, localDateTime, localTime}
+import pkg.d.util.DateTime.{localDate, localTime}
 
 import java.time.LocalDate
 
@@ -30,8 +30,7 @@ class LoadedDocumentService:
   def registerDocument(source: LoadedDocument, edited: LoadedDocument, operatorUsername: String): Either[String, RegisteredDocument] =
     val newId = IdGen(inIdsFilePathName("registeredDocumentId"))
 
-    val protocolNumber =
-      f"${LocalDate.now().getYear}%d/${newId.toIntOption.getOrElse(0)}%06d"
+    val protocolNumber = s"${LocalDate.now().getYear}/$newId"
 
     val registered =
       RegisteredDocument(
@@ -44,7 +43,6 @@ class LoadedDocumentService:
         recipient = edited.getRecipient,
         subject = edited.getSubject,
         remarks = edited.getRemarks,
-        state = "registered",
         loadedDate = source.getProcessedDate,
         loadedTime = source.getProcessedTime,
         loadedBy = source.getProcessedBy,

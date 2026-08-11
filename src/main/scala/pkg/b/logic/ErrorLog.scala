@@ -1,12 +1,7 @@
 package pkg.b.logic
 
 import pkg.b.logic.Entity
-import pkg.c.data.Xml.*
-import pkg.d.util.IdGen
-import pkg.d.util.Logger.*
 import pkg.d.util.Util.inLogFilePathName
-
-import java.nio.file.{Files, Paths}
 
 case class ErrorLog(
                    private var id: String = "",

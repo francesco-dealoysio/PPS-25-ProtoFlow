@@ -2,7 +2,7 @@ package pkg.b.logic
 
 import pkg.b.logic.Entity
 import pkg.d.util.Logger.*
-import pkg.d.util.Util.{inIdsFilePathName, inLogFilePathName}
+import pkg.d.util.Util.inLogFilePathName
 
 case class DocumentLog(
                      private var id: String = "",

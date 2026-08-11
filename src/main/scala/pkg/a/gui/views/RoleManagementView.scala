@@ -33,9 +33,9 @@ object RoleManagementView extends Management:
 
     def loadRoles(): Unit =
       loadTableItemsSafely(table, roles, result, Text.Empty, Text.LoadError):
-        val loaded = roleLogic.getRecords[Role]()
-        loaded.foreach(r => println(s"${r.getId} - ${r.getRole} - ${r.getDescription}"))
-        loaded.sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
+        roleLogic
+          .getRecords[Role]()
+          .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
     def deleteSelectedRole(): Unit =
       withSelectedItem(table, result, Text.SelectToDelete): selected =>
@@ -76,7 +76,7 @@ object RoleManagementView extends Management:
     val addButton = primaryButton(Buttons.Add, () =>
           result.clear()
           onAdd()
-      )
+    )
 
     val editButton = secondaryButton(Buttons.Edit, () => withSelectedItem(table, result, Text.SelectToEdit)(onEdit))
 

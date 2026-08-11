@@ -45,7 +45,6 @@ object ArchivedDocumentView extends Form:
     val archivedTime = stringField(ArchivePrompts.ArchivedTime, localTime)
     val archivedBy = stringField(ArchivePrompts.ArchivedBy, operatorUsername)
     val archiveLocation = stringField(ArchivePrompts.ArchiveLocation)
-    val archiveRemarks = areaField(ArchivePrompts.ArchiveRemarks, DescriptionAreaStyle)
 
     /*
      * I dati già protocollati sono solamente visualizzati.
@@ -58,10 +57,10 @@ object ArchivedDocumentView extends Form:
      * Solo questi campi possono realmente cambiare.
      */
     val editableFields: Seq[FormField[? <: Node]] =
-      Seq(archivedDate, archivedTime, archiveLocation, archiveRemarks)
+      Seq(archivedDate, archivedTime, archiveLocation)
 
     val archiveFields: Seq[FormField[? <: Node]] =
-      Seq(archivedDate, archivedTime, archivedBy, archiveLocation, archiveRemarks)
+      Seq(archivedDate, archivedTime, archivedBy, archiveLocation)
 
     def clearErrors(): Unit =
       clearFormFieldErrors(archiveFields*)
@@ -110,8 +109,7 @@ object ArchivedDocumentView extends Form:
               archivedDate = archivedDate.value,
               archivedTime = archivedTime.value,
               operatorUsername = operatorUsername,
-              archiveLocation = archiveLocation.value,
-              archiveRemarks = archiveRemarks.value
+              archiveLocation = archiveLocation.value
             ) match
               case Right(_) =>
                 formSaved = true
@@ -150,8 +148,7 @@ object ArchivedDocumentView extends Form:
           formRow(Labels.required(ArchiveFields.ArchivedDate), archivedDate),
           formRow(Labels.required(ArchiveFields.ArchivedTime), archivedTime),
           formRow(Labels.required(ArchiveFields.ArchivedBy), archivedBy),
-          formRow(ArchiveFields.ArchiveLocation, archiveLocation),
-          formRow(ArchiveFields.ArchiveRemarks, archiveRemarks)
+          formRow(ArchiveFields.ArchiveLocation, archiveLocation)
         )
       )
 

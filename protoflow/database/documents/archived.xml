@@ -9,7 +9,6 @@
     <recipient>Thomas</recipient>
     <subject>Ciao</subject>
     <remarks>Hola note</remarks>
-    <state>archived</state>
     <loadedDate>2026-07-28</loadedDate>
     <loadedTime>22:39:48.30</loadedTime>
     <loadedBy>tommy</loadedBy>
@@ -21,7 +20,6 @@
     <archivedTime>12:07:57.05</archivedTime>
     <archivedBy>tommy</archivedBy>
     <archiveLocation>Prova</archiveLocation>
-    <archiveRemarks>Blabla</archiveRemarks>
   </record>
   <record>
     <id>2</id>
@@ -33,7 +31,6 @@
     <recipient>feferfr</recipient>
     <subject>fefre</subject>
     <remarks/>
-    <state>archived</state>
     <loadedDate>2026-07-28</loadedDate>
     <loadedTime>19:36:53.65</loadedTime>
     <loadedBy>tommy</loadedBy>
@@ -45,7 +42,6 @@
     <archivedTime>12:18:11.13</archivedTime>
     <archivedBy>tommy</archivedBy>
     <archiveLocation>cbvcb</archiveLocation>
-    <archiveRemarks>cbvcb</archiveRemarks>
   </record>
   <record>
     <id>4</id>
@@ -57,7 +53,6 @@
     <recipient>xzcvgbxcb</recipient>
     <subject>xcbvxcb</subject>
     <remarks>xcvbxcb</remarks>
-    <state>archived</state>
     <loadedDate>2026-07-29</loadedDate>
     <loadedTime>12:09:11.43</loadedTime>
     <loadedBy>tommy</loadedBy>
@@ -69,7 +64,6 @@
     <archivedTime>14:09:17.60</archivedTime>
     <archivedBy>tommy</archivedBy>
     <archiveLocation>vxcv</archiveLocation>
-    <archiveRemarks>xvcxv</archiveRemarks>
   </record>
   <record>
     <id>12</id>
@@ -81,7 +75,6 @@
     <recipient>sdfsdf</recipient>
     <subject>sdfsdf</subject>
     <remarks>sdfsdfd</remarks>
-    <state>archived</state>
     <loadedDate>2026-07-30</loadedDate>
     <loadedTime>18:04:05.70</loadedTime>
     <loadedBy>tommy</loadedBy>
@@ -93,6 +86,5 @@
     <archivedTime>18:05:11.63</archivedTime>
     <archivedBy>tommy</archivedBy>
     <archiveLocation>dfsdf</archiveLocation>
-    <archiveRemarks>sdfsd</archiveRemarks>
   </record>
 </archivedDocuments>

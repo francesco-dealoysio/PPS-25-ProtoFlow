@@ -1,7 +1,7 @@
 package pkg.b.logic
 
 import pkg.b.logic.Entity
-import pkg.c.data.Xml.{createEmptyXmlFile, insertElemIntoXML}
+import pkg.c.data.Xml.insertElemIntoXML
 import pkg.d.util.Logger.*
 import pkg.d.util.Util.inDocumentsFilePathName
 
@@ -15,13 +15,12 @@ case class LoadedDocument(
                          private var recipient: String = "",
                          private var subject: String = "",
                          private var remarks: String = "",
-                         private var state: String = "",
                          private var processedDate: String = "",
                          private var processedTime: String = "",
                          private var processedBy: String = ""
                        ) extends Entity:
   def this() =
-    this("", "", "", "", "", "", "", "", "", "", "", "", "")
+    this("", "", "", "", "", "", "", "", "", "", "", "")
 
   def setId(value: String): Unit = id = value
   def setDocumentDate(value: String): Unit = documentDate = value
@@ -32,7 +31,6 @@ case class LoadedDocument(
   def setRecipient(value: String): Unit = recipient = value
   def setSubject(value: String): Unit = subject = value
   def setRemarks(value: String): Unit = remarks = value
-  def setState(value: String): Unit = state = value
   def setProcessedDate(value: String): Unit = processedDate = value
   def setProcessedTime(value: String): Unit = processedTime = value
   def setProcessedBy(value: String): Unit = processedBy = value
@@ -46,7 +44,6 @@ case class LoadedDocument(
   def getRecipient: String = recipient
   def getSubject: String = subject
   def getRemarks: String = remarks
-  def getState: String = state
   def getProcessedDate: String = processedDate
   def getProcessedTime: String = processedTime
   def getProcessedBy: String = processedBy
@@ -61,7 +58,7 @@ case class LoadedDocument(
     try
       val record = obj.asInstanceOf[LoadedDocument]
       val id = record.id
-      if !(fieldExists("id", id, xmlFilePathName)) then
+      if !fieldExists("id", id, xmlFilePathName) then
         result = insertElemIntoXML(xmlFilePathName, obj)
         DocumentLog().writeDocumentOperationLog(
           record.id,

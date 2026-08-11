@@ -64,7 +64,7 @@ object Xml:
         Seq.empty
 
   def saveXML(xmlFilePathName: String, xmlElem: Elem): Unit =
-    val pw = new PrintWriter(xmlFilePathName, StandardCharsets.UTF_8.name())
+    val pw = new PrintWriter(new File(xmlFilePathName, StandardCharsets.UTF_8.name()))
     try pw.write(new PrettyPrinter(80, 2).format(xmlElem))
     finally pw.close()
 

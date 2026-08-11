@@ -52,7 +52,6 @@ object DocumentRegistrationView extends Form:
         recipient = recipient.value,
         subject = subject.value,
         remarks = remarks.value,
-        state = selectedDocument.getState,
         processedDate = selectedDocument.getProcessedDate,
         processedTime = selectedDocument.getProcessedTime,
         processedBy = selectedDocument.getProcessedBy

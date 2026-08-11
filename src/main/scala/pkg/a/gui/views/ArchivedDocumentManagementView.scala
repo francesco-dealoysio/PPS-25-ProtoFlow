@@ -44,7 +44,7 @@ object ArchivedDocumentManagementView extends Management:
           xmlPath = inDocumentsFilePathName("archived.xml"),
           pdfFileName = Text.PrintFileName,
           title = Text.PrintTitle,
-          fields = Seq("protocolNumber", "archivedDate", "archivedTime", "archivedBy", "archiveLocation", "archiveRemarks")
+          fields = Seq("protocolNumber", "archivedDate", "archivedTime", "archivedBy", "archiveLocation")
         )
 
       result.show(

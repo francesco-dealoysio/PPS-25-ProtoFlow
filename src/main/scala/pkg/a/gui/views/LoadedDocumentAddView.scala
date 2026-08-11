@@ -50,8 +50,7 @@ object LoadedDocumentAddView extends Form:
         sender = sender.value,
         recipient = recipient.value,
         subject = subject.value,
-        remarks = remarks.value,
-        state = "loaded"
+        remarks = remarks.value
       )
 
     def validateForm(): Boolean =

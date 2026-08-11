@@ -18,9 +18,6 @@ case class ArchivedDocument(
                              private var subject: String = "",
                              private var remarks: String = "",
 
-                             // Stato del documento
-                             private var state: String = "",
-
                              // Dati della presa in carico
                              private var loadedDate: String = "",
                              private var loadedTime: String = "",
@@ -36,12 +33,11 @@ case class ArchivedDocument(
                              private var archivedDate: String = "",
                              private var archivedTime: String = "",
                              private var archivedBy: String = "",
-                             private var archiveLocation: String = "",
-                             private var archiveRemarks: String = ""
+                             private var archiveLocation: String = ""
                            ) extends Entity:
 
   def this() =
-    this( "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
+    this( "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
     
   def setId(value: String): Unit = id = value
   def setDocumentDate(value: String): Unit = documentDate = value
@@ -52,7 +48,6 @@ case class ArchivedDocument(
   def setRecipient(value: String): Unit = recipient = value
   def setSubject(value: String): Unit = subject = value
   def setRemarks(value: String): Unit = remarks = value
-  def setState(value: String): Unit = state = value
   def setLoadedDate(value: String): Unit = loadedDate = value
   def setLoadedTime(value: String): Unit = loadedTime = value
   def setLoadedBy(value: String): Unit = loadedBy = value
@@ -64,7 +59,6 @@ case class ArchivedDocument(
   def setArchivedTime(value: String): Unit = archivedTime = value
   def setArchivedBy(value: String): Unit = archivedBy = value
   def setArchiveLocation(value: String): Unit = archiveLocation = value
-  def setArchiveRemarks(value: String): Unit = archiveRemarks = value
   def getId: String = id
   def getDocumentDate: String = documentDate
   def getDocumentTime: String = documentTime
@@ -74,7 +68,6 @@ case class ArchivedDocument(
   def getRecipient: String = recipient
   def getSubject: String = subject
   def getRemarks: String = remarks
-  def getState: String = state
   def getLoadedDate: String = loadedDate
   def getLoadedTime: String = loadedTime
   def getLoadedBy: String = loadedBy
@@ -86,7 +79,6 @@ case class ArchivedDocument(
   def getArchivedTime: String = archivedTime
   def getArchivedBy: String = archivedBy
   def getArchiveLocation: String = archiveLocation
-  def getArchiveRemarks: String = archiveRemarks
 
   override def xmlFile: String = "archived.xml"
 

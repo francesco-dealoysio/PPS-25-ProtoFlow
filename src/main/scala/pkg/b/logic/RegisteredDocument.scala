@@ -1,7 +1,7 @@
 package pkg.b.logic
 
 import pkg.b.logic.Entity
-import pkg.d.util.Logger.*
+import pkg.d.util.Logger.logger
 import pkg.c.data.Xml.{createEmptyXmlFile, insertElemIntoXML}
 import pkg.d.util.Util.inDocumentsFilePathName
 
@@ -15,7 +15,6 @@ case class RegisteredDocument(
                          private var recipient: String = "",
                          private var subject: String = "",
                          private var remarks: String = "",
-                         private var state: String = "",
                          private var loadedDate: String = "",
                          private var loadedTime: String = "",
                          private var loadedBy: String = "",
@@ -25,7 +24,7 @@ case class RegisteredDocument(
                          private var registeredBy: String = ""
                        ) extends Entity:
   def this() =
-    this("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
+    this("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
 
   def setId(value: String): Unit = id = value
   def setDocumentDate(value: String): Unit = documentDate = value
@@ -36,7 +35,6 @@ case class RegisteredDocument(
   def setRecipient(value: String): Unit = recipient = value
   def setSubject(value: String): Unit = subject = value
   def setRemarks(value: String): Unit = remarks = value
-  def setState(value: String): Unit = state = value
   def setLoadedDate(value: String): Unit = loadedDate = value
   def setLoadedTime(value: String): Unit = loadedTime = value
   def setLoadedBy(value: String): Unit = loadedBy = value
@@ -54,7 +52,6 @@ case class RegisteredDocument(
   def getRecipient: String = recipient
   def getSubject: String = subject
   def getRemarks: String = remarks
-  def getState: String = state
   def getLoadedDate: String = loadedDate
   def getLoadedTime: String = loadedTime
   def getLoadedBy: String = loadedBy
