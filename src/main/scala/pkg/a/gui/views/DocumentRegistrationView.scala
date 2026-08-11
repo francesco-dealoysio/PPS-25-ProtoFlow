@@ -35,11 +35,11 @@ object DocumentRegistrationView extends Form:
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks)
 
-    val resultMessage = messageLabel()
+    val result = createResultMessage()
 
     def clearErrors(): Unit =
       clearFormFieldErrors(monitoredFields*)
-      clearMessage(resultMessage)
+      result.clear()
 
     def editedDocument(): LoadedDocument =
       LoadedDocument(
@@ -96,8 +96,7 @@ object DocumentRegistrationView extends Form:
               operatorUsername
             ) match
               case Right(registered) =>
-                showMessage(
-                  label = resultMessage,
+                result.show(
                   message = s"${Text.Success} Numero di protocollo: ${registered.getProtocolNumber}.",
                   success = true
                 )
@@ -106,8 +105,7 @@ object DocumentRegistrationView extends Form:
                 onRegistered()
 
               case Left(error) =>
-                showMessage(
-                  label = resultMessage,
+                result.show(
                   message = error,
                   success = false
                 )
@@ -135,7 +133,7 @@ object DocumentRegistrationView extends Form:
       titleText = Text.Title,
       subtitleText = Text.Subtitle,
       form = form,
-      resultMessage = resultMessage,
+      resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

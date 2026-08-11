@@ -3,7 +3,6 @@ package pkg.a.gui.views
 import pkg.a.gui.traits.Management
 import pkg.b.logic.{Registration, RegistrationDates, RegistrationRequestService}
 import pkg.d.util.XmlToPdf
-import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
@@ -40,15 +39,11 @@ object RegistrationRequestsManagementView extends Management:
     )
 
     def loadPendingRequests(): Unit =
-      result.clear()
-
-      val pending = service.getPendingRequests
-      requests.setAll(pending.sortBy(_.getDate)*)
-      table.selectionModel.value.clearSelection()
-
-      if pending.isEmpty then
-        result.show(Text.Empty, success = true)
-
+      loadTableItemsSafely(table, requests, result, Text.Empty, Text.LoadError):
+        service
+          .getPendingRequests
+          .sortBy(_.getDate)
+    
     clearResultOnSelection(table, result)
 
     def printPendingList(): Unit =
@@ -66,17 +61,7 @@ object RegistrationRequestsManagementView extends Management:
 
     val refreshButton = secondaryButton(Buttons.Refresh, () => loadPendingRequests())
     val printButton = secondaryButton(Buttons.PrintList, () => printPendingList())
-
-    val processButton =
-      primaryButton(Buttons.Process, () =>
-        selectedItem(table) match
-          case Some(selected) =>
-            result.clear()
-            onProcess(selected)
-
-          case None =>
-            result.show(Text.SelectToProcess, success = false)
-      )
+    val processButton = primaryButton(Buttons.Process, () => withSelectedItem(table, result, Text.SelectToProcess)(onProcess))
 
     disableWithoutSelection(table, processButton)
     val exitButton = closeButton(onExit)

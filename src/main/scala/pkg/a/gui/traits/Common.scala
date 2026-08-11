@@ -31,7 +31,7 @@ trait Common:
     new Label(text):
       styleClass += styleName
 
-  protected def messageLabel(baseStyle: String = MessageStyle): Label =
+  private def messageLabel(baseStyle: String = MessageStyle): Label =
     new Label:
       visible = false
       managed = false

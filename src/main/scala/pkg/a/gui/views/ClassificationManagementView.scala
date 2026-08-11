@@ -28,57 +28,31 @@ object ClassificationManagementView extends Management:
     )
 
     def loadClassifications(): Unit =
-      result.clear()
-      try
-        val loaded =
-          classificationLogic
-            .getRecords[Classification]()
-            .sortBy: classification =>
-              classification
-                .getId
-                .toIntOption
-                .getOrElse(Int.MaxValue)
-
-        classifications.setAll(loaded*)
-
-        table.selectionModel.value
-          .clearSelection()
-
-        if loaded.isEmpty then
-          result.show(Text.Empty, success = true)
-
-      catch
-        case exception: Exception =>
-          classifications.clear()
-          result.show(Text.LoadError, success = false)
-          logger(exception)
+      loadTableItemsSafely(table, classifications, result, Text.Empty, Text.LoadError):
+        classificationLogic
+          .getRecords[Classification]()
+          .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
     def deleteSelectedClassification(): Unit =
-      selectedItem(table) match
-        case None =>
-          result.show(Text.SelectToDelete, success = false)
+      withSelectedItem(table, result, Text.SelectToDelete): selected =>
+        val confirmed =
+          askConfirmation(
+            titleText = Text.DeleteTitle,
+            header = Text.DeleteConfirmation,
+            content =
+              s"""Classifica: ${selected.getClassification}
+                 |Codice: ${selected.getId}
+                 |
+                 |L'operazione non può essere annullata.""".stripMargin
+          )
 
-        case Some(selected) =>
-          val confirmed =
-            askConfirmation(
-              titleText = Text.DeleteTitle,
-              header = Text.DeleteConfirmation,
-              content =
-                s"""Classifica: ${selected.getClassification}
-                   |Codice: ${selected.getId}
-                   |
-                   |L'operazione non può essere annullata.""".stripMargin
-            )
-
-          if confirmed then
-            val deleted = classificationLogic.recordDelete(selected.getId)
-
-            if deleted then
-              loadClassifications()
-
-              result.show(Text.deleted(selected.getClassification), success = true)
-            else
-              result.show(Text.DeleteError, success = false)
+        if confirmed then
+          val deleted = classificationLogic.recordDelete(selected.getId)
+          if deleted then
+            loadClassifications()
+            result.show(Text.deleted(selected.getClassification), success = true)
+          else
+            result.show(Text.DeleteError, success = false)
 
     def printClassifications(): Unit =
       if classifications.isEmpty then
@@ -102,18 +76,7 @@ object ClassificationManagementView extends Management:
       result.clear()
       onAdd())
 
-    val editButton =
-      secondaryButton(
-        Buttons.Edit,
-        () =>
-          selectedItem(table) match
-            case Some(selected) =>
-              result.clear()
-              onEdit(selected)
-
-            case None =>
-              result.show(Text.SelectToEdit, success = false)
-      )
+    val editButton = secondaryButton(Buttons.Edit, () => withSelectedItem(table, result, Text.SelectToEdit)(onEdit))
 
     val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedClassification())
     val exitButton = closeButton(onExit)

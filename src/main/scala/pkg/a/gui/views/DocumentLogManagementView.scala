@@ -2,7 +2,7 @@ package pkg.a.gui.views
 
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.DocumentLogs
-import pkg.a.gui.text.UiText.DocumentLogs.{Fields, Management as Text}
+import pkg.a.gui.text.UiText.DocumentLogs.{Fields, Management as Text, Operations}
 import pkg.a.gui.traits.Management
 import pkg.b.logic.DocumentLog
 import pkg.d.util.Util.inLogFilePathName
@@ -21,24 +21,24 @@ object DocumentLogManagementView extends Management:
     val table = managementTable(logs, Text.Empty)
 
     val operationFilter = new ComboBox[String]:
-      items = ObservableBuffer("Tutte", "Presa in carico", "Protocollazione", "Archiviazione")
-      value = "Tutte"
+      items = ObservableBuffer(Text.AllOperations +: Operations.values.map(_._2) *)
+      value = Text.AllOperations
 
     val fromDateFilter = new DatePicker()
     val toDateFilter = new DatePicker()
 
     val documentIdFilter = new TextField:
-      promptText = "ID documento"
+      promptText = Fields.DocumentId
 
     val operatorFilter = new ComboBox[String]:
-      items = ObservableBuffer("Tutti gli operatori")
-      value = "Tutti gli operatori"
+      items = ObservableBuffer(Text.AllOperators)
+      value = Text.AllOperators
 
     table.columns ++= Seq(
       stringColumn[DocumentLog](Fields.Id, Some(90))(_.getId),
       stringColumn[DocumentLog](Fields.DocumentId, Some(120))(_.getDocumentId),
       stringColumn[DocumentLog](Fields.OperationType, Some(170)): log =>
-        DocumentLogs.operationLabel(log.getOperationType),
+        Operations.labelOf(log.getOperationType),
       stringColumn[DocumentLog](Fields.ProcessedDate, Some(130))(_.getProcessedDate),
       stringColumn[DocumentLog](Fields.ProcessedTime, Some(120))(_.getProcessedTime),
       stringColumn[DocumentLog](Fields.ProcessedBy, Some(190))(_.getProcessedBy)
@@ -69,26 +69,15 @@ object DocumentLogManagementView extends Management:
           .sorted
 
       val currentSelection = operatorFilter.value.value
-      operatorFilter.items = ObservableBuffer("Tutti gli operatori" +: operators *)
+      operatorFilter.items = ObservableBuffer(Text.AllOperators +: operators *)
 
       if currentSelection != null && operatorFilter.items.value.contains(currentSelection) then
         operatorFilter.value = currentSelection
       else
-        operatorFilter.value = "Tutti gli operatori"
+        operatorFilter.value = Text.AllOperators
 
     def selectedOperationType: Option[String] =
-      operationFilter.value.value match
-        case "Presa in carico" =>
-          Some("loading")
-
-        case "Protocollazione" =>
-          Some("registering")
-
-        case "Archiviazione" =>
-          Some("archiving")
-
-        case _ =>
-          None
+      Operations.valueOf(operationFilter.value.value)
 
     def buildFilterCriteria(): List[(String, String, List[String])] =
 
@@ -116,7 +105,7 @@ object DocumentLogManagementView extends Management:
 
       val operatorCriteria =
         Option(operatorFilter.value.value)
-          .filter(_ != "Tutti gli operatori")
+          .filter(_ != Text.AllOperators)
           .map(value => ("getProcessedBy", "=", List(value)))
           .toList
 
@@ -145,7 +134,7 @@ object DocumentLogManagementView extends Management:
       table.selectionModel.value.clearSelection()
 
       if sortedLogs.isEmpty then
-        result.show("Nessun log corrisponde ai filtri selezionati.", success = true)
+        result.show(Text.NoFilterResults, success = true)
 
     clearResultOnSelection(table, result)
 
@@ -172,11 +161,11 @@ object DocumentLogManagementView extends Management:
       )
 
     def resetFilters(): Unit =
-      operationFilter.value = "Tutte"
+      operationFilter.value = Text.AllOperations
       fromDateFilter.value = null
       toDateFilter.value = null
       documentIdFilter.clear()
-      operatorFilter.value = "Tutti gli operatori"
+      operatorFilter.value = Text.AllOperations
       loadLogs()
 
     val exitButton = closeButton(onExit)
@@ -184,18 +173,7 @@ object DocumentLogManagementView extends Management:
     val print = printButton(() => printLogs())
     val resetFilterButton = secondaryButton(Buttons.ResetFilter, () => resetFilters())
 
-    val viewButton =
-      primaryButton(
-        DocumentLogs.Management.View,
-        () =>
-          selectedItem(table) match
-            case Some(selected) =>
-              result.clear()
-              onView(selected)
-
-            case None =>
-              result.show(Text.SelectToView, success = false)
-      )
+    val viewButton = primaryButton(DocumentLogs.Management.View, () => withSelectedItem(table, result, Text.SelectToView)(onView))
 
     val filters =
       new HBox:

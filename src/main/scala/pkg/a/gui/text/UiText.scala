@@ -194,6 +194,7 @@ object UiText:
       val Title = "Gestione richieste registrazione"
       val Subtitle = "Visualizza le richieste di registrazione in attesa ed elaborale."
       val Empty = "Non sono presenti richieste di registrazione da elaborare."
+      val LoadError = "Errore durante il caricamento delle richieste di registrazione."
       val SelectToProcess = "Seleziona una richiesta da elaborare."
 
       val PrintTitle = "Elenco Richieste di Registrazione da Elaborare"
@@ -260,6 +261,7 @@ object UiText:
       val Title = "Gestione documenti presi in carico"
       val Subtitle = "Visualizza i documenti presi in carico e avviane la protocollazione."
       val Empty = "Non sono presenti documenti presi in carico nel sistema."
+      val LoadError = "Errore durante il caricamento dei documenti presi in carico."
       val SelectToDelete = "Seleziona un documento da eliminare."
       val SelectToRegister = "Seleziona un documento da protocollare."
       val DeleteTitle = "Eliminazione documento"
@@ -296,6 +298,7 @@ object UiText:
       val Title = "Gestione documenti protocollati"
       val Subtitle = "Visualizza i documenti protocollati e avviane l'archiviazione."
       val Empty = "Non sono presenti documenti protocollati nel sistema."
+      val LoadError = "Errore durante il caricamento dei documenti protocollati."
       val SelectToDelete = "Seleziona un documento da eliminare."
       val SelectToArchive = "Seleziona un documento da archiviare."
       val DeleteTitle = "Eliminazione documento"
@@ -353,6 +356,7 @@ object UiText:
       val Title = "Gestione documenti archiviati"
       val Subtitle = "Visualizza e consulta i documenti archiviati."
       val Empty = "Non sono presenti documenti archiviati nel sistema."
+      val LoadError = "Errore durante il caricamento dei documenti archiviati."
       val View = "Visualizza"
       val SelectToView = "Seleziona un documento da visualizzare."
       val PrintTitle = "Elenco Documenti Archiviati"
@@ -417,10 +421,38 @@ object UiText:
       val ProcessedTime = "Ora operazione"
       val ProcessedBy = "Operatore"
 
+    object Operations:
+      val Loading = "loading"
+      val Registering = "registering"
+      val Archiving = "archiving"
+      val LoadingLabel = "Presa in carico"
+      val RegisteringLabel = "Protocollazione"
+      val ArchivingLabel = "Archiviazione"
+
+      val values: Seq[(String, String)] = Seq(
+        Loading -> LoadingLabel,
+        Registering -> RegisteringLabel,
+        Archiving -> ArchivingLabel
+      )
+
+      def labelOf(operationType: String): String =
+        values
+          .find(_._1 == operationType)
+          .map(_._2)
+          .getOrElse(operationType)
+
+      def valueOf(label: String): Option[String] =
+        values
+          .find(_._2 == label)
+          .map(_._1)
+
     object Management:
       val Title = "Gestione Log"
       val Subtitle = "Visualizza le operazioni effettuate sui documenti."
       val Empty = "Non sono presenti log relativi ai documenti."
+      val AllOperations = "Tutte"
+      val AllOperators = "Tutti gli operatori"
+      val NoFilterResults = "Nessun log corrisponde ai filtri selezionati."
       val View = "Visualizza"
       val SelectToView = "Seleziona un log da visualizzare."
       val PrintTitle = "Elenco Log Operazioni Documenti"
@@ -434,20 +466,6 @@ object UiText:
       val PrintTitle = "Dettaglio Log Operazione Documento"
       val PrintSuccess = "Dettaglio del log stampato correttamente in PDF."
       val PrintError = "Errore durante la stampa del dettaglio del log."
-
-    def operationLabel(operationType: String): String =
-      operationType match
-        case "loading" =>
-          "Presa in carico"
-
-        case "registering" =>
-          "Protocollazione"
-
-        case "archiving" =>
-          "Archiviazione"
-
-        case other =>
-          other
 
   object Validation:
     object Account:

@@ -22,7 +22,7 @@ object ClassificationAddView extends Form:
     val classification = stringField(Prompts.Classification)
     val description = areaField(Prompts.Description, DescriptionAreaStyle)
     val monitoredFields = Seq(classification, description)
-    val resultMessage = messageLabel()
+    val result = createResultMessage()
 
     def currentClassification(id: String = ""): Classification =
       Classification(
@@ -33,7 +33,7 @@ object ClassificationAddView extends Form:
 
     def clearErrors(): Unit =
       clearFormFieldErrors(classification, description)
-      clearMessage(resultMessage)
+      result.clear()
 
     def validateForm(): Boolean =
       clearErrors()
@@ -59,12 +59,9 @@ object ClassificationAddView extends Form:
           val newClassification = currentClassification(IdGen(inIdsFilePathName("classificationId")))
           val saved = classificationLogic.recordInsert(newClassification)
 
-          showMessage(
-            label = resultMessage,
+          result.show(
             message = if saved then Text.Success else Text.Error,
-            success = saved,
-            successStyle = MessageSuccessStyle,
-            errorStyle = MessageErrorStyle
+            success = saved
           )
 
           if saved then
@@ -89,7 +86,7 @@ object ClassificationAddView extends Form:
       titleText = Text.Title,
       subtitleText = Text.Subtitle,
       form = form,
-      resultMessage = resultMessage,
+      resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )
