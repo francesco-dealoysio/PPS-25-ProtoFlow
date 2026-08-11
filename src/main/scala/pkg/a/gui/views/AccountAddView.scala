@@ -32,11 +32,11 @@ object AccountAddView extends Form:
     val password = passwordFormField(Prompts.Password)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(surname, name, email, phone, role, area, assignment, username, password)
-    val resultMessage = messageLabel()
+    val result = createResultMessage()
 
     def clearErrors(): Unit =
       clearFormFieldErrors(monitoredFields*)
-      clearMessage(resultMessage)
+      result.clear()
 
     def currentAccount(id: String = ""): Account =
       Account(
@@ -80,8 +80,7 @@ object AccountAddView extends Form:
         if validateForm() then
           val newAccount = currentAccount(IdGen(inIdsFilePathName("accountId")))
           val saved = accountLogic.recordInsert(newAccount)
-          showMessage(
-            label = resultMessage,
+          result.show(
             message = if saved then Text.Success else Text.Error,
             success = saved
           )
@@ -115,7 +114,7 @@ object AccountAddView extends Form:
       titleText = Text.Title,
       subtitleText = Text.Subtitle,
       form = form,
-      resultMessage = resultMessage,
+      resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

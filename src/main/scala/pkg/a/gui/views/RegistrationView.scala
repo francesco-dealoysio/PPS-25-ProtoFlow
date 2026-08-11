@@ -27,7 +27,7 @@ object RegistrationView extends Form:
     val assignment = stringField(Text.AssignmentPrompt)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(name, surname, email, phone, role, area, assignment)
-    val resultMessage = messageLabel(MessageStyle)
+    val result = createResultMessage()
 
     def currentRequest(): RegistrationModel =
       RegistrationModel(
@@ -53,27 +53,20 @@ object RegistrationView extends Form:
 
     def resetForm(): Unit =
       clearFields()
-      clearMessage(
-        resultMessage,
-        successStyle = MessageSuccessStyle,
-        errorStyle = MessageErrorStyle
-      )
+      result.clear()
 
     def submitRequest(): Unit =
       val request = currentRequest()
       val errors = viewModel.validate(request)
 
       if errors.nonEmpty then
-        showMessage(
-          label = resultMessage,
+        result.show(
           message = errors.mkString(
             Text.ValidationHeader,
             Text.ValidationSeparator,
             ""
           ),
-          success = false,
-          successStyle = MessageSuccessStyle,
-          errorStyle = MessageErrorStyle
+          success = false
         )
       else
         service.submitRequest(
@@ -87,22 +80,15 @@ object RegistrationView extends Form:
         ) match
           case Right(_) =>
             clearFields()
-
-            showMessage(
-              resultMessage,
-              Text.SubmitSuccess,
-              success = true,
-              MessageSuccessStyle,
-              MessageErrorStyle
+            result.show(
+              message = Text.SubmitSuccess,
+              success = true
             )
 
           case Left(error) =>
-            showMessage(
-              resultMessage,
-              error,
-              success = false,
-              MessageSuccessStyle,
-              MessageErrorStyle
+            result.show(
+              message = error,
+              success = false
             )
 
     val submit = primaryButton(Buttons.RequestRegistration, () => submitRequest())
@@ -159,6 +145,6 @@ object RegistrationView extends Form:
       rootStyle = RootStyle,
       contentStyle = Some(CardStyle),
       form = formGrid,
-      resultMessage = resultMessage,
+      resultMessage = result.label,
       actions = buttonsBox
     )

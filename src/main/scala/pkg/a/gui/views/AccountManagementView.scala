@@ -36,16 +36,10 @@ object AccountManagementView extends Management:
     )
 
     def loadAccounts(): Unit =
-      try
-        loadTableItems(table, accounts, result, Text.Empty):
-          accountLogic
-            .getRecords[Account]()
-            .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
-      catch
-        case exception: Exception =>
-          accounts.clear()
-          result.show(Text.LoadError, success = false)
-          logger(exception)
+      loadTableItemsSafely(table, accounts, result, Text.Empty, Text.LoadError):
+        accountLogic
+          .getRecords[Account]()
+          .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
     def deleteSelectedAccount(): Unit =
       withSelectedItem(table, result, Text.SelectToDelete): selected =>

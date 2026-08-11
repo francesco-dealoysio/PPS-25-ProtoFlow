@@ -44,11 +44,11 @@ object AccountEditView extends Form:
     val profileFields: Seq[FormField[? <: Node]] = Seq(email, phone, password)
 
     val monitoredFields = if profileMode then profileFields else accountFields
-    val resultMessage = messageLabel()
+    val result = createResultMessage()
 
     def clearErrors(): Unit =
       clearFormFieldErrors(monitoredFields*)
-      clearMessage(resultMessage)
+      result.clear()
 
     def currentAccount(): Account =
       val updatedPassword =
@@ -114,8 +114,8 @@ object AccountEditView extends Form:
           val (successMsg, errorMsg) =
             if profileMode then (ProfileText.Success, ProfileText.Error)
             else (EditText.Success, EditText.Error)
-          showMessage(
-            label = resultMessage,
+
+          result.show(
             message = if updated then successMsg else errorMsg,
             success = updated
           )
@@ -145,8 +145,7 @@ object AccountEditView extends Form:
               title = EditText.PrintTitle
             )
 
-          showMessage(
-            label = resultMessage,
+          result.show(
             message = if printed then EditText.PrintSuccess else EditText.PrintError,
             success = printed
           )
@@ -183,7 +182,7 @@ object AccountEditView extends Form:
       titleText = titleText,
       subtitleText =subtitleText,
       form = form,
-      resultMessage = resultMessage,
+      resultMessage = result.label,
       actions = actionBar(actions),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

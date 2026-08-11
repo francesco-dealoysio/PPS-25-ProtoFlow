@@ -17,14 +17,14 @@ object RoleEditView extends Form:
     val viewModel = new RoleViewModel()
 
     val role = stringField(Prompts.Role, selectedRole.getRole)
-    val descriptionArea = areaField(Prompts.Description, DescriptionAreaStyle, selectedRole.getDescription)
+
     val description = areaField(Prompts.Description, DescriptionAreaStyle, selectedRole.getDescription)
     val monitoredFields = Seq(role, description)
-    val resultMessage = messageLabel()
+    val result = createResultMessage()
 
     def clearErrors(): Unit =
       clearFormFieldErrors(role, description)
-      clearMessage(resultMessage)
+      result.clear()
 
     def currentRole(): Role =
       Role(
@@ -48,8 +48,8 @@ object RoleEditView extends Form:
         )
 
       showFormFieldErrors(errors):
-        case Validation.RoleRequired | Validation.DescriptionRequired => role
-        case Validation.DuplicateRole => description
+        case Validation.RoleRequired | Validation.DuplicateRole => role
+        case Validation.DescriptionRequired  => description
 
     var formSaved = false
     val save =
@@ -57,8 +57,7 @@ object RoleEditView extends Form:
         if validateForm() then
           val updated = roleLogic.recordUpdate(currentRole())
 
-          showMessage(
-            label = resultMessage,
+          result.show(
             message = if updated then Text.Success else Text.Error,
             success = updated
           )
@@ -82,7 +81,7 @@ object RoleEditView extends Form:
       titleText = Text.Title,
       subtitleText = Text.Subtitle,
       form = form,
-      resultMessage = resultMessage,
+      resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

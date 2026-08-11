@@ -28,16 +28,10 @@ object ClassificationManagementView extends Management:
     )
 
     def loadClassifications(): Unit =
-      try
-        loadTableItems(table, classifications, result, Text.Empty):
-          classificationLogic
-            .getRecords[Classification]()
-            .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
-      catch
-        case exception: Exception =>
-          classifications.clear()
-          result.show(Text.LoadError, success = false)
-          logger(exception)
+      loadTableItemsSafely(table, classifications, result, Text.Empty, Text.LoadError):
+        classificationLogic
+          .getRecords[Classification]()
+          .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
     def deleteSelectedClassification(): Unit =
       withSelectedItem(table, result, Text.SelectToDelete): selected =>

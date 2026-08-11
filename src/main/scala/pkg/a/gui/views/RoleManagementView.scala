@@ -33,16 +33,10 @@ object RoleManagementView extends Management:
     )
 
     def loadRoles(): Unit =
-      try
-        loadTableItems(table, roles, result, Text.Empty):
-          roleLogic
-            .getRecords[Role]()
-            .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
-      catch
-        case exception: Exception =>
-          roles.clear()
-          result.show(Text.LoadError, success = false)
-          logger(exception)
+      loadTableItemsSafely(table, roles, result, Text.Empty, Text.LoadError):
+        roleLogic
+          .getRecords[Role]()
+          .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
     def deleteSelectedRole(): Unit =
       withSelectedItem(table, result, Text.SelectToDelete): selected =>

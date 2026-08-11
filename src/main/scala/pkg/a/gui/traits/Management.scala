@@ -2,6 +2,7 @@ package pkg.a.gui.traits
 
 import pkg.a.gui.text.UiText.Common.Buttons.Print
 import pkg.a.gui.text.UiStyles.Common.*
+import pkg.d.util.Logger.logger
 import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
@@ -55,13 +56,20 @@ trait Management extends Common:
       case None =>
         result.show(noSelectionMessage, success = false)
 
-  protected def loadTableItems[T](table: TableView[T], items: ObservableBuffer[T], result: ResultMessage, emptyMessage: String)(load: => Seq[T]): Unit =
-    result.clear()
-    val loaded = load
-    items.setAll(loaded *)
-    table.selectionModel.value.clearSelection()
-    if loaded.isEmpty then
-      result.show(emptyMessage, success = true)
+  protected def loadTableItemsSafely[T](table: TableView[T], items: ObservableBuffer[T], result: ResultMessage, emptyMessage: String, loadErrorMessage: String)(load: => Seq[T]): Unit =
+    try
+      val loadedItems = load
+      items.clear()
+      items ++= loadedItems
+      if items.isEmpty then
+        result.show(emptyMessage, success = false)
+      else
+        result.clear()
+    catch
+      case exception: Exception =>
+        items.clear()
+        result.show(loadErrorMessage, success = false)
+        logger(exception)
 
   protected def managementPage(pageChildren: Seq[Node], growNode: Option[Node] = None, spacingValue: Double = 18, paddingValue: Insets = Insets(20), rootStyle: String = RootStyle): BorderPane =
     val content =

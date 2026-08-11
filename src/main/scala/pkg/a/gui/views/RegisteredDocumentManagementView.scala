@@ -30,7 +30,7 @@ object RegisteredDocumentManagementView extends Management:
     )
 
     def loadDocuments(): Unit =
-      loadTableItems(table, documents, result, Text.Empty):
+      loadTableItemsSafely(table, documents, result, Text.Empty, Text.LoadError):
         service
           .getRegisteredDocuments()
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))

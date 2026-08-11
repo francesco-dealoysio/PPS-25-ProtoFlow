@@ -39,11 +39,11 @@ object RegistrationRequestsManagementView extends Management:
     )
 
     def loadPendingRequests(): Unit =
-      loadTableItems(table, requests, result, Text.Empty):
+      loadTableItemsSafely(table, requests, result, Text.Empty, Text.LoadError):
         service
           .getPendingRequests
           .sortBy(_.getDate)
-
+    
     clearResultOnSelection(table, result)
 
     def printPendingList(): Unit =
