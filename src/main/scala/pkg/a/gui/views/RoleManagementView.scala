@@ -2,7 +2,6 @@ package pkg.a.gui.views
 
 import pkg.a.gui.traits.Management
 import pkg.b.logic.Role
-import pkg.d.util.Logger.*
 import pkg.d.util.Util.inDatabaseFilePathName
 import pkg.d.util.XmlToPdf
 import scalafx.collections.ObservableBuffer
@@ -34,9 +33,9 @@ object RoleManagementView extends Management:
 
     def loadRoles(): Unit =
       loadTableItemsSafely(table, roles, result, Text.Empty, Text.LoadError):
-        roleLogic
-          .getRecords[Role]()
-          .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
+        val loaded = roleLogic.getRecords[Role]()
+        loaded.foreach(r => println(s"${r.getId} - ${r.getRole} - ${r.getDescription}"))
+        loaded.sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
     def deleteSelectedRole(): Unit =
       withSelectedItem(table, result, Text.SelectToDelete): selected =>

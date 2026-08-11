@@ -41,5 +41,8 @@ case class ErrorLog(
 
   override def xmlFile = "errors.xml"
 
+  override protected def defaultXmlFilePathName: String =
+    inLogFilePathName(xmlFile)
+
 @main def tryErrorLog: Unit =
   println("Tested in ErrorLogTest.scala")
