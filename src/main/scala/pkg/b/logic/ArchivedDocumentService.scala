@@ -1,8 +1,6 @@
 package pkg.b.logic
 
-import pkg.d.util.IdGen
 import pkg.d.util.Logger.logger
-import pkg.d.util.Util.inIdsFilePathName
 
 import java.time.{LocalDate, LocalTime}
 import scala.util.Try
@@ -97,7 +95,7 @@ class ArchivedDocumentService:
                                    ): ArchivedDocument =
     
     ArchivedDocument(
-      id = IdGen(inIdsFilePathName("archivedDocumentId")),
+      id = source.getId,
       documentDate = source.getDocumentDate,
       documentTime = source.getDocumentTime,
       documentProtocol = source.getDocumentProtocol,

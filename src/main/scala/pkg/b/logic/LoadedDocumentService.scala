@@ -1,7 +1,5 @@
 package pkg.b.logic
 
-import pkg.d.util.IdGen
-import pkg.d.util.Util.inIdsFilePathName
 import pkg.d.util.DateTime.{localDate, localTime}
 
 import java.time.LocalDate
@@ -11,13 +9,13 @@ class LoadedDocumentService:
   private val loadedDocumentLogic = new LoadedDocument()
   private val registeredDocumentLogic = new RegisteredDocument()
 
-  def getLoadedDocuments(): List[LoadedDocument] =
+  def getLoadedDocuments: List[LoadedDocument] =
     loadedDocumentLogic.getRecords[LoadedDocument]().toList
 
   def deleteLoadedDocument(id: String): Boolean =
     loadedDocumentLogic.recordDelete(id)
 
-  def getRegisteredDocuments(): List[RegisteredDocument] =
+  def getRegisteredDocuments: List[RegisteredDocument] =
     registeredDocumentLogic.getRecords[RegisteredDocument]().toList
 
   def deleteRegisteredDocument(id: String): Boolean =
@@ -28,13 +26,12 @@ class LoadedDocumentService:
    * corretti dall'operatore) e sposta il documento da "presi in carico" a "protocollati".
    */
   def registerDocument(source: LoadedDocument, edited: LoadedDocument, operatorUsername: String): Either[String, RegisteredDocument] =
-    val newId = IdGen(inIdsFilePathName("registeredDocumentId"))
 
-    val protocolNumber = s"${LocalDate.now().getYear}/$newId"
+    val protocolNumber = s"${LocalDate.now().getYear}/$source.getId"
 
     val registered =
       RegisteredDocument(
-        id = newId,
+        id = source.getId,
         documentDate = edited.getDocumentDate,
         documentTime = edited.getDocumentTime,
         documentProtocol = edited.getDocumentProtocol,

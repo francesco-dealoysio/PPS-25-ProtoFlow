@@ -25,6 +25,7 @@ object LoadedDocumentManagementView extends Management:
     val table = managementTable(documents, Text.Empty)
 
     table.columns ++= Seq(
+      stringColumn[LoadedDocument](Fields.Id, Some(160))(_.getId),
       stringColumn[LoadedDocument](Fields.Sender, Some(160))(_.getSender),
       stringColumn[LoadedDocument](Fields.Subject, Some(220))(_.getSubject),
       stringColumn[LoadedDocument](Fields.DocumentType, Some(110))(_.getDocumentType),
@@ -35,7 +36,7 @@ object LoadedDocumentManagementView extends Management:
     def loadDocuments(): Unit =
       loadTableItemsSafely(table, documents, result, Text.Empty, Text.LoadError):
         service
-          .getLoadedDocuments()
+          .getLoadedDocuments
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
     clearResultOnSelection(table, result)

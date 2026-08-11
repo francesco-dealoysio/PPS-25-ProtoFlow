@@ -22,6 +22,7 @@ object ArchivedDocumentManagementView extends Management:
     val table = managementTable(documents, Text.Empty)
 
     table.columns ++= Seq(
+      stringColumn[ArchivedDocument](Fields.Id, Some(140))(_.getId),
       stringColumn[ArchivedDocument](Fields.ProtocolNumber, Some(140))(_.getProtocolNumber),
       stringColumn[ArchivedDocument](Fields.ArchivedDate, Some(120))(_.getArchivedDate),
       stringColumn[ArchivedDocument](Fields.ArchivedTime, Some(100))(_.getArchivedTime),

@@ -1,12 +1,9 @@
 package pkg.c.data
 
-import pkg.b.logic.Account
 import pkg.d.util.Logger.*
-import Properties.*
-import java.io.{File, PrintWriter}
+import java.io.PrintWriter
 import java.nio.charset.StandardCharsets
-import java.nio.file.{Files, Paths, StandardOpenOption}
-import scala.jdk.CollectionConverters.*
+import java.nio.file.{Files, Paths}
 import scala.util.{Failure, Success, Try}
 import scala.xml.*
 
@@ -64,7 +61,7 @@ object Xml:
         Seq.empty
 
   def saveXML(xmlFilePathName: String, xmlElem: Elem): Unit =
-    val pw = new PrintWriter(new File(xmlFilePathName, StandardCharsets.UTF_8.name()))
+    val pw = new PrintWriter(xmlFilePathName, StandardCharsets.UTF_8.name())
     try pw.write(new PrettyPrinter(80, 2).format(xmlElem))
     finally pw.close()
 

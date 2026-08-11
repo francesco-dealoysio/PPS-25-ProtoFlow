@@ -4204,7 +4204,15 @@
     <documentId>120</documentId>
     <operationType>archiving</operationType>
     <processedDate>2026-10-28</processedDate>
-    <processedTime></processedTime>
+    <processedTime/>
     <processedBy>Bianchi</processedBy>
+  </record>
+  <record>
+    <id>904</id>
+    <documentId>102</documentId>
+    <operationType>loading</operationType>
+    <processedDate>2026-08-11</processedDate>
+    <processedTime>18:40:39.33</processedTime>
+    <processedBy>tommy</processedBy>
   </record>
 </operations>

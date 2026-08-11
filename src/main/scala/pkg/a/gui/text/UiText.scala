@@ -229,6 +229,7 @@ object UiText:
 
   object LoadedDocuments:
     object Fields:
+      val Id = "Id"
       val DocumentDate = "Data documento"
       val DocumentTime = "Ora documento"
       val ProcessedBy = "Preso in carico da"
@@ -276,6 +277,7 @@ object UiText:
 
   object RegisteredDocuments:
     object Fields:
+      val Id = "Id"
       val ProtocolNumber = "Numero protocollo"
       val Sender = "Mittente"
       val Subject = "Oggetto"
@@ -323,6 +325,7 @@ object UiText:
       val PrintError = "Non è stato possibile stampare la scheda del documento."
         
     object Fields:
+      val Id = "Id"
       val ProtocolNumber = "Numero protocollo"
       val ArchivedDate = "Data archiviazione"
       val ArchivedTime = "Ora archiviazione"
@@ -382,7 +385,7 @@ object UiText:
     val UserAccounts = "Account Utenti"
     val Roles = "Ruoli"
     val Classifications = "Classifiche"
-    val NewAssignment = "Nuova presa in carico"
+    val NewAssignment = "Presa in carico"
     val DocumentsToRegister = "Documenti da protocollare"
     val DocumentsToArchive = "Documenti da archiviare"
     val ArchivedDocuments = "Documenti archiviati"
