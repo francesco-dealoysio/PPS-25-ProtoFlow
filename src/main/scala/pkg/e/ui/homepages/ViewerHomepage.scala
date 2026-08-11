@@ -13,34 +13,25 @@ class ViewerHomepage(val user: Account) extends Homepage {
   val parentMask: Homepage = this
 
   override val Title: String = "Homepage Viewer"
-  override val Width = 780
-  override val Height = 600
-
-  pageTitle = "Homepage Viewer"
+  pageTitle = Title
 
   override def menu = new VBox {
     this.styleClass += "sidebar"
 
-    val defaultWidth = 160
+    val defaultWidth = 170
     minWidth = defaultWidth
     prefWidth = defaultWidth
     maxWidth = defaultWidth
 
     val dashboardBtn = new Button("Dashboard")
     val profileBtn = new Button("Profilo")
-    val loadBtn = new Button("Presa in carico")
-    val protocolBtn = new Button("Protocollazione")
-    val archiveBtn = new Button("Archiviazione")
-    val searchBtn = new Button("Ricerca")
+    val protocolsViewBtn = new Button("Protocollazioni")
     val logoutBtn = new Button("Logout")
 
     val menuItems = Seq(
       dashboardBtn,
       profileBtn,
-      loadBtn,
-      protocolBtn,
-      archiveBtn,
-      searchBtn,
+      protocolsViewBtn,
       logoutBtn
     )
 
@@ -52,21 +43,9 @@ class ViewerHomepage(val user: Account) extends Homepage {
 
     dashboardBtn.onAction = _ => ()
     profileBtn.onAction = _ => ()
-    loadBtn.onAction = _ =>
-      DocumentLoad(user, parentMask).start()
-    protocolBtn.onAction = _ => ()
-    archiveBtn.onAction = _ => ()
-    searchBtn.onAction = _ => ()
+    protocolsViewBtn.onAction = _ => ()
     logoutBtn.onAction = _ => Main.start()
-    /*
-      if askConfirmation(
-        titleText = "Conferma uscita",
-        header = "Confermi l'operazione?",
-        content = "L'applicazione verrà terminata"
-      ) then {
-        Main.start()
-      }
-    */
+
     children = menuItems
   }
 }

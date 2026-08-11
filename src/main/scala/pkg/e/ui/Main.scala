@@ -8,6 +8,6 @@ object Main extends GUI:
 
   val parentMask: GUI = this
   val user = Account("", "Guess")
+  
   override def start(): Unit =
     Login(user, this).start()
-

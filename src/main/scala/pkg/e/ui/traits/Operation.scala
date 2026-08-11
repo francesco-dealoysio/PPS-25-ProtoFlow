@@ -31,56 +31,15 @@ trait Operation extends GUI:
   override def start(): Unit =
     super.start()
 
-  def menu = new VBox {
-    this.styleClass += "sidebar"
-
-    //spacing = 8
-    minWidth = 160
-    prefWidth = 160
-    maxWidth = 160
-
-    val dashboardBtn = new Button("Dashboard")
-    val profileBtn = new Button("Profilo")
-    val loadBtn = new Button("Presa in carico")
-    val protocolBtn = new Button("Protocollazione")
-    val archiveBtn = new Button("Archiviazione")
-    val searchBtn = new Button("Ricerca")
-    val logoutBtn = new Button("Logout")
-
-    val menuItems = Seq(
-      dashboardBtn,
-      profileBtn,
-      loadBtn,
-      protocolBtn,
-      archiveBtn,
-      searchBtn,
-      logoutBtn
-    )
-
-    menuItems.foreach(item =>
-      item.styleClass += "sidebar-button"
-      item.maxWidth = Double.MaxValue
-      item.textAlignment = TextAlignment.Left
-    )
-
-    dashboardBtn.onAction = _ => ()
-    profileBtn.onAction = _ => ()
-    loadBtn.onAction = _ => ()
-    protocolBtn.onAction = _ => ()
-    archiveBtn.onAction = _ => ()
-    searchBtn.onAction = _ => ()
-    logoutBtn.onAction = _ => sys.exit(0)
-
-    children = menuItems
-  }
+  def menu = new VBox {}
 
   def operationPageTitle = new HBox {
     styleClass += "operation-page-title"
     spacing = 10
-    minHeight = 40
-    prefHeight = 40
-    maxHeight = 40
-    //style = "-fx-background-color: grey;"
+    val defaultHeight = 40
+    minHeight = defaultHeight
+    prefHeight = defaultHeight
+    maxHeight = defaultHeight
     alignment = Pos.Center
 
     val operationPageTitleLbl = new Label(pageTitle):
@@ -102,9 +61,10 @@ trait Operation extends GUI:
     styleClass += "operation-page-toolbar"
     spacing = 10
     padding = Insets(10)
-    minHeight = 40
-    prefHeight = 40
-    maxHeight = 40
+    val defaultHeight = 40
+    minHeight = defaultHeight
+    prefHeight = defaultHeight
+    maxHeight = defaultHeight
     alignment = Pos.CenterRight
 
     var execBtnText = "Salva"
@@ -112,10 +72,6 @@ trait Operation extends GUI:
     var operationText = ""
 
     operationType match
-      /*
-      case "login" =>
-        execBtnText = "Accedi"
-      */
       case "insert" =>
         askConfirmationText = "aggiunto"
         operationText = "Aggiunta"
@@ -144,12 +100,6 @@ trait Operation extends GUI:
           val operationResult = false
           if confirmed then
             val operationResult = operationType match
-              /*
-              case "login" =>
-                println(user.getSurname)
-                OperatorHome(user).main(Array.empty)
-                false
-              */
               case "insert" =>
                 objUpdate
                 objEntity.recordInsert(objEntity, xmlFilePathName)

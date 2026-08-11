@@ -5,8 +5,10 @@ import pkg.b.logic.{Account, LoadedDocument}
 import pkg.d.util.DateTime.{localDate, localTime}
 import pkg.d.util.IdGen
 import pkg.d.util.Util.{inDocumentsFilePathName, inIdsFilePathName}
-import pkg.e.ui.traits.{GUI, Homepage, Operation}
+import pkg.e.ui.traits.{Homepage, Operation}
 import scalafx.scene.control.*
+import scalafx.scene.layout.VBox
+
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import scala.util.{Failure, Success, Try}
@@ -14,14 +16,14 @@ import scala.util.{Failure, Success, Try}
 class DocumentLoad(val user: Account, val parentMask: Homepage) extends Operation:
 
   override val Title: String = "Presa in carico documento"
-  override val Width = 780
-  override val Height = 600
-
-  pageTitle = "Presa in carico documento"
+  pageTitle = Title
+  
   operationType = "insert"
   objEntity = new LoadedDocument
   xmlFilePathName = inDocumentsFilePathName("loaded.xml")
 
+  override def menu: VBox = parentMask.menu
+  
   var dateLbl: Label = _
   var dateFld: DatePicker = _
   var protocolLbl: Label = _
@@ -162,20 +164,3 @@ class DocumentLoad(val user: Account, val parentMask: Homepage) extends Operatio
 
 @main def tryEntityAdd: Unit =
   println("")
-  import pkg.b.logic.Account
-  import pkg.d.util.Util.cipher
-
-  val account1 = Account(
-    "1",
-    "de Aloysio",
-    "Francesco",
-    "francesco.dealoysio@studio.unibo.it",
-    "06/11111111",
-    "admin",
-    "presidenza",
-    "presidente",
-    "frank",
-    cipher("topolino")
-  )
-
-  //DocumentLoad(account1).main(Array.empty)

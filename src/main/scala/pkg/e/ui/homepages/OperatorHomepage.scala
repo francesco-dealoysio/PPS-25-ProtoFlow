@@ -4,6 +4,7 @@ import pkg.e.ui.traits.Homepage
 import pkg.b.logic.Account
 import pkg.e.ui.Main
 import pkg.e.ui.operations.*
+import pkg.e.ui.managements.*
 import scalafx.scene.control.Button
 import scalafx.scene.layout.VBox
 import scalafx.scene.text.TextAlignment
@@ -13,15 +14,13 @@ class OperatorHomepage(val user: Account) extends Homepage {
   val parentMask: Homepage = this
 
   override val Title: String = "Homepage Operatore"
-  override val Width = 780
-  override val Height = 600
 
-  pageTitle = "Homepage Operatore"
+  pageTitle = Title
 
   override def menu = new VBox {
     this.styleClass += "sidebar"
 
-    val defaultWidth = 160
+    val defaultWidth = 170
     minWidth = defaultWidth
     prefWidth = defaultWidth
     maxWidth = defaultWidth

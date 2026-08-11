@@ -7,7 +7,7 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Scene
 import scalafx.scene.control.{Button, Label}
 import scalafx.scene.image.Image
-import scalafx.scene.layout.{BorderPane, HBox}
+import scalafx.scene.layout.{BorderPane, HBox, Priority, Region}
 
 /**
  * An interface modelling a basic GUI for the project.
@@ -22,8 +22,8 @@ trait GUI extends JFXApp3:
   val parentMask: JFXApp3
 
   def Title: String = "GUI Trait"
-  def Width: Int = 800
-  def Height: Int = 600
+  def Width: Int = 780
+  def Height: Int = 680
 
   def body = new BorderPane
 
@@ -41,13 +41,14 @@ trait GUI extends JFXApp3:
         event.consume()
 
       scene = new Scene:
-        stylesheets.add("/operations.css")
+        stylesheets.add("/ui.css")
 
         val header = new HBox {
           spacing = 10
-          minHeight = 40
-          prefHeight = 40
-          maxHeight = 40
+          val defaultHeight = 40
+          minHeight = defaultHeight
+          prefHeight = defaultHeight
+          maxHeight = defaultHeight
           styleClass += "app-header"
 
           alignment = Pos.CenterLeft
@@ -69,13 +70,17 @@ trait GUI extends JFXApp3:
 
         val footer = new HBox {
           spacing = 10
-          minHeight = 40
-          prefHeight = 40
-          maxHeight = 40
+          val defaultHeight = 40
+          minHeight = defaultHeight
+          prefHeight = defaultHeight
+          maxHeight = defaultHeight
           styleClass += "app-footer"
           alignment = Pos.CenterLeft
           padding = Insets(10)
 
+          val spacer = new Region()
+          HBox.setHgrow(spacer, Priority.Always)
+          
           val dateTime = new Label("")
           dateTime.text <== DateTime.dynamicDateTimeProperty()
 
@@ -88,13 +93,13 @@ trait GUI extends JFXApp3:
 
           children = Seq(
             new Label(user.getName + " " + user.getSurname + " (" + role + ")"),
+            spacer,
             dateTime
           )
         }
 
         root = new BorderPane {
           style = "-fx-background-color: lightgray;"
-          //padding = Insets(5)
           top = header
           center = body
           bottom = footer

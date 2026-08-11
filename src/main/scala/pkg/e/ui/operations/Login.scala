@@ -34,9 +34,10 @@ class Login(val user: Account, val parentMask: GUI) extends Operation:
     styleClass += "operation-page-toolbar"
     spacing = 10
     padding = Insets(10)
-    minHeight = 40
-    prefHeight = 40
-    maxHeight = 40
+    val defaultHeight = 40
+    minHeight = defaultHeight
+    prefHeight = defaultHeight
+    maxHeight = defaultHeight
     alignment = Pos.Center
 
     execBtn = new Button("Accedi") {

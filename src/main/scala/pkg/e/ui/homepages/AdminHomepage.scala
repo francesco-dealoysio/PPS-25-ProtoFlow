@@ -3,6 +3,7 @@ package pkg.e.ui.homepages
 import pkg.b.logic.Account
 import pkg.e.ui.Main
 import pkg.e.ui.traits.Homepage
+import pkg.e.ui.managements.AccountManagement
 import scalafx.scene.control.Button
 import scalafx.scene.layout.VBox
 import scalafx.scene.text.TextAlignment
@@ -12,15 +13,13 @@ class AdminHomepage(val user: Account) extends Homepage {
   val parentMask: Homepage = this
 
   override val Title: String = "Homepage Amministratore"
-  override val Width = 780
-  override val Height = 680
 
-  pageTitle = "Homepage Amministratore"
+  pageTitle = Title
 
   override def menu = new VBox {
     this.styleClass += "sidebar"
 
-    val defaultWidth = 160
+    val defaultWidth = 170
     minWidth = defaultWidth
     prefWidth = defaultWidth
     maxWidth = defaultWidth
@@ -61,19 +60,11 @@ class AdminHomepage(val user: Account) extends Homepage {
     logsBtn.onAction = _ => ()
     managementControlBtn.onAction = _ => ()
     registrationsBtn.onAction = _ => ()
-    accountsBtn.onAction = _ => ()
+    accountsBtn.onAction = _ =>
+      AccountManagement(user, parentMask).start()
     rolesBtn.onAction = _ => ()
     classificationsBtn.onAction = _ => ()
     logoutBtn.onAction = _ => Main.start()
-    /*
-      if askConfirmation(
-        titleText = "Conferma uscita",
-        header = "Confermi l'operazione?",
-        content = "L'applicazione verrà terminata"
-      ) then {
-        Main.start()
-      }
-    */
 
     children = menuItems
   }
