@@ -50,13 +50,6 @@ trait Form extends Common:
         case _ =>
           ()
 
-  private def fieldErrorLabel(styleName: String = FieldErrorStyle): Label =
-    new Label:
-      visible = false
-      managed = false
-      wrapText = true
-      styleClass += styleName
-
   protected def resetFields(fields: FormField[? <: Node]*): Unit =
     fields.foreach(_.reset())
 
@@ -148,15 +141,7 @@ trait Form extends Common:
         .foreach(_.showError(error))
     errors.isEmpty
 
-  private def textField(prompt: String, initialText: String = ""): TextField =
-    new TextField:
-      text = initialText
-      promptText = prompt
-      maxWidth = Double.MaxValue
-      styleClass += FormFieldStyle
-
   protected def dateField(initialValue: LocalDate): FormField[DatePicker] =
-
     val control =
       new DatePicker(initialValue):
         maxWidth = Double.MaxValue
@@ -172,15 +157,6 @@ trait Form extends Common:
           if value.isBlank then null
           else LocalDate.parse(value)
     )
-
-  private def textArea(prompt: String, styleName: String, initialText: String = "", rows: Int = 5): TextArea =
-    new TextArea:
-      text = initialText
-      promptText = prompt
-      wrapText = true
-      prefRowCount = rows
-      maxWidth = Double.MaxValue
-      styleClass += styleName
 
   protected def formPage(
                           titleText: String,
@@ -239,3 +215,26 @@ trait Form extends Common:
       readValue = readValue,
       writeValue = writeValue
     )
+
+  private def textArea(prompt: String, styleName: String, initialText: String = "", rows: Int = 5): TextArea =
+    new TextArea:
+      text = initialText
+      promptText = prompt
+      wrapText = true
+      prefRowCount = rows
+      maxWidth = Double.MaxValue
+      styleClass += styleName
+
+  private def textField(prompt: String, initialText: String = ""): TextField =
+    new TextField:
+      text = initialText
+      promptText = prompt
+      maxWidth = Double.MaxValue
+      styleClass += FormFieldStyle
+
+  private def fieldErrorLabel(styleName: String = FieldErrorStyle): Label =
+    new Label:
+      visible = false
+      managed = false
+      wrapText = true
+      styleClass += styleName

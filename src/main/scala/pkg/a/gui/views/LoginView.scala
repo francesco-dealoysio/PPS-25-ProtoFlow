@@ -1,13 +1,14 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.services.LoginService
 import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
 import pkg.a.gui.text.UiStyles.Login.*
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Login
 import pkg.a.gui.traits.Form
-import pkg.b.logic.LoginService.LoginError
-import pkg.b.logic.{Account, LoginService}
+import pkg.a.gui.services.LoginService.LoginError
+import pkg.b.logic.Account
 import scalafx.Includes.jfxKeyEvent2sfx
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Label, PasswordField, TextField}

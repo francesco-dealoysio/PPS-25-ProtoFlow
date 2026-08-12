@@ -1,9 +1,9 @@
-package pkg.a.gui.structures
+package pkg.a.gui.validation
 
-import pkg.b.logic.Classification
 import pkg.a.gui.text.UiText.Validation.Classification.*
+import pkg.b.logic.Classification
 
-class ClassificationViewModel:
+class ClassificationValidator:
 
   def validate(classification: Classification, existingClassifications: Seq[Classification], currentClassificationId: Option[String] = None): Seq[String] =
     Seq(

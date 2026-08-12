@@ -1,7 +1,8 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.services.RegistrationRequestService
 import pkg.a.gui.traits.Management
-import pkg.b.logic.{Registration, RegistrationRequestService}
+import pkg.b.logic.Registration
 import pkg.d.util.{DateTime, XmlToPdf}
 import scalafx.geometry.Insets
 import scalafx.scene.control.*
@@ -15,8 +16,7 @@ import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
 
 object RegistrationRequestProcessView extends Management:
 
-  private val dateFormatter =
-    DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+  private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
 
   def apply(
              request: Registration,

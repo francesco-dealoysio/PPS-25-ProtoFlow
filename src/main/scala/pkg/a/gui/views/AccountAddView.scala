@@ -1,6 +1,5 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.structures.AccountViewModel
 import pkg.a.gui.traits.Form
 import pkg.b.logic.{Account, Classification, Role}
 import pkg.d.util.IdGen
@@ -11,6 +10,7 @@ import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Accounts.Add as Text
 import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Validation.Account as Validation
+import pkg.a.gui.validation.AccountValidator
 
 object AccountAddView extends Form:
 
@@ -19,7 +19,7 @@ object AccountAddView extends Form:
     val accountLogic = new Account()
     val roleLogic = new Role()
     val classificationLogic = new Classification()
-    val viewModel = new AccountViewModel()
+    val validator = new AccountValidator()
 
     val surname = stringField(Prompts.Surname)
     val name = stringField(Prompts.Name)
@@ -55,7 +55,7 @@ object AccountAddView extends Form:
     def validateForm(): Boolean =
       clearErrors()
       val errors =
-        viewModel.validate(
+        validator.validate(
           account = currentAccount(),
           rawPassword = password.value,
           existingAccounts = accountLogic.getRecords()

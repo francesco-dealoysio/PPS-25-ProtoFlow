@@ -1,13 +1,14 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.structures.LoadedDocumentViewModel
+import pkg.a.gui.services.LoadedDocumentService
 import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
 import pkg.a.gui.text.UiText.Fields.Labels
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields
 import pkg.a.gui.text.UiText.RegisteredDocuments.Process as Text
 import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
 import pkg.a.gui.traits.Form
-import pkg.b.logic.{LoadedDocument, LoadedDocumentService}
+import pkg.a.gui.validation.LoadedDocumentValidator
+import pkg.b.logic.LoadedDocument
 import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
@@ -23,7 +24,7 @@ object DocumentRegistrationView extends Form:
            ): BorderPane =
 
     val service = new LoadedDocumentService()
-    val viewModel = new LoadedDocumentViewModel()
+    val validator = new LoadedDocumentValidator()
     val id = stringField("", selectedDocument.getId)
     id.control.setDisable(true)
     val documentDate = dateField(LocalDate.parse(selectedDocument.getDocumentDate))
@@ -61,7 +62,7 @@ object DocumentRegistrationView extends Form:
 
     def validateForm(): Boolean =
       clearErrors()
-      val errors = viewModel.validate(editedDocument())
+      val errors = validator.validate(editedDocument())
       showFormFieldErrors(errors):
         case Validation.DocumentDateRequired => documentDate
         case Validation.DocumentTimeRequired => documentTime

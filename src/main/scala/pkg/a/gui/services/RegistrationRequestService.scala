@@ -1,8 +1,9 @@
-package pkg.b.logic
+package pkg.a.gui.services
 
-import pkg.d.util.{IdGen, DateTime}
-import pkg.d.util.Util.{inDatabaseFilePathName, inIdsFilePathName, cipher}
-import pkg.b.logic.Registration
+import pkg.b.logic.{Account, Registration}
+import pkg.d.util.Util.{cipher, inDatabaseFilePathName, inIdsFilePathName}
+import pkg.d.util.{DateTime, IdGen}
+
 import scala.util.Random
 
 /** Esito dell'approvazione: la richiesta aggiornata, l'account creato e la password generata (in chiaro, solo per il report). */

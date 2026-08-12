@@ -1,6 +1,6 @@
 package pkg.a.gui
 
-import pkg.a.gui.structures.{HomePageViewModel, RegistrationViewModel}
+import pkg.a.gui.structures.HomePageViewModel
 import pkg.a.gui.traits.HomePage
 import pkg.a.gui.views.{LoginView, RegistrationView}
 import pkg.b.logic.Account
@@ -8,6 +8,7 @@ import pkg.d.util.Logger.logger
 import scalafx.application.JFXApp3
 import scalafx.scene.Scene
 import pkg.a.gui.text.UiText.Common.WindowTitles
+import pkg.a.gui.validation.RegistrationValidator
 
 class Navigator(stage: JFXApp3.PrimaryStage):
 
@@ -39,7 +40,7 @@ class Navigator(stage: JFXApp3.PrimaryStage):
 
     val scene = new Scene(900, 650):
       root = RegistrationView(
-        viewModel = RegistrationViewModel(),
+        validator = RegistrationValidator(),
 
         onExit = () =>
           showLogin()

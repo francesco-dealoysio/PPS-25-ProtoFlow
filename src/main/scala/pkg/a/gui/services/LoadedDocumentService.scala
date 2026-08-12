@@ -1,5 +1,6 @@
-package pkg.b.logic
+package pkg.a.gui.services
 
+import pkg.b.logic.{LoadedDocument, RegisteredDocument}
 import pkg.d.util.DateTime.{localDate, localTime}
 
 import java.time.LocalDate

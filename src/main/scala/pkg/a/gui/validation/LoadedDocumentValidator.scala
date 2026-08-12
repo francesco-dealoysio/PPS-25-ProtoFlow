@@ -1,9 +1,9 @@
-package pkg.a.gui.structures
+package pkg.a.gui.validation
 
-import pkg.b.logic.LoadedDocument
 import pkg.a.gui.text.UiText.Validation.LoadedDocument.*
+import pkg.b.logic.LoadedDocument
 
-class LoadedDocumentViewModel:
+class LoadedDocumentValidator:
 
   def validate(document: LoadedDocument): Seq[String] =
     Seq(

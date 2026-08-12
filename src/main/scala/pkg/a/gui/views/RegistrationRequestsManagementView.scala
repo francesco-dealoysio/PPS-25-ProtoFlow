@@ -1,7 +1,8 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.services.RegistrationRequestService
 import pkg.a.gui.traits.Management
-import pkg.b.logic.{Registration, RegistrationRequestService}
+import pkg.b.logic.Registration
 import pkg.d.util.{DateTime, XmlToPdf}
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*

@@ -1,11 +1,11 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.structures.AccountViewModel
 import pkg.a.gui.traits.Form
 import pkg.a.gui.text.UiText.Accounts.{Edit as EditText, Profile as ProfileText}
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Validation.Account as Validation
+import pkg.a.gui.validation.AccountValidator
 import pkg.b.logic.{Account, Classification, Role}
 import pkg.d.util.Util.{cipher, inDatabaseFilePathName}
 import pkg.d.util.XmlToPdf
@@ -28,7 +28,7 @@ object AccountEditView extends Form:
     val accountLogic = new Account()
     val roleLogic = new Role()
     val classificationLogic = new Classification()
-    val viewModel = new AccountViewModel()
+    val validator = new AccountValidator()
     val profileMode = mode == EditMode.Profile
 
     val id = stringField("", selectedAccount.getId)
@@ -86,9 +86,9 @@ object AccountEditView extends Form:
 
       val errors =
         if profileMode then
-          viewModel.validateProfile(email.value)
+          validator.validateProfile(email.value)
         else
-          viewModel.validate(
+          validator.validate(
             account = currentAccount(),
             rawPassword = password.value,
             existingAccounts = accountLogic.getRecords(),

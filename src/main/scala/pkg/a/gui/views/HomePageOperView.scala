@@ -74,7 +74,7 @@ object HomePageOperView extends HomePage:
 
   private def showDocumentArchive(selected: RegisteredDocument, navigator: Navigator, currentUsername: String): Unit =
     navigator.show(
-      ArchivedDocumentView(
+      DocumentArchivingView(
         selectedDocument = selected,
         operatorUsername = currentUsername,
         onArchived = () => showRegisteredDocumentManagement(navigator, currentUsername),

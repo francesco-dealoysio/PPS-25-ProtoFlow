@@ -1,7 +1,8 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.services.ArchivedDocumentService
 import pkg.a.gui.traits.Management
-import pkg.b.logic.{ArchivedDocument, ArchivedDocumentService}
+import pkg.b.logic.ArchivedDocument
 import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.XmlToPdf
 import scalafx.collections.ObservableBuffer

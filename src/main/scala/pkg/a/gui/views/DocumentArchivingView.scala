@@ -1,11 +1,12 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.services.ArchivedDocumentService
 import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.text.UiText.ArchivedDocuments.{Errors as ArchiveErrors, Fields as ArchiveFields, Process as Text}
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields as DocumentFields
 import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegistrationFields
 import pkg.a.gui.traits.Form
-import pkg.b.logic.{ArchivedDocumentService, RegisteredDocument}
+import pkg.b.logic.RegisteredDocument
 import pkg.d.util.DateTime.{localDate, localTime}
 import scalafx.application.Platform
 import scalafx.scene.Node
@@ -15,7 +16,7 @@ import scalafx.scene.layout.BorderPane
 
 import java.time.LocalDate
 
-object ArchivedDocumentView extends Form:
+object DocumentArchivingView extends Form:
 
   def apply(
              selectedDocument: RegisteredDocument,

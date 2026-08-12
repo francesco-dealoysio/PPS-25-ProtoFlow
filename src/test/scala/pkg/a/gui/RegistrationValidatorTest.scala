@@ -2,12 +2,12 @@ package pkg.a.gui
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.a.gui.structures.RegistrationViewModel
+import pkg.a.gui.validation.RegistrationValidator
 import pkg.b.logic.Registration
 
-class RegistrationViewModelTest:
+class RegistrationValidatorTest:
 
-  private val viewModel = RegistrationViewModel()
+  private val viewModel = RegistrationValidator()
 
   @Test
   def testValidRegistrationRequest(): Unit =

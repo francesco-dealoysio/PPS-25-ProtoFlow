@@ -26,11 +26,7 @@ trait HomePage extends Root:
     def dashboard(): Unit =
       show(dashboardFactory())
 
-  final def apply(
-                   viewModel: HomePageViewModel,
-                   currentAccount: Account,
-                   onLogout: () => Unit = () => ()
-                 ): BorderPane =
+  final def apply(viewModel: HomePageViewModel, currentAccount: Account, onLogout: () => Unit = () => ()): BorderPane =
 
     val contentArea =
       new StackPane:

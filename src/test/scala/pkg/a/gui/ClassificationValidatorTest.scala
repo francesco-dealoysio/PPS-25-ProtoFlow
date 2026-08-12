@@ -2,13 +2,13 @@ package pkg.a.gui
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.a.gui.structures.ClassificationViewModel
 import pkg.b.logic.Classification
 import pkg.a.gui.text.UiText.Validation.Classification.*
+import pkg.a.gui.validation.ClassificationValidator
 
-class ClassificationViewModelTest:
+class ClassificationValidatorTest:
 
-  private val viewModel = ClassificationViewModel()
+  private val viewModel = ClassificationValidator()
 
   @Test
   def testValidFormAndEmptyFields(): Unit =

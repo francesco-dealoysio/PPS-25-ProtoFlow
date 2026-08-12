@@ -1,9 +1,9 @@
-package pkg.a.gui.structures
+package pkg.a.gui.validation
 
-import pkg.b.logic.Account
 import pkg.a.gui.text.UiText.Validation.Account.*
+import pkg.b.logic.Account
 
-class AccountViewModel:
+class AccountValidator:
 
   private val emailPattern = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$".r
   def validate(

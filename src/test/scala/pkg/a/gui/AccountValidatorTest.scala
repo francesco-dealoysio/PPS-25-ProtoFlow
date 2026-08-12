@@ -2,14 +2,13 @@ package pkg.a.gui
 
 import org.junit.*
 import org.junit.Assert.*
-
-import pkg.a.gui.structures.AccountViewModel
 import pkg.b.logic.Account
 import pkg.a.gui.text.UiText.Validation.Account.*
+import pkg.a.gui.validation.AccountValidator
 
-class AccountViewModelTest:
+class AccountValidatorTest:
 
-  private val viewModel = AccountViewModel()
+  private val viewModel = AccountValidator()
 
   @Test
   def testValidCompleteAccount(): Unit =

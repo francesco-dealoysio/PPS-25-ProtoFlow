@@ -1,9 +1,9 @@
-package pkg.a.gui.structures
+package pkg.a.gui.validation
 
-import pkg.b.logic.Registration
 import pkg.a.gui.text.UiText.Validation.Registration.*
+import pkg.b.logic.Registration
 
-class RegistrationViewModel:
+class RegistrationValidator:
   def validate(request: Registration): Seq[String] =
     Seq(
       validateRequired(Name, request.getName),

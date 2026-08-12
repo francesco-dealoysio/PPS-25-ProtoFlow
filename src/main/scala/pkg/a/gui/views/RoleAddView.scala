@@ -1,6 +1,5 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.structures.RoleViewModel
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Role
 import pkg.d.util.IdGen
@@ -11,17 +10,19 @@ import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Roles.Add as Text
 import pkg.a.gui.text.UiText.Validation.Role as Validation
+import pkg.a.gui.validation.RoleValidator
 
 object RoleAddView extends Form:
 
   def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val roleLogic = new Role()
-    val viewModel = new RoleViewModel()
+    val validator = new RoleValidator()
     val role = stringField(Prompts.Role)
     val description = areaField(Prompts.Description, DescriptionAreaStyle)
     val result = createResultMessage()
     val monitoredFields = Seq(role, description)
+
     def currentRole(id: String = ""): Role =
       Role(
         id = id,
@@ -36,7 +37,7 @@ object RoleAddView extends Form:
     def validateForm(): Boolean =
       clearErrors()
       val errors =
-        viewModel.validate(
+        validator.validate(
           role = currentRole(),
           existingRoles = roleLogic.getRecords()
         )

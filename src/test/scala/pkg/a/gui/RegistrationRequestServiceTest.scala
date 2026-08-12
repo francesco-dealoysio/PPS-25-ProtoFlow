@@ -2,7 +2,8 @@ package pkg.a.gui
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.b.logic.{Account, RegistrationRequestService}
+import pkg.a.gui.services.RegistrationRequestService
+import pkg.b.logic.Account
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path}
