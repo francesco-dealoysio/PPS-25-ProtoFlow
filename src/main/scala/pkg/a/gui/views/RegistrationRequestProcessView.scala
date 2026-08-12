@@ -1,8 +1,8 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.traits.Management
-import pkg.b.logic.{Registration, RegistrationDates, RegistrationRequestService}
-import pkg.d.util.XmlToPdf
+import pkg.b.logic.{Registration, RegistrationRequestService}
+import pkg.d.util.{DateTime, XmlToPdf}
 import scalafx.geometry.Insets
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
@@ -44,7 +44,7 @@ object RegistrationRequestProcessView extends Management:
       Labels.Role -> request.getRole,
       Labels.Area -> request.getArea,
       Labels.Assignment -> request.getAssignment,
-      Labels.Date -> RegistrationDates.parse(request.getDate).format(dateFormatter)
+      Labels.Date -> DateTime.parseDateTime(request.getDate).format(dateFormatter)
     )
 
     detailRows.zipWithIndex.foreach:

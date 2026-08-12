@@ -1,11 +1,12 @@
 package pkg.d.util
 
-import org.scalatest.funsuite.AnyFunSuite
+import org.junit.*
+import org.junit.Assert.*
 import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, LocalDateTime, LocalTime, ZoneId}
 import scala.util.Try
 
-class DateTimeTest extends AnyFunSuite:
+class DateTimeTest:
 
   private val romeZone = ZoneId.of("Europe/Rome")
   private val displayDateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
@@ -13,58 +14,69 @@ class DateTimeTest extends AnyFunSuite:
   private val storageDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
   private val storageTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss.SS")
 
-  test("currentDateTime restituisce una stringa nel formato corretto"):
+  @Test
+  def testCurrentDateTimeFormat(): Unit =
     val result = DateTime.currentDateTime
-    assert(result.matches("""\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2}"""))
+    assertTrue(result.matches("""\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2}"""))
 
-  test("currentDateTime restituisce una data e un'ora valide"):
+  @Test
+  def testCurrentDateTimeValid(): Unit =
     val result = DateTime.currentDateTime
     val parsedResult = Try(LocalDateTime.parse(result, displayDateTimeFormatter))
-    assert(parsedResult.isSuccess)
+    assertTrue(parsedResult.isSuccess)
 
-  test("currentDateTime restituisce un valore vicino all'ora corrente di Roma"):
+  @Test
+  def testCurrentDateTimeCloseToRomeTime(): Unit =
     val before = LocalDateTime.now(romeZone)
     val result = LocalDateTime.parse(DateTime.currentDateTime, displayDateTimeFormatter)
     val after = LocalDateTime.now(romeZone)
-    assert(!result.isBefore(before.minusSeconds(1)))
-    assert(!result.isAfter(after.plusSeconds(1)))
+    assertFalse(result.isBefore(before.minusSeconds(1)))
+    assertFalse(result.isAfter(after.plusSeconds(1)))
 
-  test("localDateTime restituisce una stringa nel formato corretto"):
+  @Test
+  def testLocalDateTimeFormat(): Unit =
     val result = DateTime.localDateTime
-    assert(result.matches("""\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{2}"""))
+    assertTrue(result.matches("""\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{2}"""))
 
-  test("localDateTime restituisce una data e un'ora valide"):
+  @Test
+  def testLocalDateTimeValid(): Unit =
     val result = DateTime.localDateTime
     val parsedResult = Try(LocalDateTime.parse(result, storageDateTimeFormatter))
-    assert(parsedResult.isSuccess)
+    assertTrue(parsedResult.isSuccess)
 
-  test("localDateTime restituisce un valore vicino all'ora corrente di Roma"):
+  @Test
+  def testLocalDateTimeCloseToRomeTime(): Unit =
     val before = LocalDateTime.now(romeZone)
     val result = LocalDateTime.parse(DateTime.localDateTime, storageDateTimeFormatter)
     val after = LocalDateTime.now(romeZone)
-    assert(!result.isBefore(before.minusSeconds(1)))
-    assert(!result.isAfter(after.plusSeconds(1)))
+    assertFalse(result.isBefore(before.minusSeconds(1)))
+    assertFalse(result.isAfter(after.plusSeconds(1)))
 
-  test("localDate restituisce una stringa nel formato corretto"):
+  @Test
+  def testLocalDateFormat(): Unit =
     val result = DateTime.localDate
-    assert(result.matches("""\d{4}-\d{2}-\d{2}"""))
+    assertTrue(result.matches("""\d{4}-\d{2}-\d{2}"""))
 
-  test("localDate restituisce una data valida"):
+  @Test
+  def testLocalDateValid(): Unit =
     val result = DateTime.localDate
     val parsedResult = Try(LocalDate.parse(result, storageDateFormatter))
-    assert(parsedResult.isSuccess)
+    assertTrue(parsedResult.isSuccess)
 
-  test("localDate restituisce la data corrente di Roma"):
+  @Test
+  def testLocalDateIsCurrentRomeDate(): Unit =
     val before = LocalDate.now(romeZone)
     val result = LocalDate.parse(DateTime.localDate, storageDateFormatter)
     val after = LocalDate.now(romeZone)
-    assert(result == before || result == after)
+    assertTrue(result == before || result == after)
 
-  test("localTime restituisce una stringa nel formato corretto"):
+  @Test
+  def testLocalTimeFormat(): Unit =
     val result = DateTime.localTime
-    assert(result.matches("""\d{2}:\d{2}:\d{2}\.\d{2}"""))
+    assertTrue(result.matches("""\d{2}:\d{2}:\d{2}\.\d{2}"""))
 
-  test("localTime restituisce un orario valido"):
+  @Test
+  def testLocalTimeValid(): Unit =
     val result = DateTime.localTime
     val parsedResult = Try(LocalTime.parse(result, storageTimeFormatter))
-    assert(parsedResult.isSuccess)
+    assertTrue(parsedResult.isSuccess)

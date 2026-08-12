@@ -31,25 +31,23 @@ class ArchivedDocumentTest:
         recipient = "UNUCI/Tesoreria",
         subject = "Bollette energia elettrica",
         remarks = "Alla attenzione del Tesoriere",
-        state = "archived",
         loadedDate = "2026-07-10",
         loadedTime = "22:20:00",
         loadedBy = "Rossi",
-        protocolNumber = "2026/000001",
+        protocolNumber = "2026/1",
         registeredDate = "2026-07-11",
         registeredTime = "09:00:00",
         registeredBy = "Bianchi",
         archivedDate = "2026-07-12",
         archivedTime = "10:00:00",
         archivedBy = "Verdi",
-        archiveLocation = "Archivio A - Scaffale 2",
-        archiveRemarks = "Documento verificato"
+        archiveLocation = "Archivio A - Scaffale 2"
       )
 
     archivedDocument2 =
       archivedDocument1.copy(
         id = "2",
-        protocolNumber = "2026/000002",
+        protocolNumber = "2026/2",
         sender = "INPS",
         archiveLocation = "Archivio B - Scaffale 1"
       )
@@ -57,7 +55,7 @@ class ArchivedDocumentTest:
     archivedDocument3 =
       archivedDocument1.copy(
         id = "3",
-        protocolNumber = "2026/000003",
+        protocolNumber = "2026/3",
         documentType = "letter",
         sender = "Comune di Milano"
       )

@@ -8,7 +8,7 @@
     <sender>gdfgdfgdf</sender>
     <recipient>gdf</recipient>
     <subject>gdfgdfg</subject>
-    <remarks></remarks>
+    <remarks/>
     <loadedDate>2026-08-11</loadedDate>
     <loadedTime>20:38:54.89</loadedTime>
     <loadedBy>tommy</loadedBy>
@@ -20,5 +20,27 @@
     <archivedTime>20:39:34.82</archivedTime>
     <archivedBy>tommy</archivedBy>
     <archiveLocation>dfg</archiveLocation>
+  </record>
+  <record>
+    <id>128</id>
+    <documentDate>2026-08-12</documentDate>
+    <documentTime>12:50:17.83</documentTime>
+    <documentProtocol>dfgdfg</documentProtocol>
+    <documentType>dgdg</documentType>
+    <sender>dfg</sender>
+    <recipient>dgdfg</recipient>
+    <subject>dfg</subject>
+    <remarks></remarks>
+    <loadedDate>2026-08-12</loadedDate>
+    <loadedTime>12:50:23.22</loadedTime>
+    <loadedBy>tommy</loadedBy>
+    <protocolNumber>2026/128</protocolNumber>
+    <registeredDate>2026-08-12</registeredDate>
+    <registeredTime>12:50:32.11</registeredTime>
+    <registeredBy>tommy</registeredBy>
+    <archivedDate>2026-08-12</archivedDate>
+    <archivedTime>12:50:46.70</archivedTime>
+    <archivedBy>tommy</archivedBy>
+    <archiveLocation>dg</archiveLocation>
   </record>
 </archivedDocuments>

@@ -30,7 +30,6 @@ class LoadedDocumentTest:
       "UNUCI/Tesoreria",
       "Bollette energia elettrica",
       "Alla attenzione del Tesoriere",
-      "loaded",
       "2026-07-10",
       "22:19:13.86",
       "Rossi"
@@ -46,7 +45,6 @@ class LoadedDocumentTest:
       "UNUCI/Tesoreria",
       "Bollette energia elettrica",
       "Alla attenzione del Tesoriere",
-      "loaded",
       "2026-07-10",
       "22:19:13.86",
       "Bianchi"
@@ -62,7 +60,6 @@ class LoadedDocumentTest:
       "UNUCI/Tesoreria",
       "Bollette energia elettrica",
       "Alla attenzione del Tesoriere",
-      "loaded",
       "2026-07-10",
       "22:19:13.86",
       "Neri"

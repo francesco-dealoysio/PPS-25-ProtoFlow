@@ -1,11 +1,11 @@
 package pkg.d.util
 
-import org.scalatest.funsuite.AnyFunSuite
-
+import org.junit.*
+import org.junit.Assert.*
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path, Paths}
 
-class XmlToPdfTest extends AnyFunSuite:
+class XmlToPdfTest:
 
   private val projectFolder: Path = Paths.get(System.getProperty("user.dir"))
   private val testFolder: Path = projectFolder.resolve("target/xml-to-pdf-test")
@@ -14,140 +14,68 @@ class XmlToPdfTest extends AnyFunSuite:
   private val listPdfPath: Path = printsFolder.resolve("test-accounts-list.pdf")
   private val detailsPdfPath: Path = printsFolder.resolve("test-account-details.pdf")
 
-  test("printList genera il PDF con l'elenco degli account"):
+  @Test
+  def testPrintListGeneratesPdf(): Unit =
     prepareTestXml()
     Files.deleteIfExists(listPdfPath)
 
-    val result =
-      XmlToPdf.printList(
-        xmlPath = xmlPath.toString,
-        pdfFileName = "test-accounts-list.pdf",
-        title = "Elenco account di test"
-      )
+    val result = XmlToPdf.printList(xmlPath.toString, "test-accounts-list.pdf", "Elenco account di test")
 
-    assert(result)
-    assert(Files.exists(listPdfPath))
-    assert(Files.isRegularFile(listPdfPath))
-    assert(Files.size(listPdfPath) > 0)
+    assertTrue(result)
+    assertTrue(Files.exists(listPdfPath))
+    assertTrue(Files.isRegularFile(listPdfPath))
+    assertTrue(Files.size(listPdfPath) > 0)
 
-    println()
-    println("PDF elenco account creato in:")
-    println(listPdfPath.toAbsolutePath)
+    println(s"\nPDF elenco account creato in:\n${listPdfPath.toAbsolutePath}")
 
-  test("printDetails genera il PDF con la scheda di un account"):
+  @Test
+  def testPrintDetailsGeneratesPdf(): Unit =
     prepareTestXml()
     Files.deleteIfExists(detailsPdfPath)
 
-    val result =
-      XmlToPdf.printDetails(
-        xmlPath = xmlPath.toString,
-        recordId = "2",
-        pdfFileName = "test-account-details.pdf",
-        title = "Scheda account di test"
-      )
+    val result = XmlToPdf.printDetails(xmlPath.toString, "2", "test-account-details.pdf", "Scheda account di test")
 
-    assert(result)
-    assert(Files.exists(detailsPdfPath))
-    assert(Files.isRegularFile(detailsPdfPath))
-    assert(Files.size(detailsPdfPath) > 0)
+    assertTrue(result)
+    assertTrue(Files.exists(detailsPdfPath))
+    assertTrue(Files.isRegularFile(detailsPdfPath))
+    assertTrue(Files.size(detailsPdfPath) > 0)
 
-    println()
-    println("PDF scheda account creato in:")
-    println(detailsPdfPath.toAbsolutePath)
+    println(s"\nPDF scheda account creato in:\n${detailsPdfPath.toAbsolutePath}")
 
-  test("printDetails restituisce false se l'account non esiste"):
+  @Test
+  def testPrintDetailsReturnsFalseIfAccountDoesNotExist(): Unit =
     prepareTestXml()
-
     val missingPdfPath = printsFolder.resolve("missing-account.pdf")
-
     Files.deleteIfExists(missingPdfPath)
 
-    val result =
-      XmlToPdf.printDetails(
-        xmlPath = xmlPath.toString,
-        recordId = "999",
-        pdfFileName = "missing-account.pdf",
-        title = "Account inesistente"
-      )
+    val result = XmlToPdf.printDetails(xmlPath.toString, "999", "missing-account.pdf", "Account inesistente")
 
-    assert(!result)
-    assert(!Files.exists(missingPdfPath))
+    assertFalse(result)
+    assertFalse(Files.exists(missingPdfPath))
 
-  test("printList restituisce false se non sono presenti account"):
+  @Test
+  def testPrintListReturnsFalseIfNoAccountsExist(): Unit =
     Files.createDirectories(testFolder)
-
     val emptyXmlPath = testFolder.resolve("empty-accounts.xml")
-
-    Files.writeString(
-      emptyXmlPath,
-      "<accounts></accounts>",
-      StandardCharsets.UTF_8
-    )
+    Files.writeString(emptyXmlPath, "<accounts></accounts>", StandardCharsets.UTF_8)
 
     val emptyPdfPath = printsFolder.resolve("empty-accounts.pdf")
-
     Files.deleteIfExists(emptyPdfPath)
 
-    val result =
-      XmlToPdf.printList(
-        xmlPath = emptyXmlPath.toString,
-        pdfFileName = "empty-accounts.pdf",
-        title = "Elenco account vuoto"
-      )
+    val result = XmlToPdf.printList(emptyXmlPath.toString, "empty-accounts.pdf", "Elenco account vuoto")
 
-    assert(!result)
-    assert(!Files.exists(emptyPdfPath))
+    assertFalse(result)
+    assertFalse(Files.exists(emptyPdfPath))
 
   private def prepareTestXml(): Unit =
     Files.createDirectories(testFolder)
     Files.createDirectories(printsFolder)
 
     val xmlContent =
-      """
-        |<accounts>
-        |  <record>
-        |    <id>1</id>
-        |    <name>Mario</name>
-        |    <surname>Rossi</surname>
-        |    <username>mario.rossi</username>
-        |    <password>password1</password>
-        |    <email>mario.rossi@example.it</email>
-        |    <phone>3331111111</phone>
-        |    <role>admin</role>
-        |    <area>Amministrazione</area>
-        |    <assignment>Responsabile</assignment>
-        |  </record>
-        |
-        |  <record>
-        |    <id>2</id>
-        |    <name>Anna</name>
-        |    <surname>Bianchi</surname>
-        |    <username>anna.bianchi</username>
-        |    <password>password2</password>
-        |    <email>anna.bianchi@example.it</email>
-        |    <phone>3332222222</phone>
-        |    <role>oper</role>
-        |    <area>Protocollo</area>
-        |    <assignment>Operatrice</assignment>
-        |  </record>
-        |
-        |  <record>
-        |    <id>3</id>
-        |    <name>Luca</name>
-        |    <surname>Verdi</surname>
-        |    <username>luca.verdi</username>
-        |    <password>password3</password>
-        |    <email>luca.verdi@example.it</email>
-        |    <phone>3333333333</phone>
-        |    <role>viewer</role>
-        |    <area>Archivio</area>
-        |    <assignment>Consultazione</assignment>
-        |  </record>
-        |</accounts>
-        |""".stripMargin
+      """<accounts>
+        |  <record><id>1</id><name>Mario</name><surname>Rossi</surname><username>mario.rossi</username><password>password1</password><email>mario.rossi@example.it</email><phone>3331111111</phone><role>admin</role><area>Amministrazione</area><assignment>Responsabile</assignment></record>
+        |  <record><id>2</id><name>Anna</name><surname>Bianchi</surname><username>anna.bianchi</username><password>password2</password><email>anna.bianchi@example.it</email><phone>3332222222</phone><role>oper</role><area>Protocollo</area><assignment>Operatrice</assignment></record>
+        |  <record><id>3</id><name>Luca</name><surname>Verdi</surname><username>luca.verdi</username><password>password3</password><email>luca.verdi@example.it</email><phone>3333333333</phone><role>viewer</role><area>Archivio</area><assignment>Consultazione</assignment></record>
+        |</accounts>""".stripMargin
 
-    Files.writeString(
-      xmlPath,
-      xmlContent,
-      StandardCharsets.UTF_8
-    )
+    Files.writeString(xmlPath, xmlContent, StandardCharsets.UTF_8)

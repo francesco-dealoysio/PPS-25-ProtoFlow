@@ -1,173 +1,135 @@
 package pkg.a.gui
 
-import org.scalatest.funsuite.AnyFunSuite
+import org.junit.*
+import org.junit.Assert.*
+
 import pkg.a.gui.structures.AccountViewModel
 import pkg.b.logic.Account
 import pkg.a.gui.text.UiText.Validation.Account.*
 
-class AccountViewModelTest extends AnyFunSuite:
+class AccountViewModelTest:
 
   private val viewModel = AccountViewModel()
 
-  test("un account completo e corretto deve essere valido"):
+  @Test
+  def testValidCompleteAccount(): Unit =
     val accountToValidate = validForm()
-
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
+    assertTrue(errors.isEmpty)
+    assertTrue(viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
-    assert(errors.isEmpty)
-    assert(viewModel.isValid(accountToValidate, "topolino", existingAccounts))
-
-  test("il campo Cognome è obbligatorio"):
+  @Test
+  def testSurnameRequired(): Unit =
     val accountToValidate = validForm().copy(surname = "")
-
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
+    assertTrue(errors.contains(SurnameRequired))
+    assertFalse(viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
-    assert(errors.contains(SurnameRequired))
-    assert(!viewModel.isValid(accountToValidate, "topolino", existingAccounts))
-
-  test("il campo Cognome contenente solo spazi non è valido"):
+  @Test
+  def testSurnameOnlySpacesInvalid(): Unit =
     val accountToValidate = validForm().copy(surname = "   ")
-
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
+    assertTrue(errors.contains(SurnameRequired))
 
-    assert(errors.contains(SurnameRequired))
-
-  test("il campo Nome è obbligatorio"):
+  @Test
+  def testNameRequired(): Unit =
     val accountToValidate = validForm().copy(name = "")
-
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
+    assertTrue(errors.contains(NameRequired))
+    assertFalse(viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
-    assert(errors.contains(NameRequired))
-    assert(!viewModel.isValid(accountToValidate, "topolino", existingAccounts))
-
-  test("il campo Email è obbligatorio"):
+  @Test
+  def testEmailRequired(): Unit =
     val accountToValidate = validForm().copy(email = "")
-
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
+    assertTrue(errors.contains(EmailRequired))
+    assertFalse(viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
-    assert(errors.contains(EmailRequired))
-    assert(!viewModel.isValid(accountToValidate, "topolino", existingAccounts))
-
-  test("un'email senza chiocciola non è valida"):
+  @Test
+  def testEmailWithoutAtInvalid(): Unit =
     val accountToValidate = validForm().copy(email = "francesco.studio.unibo.it")
-
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
+    assertTrue(errors.contains(EmailInvalid))
+    assertFalse(viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
-    assert(errors.contains(EmailInvalid))
-    assert(!viewModel.isValid(accountToValidate, "topolino", existingAccounts))
-
-  test("un'email senza dominio non è valida"):
+  @Test
+  def testEmailWithoutDomainInvalid(): Unit =
     val accountToValidate = validForm().copy(email = "francesco@unibo")
-
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
+    assertTrue(errors.contains(EmailInvalid))
 
-    assert(errors.contains(EmailInvalid))
-
-  test("il campo Ruolo è obbligatorio"):
+  @Test
+  def testRoleRequired(): Unit =
     val accountToValidate = validForm().copy(role = "")
-
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
+    assertTrue(errors.contains(RoleRequired))
+    assertFalse(viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
-    assert(errors.contains(RoleRequired))
-    assert(!viewModel.isValid(accountToValidate, "topolino", existingAccounts))
-
-  test("il campo Username è obbligatorio"):
+  @Test
+  def testUsernameRequired(): Unit =
     val accountToValidate = validForm().copy(username = "")
-
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
+    assertTrue(errors.contains(UsernameRequired))
+    assertFalse(viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
-    assert(errors.contains(UsernameRequired))
-    assert(!viewModel.isValid(accountToValidate, "topolino", existingAccounts))
-
-  test("il campo Password è obbligatorio in fase di aggiunta"):
+  @Test
+  def testPasswordRequiredWhenAddingAccount(): Unit =
     val accountToValidate = validForm()
+    val errors = viewModel.validate(accountToValidate, "", existingAccounts)
+    assertTrue(errors.contains(PasswordRequired))
+    assertFalse(viewModel.isValid(accountToValidate, "", existingAccounts))
 
-    val errors = viewModel.validate(accountToValidate, "", existingAccounts, requirePassword = true)
-
-    assert(errors.contains(PasswordRequired))
-    assert(!viewModel.isValid(accountToValidate, "", existingAccounts, requirePassword = true))
-
-  test("il campo Password può essere lasciato vuoto in fase di modifica"):
+  @Test
+  def testPasswordCanBeEmptyWhenEditingAccount(): Unit =
     val accountToValidate = validForm()
-
     val errors = viewModel.validate(accountToValidate, "", existingAccounts, requirePassword = false)
+    assertTrue(errors.isEmpty)
+    assertTrue(viewModel.isValid(accountToValidate, "", existingAccounts, requirePassword = false))
 
-    assert(errors.isEmpty)
-    assert(viewModel.isValid(accountToValidate, "", existingAccounts, requirePassword = false))
-
-  test("un account già esistente con lo stesso username non deve essere valido"):
+  @Test
+  def testDuplicateUsernameInvalid(): Unit =
     val accountToValidate = validForm().copy(username = "rosma")
-
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
+    assertTrue(errors.contains(DuplicateUsername))
+    assertFalse(viewModel.isValid(accountToValidate, "topolino", existingAccounts))
 
-    assert(errors.contains(DuplicateUsername))
-    assert(!viewModel.isValid(accountToValidate, "topolino", existingAccounts))
-
-  test("il controllo dei duplicati ignora maiuscole e minuscole"):
+  @Test
+  def testDuplicateUsernameIgnoresCase(): Unit =
     val accountToValidate = validForm().copy(username = "ROSMA")
-
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
+    assertTrue(errors.contains(DuplicateUsername))
 
-    assert(errors.contains(DuplicateUsername))
-
-  test("il controllo dei duplicati ignora gli spazi iniziali e finali"):
+  @Test
+  def testDuplicateUsernameIgnoresSpaces(): Unit =
     val accountToValidate = validForm().copy(username = "  rosma  ")
-
     val errors = viewModel.validate(accountToValidate, "topolino", existingAccounts)
+    assertTrue(errors.contains(DuplicateUsername))
 
-    assert(errors.contains(DuplicateUsername))
-
-  test("durante la modifica l'account non deve essere considerato duplicato di se stesso"):
+  @Test
+  def testEditingAccountDoesNotConsiderItselfDuplicate: Unit =
     val accountToValidate = validForm().copy(id = "1", username = "frank")
+    val errors = viewModel.validate(accountToValidate, "", existingAccounts, Some("1"), false)
+    assertTrue(errors.isEmpty)
+    assertTrue(viewModel.isValid(accountToValidate, "", existingAccounts, Some("1"), false))
 
-    val errors = viewModel.validate(
-      account = accountToValidate,
-      rawPassword = "",
-      existingAccounts = existingAccounts,
-      currentAccountId = Some("1"),
-      requirePassword = false
-    )
-
-    assert(errors.isEmpty)
-    assert(viewModel.isValid(
-      account = accountToValidate,
-      rawPassword = "",
-      existingAccounts = existingAccounts,
-      currentAccountId = Some("1"),
-      requirePassword = false
-    ))
-
-  test("durante la modifica lo username di un altro account deve essere considerato duplicato"):
+  @Test
+  def testEditingAccountDetectsAnotherDuplicateUsername: Unit =
     val accountToValidate = validForm().copy(id = "1", username = "rosma")
+    val errors = viewModel.validate(accountToValidate, "", existingAccounts, Some("1"), false)
+    assertTrue(errors.contains(DuplicateUsername))
+    assertFalse(viewModel.isValid(accountToValidate, "", existingAccounts, Some("1"), false))
 
-    val errors = viewModel.validate(
-      account = accountToValidate,
-      rawPassword = "",
-      existingAccounts = existingAccounts,
-      currentAccountId = Some("1"),
-      requirePassword = false
-    )
-
-    assert(errors.contains(DuplicateUsername))
-    assert(!viewModel.isValid(
-      account = accountToValidate,
-      rawPassword = "",
-      existingAccounts = existingAccounts,
-      currentAccountId = Some("1"),
-      requirePassword = false
-    ))
-
-  test("se tutti i campi obbligatori sono vuoti vengono restituiti tutti gli errori"):
+  @Test
+  def testAllRequiredFieldsEmptyReturnAllErrors: Unit =
     val accountToValidate = Account()
-
     val errors = viewModel.validate(accountToValidate, "", existingAccounts)
 
-    assert(errors.contains(SurnameRequired))
-    assert(errors.contains(NameRequired))
-    assert(errors.contains(EmailRequired))
-    assert(errors.contains(RoleRequired))
-    assert(errors.contains(UsernameRequired))
-    assert(errors.contains(PasswordRequired))
+    assertTrue(errors.contains(SurnameRequired))
+    assertTrue(errors.contains(NameRequired))
+    assertTrue(errors.contains(EmailRequired))
+    assertTrue(errors.contains(RoleRequired))
+    assertTrue(errors.contains(UsernameRequired))
+    assertTrue(errors.contains(PasswordRequired))
 
   private def validForm(): Account =
     Account(
@@ -183,6 +145,16 @@ class AccountViewModelTest extends AnyFunSuite:
 
   private def existingAccounts: Seq[Account] =
     Seq(
-      Account(id = "1", surname = "de aloysio", name = "francesco", username = "frank"),
-      Account(id = "2", surname = "rossi", name = "mario", username = "rosma")
+      Account(
+        id = "1",
+        surname = "de aloysio",
+        name = "francesco",
+        username = "frank"
+      ),
+      Account(
+        id = "2",
+        surname = "rossi",
+        name = "mario",
+        username = "rosma"
+      )
     )

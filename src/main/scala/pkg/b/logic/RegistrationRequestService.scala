@@ -1,6 +1,6 @@
 package pkg.b.logic
 
-import pkg.d.util.IdGen
+import pkg.d.util.{IdGen, DateTime}
 import pkg.d.util.Util.{inDatabaseFilePathName, inIdsFilePathName, cipher}
 import pkg.b.logic.Registration
 import scala.util.Random
@@ -56,7 +56,7 @@ class RegistrationRequestService(
           role = requestedRole.trim,
           area = requestedArea.trim,
           assignment = assignment.trim,
-          date = RegistrationDates.now(),
+          date = DateTime.localDateTime,
           state = "Pending"
         )
 
@@ -106,7 +106,7 @@ class RegistrationRequestService(
             request.copy(
               state = "Approved",
               processedBy = operatorUsername,
-              processedDate = RegistrationDates.now(),
+              processedDate = DateTime.localDateTime,
               assignedUsername = username
             )
 
@@ -131,7 +131,7 @@ class RegistrationRequestService(
             request.copy(
               state = "Rejected",
               processedBy = operatorUsername,
-              processedDate = RegistrationDates.now(),
+              processedDate = DateTime.localDateTime,
               motivation = motivation.trim
             )
 

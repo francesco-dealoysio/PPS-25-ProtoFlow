@@ -1,15 +1,13 @@
 package pkg.a.gui
 
-import org.scalatest.BeforeAndAfterEach
-import org.scalatest.funsuite.AnyFunSuite
+import org.junit.*
+import org.junit.Assert.*
 import pkg.b.logic.{Account, RegistrationRequestService}
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path}
 
-class RegistrationRequestServiceTest
-  extends AnyFunSuite
-    with BeforeAndAfterEach:
+class RegistrationRequestServiceTest:
 
   private var tempDirectory: Path = _
   private var tempXmlFile: Path = _
@@ -18,265 +16,129 @@ class RegistrationRequestServiceTest
   private var tempAccountsXmlFile: Path = _
   private var service: RegistrationRequestService = _
 
-  override protected def beforeEach(): Unit =
-    super.beforeEach()
-
-    tempDirectory =
-      Files.createTempDirectory("protoflow-registration-test-")
-
+  @Before
+  def setUp(): Unit =
+    tempDirectory = Files.createTempDirectory("protoflow-registration-test-")
     tempXmlFile = tempDirectory.resolve("registrations.xml")
     tempAcceptedXmlFile = tempDirectory.resolve("registrationsAccepted.xml")
     tempRejectedXmlFile = tempDirectory.resolve("registrationsRejected.xml")
     tempAccountsXmlFile = tempDirectory.resolve("accounts.xml")
 
-    Seq(tempXmlFile, tempAcceptedXmlFile, tempRejectedXmlFile).foreach: file =>
-      Files.writeString(
-        file,
-        """<?xml version="1.0" encoding="UTF-8"?>
-          |<registrationRequests>
-          |</registrationRequests>
-          |""".stripMargin,
-        StandardCharsets.UTF_8
-      )
+    val emptyRequestsXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<registrationRequests>\n</registrationRequests>\n"
+    val emptyAccountsXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<accounts>\n</accounts>\n"
 
-    Files.writeString(
-      tempAccountsXmlFile,
-      """<?xml version="1.0" encoding="UTF-8"?>
-        |<accounts>
-        |</accounts>
-        |""".stripMargin,
-      StandardCharsets.UTF_8
+    Seq(tempXmlFile, tempAcceptedXmlFile, tempRejectedXmlFile).foreach(file => Files.writeString(file, emptyRequestsXml, StandardCharsets.UTF_8))
+    Files.writeString(tempAccountsXmlFile, emptyAccountsXml, StandardCharsets.UTF_8)
+
+    service = new RegistrationRequestService(
+      tempXmlFile.toString, tempAcceptedXmlFile.toString, tempRejectedXmlFile.toString, tempAccountsXmlFile.toString
     )
 
-    service =
-      new RegistrationRequestService(
-        tempXmlFile.toString,
-        tempAcceptedXmlFile.toString,
-        tempRejectedXmlFile.toString,
-        tempAccountsXmlFile.toString
-      )
-
-  override protected def afterEach(): Unit =
-    try
-      Seq(tempXmlFile, tempAcceptedXmlFile, tempRejectedXmlFile, tempAccountsXmlFile)
-        .foreach(file => if file != null then Files.deleteIfExists(file))
-
-      if tempDirectory != null then
-        Files.deleteIfExists(tempDirectory)
-    finally
-      super.afterEach()
+  @After
+  def tearDown(): Unit =
+    Seq(tempXmlFile, tempAcceptedXmlFile, tempRejectedXmlFile, tempAccountsXmlFile).foreach(file => if file != null then Files.deleteIfExists(file))
+    if tempDirectory != null then Files.deleteIfExists(tempDirectory)
 
   private def submitLuigi(): String =
-    service.submitRequest(
-      name = "Luigi",
-      surname = "Bianchi",
-      email = "luigi.approve@email.it",
-      phone = "",
-      requestedRole = "Viewer",
-      requestedArea = "Segreteria",
-      assignment = "Impiegato"
-    ).toOption.get.getId
+    service.submitRequest("Luigi", "Bianchi", "luigi.approve@email.it", "", "Viewer", "Segreteria", "Impiegato").toOption.get.getId
 
-  test("submitRequest crea una richiesta valida nello stato Pending"):
-    val result = service.submitRequest(
-      name = "Mario",
-      surname = "Rossi",
-      email = "mario.rossi@email.it",
-      phone = "3331234567",
-      requestedRole = "Viewer",
-      requestedArea = "Personale",
-      assignment = "Impiegato"
-    )
-
-    assert(result.isRight)
+  @Test
+  def testSubmitRequestCreatesPendingRequest(): Unit =
+    val result = service.submitRequest("Mario", "Rossi", "mario.rossi@email.it", "3331234567", "Viewer", "Personale", "Impiegato")
+    assertTrue(result.isRight)
 
     val request = result.toOption.get
+    assertEquals("Mario", request.getName)
+    assertEquals("Rossi", request.getSurname)
+    assertEquals("Pending", request.getState)
+    assertTrue(request.getId.nonEmpty)
 
-    assert(request.getName == "Mario")
-    assert(request.getSurname == "Rossi")
-    assert(request.getState == "Pending")
-    assert(request.getId.nonEmpty)
-
-  test("submitRequest salva la richiesta nel file temporaneo"):
-    val created = service.submitRequest(
-      name = "Mario",
-      surname = "Rossi",
-      email = "mario.repository@email.it",
-      phone = "",
-      requestedRole = "Viewer",
-      requestedArea = "Personale",
-      assignment = "Impiegato"
-    )
-
-    assert(created.isRight)
+  @Test
+  def testSubmitRequestStoresRequestInTemporaryFile(): Unit =
+    val created = service.submitRequest("Mario", "Rossi", "mario.repository@email.it", "", "Viewer", "Personale", "Impiegato")
+    assertTrue(created.isRight)
 
     val pendingRequests = service.getPendingRequests
+    assertEquals(1, pendingRequests.size)
+    assertEquals("mario.repository@email.it", pendingRequests.head.getEmail)
 
-    assert(pendingRequests.size == 1)
-    assert(
-      pendingRequests.head.getEmail ==
-        "mario.repository@email.it"
-    )
+  @Test
+  def testSubmitRequestRejectsMissingNameSurnameOrEmail(): Unit =
+    val result = service.submitRequest("", "Rossi", "mario.rossi@email.it", "", "Viewer", "Personale", "Impiegato")
+    assertEquals(Left("Nome, cognome ed email sono obbligatori"), result)
 
-  test("submitRequest rifiuta nome cognome o email mancanti"):
-    val result = service.submitRequest(
-      name = "",
-      surname = "Rossi",
-      email = "mario.rossi@email.it",
-      phone = "",
-      requestedRole = "Viewer",
-      requestedArea = "Personale",
-      assignment = "Impiegato"
-    )
+  @Test
+  def testSubmitRequestRejectsInvalidEmail(): Unit =
+    val result = service.submitRequest("Mario", "Rossi", "email-non-valida", "", "Viewer", "Personale", "Impiegato")
+    assertEquals(Left("Email non valida"), result)
 
-    assert(
-      result ==
-        Left("Nome, cognome ed email sono obbligatori")
-    )
+  @Test
+  def testSubmitRequestRejectsMissingRole(): Unit =
+    val result = service.submitRequest("Mario", "Rossi", "mario.rossi@email.it", "", "", "Personale", "Impiegato")
+    assertEquals(Left("Il ruolo richiesto è obbligatorio"), result)
 
-  test("submitRequest rifiuta una email non valida"):
-    val result = service.submitRequest(
-      name = "Mario",
-      surname = "Rossi",
-      email = "email-non-valida",
-      phone = "",
-      requestedRole = "Viewer",
-      requestedArea = "Personale",
-      assignment = "Impiegato"
-    )
+  @Test
+  def testSubmitRequestRejectsMissingArea(): Unit =
+    val result = service.submitRequest("Mario", "Rossi", "mario.rossi@email.it", "", "Viewer", "", "Impiegato")
+    assertEquals(Left("L'area di appartenenza è obbligatoria"), result)
 
-    assert(result == Left("Email non valida"))
+  @Test
+  def testSubmitRequestRejectsMissingAssignment(): Unit =
+    val result = service.submitRequest("Mario", "Rossi", "mario.rossi@email.it", "", "Viewer", "Personale", "")
+    assertEquals(Left("L'incarico è obbligatorio"), result)
 
-  test("submitRequest rifiuta un ruolo mancante"):
-    val result = service.submitRequest(
-      name = "Mario",
-      surname = "Rossi",
-      email = "mario.rossi@email.it",
-      phone = "",
-      requestedRole = "",
-      requestedArea = "Personale",
-      assignment = "Impiegato"
-    )
-
-    assert(
-      result ==
-        Left("Il ruolo richiesto è obbligatorio")
-    )
-
-  test("submitRequest rifiuta un'area mancante"):
-    val result = service.submitRequest(
-      name = "Mario",
-      surname = "Rossi",
-      email = "mario.rossi@email.it",
-      phone = "",
-      requestedRole = "Viewer",
-      requestedArea = "",
-      assignment = "Impiegato"
-    )
-
-    assert(
-      result ==
-        Left("L'area di appartenenza è obbligatoria")
-    )
-
-  test("submitRequest rifiuta un incarico mancante"):
-    val result = service.submitRequest(
-      name = "Mario",
-      surname = "Rossi",
-      email = "mario.rossi@email.it",
-      phone = "",
-      requestedRole = "Viewer",
-      requestedArea = "Personale",
-      assignment = ""
-    )
-
-    assert(
-      result ==
-        Left("L'incarico è obbligatorio")
-    )
-
-  test("getPendingRequests restituisce solo richieste Pending"):
-    service.submitRequest(
-      name = "Mario",
-      surname = "Rossi",
-      email = "mario.pending@email.it",
-      phone = "",
-      requestedRole = "Viewer",
-      requestedArea = "Personale",
-      assignment = "Impiegato"
-    )
-
+  @Test
+  def testGetPendingRequestsReturnsOnlyPendingRequests(): Unit =
+    service.submitRequest("Mario", "Rossi", "mario.pending@email.it", "", "Viewer", "Personale", "Impiegato")
     val requests = service.getPendingRequests
+    assertTrue(requests.nonEmpty)
+    assertTrue(requests.forall(_.getState == "Pending"))
 
-    assert(requests.nonEmpty)
-    assert(
-      requests.forall(
-        _.getState == "Pending"
-      )
-    )
-
-  test("approveRequest cambia lo stato in Approved, crea un account e sposta la richiesta tra le accettate"):
+  @Test
+  def testApproveRequestCreatesAccountAndMovesRequestToAccepted(): Unit =
     val requestId = submitLuigi()
-
     val result = service.approveRequest(requestId, operatorUsername = "admin")
-
-    assert(result.isRight)
+    assertTrue(result.isRight)
 
     val approval = result.toOption.get
-
-    assert(approval.request.getState == "Approved")
-    assert(approval.request.getProcessedBy == "admin")
-    assert(approval.request.getProcessedDate.nonEmpty)
-    assert(approval.request.getAssignedUsername == approval.account.getUsername)
-    assert(approval.account.getRole == "Viewer")
-    assert(approval.generatedPassword.nonEmpty)
-
-    assert(service.getPendingRequests.isEmpty)
+    assertEquals("Approved", approval.request.getState)
+    assertEquals("admin", approval.request.getProcessedBy)
+    assertTrue(approval.request.getProcessedDate.nonEmpty)
+    assertEquals(approval.account.getUsername, approval.request.getAssignedUsername)
+    assertEquals("Viewer", approval.account.getRole)
+    assertTrue(approval.generatedPassword.nonEmpty)
+    assertTrue(service.getPendingRequests.isEmpty)
 
     val storedAccounts = new Account().getRecords[Account](tempAccountsXmlFile.toString)
+    assertTrue(storedAccounts.exists(_.getUsername == approval.account.getUsername))
 
-    assert(storedAccounts.exists(_.getUsername == approval.account.getUsername))
-
-  test("rejectRequest richiede una motivazione"):
+  @Test
+  def testRejectRequestRequiresMotivation(): Unit =
     val requestId = submitLuigi()
-
     val result = service.rejectRequest(requestId, operatorUsername = "admin", motivation = "")
+    assertEquals(Left("La motivazione del rifiuto è obbligatoria"), result)
+    assertTrue(service.getPendingRequests.nonEmpty)
 
-    assert(result == Left("La motivazione del rifiuto è obbligatoria"))
-    assert(service.getPendingRequests.nonEmpty)
-
-  test("rejectRequest cambia lo stato in Rejected, registra la motivazione e sposta la richiesta tra le rifiutate"):
-    val created = service.submitRequest(
-      name = "Anna",
-      surname = "Verdi",
-      email = "anna.reject@email.it",
-      phone = "",
-      requestedRole = "Viewer",
-      requestedArea = "Amministrazione",
-      assignment = "Impiegata"
-    )
-
+  @Test
+  def testRejectRequestMovesRequestToRejected(): Unit =
+    val created = service.submitRequest("Anna", "Verdi", "anna.reject@email.it", "", "Viewer", "Amministrazione", "Impiegata")
     val requestId = created.toOption.get.getId
-
     val result = service.rejectRequest(requestId, operatorUsername = "admin", motivation = "Dati incompleti")
 
-    assert(result.isRight)
-
+    assertTrue(result.isRight)
     val rejected = result.toOption.get
+    assertEquals("Rejected", rejected.getState)
+    assertEquals("admin", rejected.getProcessedBy)
+    assertTrue(rejected.getProcessedDate.nonEmpty)
+    assertEquals("Dati incompleti", rejected.getMotivation)
+    assertTrue(service.getPendingRequests.isEmpty)
 
-    assert(rejected.getState == "Rejected")
-    assert(rejected.getProcessedBy == "admin")
-    assert(rejected.getProcessedDate.nonEmpty)
-    assert(rejected.getMotivation == "Dati incompleti")
-
-    assert(service.getPendingRequests.isEmpty)
-
-  test("approveRequest restituisce errore per id inesistente"):
+  @Test
+  def testApproveRequestReturnsErrorForMissingId(): Unit =
     val result = service.approveRequest("id-inesistente", operatorUsername = "admin")
+    assertEquals(Left("Richiesta non trovata"), result)
 
-    assert(result == Left("Richiesta non trovata"))
-
-  test("rejectRequest restituisce errore per id inesistente"):
+  @Test
+  def testRejectRequestReturnsErrorForMissingId(): Unit =
     val result = service.rejectRequest("id-inesistente", operatorUsername = "admin", motivation = "Motivazione")
-
-    assert(result == Left("Richiesta non trovata"))
+    assertEquals(Left("Richiesta non trovata"), result)

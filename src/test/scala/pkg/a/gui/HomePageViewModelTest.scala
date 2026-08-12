@@ -1,25 +1,29 @@
 package pkg.a.gui
 
-import org.scalatest.OneInstancePerTest
-import org.scalatest.funsuite.AnyFunSuite
+import org.junit.*
+import org.junit.Assert.*
 import pkg.a.gui.structures.{HomePageViewModel, MenuAction}
 
-class HomePageViewModelTest extends AnyFunSuite with OneInstancePerTest:
+class HomePageViewModelTest:
 
   private val viewModel = new HomePageViewModel
 
-  test("la sezione iniziale deve essere Dashboard"):
-    assert(viewModel.currentSection == MenuAction.Dashboard)
+  @Test
+  def testInitialSectionIsDashboard(): Unit =
+    assertEquals(MenuAction.Dashboard, viewModel.currentSection)
 
-  test("select deve cambiare la sezione corrente"):
+  @Test
+  def testSelectChangesCurrentSection(): Unit =
     viewModel.select(MenuAction.VisualizzazioneProtocollazioni)
-    assert(viewModel.currentSection == MenuAction.VisualizzazioneProtocollazioni)
+    assertEquals(MenuAction.VisualizzazioneProtocollazioni, viewModel.currentSection)
 
-  test("select deve permettere di tornare alla Dashboard"):
+  @Test
+  def testSelectCanReturnToDashboard(): Unit =
     viewModel.select(MenuAction.Classifiche)
     viewModel.select(MenuAction.Dashboard)
-    assert(viewModel.currentSection == MenuAction.Dashboard)
+    assertEquals(MenuAction.Dashboard, viewModel.currentSection)
 
-  test("il logout deve essere memorizzato come sezione corrente"):
+  @Test
+  def testLogoutIsStoredAsCurrentSection(): Unit =
     viewModel.select(MenuAction.Logout)
-    assert(viewModel.currentSection == MenuAction.Logout)
+    assertEquals(MenuAction.Logout, viewModel.currentSection)
