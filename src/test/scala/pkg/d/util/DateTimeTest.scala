@@ -80,3 +80,9 @@ class DateTimeTest:
     val result = DateTime.localTime
     val parsedResult = Try(LocalTime.parse(result, storageTimeFormatter))
     assertTrue(parsedResult.isSuccess)
+
+  @Test
+  def testParseDateTime(): Unit =
+    val value = "2026-07-10 10:00:00.00"
+    val result = DateTime.parseDateTime(value)
+    assertEquals(LocalDateTime.of(2026, 7, 10, 10, 0, 0, 0), result)
