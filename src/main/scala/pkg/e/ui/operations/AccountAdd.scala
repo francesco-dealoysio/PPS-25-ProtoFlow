@@ -1,7 +1,7 @@
 package pkg.e.ui.operations
 
 import javafx.collections.FXCollections
-import pkg.b.logic.Account
+import pkg.b.logic.{Account, Classification, Role}
 import pkg.d.util.DateTime.{localDate, localTime}
 import pkg.d.util.IdGen
 import pkg.d.util.Util.{cipher, inDatabaseFilePathName, inDocumentsFilePathName, inIdsFilePathName}
@@ -13,6 +13,8 @@ import scalafx.scene.layout.VBox
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import scala.util.{Failure, Success, Try}
+import scalafx.collections.ObservableBuffer
+
 
 class AccountAdd(val user: Account, val parentMask: Management) extends Operation:
 
@@ -107,14 +109,13 @@ class AccountAdd(val user: Account, val parentMask: Management) extends Operatio
     emailFld.text = objEntity.asInstanceOf[Account].getEmail
     phoneFld.text = objEntity.asInstanceOf[Account].getPhone
 
-    // caricare la combobox dal file xml
-    roleFld.setItems(FXCollections.observableArrayList("admin", "Operatore", "Visualizzatore"))
-    roleFld.getSelectionModel.select(objEntity.asInstanceOf[Account].getRole)
+
+    roleFld.getItems.addAll(Role().getRecords[Role]().map(r => r.getRole).sorted *)
+    roleFld.getSelectionModel.select(objEntity.asInstanceOf[Account].getRole) // qui non serve
     roleFld.promptText = "Selezionare un ruolo"
 
-    // caricare la combobox dal file xml
-    areaFld.setItems(FXCollections.observableArrayList("Amministrazione", "Personale", "Segreteria"))
-    areaFld.getSelectionModel.select(objEntity.asInstanceOf[Account].getArea)
+    areaFld.getItems.addAll(Classification().getRecords[Classification]().map(r => r.getClassification).sorted *)
+    areaFld.getSelectionModel.select(objEntity.asInstanceOf[Account].getArea) // qui non serve
     areaFld.promptText = "Selezionare un'area"
 
     assignmentFld.text = objEntity.asInstanceOf[Account].getAssignment
@@ -171,7 +172,7 @@ class AccountAdd(val user: Account, val parentMask: Management) extends Operatio
     objEntity.asInstanceOf[Account].setArea(areaFld.value.value)
     objEntity.asInstanceOf[Account].setAssignment(assignmentFld.text.value.trim)
     objEntity.asInstanceOf[Account].setUsername(usernameFld.text.value.trim)
-    objEntity.asInstanceOf[Account].setPassword(cipher(passwordFld.getText))
+    objEntity.asInstanceOf[Account].setPassword(passwordFld.getText)
 
 @main def tryAccountAdd: Unit =
   println("")

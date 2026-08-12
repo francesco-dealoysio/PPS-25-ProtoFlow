@@ -46,11 +46,12 @@ class Login(val user: Account, val parentMask: GUI) extends Operation:
         if valid then {
 
           val username = usernameFld.text.value.trim
-          val password = passwordFld.getText
+          val password = cipher(passwordFld.getText)
 
           val found = Account().getRecordsByFilter[Account](a =>
             a.getUsername == username &&
-            a.getPassword == cipher(password)
+            //a.getPassword == cipher(password)
+            a.getPassword == password
           )
 
           if (found.size > 0) then
@@ -125,6 +126,11 @@ class Login(val user: Account, val parentMask: GUI) extends Operation:
     super.start()
 
     usernameFld.requestFocus()
+
+    // per evitare di inserire ogni volta le credenziali
+    usernameFld.text = "frank" // eliminare
+    passwordFld.text = "topolino" // eliminare
+    //execBtn.fire() // eliminare
 
   def fieldsLoad: Unit =
 

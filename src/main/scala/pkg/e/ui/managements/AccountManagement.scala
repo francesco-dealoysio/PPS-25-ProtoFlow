@@ -96,4 +96,3 @@ class AccountManagement(val user: Account, val parentMask: Homepage) extends Man
   }
 
   table.selectionModel().selectFirst()
-
