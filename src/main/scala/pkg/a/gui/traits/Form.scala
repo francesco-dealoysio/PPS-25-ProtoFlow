@@ -73,7 +73,7 @@ trait Form extends Common:
   protected def clearFormFieldErrors(fields: FormField[? <: Node]*): Unit =
     fields.foreach(_.clearError())
 
-  protected def stringField(prompt: String, initialValue: String = ""): FormField[TextField] =
+  protected def stringField(prompt: String = "", initialValue: String = ""): FormField[TextField] =
     formField(textField(prompt, initialValue), initialValue)(
       readValue = _.text.value,
       writeValue = (field, value) => field.text = value

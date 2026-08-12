@@ -55,7 +55,14 @@ object AccountManagementView extends Management:
                  |L'operazione non può essere annullata.""".stripMargin
           )
 
-        if confirmed then
+
+        val isLastAdmin =
+          selected.getRole.equalsIgnoreCase("admin") &&
+            accounts.count(_.getRole.equalsIgnoreCase("admin")) <= 1
+
+        if isLastAdmin then
+          result.show(Text.LastAdminDeleteError, success = false)
+        else
           val deleted = accountLogic.recordDelete(selected.getId)
           if deleted then
             loadAccounts()

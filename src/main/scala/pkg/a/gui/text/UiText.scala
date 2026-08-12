@@ -112,10 +112,10 @@ object UiText:
       val DeleteTitle = "Eliminazione ruolo"
       val DeleteConfirmation = "Confermi l'eliminazione del ruolo selezionato?"
       val DeleteError = "Non è stato possibile eliminare il ruolo."
-
       val PrintSuccess = "Elenco dei ruoli stampato correttamente nella cartella protoflow/prints."
       val PrintError = "Non è stato possibile stampare l'elenco dei ruoli."
       val PrintTitle = "Elenco Ruoli"
+      val AdminRoleDeleteError = "Non è possibile eliminare il ruolo di amministratore."
 
       def deleted(role: String): String =
         s"Il ruolo '$role' è stato eliminato correttamente."
@@ -185,7 +185,7 @@ object UiText:
       val DeleteTitle = "Eliminazione account"
       val DeleteConfirmation = "Confermi l'eliminazione dell'account selezionato?"
       val DeleteError = "Non è stato possibile eliminare l'account."
-
+      val LastAdminDeleteError = "Non è possibile eliminare l'ultimo account amministratore."
       def deletedAccount(username: String): String =
         s"L'account '$username' è stato eliminato correttamente."
 

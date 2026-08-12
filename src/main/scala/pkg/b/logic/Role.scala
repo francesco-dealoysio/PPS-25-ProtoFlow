@@ -56,5 +56,16 @@ case class Role(
         false
     result
 
+  override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    val roles = getRecords[Role](xmlFilePathName)
+    roles.find(_.getId == id) match
+      case Some(role) =>
+        if role.getRole.equalsIgnoreCase("admin") then
+          false
+        else
+          super.recordDelete(id, xmlFilePathName)
+      case None =>
+        false
+
 @main def tryRole: Unit =
     println("Tested in RoleTest.scala")
