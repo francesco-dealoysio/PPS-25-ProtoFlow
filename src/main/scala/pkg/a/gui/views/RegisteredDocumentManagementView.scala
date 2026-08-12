@@ -1,7 +1,8 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.services.LoadedDocumentService
 import pkg.a.gui.traits.Management
-import pkg.b.logic.{LoadedDocumentService, RegisteredDocument}
+import pkg.b.logic.RegisteredDocument
 import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.XmlToPdf
 import pkg.a.gui.text.UiText.Common.Buttons
@@ -22,6 +23,7 @@ object RegisteredDocumentManagementView extends Management:
     val table = managementTable(documents, Text.Empty)
 
     table.columns ++= Seq(
+      stringColumn[RegisteredDocument](Fields.Id, Some(140))(_.getId),
       stringColumn[RegisteredDocument](Fields.ProtocolNumber, Some(140))(_.getProtocolNumber),
       stringColumn[RegisteredDocument](Fields.Sender, Some(150))(_.getSender),
       stringColumn[RegisteredDocument](Fields.Subject, Some(220))(_.getSubject),
@@ -32,7 +34,7 @@ object RegisteredDocumentManagementView extends Management:
     def loadDocuments(): Unit =
       loadTableItemsSafely(table, documents, result, Text.Empty, Text.LoadError):
         service
-          .getRegisteredDocuments()
+          .getRegisteredDocuments
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
     clearResultOnSelection(table, result)

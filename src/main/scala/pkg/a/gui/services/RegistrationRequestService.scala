@@ -1,8 +1,9 @@
-package pkg.b.logic
+package pkg.a.gui.services
 
-import pkg.d.util.IdGen
-import pkg.d.util.Util.{inDatabaseFilePathName, inIdsFilePathName, cipher}
-import pkg.b.logic.Registration
+import pkg.b.logic.{Account, Registration}
+import pkg.d.util.Util.{cipher, inDatabaseFilePathName, inIdsFilePathName}
+import pkg.d.util.{DateTime, IdGen}
+
 import scala.util.Random
 
 /** Esito dell'approvazione: la richiesta aggiornata, l'account creato e la password generata (in chiaro, solo per il report). */
@@ -56,7 +57,7 @@ class RegistrationRequestService(
           role = requestedRole.trim,
           area = requestedArea.trim,
           assignment = assignment.trim,
-          date = RegistrationDates.now(),
+          date = DateTime.localDateTime,
           state = "Pending"
         )
 
@@ -106,7 +107,7 @@ class RegistrationRequestService(
             request.copy(
               state = "Approved",
               processedBy = operatorUsername,
-              processedDate = RegistrationDates.now(),
+              processedDate = DateTime.localDateTime,
               assignedUsername = username
             )
 
@@ -131,7 +132,7 @@ class RegistrationRequestService(
             request.copy(
               state = "Rejected",
               processedBy = operatorUsername,
-              processedDate = RegistrationDates.now(),
+              processedDate = DateTime.localDateTime,
               motivation = motivation.trim
             )
 

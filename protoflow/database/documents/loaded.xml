@@ -1,17 +1,16 @@
 <loaded>
   <record>
-    <id>47</id>
-    <documentDate>2026-08-05</documentDate>
-    <documentTime>11:01:17.72</documentTime>
-    <documentProtocol>123</documentProtocol>
-    <documentType>lettera</documentType>
-    <sender>pippo</sender>
-    <recipient>pluto</recipient>
-    <subject>test</subject>
-    <remarks>testo note</remarks>
-    <state>loaded</state>
-    <processedDate>2026-08-05</processedDate>
-    <processedTime>11:01:44.17</processedTime>
+    <id>122</id>
+    <documentDate>2026-08-12</documentDate>
+    <documentTime>12:20:18.81</documentTime>
+    <documentProtocol>df</documentProtocol>
+    <documentType>hfg</documentType>
+    <sender>afs</sender>
+    <recipient>hgfdhdfg</recipient>
+    <subject>fdh</subject>
+    <remarks>dfh</remarks>
+    <processedDate>2026-08-12</processedDate>
+    <processedTime>12:20:25.79</processedTime>
     <processedBy>tommy</processedBy>
   </record>
 </loaded>

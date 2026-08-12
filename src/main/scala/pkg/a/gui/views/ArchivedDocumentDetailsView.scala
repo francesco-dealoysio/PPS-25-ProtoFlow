@@ -16,38 +16,23 @@ import pkg.d.util.XmlToPdf
 object ArchivedDocumentDetailsView extends Form:
 
   def apply(selectedDocument: ArchivedDocument, onExit: () => Unit = () => ()): BorderPane =
-    val protocolNumber = stringField(RegistrationFields.ProtocolNumber, selectedDocument.getProtocolNumber)
-    val registeredDate = stringField(RegistrationFields.RegisteredDate, selectedDocument.getRegisteredDate)
-    val registeredTime = stringField(RegistrationFields.RegisteredTime, selectedDocument.getRegisteredTime)
-    val registeredBy = stringField(RegistrationFields.RegisteredBy, selectedDocument.getRegisteredBy)
-    val documentType = stringField(DocumentPrompts.DocumentType, selectedDocument.getDocumentType)
-    val sender = stringField(DocumentPrompts.Sender, selectedDocument.getSender)
-    val recipient = stringField(DocumentPrompts.Recipient, selectedDocument.getRecipient)
-    val subject = stringField(DocumentPrompts.Subject, selectedDocument.getSubject)
-    val remarks = areaField(DocumentPrompts.Remarks, DescriptionAreaStyle, selectedDocument.getRemarks)
-    val archivedDate = stringField(ArchivePrompts.ArchivedDate, selectedDocument.getArchivedDate)
-    val archivedTime = stringField(ArchivePrompts.ArchivedTime, selectedDocument.getArchivedTime)
-    val archivedBy = stringField(ArchivePrompts.ArchivedBy, selectedDocument.getArchivedBy)
-    val archiveLocation = stringField(ArchivePrompts.ArchiveLocation, selectedDocument.getArchiveLocation)
-    val archiveRemarks = areaField(ArchivePrompts.ArchiveRemarks, DescriptionAreaStyle, selectedDocument.getArchiveRemarks)
+    val id = stringField("", selectedDocument.getId)
+    val protocolNumber = stringField("", selectedDocument.getProtocolNumber)
+    val registeredDate = stringField("", selectedDocument.getRegisteredDate)
+    val registeredTime = stringField("", selectedDocument.getRegisteredTime)
+    val registeredBy = stringField("", selectedDocument.getRegisteredBy)
+    val documentType = stringField("", selectedDocument.getDocumentType)
+    val sender = stringField("", selectedDocument.getSender)
+    val recipient = stringField("", selectedDocument.getRecipient)
+    val subject = stringField("", selectedDocument.getSubject)
+    val remarks = areaField("", DescriptionAreaStyle, selectedDocument.getRemarks)
+    val archivedDate = stringField("", selectedDocument.getArchivedDate)
+    val archivedTime = stringField("", selectedDocument.getArchivedTime)
+    val archivedBy = stringField("", selectedDocument.getArchivedBy)
+    val archiveLocation = stringField("", selectedDocument.getArchiveLocation)
 
     val readOnlyFields: Seq[FormField[? <: Node]] =
-      Seq(
-        protocolNumber,
-        registeredDate,
-        registeredTime,
-        registeredBy,
-        documentType,
-        sender,
-        recipient,
-        subject,
-        remarks,
-        archivedDate,
-        archivedTime,
-        archivedBy,
-        archiveLocation,
-        archiveRemarks
-      )
+      Seq(id, protocolNumber, registeredDate, registeredTime, registeredBy, documentType, sender, recipient, subject, remarks, archivedDate, archivedTime, archivedBy, archiveLocation)
 
     readOnlyFields.foreach: field =>
       field.control.setDisable(true)
@@ -73,8 +58,7 @@ object ArchivedDocumentDetailsView extends Form:
           formRow(ArchiveFields.ArchivedDate, archivedDate),
           formRow(ArchiveFields.ArchivedTime, archivedTime),
           formRow(ArchiveFields.ArchivedBy, archivedBy),
-          formRow(ArchiveFields.ArchiveLocation, archiveLocation),
-          formRow(ArchiveFields.ArchiveRemarks, archiveRemarks)
+          formRow(ArchiveFields.ArchiveLocation, archiveLocation)
         )
       )
 

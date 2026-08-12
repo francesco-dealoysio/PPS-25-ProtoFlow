@@ -27,6 +27,9 @@ object DateTime:
   def localTime: String =
     LocalTime.now(RomeZone).format(StorageTimeFormatter)
 
+  def parseDateTime(value: String): LocalDateTime =
+    LocalDateTime.parse(value, StorageDateTimeFormatter)
+
   def dynamicDateTimeProperty(): StringProperty =
     val dateTimeProperty =
       StringProperty(currentDateTime)

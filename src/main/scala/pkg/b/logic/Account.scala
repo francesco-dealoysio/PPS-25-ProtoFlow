@@ -77,5 +77,21 @@ case class Account(
         logger(e)
     result
 
+  override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
+    val accounts = getRecords[Account](xmlFilePathName)
+    accounts.find(_.getId == id) match
+      case Some(account) =>
+        val isLastAdmin =
+          account.getRole.equalsIgnoreCase("admin") &&
+            accounts.count(_.getRole.equalsIgnoreCase("admin")) <= 1
+
+        if isLastAdmin then
+          false
+        else
+          super.recordDelete(id, xmlFilePathName)
+
+      case None =>
+        false
+
 @main def tryAccount: Unit =
   println("Tested in AccountTest.scala")

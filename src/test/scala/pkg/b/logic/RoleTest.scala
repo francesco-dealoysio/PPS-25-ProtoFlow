@@ -169,10 +169,19 @@ class RoleTest:
     Role().recordInsert[Role](role1, xmlFilePathName)
     Role().recordInsert[Role](role2, xmlFilePathName)
     Role().recordInsert[Role](role3, xmlFilePathName)
-    val record = Role().getRecordById[Role]("1", xmlFilePathName)
-    assertEquals(record.getId, "1")
+    val record = Role().getRecordById[Role]("2", xmlFilePathName)
+    assertEquals(record.getId, "2")
     Role().recordDelete(record.getId, xmlFilePathName)
     assertEquals(Role().getRecordById[Role](record.getId, xmlFilePathName), empty)
+
+  @Test
+  def testRecordDeleteAdminRole: Unit =
+    cleanXmlFile(xmlFilePathName)
+    Role().recordInsert[Role](role1, xmlFilePathName)
+    Role().recordInsert[Role](role2, xmlFilePathName)
+    Role().recordInsert[Role](role3, xmlFilePathName)
+    assertFalse(Role().recordDelete(role1.getId, xmlFilePathName))
+    assertEquals(Role().getRecordById[Role](role1.getId, xmlFilePathName), role1)
 
   @Test
   def testRecordDeleteInesistentXmlFile: Unit =

@@ -1,9 +1,9 @@
-package pkg.a.gui.structures
+package pkg.a.gui.validation
 
-import pkg.b.logic.Role
 import pkg.a.gui.text.UiText.Validation.Role.*
+import pkg.b.logic.Role
 
-class RoleViewModel:
+class RoleValidator:
 
   def validate(role: Role, existingRoles: Seq[Role], currentRoleId: Option[String] = None): Seq[String] =
     Seq(

@@ -32,7 +32,7 @@ object UiText:
     object WindowTitles:
       val Login = s"${Common.ApplicationName} - Login"
       val Registration = s"${Common.ApplicationName} - Registrazione"
-      val Home = Common.ApplicationName
+      val Home = s"${Common.ApplicationName} - Homepage"
 
     object Buttons:
       val Add = "Aggiungi"
@@ -58,6 +58,7 @@ object UiText:
 
   object Fields:
     object Labels:
+      val Id = "Id"
       val Name = "Nome"
       val Surname = "Cognome"
       val Email = "Email"
@@ -112,10 +113,10 @@ object UiText:
       val DeleteTitle = "Eliminazione ruolo"
       val DeleteConfirmation = "Confermi l'eliminazione del ruolo selezionato?"
       val DeleteError = "Non è stato possibile eliminare il ruolo."
-
       val PrintSuccess = "Elenco dei ruoli stampato correttamente nella cartella protoflow/prints."
       val PrintError = "Non è stato possibile stampare l'elenco dei ruoli."
       val PrintTitle = "Elenco Ruoli"
+      val AdminRoleDeleteError = "Non è possibile eliminare il ruolo di amministratore."
 
       def deleted(role: String): String =
         s"Il ruolo '$role' è stato eliminato correttamente."
@@ -185,7 +186,7 @@ object UiText:
       val DeleteTitle = "Eliminazione account"
       val DeleteConfirmation = "Confermi l'eliminazione dell'account selezionato?"
       val DeleteError = "Non è stato possibile eliminare l'account."
-
+      val LastAdminDeleteError = "Non è possibile eliminare l'ultimo account amministratore."
       def deletedAccount(username: String): String =
         s"L'account '$username' è stato eliminato correttamente."
 
@@ -229,6 +230,7 @@ object UiText:
 
   object LoadedDocuments:
     object Fields:
+      val Id = "Id"
       val DocumentDate = "Data documento"
       val DocumentTime = "Ora documento"
       val ProcessedBy = "Preso in carico da"
@@ -276,6 +278,7 @@ object UiText:
 
   object RegisteredDocuments:
     object Fields:
+      val Id = "Id"
       val ProtocolNumber = "Numero protocollo"
       val Sender = "Mittente"
       val Subject = "Oggetto"
@@ -323,6 +326,7 @@ object UiText:
       val PrintError = "Non è stato possibile stampare la scheda del documento."
         
     object Fields:
+      val Id = "Id"
       val ProtocolNumber = "Numero protocollo"
       val ArchivedDate = "Data archiviazione"
       val ArchivedTime = "Ora archiviazione"
@@ -331,14 +335,12 @@ object UiText:
       val Recipient = "Destinatario"
       val Subject = "Oggetto"
       val ArchiveLocation = "Collocazione archivistica"
-      val ArchiveRemarks = "Note di archiviazione"
 
     object Prompts:
       val ArchivedTime = "Inserisci l'ora di archiviazione"
-      val ArchivedDate = ""
+      val ArchivedDate = "Inserisci la data di archiviazione"
       val ArchivedBy = "Operatore archiviatore"
       val ArchiveLocation = "Inserisci la collocazione archivistica"
-      val ArchiveRemarks = "Inserisci eventuali note di archiviazione"
 
     object Errors:
       val ArchivedDateRequired = "La data di archiviazione è obbligatoria"
@@ -384,7 +386,7 @@ object UiText:
     val UserAccounts = "Account Utenti"
     val Roles = "Ruoli"
     val Classifications = "Classifiche"
-    val NewAssignment = "Nuova presa in carico"
+    val NewAssignment = "Presa in carico"
     val DocumentsToRegister = "Documenti da protocollare"
     val DocumentsToArchive = "Documenti da archiviare"
     val ArchivedDocuments = "Documenti archiviati"

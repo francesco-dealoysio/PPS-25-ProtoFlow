@@ -1,6 +1,5 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.structures.ClassificationViewModel
 import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
@@ -11,13 +10,14 @@ import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Classifications.Add as Text
 import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Validation.Classification as Validation
+import pkg.a.gui.validation.ClassificationValidator
 
 object ClassificationAddView extends Form:
 
   def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val classificationLogic = new Classification()
-    val viewModel = new ClassificationViewModel()
+    val validator = new ClassificationValidator()
 
     val classification = stringField(Prompts.Classification)
     val description = areaField(Prompts.Description, DescriptionAreaStyle)
@@ -38,7 +38,7 @@ object ClassificationAddView extends Form:
     def validateForm(): Boolean =
       clearErrors()
       val errors =
-        viewModel.validate(
+        validator.validate(
           classification = currentClassification(),
           existingClassifications = classificationLogic.getRecords()
         )

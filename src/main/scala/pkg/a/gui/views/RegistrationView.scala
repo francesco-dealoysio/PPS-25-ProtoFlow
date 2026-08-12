@@ -1,19 +1,20 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.services.RegistrationRequestService
 import pkg.a.gui.text.UiStyles.Registration.*
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Fields.Labels
 import pkg.a.gui.text.UiText.Registration as Text
-import pkg.a.gui.structures.RegistrationViewModel
 import pkg.a.gui.traits.Form
-import pkg.b.logic.{Classification, RegistrationRequestService, Role, Registration as RegistrationModel}
+import pkg.a.gui.validation.RegistrationValidator
+import pkg.b.logic.{Classification, Role, Registration as RegistrationModel}
 import scalafx.scene.Node
 import scalafx.scene.control.Button
 import scalafx.scene.layout.{BorderPane, GridPane}
 
 object RegistrationView extends Form:
 
-  def apply(viewModel: RegistrationViewModel, onExit: () => Unit = () => ()): BorderPane =
+  def apply(validator: RegistrationValidator, onExit: () => Unit = () => ()): BorderPane =
 
     val service = new RegistrationRequestService()
     val roleLogic = new Role()
@@ -57,7 +58,7 @@ object RegistrationView extends Form:
 
     def submitRequest(): Unit =
       val request = currentRequest()
-      val errors = viewModel.validate(request)
+      val errors = validator.validate(request)
 
       if errors.nonEmpty then
         result.show(

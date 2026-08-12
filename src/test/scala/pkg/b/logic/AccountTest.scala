@@ -188,9 +188,17 @@ class AccountTest:
     Account().recordInsert[Account](account1, xmlFilePathName)
     Account().recordInsert[Account](account2, xmlFilePathName)
     Account().recordInsert[Account](account3, xmlFilePathName)
-    val record = Account().getRecordById[Account]("1", xmlFilePathName)
-    Account().recordDelete(record.getId, xmlFilePathName)
-    assertEquals(Account().getRecordById[Account](record.getId, xmlFilePathName), empty)
+    assertTrue(Account().recordDelete(account2.getId, xmlFilePathName))
+    assertEquals(Account().getRecordById[Account](account2.getId, xmlFilePathName), empty)
+  
+  @Test
+  def testRecordDeleteLastAdmin: Unit =
+    cleanXmlFile(xmlFilePathName)
+    Account().recordInsert[Account](account1, xmlFilePathName)
+    Account().recordInsert[Account](account2, xmlFilePathName)
+    Account().recordInsert[Account](account3, xmlFilePathName)
+    assertFalse(Account().recordDelete(account1.getId, xmlFilePathName))
+    assertEquals(Account().getRecordById[Account](account1.getId, xmlFilePathName), account1)
 
   @Test
   def testRecordDeleteInesistentXmlFile: Unit =

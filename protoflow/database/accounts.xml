@@ -42,31 +42,17 @@
     </password>
   </record>
   <record>
-    <id>96</id>
-    <surname>Rossi</surname>
-    <name>Mario</name>
-    <email>mario.rossi@alice.it</email>
-    <phone>06/87654321</phone>
-    <role>admin</role>
-    <area>Personale</area>
-    <assignment>Adddetto alla documentazione personale</assignment>
-    <username>romario</username>
+    <id>161</id>
+    <surname>Giacobbe</surname>
+    <name>Claudio</name>
+    <email>claudio@gmail.com</email>
+    <phone>3544325503</phone>
+    <role>oper</role>
+    <area>addestramento</area>
+    <assignment>Grande</assignment>
+    <username>cgiacobbe</username>
     <password>
-      074975c83c6ed1b11c95384c04d2e79c986336d398cb4ad63e6f0c51e6afcdab6c07b786d8114db9ab4c2efd3111f8d2a6b37d12c78849bae5417310159b73dd
-    </password>
-  </record>
-  <record>
-    <id>100</id>
-    <surname>Bianchi</surname>
-    <name>Paolo</name>
-    <email>paolo.bianchii@libero.it</email>
-    <phone>0547/12345678</phone>
-    <role>admin</role>
-    <area>Personale</area>
-    <assignment>Addetto</assignment>
-    <username>bianchi</username>
-    <password>
-      8e25220a2237eee111dbe2afe4b367a9c2b8793345269c1d46d2ba52c56146c6785c08d702f37b6d8423b6581bab3be01b97aff66f4ab5d009a760f5343c8cbb
+      71aff96c4a25ef60e4a441fc379e00844236dd3713920f546ea61e0b2df9524212610646935d61e998b3e8d0edbcbca8d7bffb705352f014fd4b5f1e0505cfed
     </password>
   </record>
 </accounts>

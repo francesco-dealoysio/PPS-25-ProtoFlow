@@ -1,19 +1,21 @@
 package pkg.a.gui
 
-import pkg.a.gui.structures.{HomePageViewModel, RegistrationViewModel}
+import pkg.a.gui.structures.HomePageViewModel
 import pkg.a.gui.traits.HomePage
 import pkg.a.gui.views.{LoginView, RegistrationView}
 import pkg.b.logic.Account
 import pkg.d.util.Logger.logger
 import scalafx.application.JFXApp3
 import scalafx.scene.Scene
+import pkg.a.gui.text.UiText.Common.WindowTitles
+import pkg.a.gui.validation.RegistrationValidator
 
 class Navigator(stage: JFXApp3.PrimaryStage):
 
   def showLogin(): Unit =
-    stage.title = "ProtoFlow - Login"
-    stage.width = 460
-    stage.height = 560
+    stage.title = WindowTitles.Login
+    stage.minWidth = 0
+    stage.minHeight = 0
     stage.resizable = false
 
     val scene = new Scene(460, 560):
@@ -28,17 +30,17 @@ class Navigator(stage: JFXApp3.PrimaryStage):
     addPageStylesheets(scene, "/login.css")
 
     stage.scene = scene
-
+    stage.sizeToScene()
 
   private def showRegistration(): Unit =
-    stage.title = "ProtoFlow - Registrazione"
-    stage.width = 900
-    stage.height = 650
-    stage.resizable = true
+    stage.title = WindowTitles.Registration
+    stage.minWidth = 0
+    stage.minHeight = 0
+    stage.resizable = false
 
     val scene = new Scene(900, 650):
       root = RegistrationView(
-        viewModel = RegistrationViewModel(),
+        validator = RegistrationValidator(),
 
         onExit = () =>
           showLogin()
@@ -52,12 +54,10 @@ class Navigator(stage: JFXApp3.PrimaryStage):
       case Some(homePage) =>
         val viewModel = new HomePageViewModel
 
-        stage.title = "ProtoFlow"
-        stage.width = 1100
-        stage.height = 700
+        stage.title = WindowTitles.Home
         stage.resizable = true
 
-        val scene = new Scene(1100, 700):
+        val scene = new Scene(1100, 800):
           root = homePage(
             viewModel = viewModel,
             currentAccount = account,
@@ -71,6 +71,9 @@ class Navigator(stage: JFXApp3.PrimaryStage):
         )
 
         stage.scene = scene
+        stage.sizeToScene()
+        stage.minWidth = 1100
+        stage.minHeight = 800
 
       case None =>
         showLogin()

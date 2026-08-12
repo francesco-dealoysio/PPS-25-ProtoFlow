@@ -2,7 +2,6 @@ package pkg.d.util
 
 import java.nio.file.{Files, Paths, StandardOpenOption}
 import scala.util.Try
-import pkg.d.util.Util.*
 
 object IdGen:
 

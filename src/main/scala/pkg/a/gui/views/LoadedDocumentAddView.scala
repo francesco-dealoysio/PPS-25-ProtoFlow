@@ -1,12 +1,12 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.structures.LoadedDocumentViewModel
 import pkg.a.gui.text.UiText.Fields.Labels
 import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Prompts}
 import pkg.a.gui.text.UiText.LoadedDocuments.Add as Text
 import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
 import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.traits.Form
+import pkg.a.gui.validation.LoadedDocumentValidator
 import pkg.b.logic.LoadedDocument
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
@@ -22,7 +22,7 @@ object LoadedDocumentAddView extends Form:
   def apply(operatorUsername: String, onSaved: () => Unit = () => (), onExit: () => Unit = () => ()): BorderPane =
 
     val documentLogic = new LoadedDocument()
-    val viewModel = new LoadedDocumentViewModel()
+    val validator = new LoadedDocumentValidator()
     val initialDate = LocalDate.now()
     val defaultTime = localTime
     val documentDate = dateField(initialDate)
@@ -50,13 +50,12 @@ object LoadedDocumentAddView extends Form:
         sender = sender.value,
         recipient = recipient.value,
         subject = subject.value,
-        remarks = remarks.value,
-        state = "loaded"
+        remarks = remarks.value
       )
 
     def validateForm(): Boolean =
       clearErrors()
-      val errors = viewModel.validate(currentDocument())
+      val errors = validator.validate(currentDocument())
       showFormFieldErrors(errors):
         case Validation.DocumentDateRequired => documentDate
         case Validation.DocumentTimeRequired => documentTime

@@ -141,7 +141,6 @@ object Init:
     IdGen(inIdsFilePathName("classificationId"))
     IdGen(inIdsFilePathName("registrationId"))
     IdGen(inIdsFilePathName("loadedDocumentId"))
-    IdGen(inIdsFilePathName("archivedDocumentId"))
     IdGen(inIdsFilePathName("registrationRequestId")) // eliminare
 
   @main def tryInit: Unit =

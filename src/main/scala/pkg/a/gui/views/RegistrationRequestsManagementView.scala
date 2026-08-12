@@ -1,8 +1,9 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.services.RegistrationRequestService
 import pkg.a.gui.traits.Management
-import pkg.b.logic.{Registration, RegistrationDates, RegistrationRequestService}
-import pkg.d.util.XmlToPdf
+import pkg.b.logic.Registration
+import pkg.d.util.{DateTime, XmlToPdf}
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
@@ -35,7 +36,7 @@ object RegistrationRequestsManagementView extends Management:
       stringColumn[Registration](Labels.Role, Some(150))(_.getRole),
       stringColumn[Registration](Labels.Area, Some(140))(_.getArea),
       stringColumn[Registration](Labels.Assignment, Some(140))(_.getAssignment),
-      stringColumn[Registration](Labels.Date, Some(150))(request => RegistrationDates.parse(request.getDate).format(dateFormatter))
+      stringColumn[Registration](Labels.Date, Some(150))(request => DateTime.parseDateTime(request.getDate).format(dateFormatter))
     )
 
     def loadPendingRequests(): Unit =

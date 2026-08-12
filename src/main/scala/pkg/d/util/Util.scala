@@ -1,10 +1,6 @@
 package pkg.d.util
 
-import pkg.b.logic.ErrorLog
-
 import java.awt.image.BufferedImage
-import pkg.b.logic.ErrorLog.*
-
 
 object Util:
 

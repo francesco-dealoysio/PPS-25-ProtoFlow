@@ -31,14 +31,6 @@ trait Common:
     new Label(text):
       styleClass += styleName
 
-  private def messageLabel(baseStyle: String = MessageStyle): Label =
-    new Label:
-      visible = false
-      managed = false
-      wrapText = true
-      maxWidth = Double.MaxValue
-      styleClass += baseStyle
-
   protected def actionBar(buttons: Seq[Button], styleName: String =  FormActionsStyle, barAlignment: Pos = Pos.CenterRight): HBox =
     new HBox:
       alignment = barAlignment
@@ -74,7 +66,7 @@ trait Common:
       styleClass += styleName
       onAction = _ => action()
 
-  protected def showMessage(label: Label, message: String, success: Boolean, successStyle: String = MessageSuccessStyle, errorStyle: String = MessageErrorStyle): Unit =
+  private def showMessage(label: Label, message: String, success: Boolean, successStyle: String = MessageSuccessStyle, errorStyle: String = MessageErrorStyle): Unit =
     label.text = message
     label.visible = true
     label.managed = true
@@ -82,8 +74,16 @@ trait Common:
     label.styleClass +=
       (if success then successStyle else errorStyle)
 
-  protected def clearMessage(label: Label, successStyle: String = MessageSuccessStyle, errorStyle: String = MessageErrorStyle): Unit =
+  private def clearMessage(label: Label, successStyle: String = MessageSuccessStyle, errorStyle: String = MessageErrorStyle): Unit =
     label.text = ""
     label.visible = false
     label.managed = false
     label.styleClass.removeAll(successStyle, errorStyle)
+
+  private def messageLabel(baseStyle: String = MessageStyle): Label =
+    new Label:
+      visible = false
+      managed = false
+      wrapText = true
+      maxWidth = Double.MaxValue
+      styleClass += baseStyle

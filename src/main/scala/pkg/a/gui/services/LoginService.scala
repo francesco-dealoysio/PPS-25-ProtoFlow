@@ -1,7 +1,8 @@
-package pkg.b.logic
+package pkg.a.gui.services
 
+import pkg.b.logic.Account
+import pkg.c.data.Properties.getPropsFileProperty
 import pkg.c.data.Xml.*
-import pkg.c.data.Properties.*
 import pkg.d.util.Util.cipher
 
 object LoginService:

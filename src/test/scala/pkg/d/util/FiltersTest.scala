@@ -2,9 +2,9 @@ package pkg.d.util
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.b.logic.{LoadedDocument, DocumentLog, ArchivedDocument}
+import pkg.b.logic.{DocumentLog, ArchivedDocument}
 
-import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
+import pkg.c.data.Xml.createEmptyXmlFile
 import pkg.d.util.Util.inTestFilePathName
 
 import java.nio.file.{Files, Paths}
@@ -64,19 +64,58 @@ class FiltersTest:
     documentLogs.foreach(r => DocumentLog().recordInsert[DocumentLog](r, xmlFilePathName) )
 
     // Test filter on ArchivedDocument
-    xmlFilePathName2 = inTestFilePathName("testAchivedDocument.xml")
+    xmlFilePathName2 = inTestFilePathName("testArchivedDocument.xml")
     createEmptyXmlFile(xmlFilePathName2, "testRecords")
 
-    archivedDocument1 = new ArchivedDocument("1", "", "", "", "", "", "", "Bollette", "",
-      "", "", "", "Neri", "", "2026/1/Amministrazione", "", "Neri", "2026-07-30", "", "Rossi")
-    archivedDocument2 = new ArchivedDocument("2", "", "", "", "", "", "", "Documetazione caratteristica 2025", "",
-      "", "", "", "Neri", "", "2026/2/Personale", "", "Neri", "2026-08-14", "", "Neri")
-    archivedDocument5 = new ArchivedDocument("5", "", "", "", "", "", "", "CUD 2025", "",
-      "", "", "", "Bianchi", "", "2026/5/Amministrazione", "", "Rossi", "2026-08-21", "", "Neri")
-    archivedDocument11 = new ArchivedDocument("11", "", "", "", "", "", "", "Piano ferie", "",
-      "", "", "", "Rossi", "", "2026/11/Segreteria", "", "Bianchi", "2026-09-15", "", "Neri")
-    archivedDocument120 = new ArchivedDocument("120", "", "", "", "", "", "", "Onorificenze", "",
-      "", "", "", "", "Bianchi", "2026/120/Presidenza", "", "Rossi", "2026-10-28", "", "Bianchi")
+    archivedDocument1 = ArchivedDocument(
+      id = "1",
+      subject = "Bollette",
+      loadedBy = "Neri",
+      protocolNumber = "2026/1/Amministrazione",
+      registeredBy = "Neri",
+      archivedDate = "2026-07-30",
+      archivedBy = "Rossi"
+    )
+
+    archivedDocument2 = ArchivedDocument(
+      id = "2",
+      subject = "Documetazione caratteristica 2025",
+      loadedBy = "Neri",
+      protocolNumber = "2026/2/Personale",
+      registeredBy = "Neri",
+      archivedDate = "2026-08-14",
+      archivedBy = "Neri"
+    )
+
+    archivedDocument5 = ArchivedDocument(
+      id = "5",
+      subject = "CUD 2025",
+      loadedBy = "Bianchi",
+      protocolNumber = "2026/5/Amministrazione",
+      registeredBy = "Rossi",
+      archivedDate = "2026-08-21",
+      archivedBy = "Neri"
+    )
+
+    archivedDocument11 = ArchivedDocument(
+      id = "11",
+      subject = "Piano ferie",
+      loadedBy = "Rossi",
+      protocolNumber = "2026/11/Segreteria",
+      registeredBy = "Bianchi",
+      archivedDate = "2026-09-15",
+      archivedBy = "Neri"
+    )
+
+    archivedDocument120 = ArchivedDocument(
+      id = "120",
+      subject = "Onorificenze",
+      loadedBy = "Bianchi",
+      protocolNumber = "2026/120/Presidenza",
+      registeredBy = "Rossi",
+      archivedDate = "2026-10-28",
+      archivedBy = "Bianchi"
+    )
 
     archivedDocuments = Seq(
       archivedDocument1,

@@ -1,12 +1,9 @@
 package pkg.c.data
 
-import pkg.b.logic.Account
 import pkg.d.util.Logger.*
-import Properties.*
-import java.io.{File, PrintWriter}
+import java.io.PrintWriter
 import java.nio.charset.StandardCharsets
-import java.nio.file.{Files, Paths, StandardOpenOption}
-import scala.jdk.CollectionConverters.*
+import java.nio.file.{Files, Paths}
 import scala.util.{Failure, Success, Try}
 import scala.xml.*
 

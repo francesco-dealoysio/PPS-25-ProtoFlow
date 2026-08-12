@@ -1,27 +1,32 @@
 package pkg.a.gui
 
-import org.scalatest.funsuite.AnyFunSuite
-import pkg.a.gui.structures.ClassificationViewModel
+import org.junit.*
+import org.junit.Assert.*
 import pkg.b.logic.Classification
 import pkg.a.gui.text.UiText.Validation.Classification.*
+import pkg.a.gui.validation.ClassificationValidator
 
-class ClassificationViewModelTest extends AnyFunSuite:
+class ClassificationValidatorTest:
 
-  private val viewModel = ClassificationViewModel()
+  private val viewModel = ClassificationValidator()
 
-  test("validazione form: caso valido e campo vuoto/spazi"):
+  @Test
+  def testValidFormAndEmptyFields(): Unit =
     assertValid(validForm())
     assertInvalid(validForm().copy(classification = "   "))(ClassificationRequired)
     assertInvalid(validForm().copy(description = ""))(DescriptionRequired)
 
-  test("validazione form: errori multipli quando tutto è vuoto"):
+  @Test
+  def testMultipleErrorsWhenFormIsEmpty(): Unit =
     assertInvalid(Classification())(ClassificationRequired, DescriptionRequired)
 
-  test("gestione duplicati: rileva duplicati (anche con spazi e case-insensitive)"):
+  @Test
+  def testDuplicateClassificationCaseInsensitiveAndTrimmed(): Unit =
     assertInvalid(validForm().copy(classification = "Amministrazione"))(DuplicateClassification)
     assertInvalid(validForm().copy(classification = "  amministrazione  "))(DuplicateClassification)
 
-  test("gestione duplicati in modifica: permette se stesso, blocca altri"):
+  @Test
+  def testDuplicateClassificationOnEdit(): Unit =
     val updated = Classification(classification = "Amministrazione", description = "Descrizione")
     assertValid(updated, currentId = Some("1"))
     assertInvalid(updated.copy(classification = "Personale"), currentId = Some("1"))(DuplicateClassification)
@@ -29,20 +34,19 @@ class ClassificationViewModelTest extends AnyFunSuite:
   // Test Helpers
   private def assertValid(classification: Classification, currentId: Option[String] = None): Unit =
     val errors = viewModel.validate(classification, existingClassifications, currentId)
-    assert(errors.isEmpty)
-    assert(viewModel.isValid(classification, existingClassifications, currentId))
+    assertTrue(errors.isEmpty)
+    assertTrue(viewModel.isValid(classification, existingClassifications, currentId))
 
   private def assertInvalid(classification: Classification, currentId: Option[String] = None)(expectedErrors: String*): Unit =
     val errors: Seq[String] = viewModel.validate(classification, existingClassifications, currentId)
-    assert(errors.size == expectedErrors.size)
-    expectedErrors.foreach(err => assert(errors.contains(err)))
-    assert(!viewModel.isValid(classification, existingClassifications, currentId))
+    assertEquals(expectedErrors.size, errors.size)
+    expectedErrors.foreach(error => assertTrue(errors.contains(error)))
+    assertFalse(viewModel.isValid(classification, existingClassifications, currentId))
 
   private def validForm(): Classification =
     Classification(classification = "Informatica", description = "Gestione servizi")
 
-  private def existingClassifications: Seq[Classification] =
-    Seq(
-      Classification(id = "1", classification = "Amministrazione", description = "Gestione amministrativa"),
-      Classification(id = "2", classification = "Personale", description = "Gestione del personale")
-    )
+  private def existingClassifications: Seq[Classification] = Seq(
+    Classification(id = "1", classification = "Amministrazione", description = "Gestione amministrativa"),
+    Classification(id = "2", classification = "Personale", description = "Gestione del personale")
+  )

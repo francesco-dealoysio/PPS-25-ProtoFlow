@@ -1,6 +1,5 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.structures.RoleViewModel
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Role
 import scalafx.scene.layout.BorderPane
@@ -8,17 +7,18 @@ import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Roles.Edit as Text
 import pkg.a.gui.text.UiText.Validation.Role as Validation
+import pkg.a.gui.validation.RoleValidator
 
 object RoleEditView extends Form:
 
   def apply(selectedRole: Role, onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val roleLogic = new Role()
-    val viewModel = new RoleViewModel()
+    val validator = new RoleValidator()
 
-    val role = stringField(Prompts.Role, selectedRole.getRole)
+    val role = stringField("", selectedRole.getRole)
 
-    val description = areaField(Prompts.Description, DescriptionAreaStyle, selectedRole.getDescription)
+    val description = areaField("", DescriptionAreaStyle, selectedRole.getDescription)
     val monitoredFields = Seq(role, description)
     val result = createResultMessage()
 
@@ -41,7 +41,7 @@ object RoleEditView extends Form:
     def validateForm(): Boolean = 
       clearErrors()
       val errors =
-        viewModel.validate(
+        validator.validate(
           role = currentRole(),
           existingRoles = roleLogic.getRecords(),
           currentRoleId = Some(selectedRole.getId)
@@ -72,8 +72,8 @@ object RoleEditView extends Form:
     val form =
       formGrid(
         Seq(
-          formRow(Labels.required(Labels.Role), role),
-          formRow(Labels.required(Labels.Description), description),
+          formRow(Labels.Role, role),
+          formRow(Labels.Description, description),
         )
       )
 

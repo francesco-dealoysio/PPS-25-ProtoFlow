@@ -33,9 +33,9 @@ object RoleManagementView extends Management:
 
     def loadRoles(): Unit =
       loadTableItemsSafely(table, roles, result, Text.Empty, Text.LoadError):
-        val loaded = roleLogic.getRecords[Role]()
-        loaded.foreach(r => println(s"${r.getId} - ${r.getRole} - ${r.getDescription}"))
-        loaded.sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
+        roleLogic
+          .getRecords[Role]()
+          .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
     def deleteSelectedRole(): Unit =
       withSelectedItem(table, result, Text.SelectToDelete): selected =>
@@ -52,12 +52,15 @@ object RoleManagementView extends Management:
           )
 
         if confirmed then
-          val deleted = roleLogic.recordDelete(selected.getId)
-          if deleted then
-            loadRoles()
-            result.show(Text.deleted(selected.getRole), success = true)
+          if selected.getRole.equalsIgnoreCase("admin") then
+            result.show(Text.AdminRoleDeleteError, success = false)
           else
-            result.show(Text.DeleteError, success = false)
+            val deleted = roleLogic.recordDelete(selected.getId)
+            if deleted then
+              loadRoles()
+              result.show(Text.deleted(selected.getRole), success = true)
+            else
+              result.show(Text.DeleteError, success = false)
 
     def printRoles(): Unit =
       val printed =
@@ -76,7 +79,7 @@ object RoleManagementView extends Management:
     val addButton = primaryButton(Buttons.Add, () =>
           result.clear()
           onAdd()
-      )
+    )
 
     val editButton = secondaryButton(Buttons.Edit, () => withSelectedItem(table, result, Text.SelectToEdit)(onEdit))
 

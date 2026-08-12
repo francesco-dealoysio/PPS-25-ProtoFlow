@@ -26,9 +26,6 @@ trait Management extends Common:
       cellValueFactory = cell =>
         StringProperty(value(cell.value))
 
-  protected def selectedItem[T](table: TableView[T]): Option[T] =
-    Option(table.selectionModel.value.selectedItem.value)
-
   protected def disableWithoutSelection[T](table: TableView[T], buttons: Button*): Unit =
     buttons.foreach: button =>
       button.disable <==
@@ -82,3 +79,6 @@ trait Management extends Common:
     new BorderPane:
       styleClass += rootStyle
       center = content
+
+  private def selectedItem[T](table: TableView[T]): Option[T] =
+    Option(table.selectionModel.value.selectedItem.value)

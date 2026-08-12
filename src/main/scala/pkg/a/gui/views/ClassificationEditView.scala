@@ -1,33 +1,25 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.structures.ClassificationViewModel
 import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Classifications.Edit as Text
-import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Fields.Labels
 import pkg.a.gui.text.UiText.Validation.Classification as Validation
+import pkg.a.gui.validation.ClassificationValidator
 
 object ClassificationEditView extends Form:
 
   def apply(selectedClassification: Classification, onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val classificationLogic = new Classification()
-    val viewModel = ClassificationViewModel()
+    val validator = ClassificationValidator()
 
-    val classification =
-      stringField(
-        prompt = Prompts.Classification,
-        initialValue = selectedClassification.getClassification
-      )
-
-    val description =
-      areaField(
-        prompt = Prompts.Description,
-        styleName = DescriptionAreaStyle,
-        initialValue = selectedClassification.getDescription
-      )
+    val id = stringField("", selectedClassification.getId)
+    id.control.setDisable(true)
+    val classification = stringField("", selectedClassification.getClassification)
+    val description = areaField("", DescriptionAreaStyle, selectedClassification.getDescription)
 
     val monitoredFields = Seq(classification, description)
     val result = createResultMessage()
@@ -52,7 +44,7 @@ object ClassificationEditView extends Form:
       clearErrors()
 
       val errors =
-        viewModel.validate(
+        validator.validate(
           classification = currentClassification(),
           existingClassifications = classificationLogic.getRecords(),
           currentClassificationId = Some(selectedClassification.getId)
@@ -82,8 +74,9 @@ object ClassificationEditView extends Form:
     val form =
       formGrid(
         Seq(
-          formRow(Labels.required(Labels.Classification), classification),
-          formRow(Labels.required(Labels.Description), description)
+          formRow(Labels.Id, id),
+          formRow(Labels.Classification, classification),
+          formRow(Labels.Description, description)
         )
       )
 

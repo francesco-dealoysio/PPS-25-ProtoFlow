@@ -1,8 +1,5 @@
 package pkg.b.logic
 
-import pkg.b.logic.Entity
-import pkg.c.data.Xml.*
-import pkg.d.util.Logger.*
 
 case class Registration(
                     private var id: String = "",

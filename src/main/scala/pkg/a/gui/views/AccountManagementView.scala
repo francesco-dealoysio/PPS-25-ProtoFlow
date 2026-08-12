@@ -2,7 +2,6 @@ package pkg.a.gui.views
 
 import pkg.a.gui.traits.Management
 import pkg.b.logic.Account
-import pkg.d.util.Logger.*
 import pkg.a.gui.text.UiText.Accounts.Management as Text
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Fields.Labels
@@ -55,7 +54,14 @@ object AccountManagementView extends Management:
                  |L'operazione non può essere annullata.""".stripMargin
           )
 
-        if confirmed then
+
+        val isLastAdmin =
+          selected.getRole.equalsIgnoreCase("admin") &&
+            accounts.count(_.getRole.equalsIgnoreCase("admin")) <= 1
+
+        if isLastAdmin then
+          result.show(Text.LastAdminDeleteError, success = false)
+        else
           val deleted = accountLogic.recordDelete(selected.getId)
           if deleted then
             loadAccounts()

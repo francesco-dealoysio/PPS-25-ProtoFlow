@@ -9,19 +9,17 @@
     <recipient/>
     <subject>Bollette</subject>
     <remarks/>
-    <state/>
     <loadedDate/>
     <loadedTime/>
-    <loadedBy>Neri</loadedBy>
-    <protocolNumber/>
-    <registeredDate>2026/1/Amministrazione</registeredDate>
-    <registeredTime/>
-    <registeredBy>Neri</registeredBy>
-    <archivedDate>2026-07-30</archivedDate>
-    <archivedTime/>
-    <archivedBy>Rossi</archivedBy>
-    <archiveLocation/>
-    <archiveRemarks/>
+    <loadedBy/>
+    <protocolNumber>Neri</protocolNumber>
+    <registeredDate/>
+    <registeredTime>2026/1/Amministrazione</registeredTime>
+    <registeredBy/>
+    <archivedDate>Neri</archivedDate>
+    <archivedTime>2026-07-30</archivedTime>
+    <archivedBy/>
+    <archiveLocation>Rossi</archiveLocation>
   </record>
   <record>
     <id>2</id>
@@ -33,19 +31,17 @@
     <recipient/>
     <subject>Documetazione caratteristica 2025</subject>
     <remarks/>
-    <state/>
     <loadedDate/>
     <loadedTime/>
-    <loadedBy>Neri</loadedBy>
-    <protocolNumber/>
-    <registeredDate>2026/2/Personale</registeredDate>
-    <registeredTime/>
-    <registeredBy>Neri</registeredBy>
-    <archivedDate>2026-08-14</archivedDate>
-    <archivedTime/>
-    <archivedBy>Neri</archivedBy>
-    <archiveLocation/>
-    <archiveRemarks/>
+    <loadedBy/>
+    <protocolNumber>Neri</protocolNumber>
+    <registeredDate/>
+    <registeredTime>2026/2/Personale</registeredTime>
+    <registeredBy/>
+    <archivedDate>Neri</archivedDate>
+    <archivedTime>2026-08-14</archivedTime>
+    <archivedBy/>
+    <archiveLocation>Neri</archiveLocation>
   </record>
   <record>
     <id>5</id>
@@ -57,19 +53,17 @@
     <recipient/>
     <subject>CUD 2025</subject>
     <remarks/>
-    <state/>
     <loadedDate/>
     <loadedTime/>
-    <loadedBy>Bianchi</loadedBy>
-    <protocolNumber/>
-    <registeredDate>2026/5/Amministrazione</registeredDate>
-    <registeredTime/>
-    <registeredBy>Rossi</registeredBy>
-    <archivedDate>2026-08-21</archivedDate>
-    <archivedTime/>
-    <archivedBy>Neri</archivedBy>
-    <archiveLocation/>
-    <archiveRemarks/>
+    <loadedBy/>
+    <protocolNumber>Bianchi</protocolNumber>
+    <registeredDate/>
+    <registeredTime>2026/5/Amministrazione</registeredTime>
+    <registeredBy/>
+    <archivedDate>Rossi</archivedDate>
+    <archivedTime>2026-08-21</archivedTime>
+    <archivedBy/>
+    <archiveLocation>Neri</archiveLocation>
   </record>
   <record>
     <id>11</id>
@@ -81,19 +75,17 @@
     <recipient/>
     <subject>Piano ferie</subject>
     <remarks/>
-    <state/>
     <loadedDate/>
     <loadedTime/>
-    <loadedBy>Rossi</loadedBy>
-    <protocolNumber/>
-    <registeredDate>2026/11/Segreteria</registeredDate>
-    <registeredTime/>
-    <registeredBy>Bianchi</registeredBy>
-    <archivedDate>2026-09-15</archivedDate>
-    <archivedTime/>
-    <archivedBy>Neri</archivedBy>
-    <archiveLocation/>
-    <archiveRemarks/>
+    <loadedBy/>
+    <protocolNumber>Rossi</protocolNumber>
+    <registeredDate/>
+    <registeredTime>2026/11/Segreteria</registeredTime>
+    <registeredBy/>
+    <archivedDate>Bianchi</archivedDate>
+    <archivedTime>2026-09-15</archivedTime>
+    <archivedBy/>
+    <archiveLocation>Neri</archiveLocation>
   </record>
   <record>
     <id>120</id>
@@ -105,18 +97,16 @@
     <recipient></recipient>
     <subject>Onorificenze</subject>
     <remarks></remarks>
-    <state></state>
     <loadedDate></loadedDate>
     <loadedTime></loadedTime>
     <loadedBy></loadedBy>
-    <protocolNumber>Bianchi</protocolNumber>
-    <registeredDate>2026/120/Presidenza</registeredDate>
-    <registeredTime></registeredTime>
-    <registeredBy>Rossi</registeredBy>
-    <archivedDate>2026-10-28</archivedDate>
-    <archivedTime></archivedTime>
-    <archivedBy>Bianchi</archivedBy>
-    <archiveLocation></archiveLocation>
-    <archiveRemarks></archiveRemarks>
+    <protocolNumber></protocolNumber>
+    <registeredDate>Bianchi</registeredDate>
+    <registeredTime>2026/120/Presidenza</registeredTime>
+    <registeredBy></registeredBy>
+    <archivedDate>Rossi</archivedDate>
+    <archivedTime>2026-10-28</archivedTime>
+    <archivedBy></archivedBy>
+    <archiveLocation>Bianchi</archiveLocation>
   </record>
 </testRecords>

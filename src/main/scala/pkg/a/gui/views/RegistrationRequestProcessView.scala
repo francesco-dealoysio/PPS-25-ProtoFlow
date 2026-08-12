@@ -1,8 +1,9 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.services.RegistrationRequestService
 import pkg.a.gui.traits.Management
-import pkg.b.logic.{Registration, RegistrationDates, RegistrationRequestService}
-import pkg.d.util.XmlToPdf
+import pkg.b.logic.Registration
+import pkg.d.util.{DateTime, XmlToPdf}
 import scalafx.geometry.Insets
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
@@ -15,8 +16,7 @@ import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
 
 object RegistrationRequestProcessView extends Management:
 
-  private val dateFormatter =
-    DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+  private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
 
   def apply(
              request: Registration,
@@ -36,6 +36,7 @@ object RegistrationRequestProcessView extends Management:
       styleClass += DetailsGridStyle
 
     val detailRows = Seq(
+      Labels.Id -> request.getId,
       Labels.Name -> request.getName,
       Labels.Surname-> request.getSurname,
       Labels.Email -> request.getEmail,
@@ -43,7 +44,7 @@ object RegistrationRequestProcessView extends Management:
       Labels.Role -> request.getRole,
       Labels.Area -> request.getArea,
       Labels.Assignment -> request.getAssignment,
-      Labels.Date -> RegistrationDates.parse(request.getDate).format(dateFormatter)
+      Labels.Date -> DateTime.parseDateTime(request.getDate).format(dateFormatter)
     )
 
     detailRows.zipWithIndex.foreach:
