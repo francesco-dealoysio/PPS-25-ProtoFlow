@@ -16,6 +16,7 @@ import pkg.d.util.XmlToPdf
 object ArchivedDocumentDetailsView extends Form:
 
   def apply(selectedDocument: ArchivedDocument, onExit: () => Unit = () => ()): BorderPane =
+    val id = stringField("", selectedDocument.getId)
     val protocolNumber = stringField("", selectedDocument.getProtocolNumber)
     val registeredDate = stringField("", selectedDocument.getRegisteredDate)
     val registeredTime = stringField("", selectedDocument.getRegisteredTime)
@@ -31,21 +32,7 @@ object ArchivedDocumentDetailsView extends Form:
     val archiveLocation = stringField("", selectedDocument.getArchiveLocation)
 
     val readOnlyFields: Seq[FormField[? <: Node]] =
-      Seq(
-        protocolNumber,
-        registeredDate,
-        registeredTime,
-        registeredBy,
-        documentType,
-        sender,
-        recipient,
-        subject,
-        remarks,
-        archivedDate,
-        archivedTime,
-        archivedBy,
-        archiveLocation
-      )
+      Seq(id, protocolNumber, registeredDate, registeredTime, registeredBy, documentType, sender, recipient, subject, remarks, archivedDate, archivedTime, archivedBy, archiveLocation)
 
     readOnlyFields.foreach: field =>
       field.control.setDisable(true)

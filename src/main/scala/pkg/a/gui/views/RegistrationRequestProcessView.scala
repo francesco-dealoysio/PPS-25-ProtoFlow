@@ -36,6 +36,7 @@ object RegistrationRequestProcessView extends Management:
       styleClass += DetailsGridStyle
 
     val detailRows = Seq(
+      Labels.Id -> request.getId,
       Labels.Name -> request.getName,
       Labels.Surname-> request.getSurname,
       Labels.Email -> request.getEmail,

@@ -2,7 +2,6 @@ package pkg.a.gui.views
 
 import pkg.a.gui.traits.Management
 import pkg.b.logic.Account
-import pkg.d.util.Logger.*
 import pkg.a.gui.text.UiText.Accounts.Management as Text
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Fields.Labels

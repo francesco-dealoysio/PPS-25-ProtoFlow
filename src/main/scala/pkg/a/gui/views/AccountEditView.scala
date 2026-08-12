@@ -31,14 +31,16 @@ object AccountEditView extends Form:
     val viewModel = new AccountViewModel()
     val profileMode = mode == EditMode.Profile
 
-    val surname = stringField(Prompts.Surname, selectedAccount.getSurname)
-    val name = stringField(Prompts.Name, selectedAccount.getName)
-    val email = stringField(Prompts.Email, selectedAccount.getEmail)
-    val phone = stringField(Prompts.Phone, selectedAccount.getPhone)
-    val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), Prompts.SelectRole, selectedAccount.getRole)
-    val area = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), Prompts.Area, selectedAccount.getArea)
-    val assignment = stringField(Prompts.Assignment, selectedAccount.getAssignment)
-    val username = stringField(Prompts.Username, selectedAccount.getUsername)
+    val id = stringField("", selectedAccount.getId)
+    id.control.setDisable(true)
+    val surname = stringField("", selectedAccount.getSurname)
+    val name = stringField("", selectedAccount.getName)
+    val email = stringField("", selectedAccount.getEmail)
+    val phone = stringField("", selectedAccount.getPhone)
+    val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), "", selectedAccount.getRole)
+    val area = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), "", selectedAccount.getArea)
+    val assignment = stringField("", selectedAccount.getAssignment)
+    val username = stringField("", selectedAccount.getUsername)
     val password = passwordFormField(Prompts.KeepPassword)
     val accountFields: Seq[FormField[? <: Node]] = Seq(surname, name, email, phone, role, area, assignment, username, password)
     val profileFields: Seq[FormField[? <: Node]] = Seq(email, phone, password)
@@ -153,21 +155,22 @@ object AccountEditView extends Form:
 
     val profileRows =
       Seq(
-        formRow(Labels.required(Labels.Email), email),
+        formRow(Labels.Email, email),
         formRow(Labels.Phone, phone),
         formRow(Labels.Password, password)
       )
 
     val accountRows =
       Seq(
-        formRow(Labels.required(Labels.Surname), surname),
-        formRow(Labels.required(Labels.Name), name),
-        formRow(Labels.required(Labels.Email), email),
+        formRow(Labels.Id, id),
+        formRow(Labels.Surname, surname),
+        formRow(Labels.Name, name),
+        formRow(Labels.Email, email),
         formRow(Labels.Phone, phone),
-        formRow(Labels.required(Labels.Role), role),
+        formRow(Labels.Role, role),
         formRow(Labels.Area, area),
         formRow(Labels.Assignment, assignment),
-        formRow(Labels.required(Labels.Username), username),
+        formRow(Labels.Username, username),
         formRow(Labels.Password, password)
       )
 

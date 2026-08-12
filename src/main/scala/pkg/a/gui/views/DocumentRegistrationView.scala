@@ -3,7 +3,7 @@ package pkg.a.gui.views
 import pkg.a.gui.structures.LoadedDocumentViewModel
 import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
 import pkg.a.gui.text.UiText.Fields.Labels
-import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Prompts}
+import pkg.a.gui.text.UiText.LoadedDocuments.Fields
 import pkg.a.gui.text.UiText.RegisteredDocuments.Process as Text
 import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
 import pkg.a.gui.traits.Form
@@ -24,14 +24,16 @@ object DocumentRegistrationView extends Form:
 
     val service = new LoadedDocumentService()
     val viewModel = new LoadedDocumentViewModel()
+    val id = stringField("", selectedDocument.getId)
+    id.control.setDisable(true)
     val documentDate = dateField(LocalDate.parse(selectedDocument.getDocumentDate))
-    val documentTime = stringField(Prompts.DocumentTime, selectedDocument.getDocumentTime)
-    val documentProtocol = stringField(Prompts.DocumentProtocol, selectedDocument.getDocumentProtocol)
-    val documentType = stringField(Prompts.DocumentType, selectedDocument.getDocumentType)
-    val sender = stringField(Prompts.Sender, selectedDocument.getSender)
-    val recipient = stringField(Prompts.Recipient, selectedDocument.getRecipient)
-    val subject = stringField(Prompts.Subject, selectedDocument.getSubject)
-    val remarks = areaField(Prompts.Remarks, DescriptionAreaStyle, selectedDocument.getRemarks)
+    val documentTime = stringField("", selectedDocument.getDocumentTime)
+    val documentProtocol = stringField("", selectedDocument.getDocumentProtocol)
+    val documentType = stringField("", selectedDocument.getDocumentType)
+    val sender = stringField("", selectedDocument.getSender)
+    val recipient = stringField("", selectedDocument.getRecipient)
+    val subject = stringField("", selectedDocument.getSubject)
+    val remarks = areaField("", DescriptionAreaStyle, selectedDocument.getRemarks)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks)
 
@@ -114,6 +116,7 @@ object DocumentRegistrationView extends Form:
     val form =
       formGrid(
         Seq(
+          formRow(Fields.Id, id),
           formRow(Labels.required(Fields.DocumentDate), documentDate),
           formRow(Labels.required(Fields.DocumentTime), documentTime),
           formRow(Labels.required(Fields.DocumentProtocol), documentProtocol),

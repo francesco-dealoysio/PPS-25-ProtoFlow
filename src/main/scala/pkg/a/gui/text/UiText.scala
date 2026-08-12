@@ -58,6 +58,7 @@ object UiText:
 
   object Fields:
     object Labels:
+      val Id = "Id"
       val Name = "Nome"
       val Surname = "Cognome"
       val Email = "Email"

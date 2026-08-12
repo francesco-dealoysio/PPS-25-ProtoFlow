@@ -16,9 +16,9 @@ object RoleEditView extends Form:
     val roleLogic = new Role()
     val viewModel = new RoleViewModel()
 
-    val role = stringField(Prompts.Role, selectedRole.getRole)
+    val role = stringField("", selectedRole.getRole)
 
-    val description = areaField(Prompts.Description, DescriptionAreaStyle, selectedRole.getDescription)
+    val description = areaField("", DescriptionAreaStyle, selectedRole.getDescription)
     val monitoredFields = Seq(role, description)
     val result = createResultMessage()
 
@@ -72,8 +72,8 @@ object RoleEditView extends Form:
     val form =
       formGrid(
         Seq(
-          formRow(Labels.required(Labels.Role), role),
-          formRow(Labels.required(Labels.Description), description),
+          formRow(Labels.Role, role),
+          formRow(Labels.Description, description),
         )
       )
 

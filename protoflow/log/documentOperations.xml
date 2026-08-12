@@ -4247,4 +4247,28 @@
     <processedTime>20:39:34.82</processedTime>
     <processedBy>tommy</processedBy>
   </record>
+  <record>
+    <id>909</id>
+    <documentId>121</documentId>
+    <operationType>loading</operationType>
+    <processedDate>2026-08-12</processedDate>
+    <processedTime>12:19:32.96</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+  <record>
+    <id>910</id>
+    <documentId>121</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-08-12</processedDate>
+    <processedTime>12:19:57.53</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+  <record>
+    <id>911</id>
+    <documentId>122</documentId>
+    <operationType>loading</operationType>
+    <processedDate>2026-08-12</processedDate>
+    <processedTime>12:20:25.79</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
 </operations>
