@@ -29,7 +29,7 @@ class AdminHomepage(val user: Account) extends Homepage {
     val statisticsBtn = new Button("Statistiche")
     val logsBtn = new Button("Log")
     val managementControlBtn = new Button("Controllo Gestione")
-    val registrationsBtn = new Button("Registrazione")
+    val registrationsBtn = new Button("Registrazioni")
     val accountsBtn = new Button("Account Utenti")
     val rolesBtn = new Button("Ruoli")
     val classificationsBtn = new Button("Classifiche")

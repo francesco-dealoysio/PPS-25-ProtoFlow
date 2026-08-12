@@ -137,7 +137,7 @@ class Login(val user: Account, val parentMask: GUI) extends Operation:
     passwordFld.text = objEntity.asInstanceOf[Account].getPassword
     passwordFld.onKeyPressed = event =>
       if event.code == KeyCode.Enter then
-        execBtn.requestFocus()
+        execBtn.fire()
 
   override def valid: Boolean =
     var esito: Boolean = true

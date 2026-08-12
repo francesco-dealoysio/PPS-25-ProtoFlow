@@ -1,10 +1,13 @@
 package pkg.e.ui.traits
 
 import pkg.b.logic.Entity
+import pkg.e.ui.managements.AccountManagement
 import pkg.e.ui.traits.GUI
+import pkg.e.ui.operations.{AccountAdd, DocumentLoad, Login}
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.*
 import scalafx.scene.layout.{BorderPane, GridPane, HBox, VBox}
+import scalafx.collections.ObservableBuffer
 
 trait Management extends GUI:
 
@@ -22,6 +25,10 @@ trait Management extends GUI:
   var viewBtn: Button = _
   var printListBtn: Button = _
   var exitBtn: Button = _
+
+  var currentId = "0"
+  var userMask: Management = _
+  //var maskToCall
 
   override def start(): Unit =
     super.start()
@@ -56,27 +63,35 @@ trait Management extends GUI:
     alignment = Pos.CenterRight
 
     insertBtn = new Button("Aggiungi") {
-      onAction = _ => ()
+      onAction = _ =>
+        println("Call \"AccountInsert\"")
+        println(s"Selected Id: $currentId")
+        AccountAdd(user, userMask).start()
     }
 
     updateBtn = new Button("Modifica") {
-      onAction = _ => ()
+      onAction = _ =>
+        println("Call \"AccountUpdate\"")
     }
     
     deleteBtn = new Button("Elimina") {
-      onAction = _ => ()
+      onAction = _ =>
+        println("Call \"AccountDelete\"")
     }
     
     viewBtn = new Button("Visualizza") {
-      onAction = _ => ()
+      onAction = _ =>
+        println("Call \"AccountView\"")
     }
     
     printListBtn = new Button("Stampa Elenco") {
-      onAction = _ => ()
+      onAction = _ =>
+      println("Call \"AccountPrintList\"")
     }
 
     exitBtn = new Button("Chiudi") {
-      onAction = _ => ()
+      onAction = _ =>
+        parentMask.start()
     }
 
     children = Seq(

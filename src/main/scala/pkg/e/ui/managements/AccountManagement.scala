@@ -9,12 +9,15 @@ import scalafx.beans.property.StringProperty
 import scalafx.scene.SceneIncludes.jfxNode2sfx
 import scalafx.scene.control.{TableColumn, TableView, cell}
 import scalafx.collections.ObservableBuffer
+import scalafx.scene.control.cell.TextFieldTableCell
 
 class AccountManagement(val user: Account, val parentMask: Homepage) extends Management:
 
   override val Title: String = "Gestione Account Utenti"
 
   pageTitle = Title
+
+  userMask = this
 
   objEntity = new Account
 
@@ -43,7 +46,6 @@ class AccountManagement(val user: Account, val parentMask: Homepage) extends Man
 
   override def menu: VBox = parentMask.menu
 
-  // TableView
   val table = new TableView[Record](records) {
     columns ++= List(
       new TableColumn[Record, String] {
@@ -83,16 +85,15 @@ class AccountManagement(val user: Account, val parentMask: Homepage) extends Man
       }
     )
   }
-/*
-  // Listen for selection changes
-  table.selectionModel().selectedItem.onChange { (_, _, newValue) =>
-    if (newValue != null) {
-      val rowIndex = tableView.selectionModel().getSelectedIndex
-      println(s"Selected row index: $rowIndex, Name: ${newValue.id.value}")
-    }
+
+  table.selectionModel().selectedItemProperty().addListener { (_, _, newValue) =>
+    if (newValue != null)
+      currentId = table.selectionModel().selectedItemProperty().get().id.value
   }
-*/
+
   override def managementPageGrid = new BorderPane {
     center = table
   }
+
+  table.selectionModel().selectFirst()
 

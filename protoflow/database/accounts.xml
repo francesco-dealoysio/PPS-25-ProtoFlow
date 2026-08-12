@@ -69,4 +69,18 @@
       8e25220a2237eee111dbe2afe4b367a9c2b8793345269c1d46d2ba52c56146c6785c08d702f37b6d8423b6581bab3be01b97aff66f4ab5d009a760f5343c8cbb
     </password>
   </record>
+  <record>
+    <id>75</id>
+    <surname>Pippo</surname>
+    <name>pasticcio</name>
+    <email>fdgdfgdaf</email>
+    <phone>cvzvvc</phone>
+    <role>admin</role>
+    <area>Amministrazione</area>
+    <assignment>capo</assignment>
+    <username>attila</username>
+    <password>
+      372f937743c157b1e14dc7ef2af8762f42607f74322710bbd07ea207e7a1dc52e7057a7fddb8617c2a55acb160edcada8e5355873a704d990e0a25d489f75b04
+    </password>
+  </record>
 </accounts>

@@ -117,7 +117,13 @@ trait Operation extends GUI:
                 headerText = operationText + " Record"
                 contentText = "Operazione eseguita con successo!"
               }.showAndWait()
-            parentMask.start()
+              parentMask.start()
+            else
+              new Alert(Alert.AlertType.Error) {
+                title = "Esito Operazione"
+                headerText = operationText + " Record"
+                contentText = "Operazione fallita!"
+              }.showAndWait()
     }
 
     resetBtn = new Button("Ripristina") {

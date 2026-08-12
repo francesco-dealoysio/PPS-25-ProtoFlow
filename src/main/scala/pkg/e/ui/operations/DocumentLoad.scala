@@ -5,7 +5,7 @@ import pkg.b.logic.{Account, LoadedDocument}
 import pkg.d.util.DateTime.{localDate, localTime}
 import pkg.d.util.IdGen
 import pkg.d.util.Util.{inDocumentsFilePathName, inIdsFilePathName}
-import pkg.e.ui.traits.{Homepage, Operation}
+import pkg.e.ui.traits.{GUI, Homepage, Operation}
 import scalafx.scene.control.*
 import scalafx.scene.layout.VBox
 
@@ -162,5 +162,5 @@ class DocumentLoad(val user: Account, val parentMask: Homepage) extends Operatio
     objEntity.asInstanceOf[LoadedDocument].setProcessedTime(localTime)
     objEntity.asInstanceOf[LoadedDocument].setProcessedBy(user.getName + " " + user.getSurname)
 
-@main def tryEntityAdd: Unit =
+@main def tryDocumentLoad: Unit =
   println("")
