@@ -346,6 +346,8 @@ object UiText:
       val ArchivedDateRequired = "La data di archiviazione è obbligatoria"
       val ArchivedTimeRequired = "L'ora di archiviazione è obbligatoria"
       val ArchivedByRequired = "L'operatore archiviatore è obbligatorio"
+      val ArchivedDateInvalid = "La data di archiviazione non è valida"
+      val ArchivedTimeInvalid = "L'ora di archiviazione non è valida"
 
     object Process:
       val Title = "Archiviazione documento"

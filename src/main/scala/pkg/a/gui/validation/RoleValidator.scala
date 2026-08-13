@@ -13,11 +13,7 @@ class RoleValidator:
     ).flatten
 
   def isValid(role: Role, existingRoles: Seq[Role], currentRoleId: Option[String] = None): Boolean =
-    validate(
-      role,
-      existingRoles,
-      currentRoleId
-    ).isEmpty
+    validate(role, existingRoles, currentRoleId).isEmpty
 
   private def validateRequired(errorMessage: String, value: String): Option[String] =
     if value.trim.isEmpty then

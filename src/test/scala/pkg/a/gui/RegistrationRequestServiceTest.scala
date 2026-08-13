@@ -64,29 +64,39 @@ class RegistrationRequestServiceTest:
     assertEquals("mario.repository@email.it", pendingRequests.head.getEmail)
 
   @Test
-  def testSubmitRequestRejectsMissingNameSurnameOrEmail(): Unit =
+  def testSubmitRequestRejectsMissingName(): Unit =
     val result = service.submitRequest("", "Rossi", "mario.rossi@email.it", "", "Viewer", "Personale", "Impiegato")
-    assertEquals(Left("Nome, cognome ed email sono obbligatori"), result)
+    assertEquals(Left("Il campo 'Nome' è obbligatorio."), result)
+
+  @Test
+  def testSubmitRequestRejectsMissingSurname(): Unit =
+    val result = service.submitRequest("Mario", "", "mario.rossi@email.it", "", "Viewer", "Personale", "Impiegato")
+    assertEquals(Left("Il campo 'Cognome' è obbligatorio."), result)
+
+  @Test
+  def testSubmitRequestRejectsMissingEmail(): Unit =
+    val result = service.submitRequest("Mario", "Rossi", "", "", "Viewer", "Personale", "Impiegato")
+    assertEquals(Left("Il campo 'Indirizzo email' è obbligatorio."), result)
 
   @Test
   def testSubmitRequestRejectsInvalidEmail(): Unit =
     val result = service.submitRequest("Mario", "Rossi", "email-non-valida", "", "Viewer", "Personale", "Impiegato")
-    assertEquals(Left("Email non valida"), result)
+    assertEquals(Left("L'indirizzo email non ha un formato valido."), result)
 
   @Test
   def testSubmitRequestRejectsMissingRole(): Unit =
     val result = service.submitRequest("Mario", "Rossi", "mario.rossi@email.it", "", "", "Personale", "Impiegato")
-    assertEquals(Left("Il ruolo richiesto è obbligatorio"), result)
+    assertEquals(Left("Il campo 'Ruolo richiesto' è obbligatorio."), result)
 
   @Test
   def testSubmitRequestRejectsMissingArea(): Unit =
     val result = service.submitRequest("Mario", "Rossi", "mario.rossi@email.it", "", "Viewer", "", "Impiegato")
-    assertEquals(Left("L'area di appartenenza è obbligatoria"), result)
+    assertEquals(Left("Il campo 'Area/Settore di appartenenza' è obbligatorio."), result)
 
   @Test
   def testSubmitRequestRejectsMissingAssignment(): Unit =
     val result = service.submitRequest("Mario", "Rossi", "mario.rossi@email.it", "", "Viewer", "Personale", "")
-    assertEquals(Left("L'incarico è obbligatorio"), result)
+    assertEquals(Left("Il campo 'Incarico' è obbligatorio."), result)
 
   @Test
   def testGetPendingRequestsReturnsOnlyPendingRequests(): Unit =

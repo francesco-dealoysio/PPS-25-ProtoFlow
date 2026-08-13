@@ -8,6 +8,7 @@ import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegistrationFields
 import pkg.a.gui.traits.Form
 import pkg.b.logic.RegisteredDocument
 import pkg.d.util.DateTime.{localDate, localTime}
+import pkg.a.gui.validation.DocumentArchivingValidator
 import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.geometry.Pos
@@ -27,6 +28,7 @@ object DocumentArchivingView extends Form:
 
     val service = new ArchivedDocumentService()
     val result = createResultMessage()
+    val validator = new DocumentArchivingValidator()
 
     val id = stringField("", selectedDocument.getId)
     val protocolNumber = stringField("", selectedDocument.getProtocolNumber)
@@ -69,20 +71,16 @@ object DocumentArchivingView extends Form:
 
     def validateForm(): Boolean =
       clearErrors()
-      var valid = true
-      if archivedDate.value.isBlank then
-        archivedDate.showError(ArchiveErrors.ArchivedDateRequired)
-        valid = false
-
-      if archivedTime.value.isBlank then
-        archivedTime.showError(ArchiveErrors.ArchivedTimeRequired)
-        valid = false
-
-      if archivedBy.value.isBlank then
-        archivedBy.showError(ArchiveErrors.ArchivedByRequired)
-        valid = false
-
-      valid
+      val errors = validator.validate(archivedDate.value, archivedTime.value, archivedBy.value)
+      errors.foreach:
+        case error @ (ArchiveErrors.ArchivedDateRequired | ArchiveErrors.ArchivedDateInvalid) =>
+          archivedDate.showError(error)
+        case error @ (ArchiveErrors.ArchivedTimeRequired | ArchiveErrors.ArchivedTimeInvalid) =>
+          archivedTime.showError(error)
+        case error @ ArchiveErrors.ArchivedByRequired =>
+          archivedBy.showError(error)
+        case _ =>
+      errors.isEmpty
 
     def resetForm(): Unit =
       resetFields(editableFields*)

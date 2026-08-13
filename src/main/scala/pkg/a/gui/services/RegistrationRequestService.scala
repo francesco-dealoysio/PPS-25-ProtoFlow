@@ -3,6 +3,7 @@ package pkg.a.gui.services
 import pkg.b.logic.{Account, Registration}
 import pkg.d.util.Util.{cipher, inDatabaseFilePathName, inIdsFilePathName}
 import pkg.d.util.{DateTime, IdGen}
+import pkg.a.gui.validation.RegistrationValidator
 
 import scala.util.Random
 
@@ -21,6 +22,7 @@ class RegistrationRequestService(
                                  ):
 
   private val registrationLogic = new Registration()
+  private val registrationValidator = new RegistrationValidator()
 
   def pendingRequestsFilePath: String = pendingFilePath
   def acceptedRequestsFilePath: String = acceptedFilePath
@@ -36,35 +38,28 @@ class RegistrationRequestService(
                      assignment: String
                    ): Either[String, Registration] =
 
-    if name.trim.isEmpty || surname.trim.isEmpty || email.trim.isEmpty then
-      Left("Nome, cognome ed email sono obbligatori")
-    else if requestedRole.trim.isEmpty then
-      Left("Il ruolo richiesto è obbligatorio")
-    else if requestedArea.trim.isEmpty then
-      Left("L'area di appartenenza è obbligatoria")
-    else if assignment.trim.isEmpty then
-      Left("L'incarico è obbligatorio")
-    else if !email.contains("@") then
-      Left("Email non valida")
-    else
-      val request =
-        Registration(
-          id = IdGen(inIdsFilePathName("registrationId")),
-          surname = surname.trim,
-          name = name.trim,
-          email = email.trim,
-          phone = phone.trim,
-          role = requestedRole.trim,
-          area = requestedArea.trim,
-          assignment = assignment.trim,
-          date = DateTime.localDateTime,
-          state = "Pending"
-        )
+    val request =
+      Registration(
+        id = IdGen(inIdsFilePathName("registrationId")),
+        surname = surname.trim,
+        name = name.trim,
+        email = email.trim,
+        phone = phone.trim,
+        role = requestedRole.trim,
+        area = requestedArea.trim,
+        assignment = assignment.trim,
+        date = DateTime.localDateTime,
+        state = "Pending"
+      )
 
-      if registrationLogic.recordInsert(request, pendingFilePath) then
-        Right(request)
-      else
-        Left("Errore durante il salvataggio della richiesta")
+    val errors = registrationValidator.validate(request)
+
+    if errors.nonEmpty then
+      Left(errors.head)
+    else if registrationLogic.recordInsert(request, pendingFilePath) then
+      Right(request)
+    else
+      Left("Errore durante il salvataggio della richiesta")
 
   def getPendingRequests: List[Registration] =
     registrationLogic
