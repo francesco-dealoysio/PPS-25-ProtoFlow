@@ -56,9 +56,9 @@ trait Root extends Common:
       .forall: check =>
         !check() ||
           askConfirmation(
-            titleText = Dialogs.UnsavedChanges.TitleUnsavedChanges,
-            header = Dialogs.UnsavedChanges.HeaderUnSavedChanges,
-            content = Dialogs.UnsavedChanges.ContentUnSavedChanges
+            titleText = Dialogs.UnsavedChanges.Title,
+            header = Dialogs.UnsavedChanges.Header,
+            content = Dialogs.UnsavedChanges.Content
           )
 
   private def createHeader(currentUser: String, roleDescription: String, onMenuToggle: () => Unit): HBox =

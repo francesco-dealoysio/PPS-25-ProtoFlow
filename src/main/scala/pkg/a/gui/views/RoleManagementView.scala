@@ -7,7 +7,7 @@ import pkg.d.util.XmlToPdf
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Common.Buttons
-import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.Roles.Management as Text
 
 object RoleManagementView extends Management:

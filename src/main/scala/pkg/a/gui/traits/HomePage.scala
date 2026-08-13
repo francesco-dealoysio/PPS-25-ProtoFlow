@@ -48,9 +48,9 @@ trait HomePage extends Root:
         case MenuAction.Logout =>
           val confirmed =
             askConfirmation(
-              titleText = TitleDialog,
-              header = HeaderDialog,
-              content = ContentDialog
+              titleText = Title,
+              header = Header,
+              content = Content
             )
 
           if confirmed then

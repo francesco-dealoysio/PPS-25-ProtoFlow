@@ -7,6 +7,7 @@ import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.XmlToPdf
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Management as Text}
+import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.BorderPane
@@ -26,9 +27,9 @@ object LoadedDocumentManagementView extends Management:
     val table = managementTable(documents, Text.Empty)
 
     table.columns ++= Seq(
-      stringColumn[LoadedDocument](Fields.Id, Some(160))(_.getId),
-      stringColumn[LoadedDocument](Fields.Sender, Some(160))(_.getSender),
-      stringColumn[LoadedDocument](Fields.Subject, Some(220))(_.getSubject),
+      stringColumn[LoadedDocument](CommonDocumentFields.Id, Some(160))(_.getId),
+      stringColumn[LoadedDocument](CommonDocumentFields.Sender, Some(160))(_.getSender),
+      stringColumn[LoadedDocument](CommonDocumentFields.Subject, Some(220))(_.getSubject),
       stringColumn[LoadedDocument](Fields.DocumentType, Some(110))(_.getDocumentType),
       stringColumn[LoadedDocument](Fields.DocumentDate, Some(110))(_.getDocumentDate),
       stringColumn[LoadedDocument](Fields.ProcessedBy, Some(140))(_.getProcessedBy)

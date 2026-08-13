@@ -7,6 +7,7 @@ import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.XmlToPdf
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.RegisteredDocuments.{Fields, Management as Text}
+import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.BorderPane
@@ -23,10 +24,10 @@ object RegisteredDocumentManagementView extends Management:
     val table = managementTable(documents, Text.Empty)
 
     table.columns ++= Seq(
-      stringColumn[RegisteredDocument](Fields.Id, Some(140))(_.getId),
-      stringColumn[RegisteredDocument](Fields.ProtocolNumber, Some(140))(_.getProtocolNumber),
-      stringColumn[RegisteredDocument](Fields.Sender, Some(150))(_.getSender),
-      stringColumn[RegisteredDocument](Fields.Subject, Some(220))(_.getSubject),
+      stringColumn[RegisteredDocument](CommonDocumentFields.Id, Some(140))(_.getId),
+      stringColumn[RegisteredDocument](CommonDocumentFields.ProtocolNumber, Some(140))(_.getProtocolNumber),
+      stringColumn[RegisteredDocument](CommonDocumentFields.Sender, Some(150))(_.getSender),
+      stringColumn[RegisteredDocument](CommonDocumentFields.Subject, Some(220))(_.getSubject),
       stringColumn[RegisteredDocument](Fields.Type, Some(90))(_.getDocumentType),
       stringColumn[RegisteredDocument](Fields.ProtocolledBy, Some(130))(_.getRegisteredBy)
     )

@@ -8,7 +8,7 @@ import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Accounts.Add as Text
-import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Validation.Account as Validation
 import pkg.a.gui.validation.AccountValidator
 

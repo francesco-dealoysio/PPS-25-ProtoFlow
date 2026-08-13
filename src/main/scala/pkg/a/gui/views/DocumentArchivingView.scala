@@ -5,6 +5,7 @@ import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.text.UiText.ArchivedDocuments.{Errors as ArchiveErrors, Fields as ArchiveFields, Process as Text}
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields as DocumentFields
 import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegistrationFields
+import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.traits.Form
 import pkg.b.logic.RegisteredDocument
 import pkg.d.util.DateTime.{localDate, localTime}
@@ -14,8 +15,6 @@ import scalafx.scene.Node
 import scalafx.geometry.Pos
 import scalafx.scene.layout.{HBox, Priority}
 import scalafx.scene.layout.BorderPane
-
-import java.time.LocalDate
 
 object DocumentArchivingView extends Form:
 
@@ -44,10 +43,10 @@ object DocumentArchivingView extends Form:
     /*
      * Dati propri dell'archiviazione.
      */
-    val archivedDate = dateField(LocalDate.parse(localDate))
+    val archivedDate = dateField(localDate)
     val archivedTime = stringField("", localTime)
     val archivedBy = stringField("", operatorUsername)
-    val archiveLocation = stringField("")
+    val archiveLocation = stringField()
 
     /*
      * I dati già protocollati sono solamente visualizzati.
@@ -130,15 +129,15 @@ object DocumentArchivingView extends Form:
     val documentForm =
       formGrid(
         Seq(
-          formRow(RegistrationFields.Id, id),
-          formRow(RegistrationFields.ProtocolNumber, protocolNumber),
+          formRow(CommonDocumentFields.Id, id),
+          formRow(CommonDocumentFields.ProtocolNumber, protocolNumber),
           formRow(RegistrationFields.RegisteredDate, registeredDate),
           formRow(RegistrationFields.RegisteredTime, registeredTime),
           formRow(RegistrationFields.RegisteredBy, registeredBy),
           formRow(DocumentFields.DocumentType, documentType),
-          formRow(DocumentFields.Sender, sender),
-          formRow(DocumentFields.Recipient, recipient),
-          formRow(DocumentFields.Subject, subject),
+          formRow(CommonDocumentFields.Sender, sender),
+          formRow(CommonDocumentFields.Recipient, recipient),
+          formRow(CommonDocumentFields.Subject, subject),
           formRow(DocumentFields.Remarks, remarks)
         )
       )

@@ -3,11 +3,10 @@ package pkg.a.gui.views
 import pkg.a.gui.traits.Management
 import pkg.b.logic.Classification
 import scalafx.collections.ObservableBuffer
-import pkg.d.util.Logger.*
 import pkg.d.util.Util.inDatabaseFilePathName
 import pkg.d.util.XmlToPdf
 import pkg.a.gui.text.UiText.Common.Buttons
-import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.Classifications.Management as Text
 import scalafx.scene.layout.BorderPane
 

@@ -9,6 +9,7 @@ import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.ArchivedDocuments.{Fields, Management as Text}
+import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.Common.Buttons
 
 object ArchivedDocumentManagementView extends Management:
@@ -23,12 +24,12 @@ object ArchivedDocumentManagementView extends Management:
     val table = managementTable(documents, Text.Empty)
 
     table.columns ++= Seq(
-      stringColumn[ArchivedDocument](Fields.Id, Some(140))(_.getId),
+      stringColumn[ArchivedDocument](CommonDocumentFields.Id, Some(140))(_.getId),
       stringColumn[ArchivedDocument](Fields.ProtocolNumber, Some(140))(_.getProtocolNumber),
       stringColumn[ArchivedDocument](Fields.ArchivedDate, Some(120))(_.getArchivedDate),
       stringColumn[ArchivedDocument](Fields.ArchivedTime, Some(100))(_.getArchivedTime),
       stringColumn[ArchivedDocument](Fields.ArchivedBy, Some(150))(_.getArchivedBy),
-      stringColumn[ArchivedDocument](Fields.Subject, Some(220))(_.getSubject),
+      stringColumn[ArchivedDocument](CommonDocumentFields.Subject, Some(220))(_.getSubject),
       stringColumn[ArchivedDocument](Fields.ArchiveLocation, Some(180))(_.getArchiveLocation)
     )
 

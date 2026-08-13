@@ -3,7 +3,7 @@ package pkg.a.gui.views
 import pkg.a.gui.traits.Form
 import pkg.a.gui.text.UiText.Accounts.{Edit as EditText, Profile as ProfileText}
 import pkg.a.gui.text.UiText.Common.Buttons
-import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Validation.Account as Validation
 import pkg.a.gui.validation.AccountValidator
 import pkg.b.logic.{Account, Classification, Role}

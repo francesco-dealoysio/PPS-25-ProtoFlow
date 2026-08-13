@@ -4,7 +4,7 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Node
 import scalafx.scene.control.{Button, ComboBox, DatePicker, Label, PasswordField, TextArea, TextField}
 import scalafx.scene.layout.*
-import java.time.LocalDate
+import pkg.d.util.DateTime
 import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.text.UiText.Common.Buttons.*
 
@@ -141,13 +141,13 @@ trait Form extends Common:
         .foreach(_.showError(error))
     errors.isEmpty
 
-  protected def dateField(initialValue: LocalDate): FormField[DatePicker] =
+  protected def dateField(initialValue: String): FormField[DatePicker] =
     val control =
-      new DatePicker(initialValue):
+      new DatePicker(DateTime.parseDate(initialValue)):
         maxWidth = Double.MaxValue
         styleClass += FormFieldStyle
-
-    formField(control, initialValue.toString)(
+  
+    formField(control, initialValue)(
       readValue = picker =>
         Option(picker.value.value)
           .map(_.toString)
@@ -155,7 +155,7 @@ trait Form extends Common:
       writeValue = (picker, value) =>
         picker.value =
           if value.isBlank then null
-          else LocalDate.parse(value)
+          else DateTime.parseDate(value)
     )
 
   protected def formPage(

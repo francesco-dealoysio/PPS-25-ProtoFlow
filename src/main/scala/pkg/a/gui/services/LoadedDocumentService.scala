@@ -3,8 +3,6 @@ package pkg.a.gui.services
 import pkg.b.logic.{LoadedDocument, RegisteredDocument}
 import pkg.d.util.DateTime.{localDate, localTime}
 
-import java.time.LocalDate
-
 class LoadedDocumentService:
 
   private val loadedDocumentLogic = new LoadedDocument()
@@ -28,7 +26,7 @@ class LoadedDocumentService:
    */
   def registerDocument(source: LoadedDocument, edited: LoadedDocument, operatorUsername: String): Either[String, RegisteredDocument] =
 
-    val protocolNumber = s"${LocalDate.now().getYear}/${source.getId}"
+    val protocolNumber = s"${localDate.take(4)}/${source.getId}"
 
     val registered =
       RegisteredDocument(

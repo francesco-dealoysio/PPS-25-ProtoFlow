@@ -4,7 +4,7 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.Role
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiStyles.Common.*
-import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Roles.Edit as Text
 import pkg.a.gui.text.UiText.Validation.Role as Validation
 import pkg.a.gui.validation.RoleValidator
