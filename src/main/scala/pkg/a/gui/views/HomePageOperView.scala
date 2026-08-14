@@ -68,7 +68,16 @@ object HomePageOperView extends HomePage:
     navigator.show(
       RegisteredDocumentManagementView(
         onArchive = selected => showDocumentArchive(selected, navigator, currentUsername),
+        onView = selected => showRegisteredDocumentDetails(selected, navigator, currentUsername),
         onExit = () => navigator.dashboard()
+      )
+    )
+
+  private def showRegisteredDocumentDetails(selected: RegisteredDocument, navigator: Navigator, currentUsername: String): Unit =
+    navigator.show(
+      RegisteredDocumentDetailsView(
+        selectedDocument = selected,
+        onExit = () => showRegisteredDocumentManagement(navigator, currentUsername)
       )
     )
 

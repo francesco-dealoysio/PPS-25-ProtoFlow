@@ -13,7 +13,11 @@ import scalafx.scene.layout.BorderPane
 
 object RegisteredDocumentManagementView extends Management:
 
-  def apply(onArchive: RegisteredDocument => Unit = _ => (), onExit: () => Unit = () => ()): BorderPane =
+  def apply(
+             onArchive: RegisteredDocument => Unit = _ => (),
+             onView: RegisteredDocument => Unit = _ => (),
+             onExit: () => Unit = () => ()
+           ): BorderPane =
 
     val service = new LoadedDocumentService()
     val documents = ObservableBuffer.empty[RegisteredDocument]
@@ -76,12 +80,14 @@ object RegisteredDocumentManagementView extends Management:
 
     val archiveButton = primaryButton(Buttons.Archive, () => withSelectedItem(table, result, Text.SelectToArchive)(onArchive))
 
+    val viewButton = primaryButton(Text.View, () => withSelectedItem(table, result, Text.SelectToView)(onView))
+
     val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedDocument())
 
-    disableWithoutSelection(table, archiveButton, deleteButton)
+    disableWithoutSelection(table, archiveButton, viewButton, deleteButton)
 
     val exitButton = closeButton(onExit)
-    val bottomActions = actionBar(Seq(exitButton, refreshButton, printListButton, deleteButton, archiveButton))
+    val bottomActions = actionBar(Seq(exitButton, refreshButton, printListButton, deleteButton, viewButton, archiveButton))
     val header = titleBox(Text.Title, Text.Subtitle)
 
     loadDocuments()
