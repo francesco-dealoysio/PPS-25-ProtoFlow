@@ -277,6 +277,15 @@ object UiText:
       val PrintError = "Errore durante la stampa dell'elenco (nessun documento presente?)."
 
   object RegisteredDocuments:
+
+    object Details:
+      val Title = "Dettaglio documento protocollato"
+      val Subtitle = "Visualizza tutte le informazioni del documento selezionato"
+      val PrintTitle = "Scheda Documento Protocollato"
+      val PrintFileNamePrefix = "documento_protocollato"
+      val PrintSuccess = "Scheda del documento stampata correttamente nella cartella protoflow/prints."
+      val PrintError = "Non è stato possibile stampare la scheda del documento."
+
     object Fields:
       val Id = "Id"
       val ProtocolNumber = "Numero protocollo"
@@ -309,6 +318,8 @@ object UiText:
       val DeleteError = "Non è stato possibile eliminare il documento."
       val Deleted = "Il documento è stato eliminato correttamente."
       val ArchiveNotYetAvailable = "La funzionalità di archiviazione non è ancora disponibile."
+      val View = "Visualizza"
+      val SelectToView = "Seleziona un documento da visualizzare."
 
       val PrintTitle = "Elenco Documenti Protocollati"
       val PrintFileName = "documenti_protocollati_elenco"
