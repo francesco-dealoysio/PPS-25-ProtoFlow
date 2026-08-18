@@ -30,7 +30,7 @@ object LoadedDocumentManagementView extends Management:
     val toDateFilter = new DatePicker()
 
     val subjectFilter = new TextField:
-      promptText = Fields.Subject
+      promptText = CommonDocumentFields.Subject
 
     val operatorFilter = new ComboBox[String]:
       items = ObservableBuffer(Text.AllOperators)
@@ -45,6 +45,14 @@ object LoadedDocumentManagementView extends Management:
       stringColumn[LoadedDocument](Fields.ProcessedBy, Some(140))(_.getProcessedBy)
     )
 
+    def updateOperatorFilter(loadedDocuments: Seq[LoadedDocument]): Unit =
+      val operators =
+        loadedDocuments
+          .map(_.getProcessedBy.trim)
+          .filter(_.nonEmpty)
+          .distinct
+          .sorted
+
     def loadDocuments(): Unit =
       result.clear()
 
@@ -53,6 +61,7 @@ object LoadedDocumentManagementView extends Management:
           .getLoadedDocuments
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
+      
       updateOperatorFilter(loadedDocuments)
 
       documents.setAll(loadedDocuments*)
@@ -150,9 +159,7 @@ object LoadedDocumentManagementView extends Management:
 
     val refreshButton = secondaryButton(Buttons.Refresh, loadDocuments)
     val printListButton = printButton(printDocumentsList)
-    val refreshButton = secondaryButton(Buttons.Refresh, () => loadDocuments())
-    val printListButton = printButton(action = () => printDocumentsList())
-    val resetFilterButton = secondaryButton(Buttons.ResetFilter, () => resetFilters())
+    val resetFilterButton = secondaryButton(Buttons.ResetFilter, resetFilters)
 
     val registerButton = primaryButton(Buttons.Register, () => withSelectedItem(table, result, Text.SelectToRegister)(onRegister))
     val deleteButton = dangerButton(Buttons.Delete, deleteSelectedDocument)

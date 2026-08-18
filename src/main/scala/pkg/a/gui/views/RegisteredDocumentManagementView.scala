@@ -31,7 +31,7 @@ object RegisteredDocumentManagementView extends Management:
     val toDateFilter = new DatePicker()
 
     val subjectFilter = new TextField:
-      promptText = Fields.Subject
+      promptText = CommonDocumentFields.Subject
 
     val operatorFilter = new ComboBox[String]:
       items = ObservableBuffer(Text.AllOperators)
@@ -168,8 +168,7 @@ object RegisteredDocumentManagementView extends Management:
 
     val refreshButton = secondaryButton(Buttons.Refresh, loadDocuments)
     val printListButton = printButton(printDocumentsList)
-    val refreshButton = secondaryButton(Buttons.Refresh, () => loadDocuments())
-    val printListButton = printButton(action = () => printDocumentsList())
+
     val resetFilterButton = secondaryButton(Buttons.ResetFilter, () => resetFilters())
 
     val archiveButton = primaryButton(Buttons.Archive, () => withSelectedItem(table, result, Text.SelectToArchive)(onArchive))
@@ -177,7 +176,6 @@ object RegisteredDocumentManagementView extends Management:
 
     val viewButton = primaryButton(Text.View, () => withSelectedItem(table, result, Text.SelectToView)(onView))
 
-    val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedDocument())
 
     disableWithoutSelection(table, archiveButton, viewButton, deleteButton)
 

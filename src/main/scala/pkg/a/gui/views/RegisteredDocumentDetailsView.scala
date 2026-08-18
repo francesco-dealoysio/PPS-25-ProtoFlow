@@ -1,6 +1,7 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.text.UiText.RegisteredDocuments.{Details as Text, Fields as RegistrationFields}
+import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields as DocumentFields
 import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
@@ -34,14 +35,14 @@ object RegisteredDocumentDetailsView extends Form:
     val documentForm =
       formGrid(
         Seq(
-          formRow(RegistrationFields.ProtocolNumber, protocolNumber),
+          formRow(CommonDocumentFields.ProtocolNumber, protocolNumber),
           formRow(RegistrationFields.RegisteredDate, registeredDate),
           formRow(RegistrationFields.RegisteredTime, registeredTime),
           formRow(RegistrationFields.RegisteredBy, registeredBy),
           formRow(DocumentFields.DocumentType, documentType),
-          formRow(DocumentFields.Sender, sender),
-          formRow(DocumentFields.Recipient, recipient),
-          formRow(DocumentFields.Subject, subject),
+          formRow(CommonDocumentFields.Sender, sender),
+          formRow(CommonDocumentFields.Recipient, recipient),
+          formRow(CommonDocumentFields.Subject, subject),
           formRow(DocumentFields.Remarks, remarks)
         )
       )

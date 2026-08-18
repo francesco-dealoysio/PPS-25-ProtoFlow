@@ -27,7 +27,7 @@ object ArchivedDocumentManagementView extends Management:
     val toDateFilter = new DatePicker()
 
     val subjectFilter = new TextField:
-      promptText = Fields.Subject
+      promptText = CommonDocumentFields.Subject
 
     val operatorFilter = new ComboBox[String]:
       items = ObservableBuffer(Text.AllOperators)
