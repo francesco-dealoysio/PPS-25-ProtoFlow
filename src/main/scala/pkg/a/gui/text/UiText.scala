@@ -515,6 +515,7 @@ object UiText:
       val Assignment = "Incarico"
       val EmailRequired = "Il campo 'Indirizzo email' è obbligatorio."
       val EmailInvalid = "L'indirizzo email non ha un formato valido."
+      val PhoneInvalid = "Il numero di telefono deve contenere solo numeri"
 
       def required(fieldName: String): String =
         s"Il campo '$fieldName' è obbligatorio."

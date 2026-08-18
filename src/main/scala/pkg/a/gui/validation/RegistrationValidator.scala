@@ -9,6 +9,7 @@ class RegistrationValidator:
       validateRequired(Name, request.getName),
       validateRequired(Surname, request.getSurname),
       validateEmail(request.getEmail),
+      validatePhone(request.getPhone),
       validateRequired(RequestedRole, request.getRole),
       validateRequired(Area, request.getArea),
       validateRequired(Assignment, request.getAssignment)
@@ -20,6 +21,13 @@ class RegistrationValidator:
   private def validateRequired(fieldName: String, value: String): Option[String] =
     if value.trim.isEmpty then Some(required(fieldName))
     else None
+
+  private def validatePhone(phone: String): Option[String] =
+    val trimmedPhone = phone.trim
+    if trimmedPhone.nonEmpty && !trimmedPhone.matches("^\\d+$") then
+      Some(PhoneInvalid)
+    else
+      None
 
   private def validateEmail(email: String): Option[String] =
     val trimmedEmail = email.trim
