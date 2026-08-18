@@ -15,18 +15,14 @@ case class RegistrationApproval(
                                 )
 
 class RegistrationRequestService(
-                                   private val pendingFilePath: String = inDatabaseFilePathName("registrations.xml"),
-                                   private val acceptedFilePath: String = inDatabaseFilePathName("registrations_accepted.xml"),
-                                   private val rejectedFilePath: String = inDatabaseFilePathName("registrations_rejected.xml"),
+                                   private val registrationsFilePath: String = inDatabaseFilePathName("registrations.xml"),
                                    private val accountsFilePathName: String = inDatabaseFilePathName("accounts.xml")
                                  ):
 
   private val registrationLogic = new Registration()
   private val registrationValidator = new RegistrationValidator()
 
-  def pendingRequestsFilePath: String = pendingFilePath
-  def acceptedRequestsFilePath: String = acceptedFilePath
-  def rejectedRequestsFilePath: String = rejectedFilePath
+  def requestsFilePath: String = registrationsFilePath
 
   def submitRequest(
                      name: String,
@@ -56,19 +52,19 @@ class RegistrationRequestService(
 
     if errors.nonEmpty then
       Left(errors.head)
-    else if registrationLogic.recordInsert(request, pendingFilePath) then
+    else if registrationLogic.recordInsert(request, registrationsFilePath) then
       Right(request)
     else
       Left("Errore durante il salvataggio della richiesta")
 
   def getPendingRequests: List[Registration] =
     registrationLogic
-      .getRecordsByFilter[Registration](_.getState == "Pending", pendingFilePath)
+      .getRecordsByFilter[Registration](_.getState == "Pending", registrationsFilePath)
       .toList
 
   /**
-   * Genera un account dai dati della richiesta, lo inserisce in accounts.xml e sposta
-   * la richiesta da "in attesa" ad "accettate", tracciando operatore e data di esecuzione.
+   * Genera un account dai dati della richiesta, lo inserisce in accounts.xml e aggiorna
+   * lo stato della richiesta ad "Approved", tracciando operatore e data di esecuzione.
    */
   def approveRequest(id: String, operatorUsername: String): Either[String, RegistrationApproval] =
     findPending(id) match
@@ -106,14 +102,14 @@ class RegistrationRequestService(
               assignedUsername = username
             )
 
-          moveRequest(id, processedRequest, acceptedFilePath) match
-            case Right(moved) =>
-              Right(RegistrationApproval(moved, account, plainPassword))
+          updateRequestState(processedRequest) match
+            case Right(updated) =>
+              Right(RegistrationApproval(updated, account, plainPassword))
 
             case Left(error) =>
               Left(error)
 
-  /** Rifiuta la richiesta, richiedendo una motivazione, e la sposta da "in attesa" a "rifiutate". */
+  /** Rifiuta la richiesta, richiedendo una motivazione, e ne aggiorna lo stato a "Rejected". */
   def rejectRequest(id: String, operatorUsername: String, motivation: String): Either[String, Registration] =
     if motivation.trim.isEmpty then
       Left("La motivazione del rifiuto è obbligatoria")
@@ -131,20 +127,18 @@ class RegistrationRequestService(
               motivation = motivation.trim
             )
 
-          moveRequest(id, processedRequest, rejectedFilePath)
+          updateRequestState(processedRequest)
 
   private def findPending(id: String): Option[Registration] =
     registrationLogic
-      .getRecordsByFilter[Registration](_.getId == id, pendingFilePath)
+      .getRecordsByFilter[Registration](_.getId == id, registrationsFilePath)
       .headOption
 
-  private def moveRequest(id: String, processedRequest: Registration, destinationFilePath: String): Either[String, Registration] =
-    if !registrationLogic.recordDelete(id, pendingFilePath) then
-      Left("Errore durante l'aggiornamento della richiesta")
-    else if !registrationLogic.recordInsert(processedRequest, destinationFilePath) then
-      Left("Errore durante l'aggiornamento della richiesta")
-    else
+  private def updateRequestState(processedRequest: Registration): Either[String, Registration] =
+    if registrationLogic.recordUpdate(processedRequest, registrationsFilePath) then
       Right(processedRequest)
+    else
+      Left("Errore durante l'aggiornamento della richiesta")
 
   private def generateUsername(request: Registration, existingAccounts: Seq[Account]): String =
     val base =

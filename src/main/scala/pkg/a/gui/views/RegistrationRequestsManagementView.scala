@@ -46,9 +46,10 @@ object RegistrationRequestsManagementView extends Management:
     def printPendingList(): Unit =
       val printed =
         XmlToPdf.printList(
-          xmlPath = service.pendingRequestsFilePath,
+          xmlPath = service.requestsFilePath,
           pdfFileName = Text.PrintFileName,
-          title = Text.PrintTitle
+          title = Text.PrintTitle,
+          recordIds = requests.map(_.getId).toSeq
         )
 
       result.show(

@@ -13,4 +13,21 @@
     <result/>
     <motivation/>
   </record>
+  <record>
+    <id>183</id>
+    <surname>test</surname>
+    <name>thom</name>
+    <email>thm@gmail.com</email>
+    <phone>3200871865</phone>
+    <role>oper</role>
+    <area>segreteria</area>
+    <assignment>dededw</assignment>
+    <date>2026-08-18 14:55:19.72</date>
+    <state>Rejected</state>
+    <result></result>
+    <motivation>troppi test</motivation>
+    <processedBy>frank</processedBy>
+    <processedDate>2026-08-18 14:55:47.05</processedDate>
+    <assignedUsername></assignedUsername>
+  </record>
 </registrations>

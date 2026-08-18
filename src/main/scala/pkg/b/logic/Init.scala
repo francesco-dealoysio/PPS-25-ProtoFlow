@@ -123,17 +123,7 @@ object Init:
 
     if (Files.notExists(Paths.get(inLogFilePathName("documentOperations.xml"))))
       createEmptyXmlFile(inLogFilePathName("documentOperations.xml"), "operations")
-      
-/*
-    if (Files.notExists(Paths.get(databaseFolder + fs + "registrations" + fs + "requests.xml")))
-      writeXML(databaseFolder + fs + "registrations" + fs + "requests.xml", registrations)
 
-    if (Files.notExists(Paths.get(databaseFolder + fs + "registrations" + fs + "refused.xml")))
-      writeXML(databaseFolder + fs + "registrations" + fs + "refused.xml", registrations)
-
-    if (Files.notExists(Paths.get(databaseFolder + fs + "registrations" + fs + "accepted.xml")))
-      writeXML(databaseFolder + fs + "registrations" + fs + "approved.xml", registrations)
-*/
     // init ids
     IdGen(inIdsFilePathName("errorlogId"))
     IdGen(inIdsFilePathName("accountId"))

@@ -3,7 +3,7 @@ package pkg.a.gui
 import org.junit.*
 import org.junit.Assert.*
 import pkg.a.gui.services.RegistrationRequestService
-import pkg.b.logic.Account
+import pkg.b.logic.{Account, Registration}
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path}
@@ -12,8 +12,6 @@ class RegistrationRequestServiceTest:
 
   private var tempDirectory: Path = _
   private var tempXmlFile: Path = _
-  private var tempAcceptedXmlFile: Path = _
-  private var tempRejectedXmlFile: Path = _
   private var tempAccountsXmlFile: Path = _
   private var service: RegistrationRequestService = _
 
@@ -21,23 +19,19 @@ class RegistrationRequestServiceTest:
   def setUp(): Unit =
     tempDirectory = Files.createTempDirectory("protoflow-registration-test-")
     tempXmlFile = tempDirectory.resolve("registrations.xml")
-    tempAcceptedXmlFile = tempDirectory.resolve("registrationsAccepted.xml")
-    tempRejectedXmlFile = tempDirectory.resolve("registrationsRejected.xml")
     tempAccountsXmlFile = tempDirectory.resolve("accounts.xml")
 
     val emptyRequestsXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<registrationRequests>\n</registrationRequests>\n"
     val emptyAccountsXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<accounts>\n</accounts>\n"
 
-    Seq(tempXmlFile, tempAcceptedXmlFile, tempRejectedXmlFile).foreach(file => Files.writeString(file, emptyRequestsXml, StandardCharsets.UTF_8))
+    Files.writeString(tempXmlFile, emptyRequestsXml, StandardCharsets.UTF_8)
     Files.writeString(tempAccountsXmlFile, emptyAccountsXml, StandardCharsets.UTF_8)
 
-    service = new RegistrationRequestService(
-      tempXmlFile.toString, tempAcceptedXmlFile.toString, tempRejectedXmlFile.toString, tempAccountsXmlFile.toString
-    )
+    service = new RegistrationRequestService(tempXmlFile.toString, tempAccountsXmlFile.toString)
 
   @After
   def tearDown(): Unit =
-    Seq(tempXmlFile, tempAcceptedXmlFile, tempRejectedXmlFile, tempAccountsXmlFile).foreach(file => if file != null then Files.deleteIfExists(file))
+    Seq(tempXmlFile, tempAccountsXmlFile).foreach(file => if file != null then Files.deleteIfExists(file))
     if tempDirectory != null then Files.deleteIfExists(tempDirectory)
 
   private def submitLuigi(): String =
@@ -106,7 +100,7 @@ class RegistrationRequestServiceTest:
     assertTrue(requests.forall(_.getState == "Pending"))
 
   @Test
-  def testApproveRequestCreatesAccountAndMovesRequestToAccepted(): Unit =
+  def testApproveRequestCreatesAccountAndUpdatesRequestState(): Unit =
     val requestId = submitLuigi()
     val result = service.approveRequest(requestId, operatorUsername = "admin")
     assertTrue(result.isRight)
@@ -123,6 +117,11 @@ class RegistrationRequestServiceTest:
     val storedAccounts = new Account().getRecords[Account](tempAccountsXmlFile.toString)
     assertTrue(storedAccounts.exists(_.getUsername == approval.account.getUsername))
 
+    val storedRequests = new Registration().getRecords[Registration](tempXmlFile.toString)
+    assertEquals(1, storedRequests.size)
+    assertEquals("Approved", storedRequests.head.getState)
+    assertEquals(requestId, storedRequests.head.getId)
+
   @Test
   def testRejectRequestRequiresMotivation(): Unit =
     val requestId = submitLuigi()
@@ -131,7 +130,7 @@ class RegistrationRequestServiceTest:
     assertTrue(service.getPendingRequests.nonEmpty)
 
   @Test
-  def testRejectRequestMovesRequestToRejected(): Unit =
+  def testRejectRequestUpdatesRequestState(): Unit =
     val created = service.submitRequest("Anna", "Verdi", "anna.reject@email.it", "", "Viewer", "Amministrazione", "Impiegata")
     val requestId = created.toOption.get.getId
     val result = service.rejectRequest(requestId, operatorUsername = "admin", motivation = "Dati incompleti")
@@ -143,6 +142,11 @@ class RegistrationRequestServiceTest:
     assertTrue(rejected.getProcessedDate.nonEmpty)
     assertEquals("Dati incompleti", rejected.getMotivation)
     assertTrue(service.getPendingRequests.isEmpty)
+
+    val storedRequests = new Registration().getRecords[Registration](tempXmlFile.toString)
+    assertEquals(1, storedRequests.size)
+    assertEquals("Rejected", storedRequests.head.getState)
+    assertEquals(requestId, storedRequests.head.getId)
 
   @Test
   def testApproveRequestReturnsErrorForMissingId(): Unit =

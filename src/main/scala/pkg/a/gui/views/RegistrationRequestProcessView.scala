@@ -80,7 +80,7 @@ object RegistrationRequestProcessView extends Management:
     def printPendingRequest(): Unit =
       val printed =
         XmlToPdf.printDetails(
-          xmlPath = service.pendingRequestsFilePath,
+          xmlPath = service.requestsFilePath,
           recordId = request.getId,
           pdfFileName = s"richiesta_${request.getId}",
           title = Text.PrintPendingTitle
@@ -106,7 +106,7 @@ object RegistrationRequestProcessView extends Management:
         service.approveRequest(request.getId, operatorUsername) match
           case Right(approval) =>
             XmlToPdf.printDetails(
-              xmlPath = service.acceptedRequestsFilePath,
+              xmlPath = service.requestsFilePath,
               recordId = approval.request.getId,
               pdfFileName = s"richiesta_${approval.request.getId}_approvata",
               title = Text.PrintApprovedTitle
@@ -142,7 +142,7 @@ object RegistrationRequestProcessView extends Management:
           service.rejectRequest(request.getId, operatorUsername, motivation) match
             case Right(rejected) =>
               XmlToPdf.printDetails(
-                xmlPath = service.rejectedRequestsFilePath,
+                xmlPath = service.requestsFilePath,
                 recordId = rejected.getId,
                 pdfFileName = s"richiesta_${rejected.getId}_rifiutata",
                 title = Text.PrintRejectedTitle
