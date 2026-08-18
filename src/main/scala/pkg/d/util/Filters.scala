@@ -256,6 +256,240 @@ object Filters
       case _ => _ => false
 }
 
+  private def buildRegisteredDocumentPredicate(criteria: FilterCriteria): Any => Boolean = {
+    import pkg.b.logic.RegisteredDocument
+
+    criteria match
+
+      case FilterCriteria("getId", "<", v) =>
+        val threshold = v.head.trim.toInt
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getId.trim.toInt < threshold
+            case _ => false
+
+      case FilterCriteria("getId", "<=", v) =>
+        val threshold = v.head.trim.toInt
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getId.trim.toInt <= threshold
+            case _ => false
+
+      case FilterCriteria("getId", "=", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getId.trim == v.head
+            case _ => false
+
+      case FilterCriteria("getId", ">", v) =>
+        val threshold = v.head.trim.toInt
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getId.trim.toInt > threshold
+            case _ => false
+
+      case FilterCriteria("getId", ">=", v) =>
+        val threshold = v.head.trim.toInt
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getId.trim.toInt >= threshold
+            case _ => false
+
+      case FilterCriteria("getId", "contains", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => v.map(_.trim).contains(r.getId.trim)
+            case _ => false
+
+      case FilterCriteria("getRegisteredDate", "<", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getRegisteredDate.trim < v.head
+            case _ => false
+
+      case FilterCriteria("getRegisteredDate", "<=", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getRegisteredDate.trim <= v.head
+            case _ => false
+
+      case FilterCriteria("getRegisteredDate", "=", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getRegisteredDate.trim == v.head
+            case _ => false
+
+      case FilterCriteria("getRegisteredDate", ">", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getRegisteredDate.trim > v.head
+            case _ => false
+
+      case FilterCriteria("getRegisteredDate", ">=", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getRegisteredDate.trim >= v.head
+            case _ => false
+
+      case FilterCriteria("getRegisteredDate", "contains", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => v.map(_.trim).contains(r.getRegisteredDate.trim)
+            case _ => false
+
+      case FilterCriteria("getRegisteredBy", "=", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getRegisteredBy.trim.toLowerCase == v.head.trim.toLowerCase
+            case _ => false
+
+      case FilterCriteria("getRegisteredBy", "!=", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getRegisteredBy.trim.toLowerCase != v.head.trim.toLowerCase
+            case _ => false
+
+      case FilterCriteria("getRegisteredBy", "contains", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => v.map(_.trim.toLowerCase).contains(r.getRegisteredBy.trim.toLowerCase)
+            case _ => false
+
+      case FilterCriteria("getLoadedBy", "=", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getLoadedBy.trim.toLowerCase == v.head.trim.toLowerCase
+            case _ => false
+
+      case FilterCriteria("getLoadedBy", "!=", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getLoadedBy.trim.toLowerCase != v.head.trim.toLowerCase
+            case _ => false
+
+      case FilterCriteria("getLoadedBy", "contains", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => v.map(_.trim.toLowerCase).contains(r.getLoadedBy.trim.toLowerCase)
+            case _ => false
+
+      case FilterCriteria("getSubject", "contains", v) =>
+        (obj: Any) =>
+          obj match
+            case r: RegisteredDocument => r.getSubject.trim.toLowerCase.contains(v.head.trim.toLowerCase)
+            case _ => false
+
+      case _ => _ => false
+  }
+
+  private def buildLoadedDocumentPredicate(criteria: FilterCriteria): Any => Boolean = {
+    import pkg.b.logic.LoadedDocument
+
+    criteria match
+
+      case FilterCriteria("getId", "<", v) =>
+        val threshold = v.head.trim.toInt
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => r.getId.trim.toInt < threshold
+            case _ => false
+
+      case FilterCriteria("getId", "<=", v) =>
+        val threshold = v.head.trim.toInt
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => r.getId.trim.toInt <= threshold
+            case _ => false
+
+      case FilterCriteria("getId", "=", v) =>
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => r.getId.trim == v.head
+            case _ => false
+
+      case FilterCriteria("getId", ">", v) =>
+        val threshold = v.head.trim.toInt
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => r.getId.trim.toInt > threshold
+            case _ => false
+
+      case FilterCriteria("getId", ">=", v) =>
+        val threshold = v.head.trim.toInt
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => r.getId.trim.toInt >= threshold
+            case _ => false
+
+      case FilterCriteria("getId", "contains", v) =>
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => v.map(_.trim).contains(r.getId.trim)
+            case _ => false
+
+      case FilterCriteria("getProcessedDate", "<", v) =>
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => r.getProcessedDate.trim < v.head
+            case _ => false
+
+      case FilterCriteria("getProcessedDate", "<=", v) =>
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => r.getProcessedDate.trim <= v.head
+            case _ => false
+
+      case FilterCriteria("getProcessedDate", "=", v) =>
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => r.getProcessedDate.trim == v.head
+            case _ => false
+
+      case FilterCriteria("getProcessedDate", ">", v) =>
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => r.getProcessedDate.trim > v.head
+            case _ => false
+
+      case FilterCriteria("getProcessedDate", ">=", v) =>
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => r.getProcessedDate.trim >= v.head
+            case _ => false
+
+      case FilterCriteria("getProcessedDate", "contains", v) =>
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => v.map(_.trim).contains(r.getProcessedDate.trim)
+            case _ => false
+
+      case FilterCriteria("getProcessedBy", "=", v) =>
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => r.getProcessedBy.trim.toLowerCase == v.head.trim.toLowerCase
+            case _ => false
+
+      case FilterCriteria("getProcessedBy", "!=", v) =>
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => r.getProcessedBy.trim.toLowerCase != v.head.trim.toLowerCase
+            case _ => false
+
+      case FilterCriteria("getProcessedBy", "contains", v) =>
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => v.map(_.trim.toLowerCase).contains(r.getProcessedBy.trim.toLowerCase)
+            case _ => false
+
+      case FilterCriteria("getSubject", "contains", v) =>
+        (obj: Any) =>
+          obj match
+            case r: LoadedDocument => r.getSubject.trim.toLowerCase.contains(v.head.trim.toLowerCase)
+            case _ => false
+
+      case _ => _ => false
+  }
+
   private def combineDocumentOperationsLogPredicates(group: CriteriaGroup): Any => Boolean = {
     val preds = group.criteria.map(buildDocumentOperationsLogPredicate)
     if group.combineWithAnd then
@@ -286,6 +520,38 @@ object Filters
       combineWithAnd = true
     )
     combineDocumentPredicates(criteriaGroup)
+  }
+
+  private def combineRegisteredDocumentPredicates(group: CriteriaGroup): Any => Boolean = {
+    val preds = group.criteria.map(buildRegisteredDocumentPredicate)
+    if group.combineWithAnd then
+      obj => preds.forall(_(obj))
+    else
+      obj => preds.exists(_(obj))
+  }
+
+  def getRegisteredDocumentPredicate(criteria: List[(String, String, List[String])]): Any => Boolean = {
+    val criteriaGroup = CriteriaGroup(
+      criteria.map((f, o, v) => FilterCriteria(f, o, v)),
+      combineWithAnd = true
+    )
+    combineRegisteredDocumentPredicates(criteriaGroup)
+  }
+
+  private def combineLoadedDocumentPredicates(group: CriteriaGroup): Any => Boolean = {
+    val preds = group.criteria.map(buildLoadedDocumentPredicate)
+    if group.combineWithAnd then
+      obj => preds.forall(_(obj))
+    else
+      obj => preds.exists(_(obj))
+  }
+
+  def getLoadedDocumentPredicate(criteria: List[(String, String, List[String])]): Any => Boolean = {
+    val criteriaGroup = CriteriaGroup(
+      criteria.map((f, o, v) => FilterCriteria(f, o, v)),
+      combineWithAnd = true
+    )
+    combineLoadedDocumentPredicates(criteriaGroup)
   }
 
   @main def tryFilters: Unit =

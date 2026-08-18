@@ -270,6 +270,8 @@ object UiText:
       val DeleteConfirmation = "Confermi l'eliminazione del documento selezionato? L'operazione non può essere annullata."
       val DeleteError = "Non è stato possibile eliminare il documento."
       val Deleted = "Il documento è stato eliminato correttamente."
+      val AllOperators = "Tutti gli operatori"
+      val NoFilterResults = "Nessun documento corrisponde ai filtri selezionati."
 
       val PrintTitle = "Elenco Documenti Presi in Carico"
       val PrintFileName = "documenti_presi_in_carico_elenco"
@@ -320,6 +322,8 @@ object UiText:
       val ArchiveNotYetAvailable = "La funzionalità di archiviazione non è ancora disponibile."
       val View = "Visualizza"
       val SelectToView = "Seleziona un documento da visualizzare."
+      val AllOperators = "Tutti gli operatori"
+      val NoFilterResults = "Nessun documento corrisponde ai filtri selezionati."
 
       val PrintTitle = "Elenco Documenti Protocollati"
       val PrintFileName = "documenti_protocollati_elenco"
@@ -372,6 +376,8 @@ object UiText:
       val LoadError = "Errore durante il caricamento dei documenti archiviati."
       val View = "Visualizza"
       val SelectToView = "Seleziona un documento da visualizzare."
+      val AllOperators = "Tutti gli operatori"
+      val NoFilterResults = "Nessun documento corrisponde ai filtri selezionati."
       val PrintTitle = "Elenco Documenti Archiviati"
       val PrintFileName = "documenti_archiviati_elenco"
       val PrintSuccess = "Elenco stampato correttamente in PDF."

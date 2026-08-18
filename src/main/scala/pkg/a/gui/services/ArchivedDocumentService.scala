@@ -21,6 +21,11 @@ class ArchivedDocumentService:
       .getRecords[ArchivedDocument]()
       .toList
 
+  def getArchivedDocuments(predicate: Any => Boolean): List[ArchivedDocument] =
+    archivedDocumentLogic
+      .getRecordsByFilter[ArchivedDocument](predicate)
+      .toList
+
   def deleteArchivedDocument(id: String): Boolean =
     archivedDocumentLogic.recordDelete(id)
 

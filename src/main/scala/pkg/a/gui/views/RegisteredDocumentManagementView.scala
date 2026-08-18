@@ -4,12 +4,12 @@ import pkg.a.gui.services.LoadedDocumentService
 import pkg.a.gui.traits.Management
 import pkg.b.logic.RegisteredDocument
 import pkg.d.util.Util.inDocumentsFilePathName
-import pkg.d.util.XmlToPdf
+import pkg.d.util.{XmlToPdf, getRegisteredDocumentPredicate}
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.RegisteredDocuments.{Fields, Management as Text}
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
-import scalafx.scene.layout.BorderPane
+import scalafx.scene.layout.{BorderPane, HBox}
 
 object RegisteredDocumentManagementView extends Management:
 
@@ -26,6 +26,16 @@ object RegisteredDocumentManagementView extends Management:
 
     val table = managementTable(documents, Text.Empty)
 
+    val fromDateFilter = new DatePicker()
+    val toDateFilter = new DatePicker()
+
+    val subjectFilter = new TextField:
+      promptText = Fields.Subject
+
+    val operatorFilter = new ComboBox[String]:
+      items = ObservableBuffer(Text.AllOperators)
+      value = Text.AllOperators
+
     table.columns ++= Seq(
       stringColumn[RegisteredDocument](Fields.Id, Some(140))(_.getId),
       stringColumn[RegisteredDocument](Fields.ProtocolNumber, Some(140))(_.getProtocolNumber),
@@ -35,13 +45,92 @@ object RegisteredDocumentManagementView extends Management:
       stringColumn[RegisteredDocument](Fields.ProtocolledBy, Some(130))(_.getRegisteredBy)
     )
 
+    def updateOperatorFilter(loadedDocuments: Seq[RegisteredDocument]): Unit =
+      val operators =
+        loadedDocuments
+          .map(_.getRegisteredBy.trim)
+          .filter(_.nonEmpty)
+          .distinct
+          .sorted
+
+      val currentSelection = operatorFilter.value.value
+      operatorFilter.items = ObservableBuffer(Text.AllOperators +: operators *)
+
+      if currentSelection != null && operatorFilter.items.value.contains(currentSelection) then
+        operatorFilter.value = currentSelection
+      else
+        operatorFilter.value = Text.AllOperators
+
     def loadDocuments(): Unit =
-      loadTableItemsSafely(table, documents, result, Text.Empty, Text.LoadError):
+      result.clear()
+
+      val loadedDocuments =
         service
           .getRegisteredDocuments
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
+      updateOperatorFilter(loadedDocuments)
+
+      documents.setAll(loadedDocuments*)
+      table.selectionModel.value.clearSelection()
+
+      if loadedDocuments.isEmpty then
+        result.show(Text.Empty, success = true)
+
     clearResultOnSelection(table, result)
+
+    def buildFilterCriteria(): List[(String, String, List[String])] =
+
+      val fromDateCriteria =
+        Option(fromDateFilter.value.value)
+          .map(date => ("getRegisteredDate", ">=", List(date.toString)))
+          .toList
+
+      val toDateCriteria =
+        Option(toDateFilter.value.value)
+          .map(date => ("getRegisteredDate", "<=", List(date.toString)))
+          .toList
+
+      val subjectCriteria =
+        Option(subjectFilter.text.value)
+          .map(_.trim)
+          .filter(_.nonEmpty)
+          .map(value => ("getSubject", "contains", List(value)))
+          .toList
+
+      val operatorCriteria =
+        Option(operatorFilter.value.value)
+          .filter(_ != Text.AllOperators)
+          .map(value => ("getRegisteredBy", "=", List(value)))
+          .toList
+
+      fromDateCriteria ++ toDateCriteria ++ subjectCriteria ++ operatorCriteria
+
+    def searchDocuments(): Unit =
+      result.clear()
+
+      val criteria = buildFilterCriteria()
+
+      val filteredDocuments =
+        if criteria.isEmpty then
+          service.getRegisteredDocuments
+        else
+          service.getRegisteredDocuments(getRegisteredDocumentPredicate(criteria))
+
+      val sortedDocuments = filteredDocuments.sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
+
+      documents.setAll(sortedDocuments*)
+      table.selectionModel.value.clearSelection()
+
+      if sortedDocuments.isEmpty then
+        result.show(Text.NoFilterResults, success = true)
+
+    def resetFilters(): Unit =
+      fromDateFilter.value = null
+      toDateFilter.value = null
+      subjectFilter.clear()
+      operatorFilter.value = Text.AllOperators
+      loadDocuments()
 
     def deleteSelectedDocument(): Unit =
       withSelectedItem(table, result, Text.SelectToDelete): selected =>
@@ -67,7 +156,8 @@ object RegisteredDocumentManagementView extends Management:
           xmlPath = inDocumentsFilePathName("registered.xml"),
           pdfFileName = Text.PrintFileName,
           title = Text.PrintTitle,
-          fields = Seq("protocolNumber", "registeredDate", "registeredTime", "registeredBy", "documentType", "sender", "recipient", "subject")
+          fields = Seq("protocolNumber", "registeredDate", "registeredTime", "registeredBy", "documentType", "sender", "recipient", "subject"),
+          recordIds = documents.map(_.getId).toSeq
         )
 
       result.show(
@@ -77,6 +167,7 @@ object RegisteredDocumentManagementView extends Management:
 
     val refreshButton = secondaryButton(Buttons.Refresh, () => loadDocuments())
     val printListButton = printButton(action = () => printDocumentsList())
+    val resetFilterButton = secondaryButton(Buttons.ResetFilter, () => resetFilters())
 
     val archiveButton = primaryButton(Buttons.Archive, () => withSelectedItem(table, result, Text.SelectToArchive)(onArchive))
 
@@ -87,15 +178,38 @@ object RegisteredDocumentManagementView extends Management:
     disableWithoutSelection(table, archiveButton, viewButton, deleteButton)
 
     val exitButton = closeButton(onExit)
-    val bottomActions = actionBar(Seq(exitButton, refreshButton, printListButton, deleteButton, viewButton, archiveButton))
+    val bottomActions = actionBar(Seq(resetFilterButton, exitButton, refreshButton, printListButton, deleteButton, viewButton, archiveButton))
     val header = titleBox(Text.Title, Text.Subtitle)
 
+    val filters =
+      new HBox:
+        spacing = 10
+        children = Seq(
+          fromDateFilter,
+          toDateFilter,
+          subjectFilter,
+          operatorFilter
+        )
+
     loadDocuments()
+
+    fromDateFilter.value.onChange:
+      searchDocuments()
+
+    toDateFilter.value.onChange:
+      searchDocuments()
+
+    subjectFilter.text.onChange:
+      searchDocuments()
+
+    operatorFilter.value.onChange:
+      searchDocuments()
 
     managementPage(
       growNode = Some(table),
       pageChildren = Seq(
         header,
+        filters,
         table,
         result.label,
         bottomActions
