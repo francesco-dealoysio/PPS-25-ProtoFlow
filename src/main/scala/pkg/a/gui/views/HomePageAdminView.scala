@@ -9,8 +9,6 @@ object HomePageAdminView extends HomePage:
 
   override protected val pageTitle: String = "Homepage Amministratore"
 
-  override protected val roleDescription: String = "Amministratore"
-
   override protected val menuItems: Seq[MenuItem] =
     Seq(
       MenuItem(Dashboard, MenuAction.Dashboard),

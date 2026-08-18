@@ -18,6 +18,7 @@ object AccountAddView extends Form:
 
     val accountLogic = new Account()
     val roleLogic = new Role()
+    val roles = roleLogic.getRecords[Role]()
     val classificationLogic = new Classification()
     val validator = new AccountValidator()
 
@@ -25,7 +26,7 @@ object AccountAddView extends Form:
     val name = stringField(Prompts.Name)
     val email = stringField(Prompts.Email)
     val phone = stringField(Prompts.Phone)
-    val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), Prompts.SelectRole)
+    val role = stringComboField(roles.map(_.getName.trim), Prompts.SelectRole)
     val area = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), Prompts.Area)
     val assignment = stringField(Prompts.Assignment)
     val username = stringField(Prompts.Username)
@@ -39,13 +40,14 @@ object AccountAddView extends Form:
       result.clear()
 
     def currentAccount(id: String = ""): Account =
+      val selectedRole = roles.find(_.getName.trim == role.value).map(_.getRole).getOrElse("")
       Account(
         id = id,
         surname = surname.value,
         name = name.value,
         email = email.value,
         phone = phone.value,
-        role = role.value,
+        role = selectedRole,
         area = area.value,
         assignment = assignment.value,
         username = username.value,

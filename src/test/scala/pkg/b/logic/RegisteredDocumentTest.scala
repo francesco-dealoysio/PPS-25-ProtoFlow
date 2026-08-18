@@ -84,30 +84,30 @@ class RegisteredDocumentTest:
   }
 
   @Test
-  def testGetRecordsInexistentXmlFile: Unit =
+  def testGetRecordsInexistentXmlFile(): Unit =
     assertEquals(RegisteredDocument().getRecords[RegisteredDocument]("path inesistente"), Seq.empty[RegisteredDocument])
 
   @Test
-  def testGetRecordsEmptyXmlFile: Unit =
+  def testGetRecordsEmptyXmlFile(): Unit =
     assertEquals(RegisteredDocument().getRecords[RegisteredDocument](xmlFilePathName), Seq.empty[RegisteredDocument])
 
   @Test
-  def testGetRecordsFound: Unit =
+  def testGetRecordsFound(): Unit =
     RegisteredDocument().recordInsert[RegisteredDocument](registeredDocument1, xmlFilePathName)
     RegisteredDocument().recordInsert[RegisteredDocument](registeredDocument2, xmlFilePathName)
     assertEquals(RegisteredDocument().getRecords[RegisteredDocument](xmlFilePathName), List(registeredDocument1, registeredDocument2))
 
   @Test
-  def testGetRecordByIdFoundRecord: Unit =
+  def testGetRecordByIdFoundRecord(): Unit =
     RegisteredDocument().recordInsert[RegisteredDocument](registeredDocument2, xmlFilePathName)
     assertEquals(RegisteredDocument().getRecordById[RegisteredDocument]("2", xmlFilePathName), registeredDocument2)
 
   @Test
-  def testGetRecordsIdInexistentId: Unit =
+  def testGetRecordsIdInexistentId(): Unit =
     assertEquals(RegisteredDocument().getRecordById[RegisteredDocument]("?", xmlFilePathName), empty)
 
   @Test
-  def testGetRecordsByFilter: Unit =
+  def testGetRecordsByFilter(): Unit =
     cleanXmlFile(xmlFilePathName)
     RegisteredDocument().recordInsert[RegisteredDocument](registeredDocument1, xmlFilePathName)
     RegisteredDocument().recordInsert[RegisteredDocument](registeredDocument2, xmlFilePathName)
@@ -116,24 +116,24 @@ class RegisteredDocumentTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](a => a.getDocumentType == "letter", xmlFilePathName), sequence)
 
   @Test
-  def testRecordInsertInexistentXmlFile: Unit =
+  def testRecordInsertInexistentXmlFile(): Unit =
     assertFalse(RegisteredDocument().recordInsert[RegisteredDocument](registeredDocument1, "path inesistente"))
 
   @Test
-  def testRecordInsert: Unit =
+  def testRecordInsert(): Unit =
     RegisteredDocument().recordInsert[RegisteredDocument](registeredDocument1, xmlFilePathName)
     val record = RegisteredDocument().getRecordById[RegisteredDocument]("1", xmlFilePathName)
     assertEquals(record, registeredDocument1)
 
   @Test
-  def testRecordInsertDuplicateId: Unit =
+  def testRecordInsertDuplicateId(): Unit =
     cleanXmlFile(xmlFilePathName)
     RegisteredDocument().recordInsert[RegisteredDocument](registeredDocument1, xmlFilePathName)
     val record = registeredDocument1.copy()
     assertFalse(RegisteredDocument().recordInsert[RegisteredDocument](record, xmlFilePathName))
 
   @Test
-  def testRecordUpdate: Unit =
+  def testRecordUpdate(): Unit =
     RegisteredDocument().recordInsert[RegisteredDocument](registeredDocument1, xmlFilePathName)
     assertEquals("ACEA", RegisteredDocument().getRecordById[RegisteredDocument]("1", xmlFilePathName).getSender)
     val record = registeredDocument1.copy()
@@ -141,7 +141,7 @@ class RegisteredDocumentTest:
     assertTrue(RegisteredDocument().recordUpdate[RegisteredDocument](record, xmlFilePathName))
 
   @Test
-  def testRecordDelete: Unit =
+  def testRecordDelete(): Unit =
     cleanXmlFile(xmlFilePathName)
     RegisteredDocument().recordInsert[RegisteredDocument](registeredDocument1, xmlFilePathName)
     RegisteredDocument().recordInsert[RegisteredDocument](registeredDocument2, xmlFilePathName)
@@ -151,7 +151,7 @@ class RegisteredDocumentTest:
     RegisteredDocument().recordDelete(record.getId, xmlFilePathName)
 
   @Test
-  def testRecordDeleteInesistentId: Unit =
+  def testRecordDeleteInesistentId(): Unit =
     cleanXmlFile(xmlFilePathName)
     RegisteredDocument().recordInsert[RegisteredDocument](registeredDocument1, xmlFilePathName)
     val record = registeredDocument1.copy()

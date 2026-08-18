@@ -55,9 +55,9 @@ object ArchivedDocumentManagementView extends Management:
         success = printed
       )
 
-    val refreshButton = secondaryButton(Buttons.Refresh, () => loadDocuments())
+    val refreshButton = secondaryButton(Buttons.Refresh, loadDocuments)
 
-    val print = printButton(action = () => printDocumentsList())
+    val print = printButton(printDocumentsList)
 
     val viewButton = primaryButton(Text.View, () => withSelectedItem(table, result, Text.SelectToView)(onView))
 

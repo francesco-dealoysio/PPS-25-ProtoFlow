@@ -12,7 +12,7 @@ import pkg.a.gui.text.UiText.Common.*
 
 trait Root extends Common:
 
-  protected def createRoot(currentUser: String, roleDescription: String, contentArea: StackPane, menu: VBox, onProfileOpen: () => Unit): BorderPane =
+  protected def createRoot(currentUser: String, roleName: String, contentArea: StackPane, menu: VBox, onProfileOpen: () => Unit): BorderPane =
 
     val menuVisible = BooleanProperty(true)
 
@@ -26,7 +26,7 @@ trait Root extends Common:
       top =
         createHeader(
           currentUser = currentUser,
-          roleDescription = roleDescription,
+          roleName = roleName,
           onMenuToggle = () => toggleMenu()
         )
 
@@ -36,7 +36,7 @@ trait Root extends Common:
       bottom =
         createFooter(
           currentUser = currentUser,
-          roleDescription = roleDescription,
+          roleName = roleName,
           onProfileOpen = onProfileOpen
         )
 
@@ -61,7 +61,7 @@ trait Root extends Common:
             content = Dialogs.UnsavedChanges.Content
           )
 
-  private def createHeader(currentUser: String, roleDescription: String, onMenuToggle: () => Unit): HBox =
+  private def createHeader(currentUser: String, roleName: String, onMenuToggle: () => Unit): HBox =
     val spacer = new Region
     HBox.setHgrow(spacer, Priority.Always)
 
@@ -77,12 +77,12 @@ trait Root extends Common:
         menuButton,
         fieldLabel(ApplicationName, TitleStyle),
         spacer,
-        fieldLabel(headerUserInfo(currentUser, roleDescription), UserInfoStyle)
+        fieldLabel(headerUserInfo(currentUser, roleName), UserInfoStyle)
       )
 
-  private def createFooter(currentUser: String, roleDescription: String,  onProfileOpen: () => Unit): HBox =
+  private def createFooter(currentUser: String, roleName: String, onProfileOpen: () => Unit): HBox =
     val dateTimeLabel = fieldLabel("", FooterDateTimeStyle)
-    val userInfoLabel = fieldLabel(footerUserInfo(currentUser, roleDescription), FooterUserInfoStyle)
+    val userInfoLabel = fieldLabel(footerUserInfo(currentUser, roleName), FooterUserInfoStyle)
     
     dateTimeLabel.text <==
       DateTime.dynamicDateTimeProperty()

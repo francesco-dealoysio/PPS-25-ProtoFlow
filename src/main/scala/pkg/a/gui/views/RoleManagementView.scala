@@ -21,13 +21,12 @@ object RoleManagementView extends Management:
 
     val roleLogic = new Role()
     val roles = ObservableBuffer.empty[Role]
-
     val result = createResultMessage()
-    
     val table = managementTable(roles, Text.Empty)
 
     table.columns ++= Seq(
       stringColumn[Role](Labels.Role)(_.getRole),
+      stringColumn[Role](Labels.RoleName)(_.getName),
       stringColumn[Role](Labels.Description)(_.getDescription)
     )
 
@@ -83,12 +82,10 @@ object RoleManagementView extends Management:
 
     val editButton = secondaryButton(Buttons.Edit, () => withSelectedItem(table, result, Text.SelectToEdit)(onEdit))
 
-    val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedRole())
+    val deleteButton = dangerButton(Buttons.Delete, deleteSelectedRole)
     val exitButton = closeButton(onExit)
+    val print = printButton(printRoles)
     disableWithoutSelection(table, editButton, deleteButton)
-
-    val print = printButton(action = () => printRoles())
-
     val bottomActions = actionBar(Seq(exitButton, print, editButton, deleteButton, addButton))
 
     val header = titleBox(Text.Title, Text.Subtitle)

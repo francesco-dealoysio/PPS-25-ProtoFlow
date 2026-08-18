@@ -27,6 +27,12 @@ object AccountEditView extends Form:
 
     val accountLogic = new Account()
     val roleLogic = new Role()
+    val roles = roleLogic.getRecords[Role]()
+    val selectedRoleName =
+      roles
+        .find(_.getRole.equalsIgnoreCase(selectedAccount.getRole))
+        .map(_.getName)
+        .getOrElse(selectedAccount.getRole)
     val classificationLogic = new Classification()
     val validator = new AccountValidator()
     val profileMode = mode == EditMode.Profile
@@ -37,7 +43,7 @@ object AccountEditView extends Form:
     val name = stringField("", selectedAccount.getName)
     val email = stringField("", selectedAccount.getEmail)
     val phone = stringField("", selectedAccount.getPhone)
-    val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), "", selectedAccount.getRole)
+    val role = stringComboField(roles.map(_.getName.trim), "", selectedRoleName)
     val area = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), "", selectedAccount.getArea)
     val assignment = stringField("", selectedAccount.getAssignment)
     val username = stringField("", selectedAccount.getUsername)
@@ -61,13 +67,14 @@ object AccountEditView extends Form:
           case raw =>
             cipher(raw)
 
+      val selectedRole = roles.find(_.getName.trim == role.value).map(_.getRole).getOrElse(selectedAccount.getRole)
       Account(
         id = selectedAccount.getId,
         surname = surname.value,
         name = name.value,
         email = email.value,
         phone = phone.value,
-        role = role.value,
+        role = selectedRole,
         area = area.value,
         assignment = assignment.value,
         username = username.value,
@@ -132,7 +139,7 @@ object AccountEditView extends Form:
 
             onSaved()
 
-    val reset = resetButton(() => resetForm())
+    val reset = resetButton(resetForm)
     val exit = closeButton(onExit)
 
     val print =
@@ -183,7 +190,7 @@ object AccountEditView extends Form:
       else (EditText.Title, EditText.Subtitle)
     formPage(
       titleText = titleText,
-      subtitleText =subtitleText,
+      subtitleText = subtitleText,
       form = form,
       resultMessage = result.label,
       actions = actionBar(actions),

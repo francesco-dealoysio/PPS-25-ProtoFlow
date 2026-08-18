@@ -32,7 +32,7 @@ object ClassificationAddView extends Form:
       )
 
     def clearErrors(): Unit =
-      clearFormFieldErrors(classification, description)
+      clearFormFieldErrors(monitoredFields*)
       result.clear()
 
     def validateForm(): Boolean =
@@ -48,7 +48,7 @@ object ClassificationAddView extends Form:
         case Validation.DescriptionRequired => description
 
     def resetForm(): Unit =
-      resetFields(classification, description)
+      resetFields(monitoredFields*)
       clearErrors()
       classification.requestFocus()
 

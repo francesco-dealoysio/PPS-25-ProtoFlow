@@ -5,14 +5,10 @@ import org.junit.Assert.*
 import pkg.b.logic.{Account, Role}
 import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, getRecordsFromXML, insertElemIntoXML, removeElemFromXML, saveXML, searchFieldValue, updateElemOfXML}
 import pkg.d.util.Util.{inTestFilePathName, cipher}
-import java.*
-import java.io.{File, IOException}
-import java.nio.*
 import java.nio.file.Files.readAllLines
 import java.nio.file.*
 import scala.xml.Elem
 import scala.jdk.CollectionConverters.*
-import scala.xml.XML
 
 class XmlTest:
 
@@ -86,14 +82,14 @@ class XmlTest:
     Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
 
   @Test
-  def testCreateEmptyXmlFile: Unit =
+  def testCreateEmptyXmlFile(): Unit =
     createEmptyXmlFile(inTestFilePathName("file1.xml"), "root")
     val file1 = inTestFilePathName("file1.xml")
     val content1 = readAllLines(Paths.get(file1)).asScala.mkString("\n")
     assertEquals("Files differ in content!", "<root></root>", content1)
 
   @Test
-  def testCleanXmlFile: Unit =
+  def testCleanXmlFile(): Unit =
     createEmptyXmlFile(inTestFilePathName("file1.xml"), "accounts")
     createEmptyXmlFile(inTestFilePathName("file2.xml"), "accounts")
     insertElemIntoXML(inTestFilePathName("file2.xml"), account)
@@ -105,7 +101,7 @@ class XmlTest:
     assertEquals("Files differ in content!", content1, content2)
 
   @Test
-  def testGetRecordsFromXML: Unit =
+  def testGetRecordsFromXML(): Unit =
     createEmptyXmlFile(xmlFilePathName, "roles")
     insertElemIntoXML(xmlFilePathName, role1)
     insertElemIntoXML(xmlFilePathName, role2)
@@ -113,15 +109,16 @@ class XmlTest:
     assertEquals(getRecordsFromXML(inTestFilePathName("test.xml"), classOf[Role]), Seq(role1, role2, role3))
 
   @Test
-  def testSaveXML: Unit =
-    val role = new Role("1", "admin", "Attività di amministrazione del sistema")
+  def testSaveXML(): Unit =
+    val role = Role("1", "admin", "Amministratore", "Attività di amministrazione del sistema")
     createEmptyXmlFile(inTestFilePathName("file1.xml"), "roles")
     insertElemIntoXML(inTestFilePathName("file1.xml"), role)
 
-    var roles: Elem = <roles>
+    val roles: Elem = <roles>
       <record>
         <id>1</id>
         <role>admin</role>
+        <name>Amministratore</name>
         <description>Attività di amministrazione del sistema</description>
       </record>
     </roles>
@@ -135,13 +132,13 @@ class XmlTest:
     assertEquals("Files differ in content!", content1, content2)
 
   @Test
-  def testInsertElemIntoXML: Unit =
+  def testInsertElemIntoXML(): Unit =
     createEmptyXmlFile(inTestFilePathName("test.xml"), "accounts")
     insertElemIntoXML(inTestFilePathName("test.xml"), account)
-    assertEquals(getRecordsFromXML(inTestFilePathName("test.xml"), classOf[Account])(0), account)
+    assertEquals(getRecordsFromXML(inTestFilePathName("test.xml"), classOf[Account]).head, account)
 
   @Test
-  def testUpdateElemOfXLM: Unit =
+  def testUpdateElemOfXLM(): Unit =
     createEmptyXmlFile(xmlFilePathName, "accounts")
     insertElemIntoXML(xmlFilePathName, account)
     account.setName("Paolo")
@@ -150,7 +147,7 @@ class XmlTest:
     assertEquals(updatedRecord.getName, "Paolo")
 
   @Test
-  def testRemoveElemFromXLM: Unit =
+  def testRemoveElemFromXLM(): Unit =
     createEmptyXmlFile(inTestFilePathName("test.xml"), "accounts")
     insertElemIntoXML(inTestFilePathName("test.xml"), account)
     assertEquals(Account().getRecordById[Account]("1", xmlFilePathName), account)
@@ -158,9 +155,9 @@ class XmlTest:
     assertEquals(Account().getRecordById[Account](account.getId, xmlFilePathName), emptyAccount)
 
   @Test
-  def testSearchFieldValue: Unit =
+  def testSearchFieldValue(): Unit =
     createEmptyXmlFile(xmlFilePathName, "roles")
     insertElemIntoXML(xmlFilePathName, role1)
     insertElemIntoXML(xmlFilePathName, role2)
     insertElemIntoXML(xmlFilePathName, role3)
-    assertTrue(searchFieldValue(xmlFilePathName, "description", "Amministrazione"))
+    assertTrue(searchFieldValue(xmlFilePathName, "name", "Amministrazione"))

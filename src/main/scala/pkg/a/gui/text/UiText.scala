@@ -3,17 +3,16 @@ package pkg.a.gui.text
 object UiText:
 
   object Common:
-    val RequiredMarker = " *"
+    private val RequiredMarker = " *"
+    private val UserIcon = "👤"
     val ApplicationName = "ProtoFlow"
     val MenuIcon = "☰"
-    val UserIcon = "👤"
-    val EmptyValue = "-"
 
-    def headerUserInfo(username: String, roleDescription: String): String =
-      s"$username\n$roleDescription"
+    def headerUserInfo(username: String, roleName: String): String =
+      s"$username\n$roleName"
 
-    def footerUserInfo(username: String, roleDescription: String): String =
-      s"$UserIcon $username ($roleDescription)"
+    def footerUserInfo(username: String, roleName: String): String =
+      s"$UserIcon $username ($roleName)"
 
     object Dialogs:
       object Logout:
@@ -78,6 +77,7 @@ object UiText:
         val Password = "Password"
         val Classification = "Classifica"
         val Date = "Data"
+        val RoleName = "Nome ruolo"
 
         def required(label: String): String =
           s"$label$RequiredMarker"
@@ -414,12 +414,12 @@ object UiText:
       val ProcessedBy = "Operatore"
 
     object Operations:
-      val Loading = "loading"
-      val Registering = "registering"
-      val Archiving = "archiving"
-      val LoadingLabel = "Presa in carico"
-      val RegisteringLabel = "Protocollazione"
-      val ArchivingLabel = "Archiviazione"
+      private val Loading = "loading"
+      private val Registering = "registering"
+      private val Archiving = "archiving"
+      private val LoadingLabel = "Presa in carico"
+      private val RegisteringLabel = "Protocollazione"
+      private val ArchivingLabel = "Archiviazione"
 
       val values: Seq[(String, String)] = Seq(
         Loading -> LoadingLabel,
@@ -477,6 +477,7 @@ object UiText:
 
     object Role:
       val RoleRequired = "Il campo Ruolo è obbligatorio."
+      val NameRequired = "Il campo Nome ruolo è obbligatorio."
       val DescriptionRequired = "Il campo Descrizione è obbligatorio."
       val DuplicateRole = "Esiste già un ruolo con questo nome."
 

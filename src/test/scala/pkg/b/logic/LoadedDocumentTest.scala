@@ -2,7 +2,7 @@ package pkg.b.logic
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, searchFieldValue}
+import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
 import pkg.d.util.Util.inTestFilePathName
 import java.nio.file.{Files, Paths}
 
@@ -70,38 +70,38 @@ class LoadedDocumentTest:
     Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
 
   @Test
-  def testGetRecordsInexistentXmlFile: Unit =
+  def testGetRecordsInexistentXmlFile(): Unit =
     assertEquals(LoadedDocument().getRecords[LoadedDocument]("path inesistente"), Seq.empty[LoadedDocument])
 
   @Test
-  def testGetRecordsEmptyXmlFile: Unit =
+  def testGetRecordsEmptyXmlFile(): Unit =
     assertEquals(LoadedDocument().getRecords[LoadedDocument](xmlFilePathName), Seq.empty[LoadedDocument])
 
   @Test
-  def testGetRecordsFound: Unit =
+  def testGetRecordsFound(): Unit =
     LoadedDocument().recordInsert[LoadedDocument](loadedDocument1, xmlFilePathName)
     LoadedDocument().recordInsert[LoadedDocument](loadedDocument2, xmlFilePathName)
     assertEquals(LoadedDocument().getRecords[LoadedDocument](xmlFilePathName), List(loadedDocument1, loadedDocument2))
 
   @Test
-  def testGetRecordByIdInexistentXmlFile: Unit =
+  def testGetRecordByIdInexistentXmlFile(): Unit =
     assertEquals(LoadedDocument().getRecordById[LoadedDocument]("2", "path inesistente"), empty)
 
   @Test
-  def testGetRecordByIdEmptyXmlFile: Unit =
+  def testGetRecordByIdEmptyXmlFile(): Unit =
     assertEquals(LoadedDocument().getRecordById[LoadedDocument]("2", xmlFilePathName), empty)
 
   @Test
-  def testGetRecordByIdFoundRecord: Unit =
+  def testGetRecordByIdFoundRecord(): Unit =
     LoadedDocument().recordInsert[LoadedDocument](loadedDocument2, xmlFilePathName)
     assertEquals(LoadedDocument().getRecordById[LoadedDocument]("2", xmlFilePathName), loadedDocument2)
 
   @Test
-  def testGetRecordsIdInexistentId: Unit =
+  def testGetRecordsIdInexistentId(): Unit =
     assertEquals(LoadedDocument().getRecordById[LoadedDocument]("?", xmlFilePathName), empty)
 
   @Test
-  def testGetRecordsByFilter: Unit =
+  def testGetRecordsByFilter(): Unit =
     cleanXmlFile(xmlFilePathName)
     LoadedDocument().recordInsert[LoadedDocument](loadedDocument1, xmlFilePathName)
     LoadedDocument().recordInsert[LoadedDocument](loadedDocument2, xmlFilePathName)
@@ -110,24 +110,24 @@ class LoadedDocumentTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](a => a.getDocumentType == "letter", xmlFilePathName), sequence)
 
   @Test
-  def testRecordInsertInexistentXmlFile: Unit =
+  def testRecordInsertInexistentXmlFile(): Unit =
     assertFalse(LoadedDocument().recordInsert[LoadedDocument](loadedDocument1, "path inesistente"))
 
   @Test
-  def testRecordInsert: Unit =
+  def testRecordInsert(): Unit =
     LoadedDocument().recordInsert[LoadedDocument](loadedDocument1, xmlFilePathName)
     val record = LoadedDocument().getRecordById[LoadedDocument]("1", xmlFilePathName)
     assertEquals(record, loadedDocument1)
 
   @Test
-  def testRecordInsertDuplicateId: Unit =
+  def testRecordInsertDuplicateId(): Unit =
     cleanXmlFile(xmlFilePathName)
     LoadedDocument().recordInsert[LoadedDocument](loadedDocument1, xmlFilePathName)
     val record = loadedDocument1.copy()
     assertFalse(LoadedDocument().recordInsert[LoadedDocument](record, xmlFilePathName))
 
   @Test
-  def testRecordUpdateInexistentXmlFile: Unit =
+  def testRecordUpdateInexistentXmlFile(): Unit =
     LoadedDocument().recordInsert[LoadedDocument](loadedDocument1, xmlFilePathName)
     assertEquals(LoadedDocument().getRecordById[LoadedDocument]("1", xmlFilePathName).getProcessedBy, "Rossi")
     val record = LoadedDocument().getRecordById[LoadedDocument]("1", xmlFilePathName)
@@ -136,7 +136,7 @@ class LoadedDocumentTest:
     assertNotEquals(LoadedDocument().getRecordById[LoadedDocument]("1", xmlFilePathName).getProcessedBy, "Bruni")
 
   @Test
-  def testRecordUpdateEmptyXmlFile: Unit =
+  def testRecordUpdateEmptyXmlFile(): Unit =
     cleanXmlFile(xmlFilePathName)
     val record = loadedDocument1.copy()
     record.setSender("INPS")
@@ -144,7 +144,7 @@ class LoadedDocumentTest:
     assertNotEquals(LoadedDocument().getRecordById[LoadedDocument]("1", xmlFilePathName).getSender, "INPS")
 
   @Test
-  def testRecordUpdateInexistentId: Unit =
+  def testRecordUpdateInexistentId(): Unit =
     val record = LoadedDocument().getRecordById[LoadedDocument]("1", xmlFilePathName)
     record.setDocumentType("package")
     record.setId("?")
@@ -153,7 +153,7 @@ class LoadedDocumentTest:
     assertEquals(recordUpdated, empty)
 
   @Test
-  def testRecordUpdate: Unit =
+  def testRecordUpdate(): Unit =
     LoadedDocument().recordInsert[LoadedDocument](loadedDocument1, xmlFilePathName)
     assertEquals("ACEA", LoadedDocument().getRecordById[LoadedDocument]("1", xmlFilePathName).getSender)
     val record = loadedDocument1.copy()
@@ -161,7 +161,7 @@ class LoadedDocumentTest:
     assertTrue(LoadedDocument().recordUpdate[LoadedDocument](record, xmlFilePathName))
 
   @Test
-  def testRecordDelete: Unit =
+  def testRecordDelete(): Unit =
     cleanXmlFile(xmlFilePathName)
     LoadedDocument().recordInsert[LoadedDocument](loadedDocument1, xmlFilePathName)
     LoadedDocument().recordInsert[LoadedDocument](loadedDocument2, xmlFilePathName)
@@ -171,18 +171,18 @@ class LoadedDocumentTest:
     LoadedDocument().recordDelete(record.getId, xmlFilePathName)
 
   @Test
-  def testRecordDeleteInesistentXmlFile: Unit =
+  def testRecordDeleteInesistentXmlFile(): Unit =
     val record = loadedDocument1.copy()
     assertFalse(LoadedDocument().recordDelete(record.getId, "path inesistente"))
 
   @Test
-  def testRecordDeleteEmptyXmlFile: Unit =
+  def testRecordDeleteEmptyXmlFile(): Unit =
     cleanXmlFile(xmlFilePathName)
     val record = loadedDocument1.copy()
     assertFalse(LoadedDocument().recordDelete(record.getId, xmlFilePathName))
 
   @Test
-  def testRecordDeleteInesistentId: Unit =
+  def testRecordDeleteInesistentId(): Unit =
     cleanXmlFile(xmlFilePathName)
     LoadedDocument().recordInsert[LoadedDocument](loadedDocument1, xmlFilePathName)
     LoadedDocument().recordInsert[LoadedDocument](loadedDocument2, xmlFilePathName)

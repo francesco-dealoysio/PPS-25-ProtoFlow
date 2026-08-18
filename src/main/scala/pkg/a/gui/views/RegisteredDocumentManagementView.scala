@@ -72,12 +72,10 @@ object RegisteredDocumentManagementView extends Management:
         success = printed
       )
 
-    val refreshButton = secondaryButton(Buttons.Refresh, () => loadDocuments())
-    val printListButton = printButton(action = () => printDocumentsList())
-
+    val refreshButton = secondaryButton(Buttons.Refresh, loadDocuments)
+    val printListButton = printButton(printDocumentsList)
     val archiveButton = primaryButton(Buttons.Archive, () => withSelectedItem(table, result, Text.SelectToArchive)(onArchive))
-
-    val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedDocument())
+    val deleteButton = dangerButton(Buttons.Delete, deleteSelectedDocument)
 
     disableWithoutSelection(table, archiveButton, deleteButton)
 

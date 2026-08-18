@@ -74,12 +74,10 @@ object LoadedDocumentManagementView extends Management:
         success = printed
       )
 
-    val refreshButton = secondaryButton(Buttons.Refresh, () => loadDocuments())
-    val printListButton = printButton(action = () => printDocumentsList())
-
+    val refreshButton = secondaryButton(Buttons.Refresh, loadDocuments)
+    val printListButton = printButton(printDocumentsList)
     val registerButton = primaryButton(Buttons.Register, () => withSelectedItem(table, result, Text.SelectToRegister)(onRegister))
-
-    val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedDocument())
+    val deleteButton = dangerButton(Buttons.Delete, deleteSelectedDocument)
 
     disableWithoutSelection(table, registerButton, deleteButton)
 

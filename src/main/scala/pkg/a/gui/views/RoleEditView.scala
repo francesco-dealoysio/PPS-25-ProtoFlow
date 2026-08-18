@@ -17,24 +17,26 @@ object RoleEditView extends Form:
     val validator = new RoleValidator()
 
     val role = stringField("", selectedRole.getRole)
-
+    role.control.setDisable(true)
+    val name = stringField("", selectedRole.getName)
     val description = areaField("", DescriptionAreaStyle, selectedRole.getDescription)
-    val monitoredFields = Seq(role, description)
+    val monitoredFields = Seq(name, description)
     val result = createResultMessage()
 
     def clearErrors(): Unit =
-      clearFormFieldErrors(role, description)
+      clearFormFieldErrors(monitoredFields*)
       result.clear()
 
     def currentRole(): Role =
       Role(
         id = selectedRole.getId,
-        role = role.value.toLowerCase,
+        role = selectedRole.getRole,
+        name = name.value,
         description = description.value
       )
 
     def resetForm(): Unit =
-      resetFields(role, description)
+      resetFields(monitoredFields*)
       clearErrors()
       role.requestFocus()
 
@@ -66,13 +68,14 @@ object RoleEditView extends Form:
             formSaved = true
             onSaved()
 
-    val reset = resetButton(() => resetForm())
+    val reset = resetButton(resetForm)
     val exit = closeButton(onExit)
 
     val form =
       formGrid(
         Seq(
           formRow(Labels.Role, role),
+          formRow(Labels.RoleName, name),
           formRow(Labels.Description, description),
         )
       )

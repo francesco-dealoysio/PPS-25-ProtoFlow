@@ -77,15 +77,15 @@ object ClassificationManagementView extends Management:
 
     val editButton = secondaryButton(Buttons.Edit, () => withSelectedItem(table, result, Text.SelectToEdit)(onEdit))
 
-    val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedClassification())
+    val deleteButton = dangerButton(Buttons.Delete, deleteSelectedClassification)
     val exitButton = closeButton(onExit)
-    val print = printButton(() => printClassifications())
+    val print = printButton(printClassifications)
     disableWithoutSelection(table, editButton, deleteButton)
     val bottomActions = actionBar(Seq(exitButton, print, editButton, deleteButton, addButton))
 
     val header = titleBox(Text.Title, Text.Subtitle)
 
-    loadClassifications() // Prima lettura dal file XML.
+    loadClassifications()
 
     managementPage(
       growNode = Some(table),

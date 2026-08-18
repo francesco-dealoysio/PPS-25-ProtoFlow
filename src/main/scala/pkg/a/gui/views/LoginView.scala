@@ -120,10 +120,10 @@ object LoginView extends Form:
       alignment = Pos.Center
       children = Seq(usernameBox, passwordBox)
 
-    val clearButton = resetButton(() => clearFields(), Buttons.Clear)
-    val accessButton = primaryButton(Buttons.Login, () => access())
+    val clearButton = resetButton(clearFields, Buttons.Clear)
+    val accessButton = primaryButton(Buttons.Login, access)
     val buttonsBox = actionBar(Seq(clearButton, accessButton), barAlignment = Pos.Center)
-    val registrationButton = secondaryButton(Buttons.RequestRegistration, () => onRegistrationRequest())
+    val registrationButton = secondaryButton(Buttons.RequestRegistration, onRegistrationRequest)
     registrationButton.maxWidth = 220
 
     val card = new VBox:

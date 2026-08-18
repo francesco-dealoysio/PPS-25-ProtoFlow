@@ -31,7 +31,7 @@ object RoleAddView extends Form:
       )
 
     def clearErrors(): Unit =
-      clearFormFieldErrors(role, description)
+      clearFormFieldErrors(monitoredFields*)
       result.clear()
 
     def validateForm(): Boolean =
@@ -47,7 +47,7 @@ object RoleAddView extends Form:
         case Validation.DescriptionRequired => description
 
     def resetForm(): Unit =
-      resetFields(role, description)
+      resetFields(monitoredFields*)
       clearErrors()
       role.requestFocus()
 
@@ -66,7 +66,7 @@ object RoleAddView extends Form:
             formSaved = true
             onSaved()
 
-    val reset = resetButton(() => resetForm())
+    val reset = resetButton(resetForm)
     val exit = closeButton(onExit)
 
     val form =

@@ -2,7 +2,7 @@ package pkg.b.logic
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, searchFieldValue}
+import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
 import pkg.d.util.Util.inTestFilePathName
 import java.nio.file.{Files, Paths}
 
@@ -70,38 +70,38 @@ class RegistrationTest:
     Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
 
   @Test
-  def testGetRecordsInexistentXmlFile: Unit =
+  def testGetRecordsInexistentXmlFile(): Unit =
     assertEquals(Registration().getRecords[Registration]("path inesistente"), Seq.empty[Registration])
 
   @Test
-  def testGetRecordsEmptyXmlFile: Unit =
+  def testGetRecordsEmptyXmlFile(): Unit =
     assertEquals(Registration().getRecords[Registration](xmlFilePathName), Seq.empty[Registration])
 
   @Test
-  def testGetRecordsFound: Unit =
+  def testGetRecordsFound(): Unit =
     Registration().recordInsert[Registration](registration1, xmlFilePathName)
     Registration().recordInsert[Registration](registration2, xmlFilePathName)
     assertEquals(Registration().getRecords[Registration](xmlFilePathName), List(registration1, registration2))
 
   @Test
-  def testGetRecordByIdInexistentXmlFile: Unit =
+  def testGetRecordByIdInexistentXmlFile(): Unit =
     assertEquals(Registration().getRecordById[Registration]("2", "path inesistente"), empty)
 
   @Test
-  def testGetRecordByIdEmptyXmlFile: Unit =
+  def testGetRecordByIdEmptyXmlFile(): Unit =
     assertEquals(Registration().getRecordById[Registration]("2", xmlFilePathName), empty)
 
   @Test
-  def testGetRecordByIdFoundRecord: Unit =
+  def testGetRecordByIdFoundRecord(): Unit =
     Registration().recordInsert[Registration](registration2, xmlFilePathName)
     assertEquals(Registration().getRecordById[Registration]("2", xmlFilePathName), registration2)
 
   @Test
-  def testGetRecordsIdInexistentId: Unit =
+  def testGetRecordsIdInexistentId(): Unit =
     assertEquals(Registration().getRecordById[Registration]("?", xmlFilePathName), empty)
 
   @Test
-  def testGetRecordsByFilter: Unit =
+  def testGetRecordsByFilter(): Unit =
     cleanXmlFile(xmlFilePathName)
     Registration().recordInsert[Registration](registration1, xmlFilePathName)
     Registration().recordInsert[Registration](registration2, xmlFilePathName)
@@ -110,24 +110,24 @@ class RegistrationTest:
     assertEquals(Registration().getRecordsByFilter[Registration](a => a.getArea == "segreteria", xmlFilePathName), sequence)
 
   @Test
-  def testRecordInsertInexistentXmlFile: Unit =
+  def testRecordInsertInexistentXmlFile(): Unit =
     assertFalse(Registration().recordInsert[Registration](registration1, "path inesistente"))
 
   @Test
-  def testRecordInsert: Unit =
+  def testRecordInsert(): Unit =
     Registration().recordInsert[Registration](registration1, xmlFilePathName)
     val record = Registration().getRecordById[Registration]("1", xmlFilePathName)
     assertEquals(record, registration1)
 
   @Test
-  def testRecordInsertDuplicateId: Unit =
+  def testRecordInsertDuplicateId(): Unit =
     cleanXmlFile(xmlFilePathName)
     Registration().recordInsert[Registration](registration1, xmlFilePathName)
     val record = registration1.copy()
     assertFalse(Registration().recordInsert[Registration](record, xmlFilePathName))
 
   @Test
-  def testRecordUpdateInexistentXmlFile: Unit =
+  def testRecordUpdateInexistentXmlFile(): Unit =
     Registration().recordInsert[Registration](registration1, xmlFilePathName)
     assertEquals(Registration().getRecordById[Registration]("1", xmlFilePathName).getPhone, "06/11111111")
     val record = Registration().getRecordById[Registration]("1", xmlFilePathName)
@@ -136,7 +136,7 @@ class RegistrationTest:
     assertNotEquals(Registration().getRecordById[Registration]("1", xmlFilePathName).getPhone, "06/12345678")
 
   @Test
-  def testRecordUpdateEmptyXmlFile: Unit =
+  def testRecordUpdateEmptyXmlFile(): Unit =
     cleanXmlFile(xmlFilePathName)
     val record = registration1.copy()
     record.setPhone("06/12345678")
@@ -144,7 +144,7 @@ class RegistrationTest:
     assertNotEquals(Registration().getRecordById[Registration]("1", xmlFilePathName).getPhone, "06/12345678")
 
   @Test
-  def testRecordUpdateInexistentId: Unit =
+  def testRecordUpdateInexistentId(): Unit =
     val record = Registration().getRecordById[Registration]("1", xmlFilePathName)
     record.setPhone("06/87654321")
     record.setId("?")
@@ -153,7 +153,7 @@ class RegistrationTest:
     assertEquals(recordUpdated, empty)
 
   @Test
-  def testRecordUpdate: Unit =
+  def testRecordUpdate(): Unit =
     Registration().recordInsert[Registration](registration1, xmlFilePathName)
     assertEquals("06/11111111", Registration().getRecordById[Registration]("1", xmlFilePathName).getPhone)
     val record = registration1.copy()
@@ -161,7 +161,7 @@ class RegistrationTest:
     assertTrue(Registration().recordUpdate[Registration](record, xmlFilePathName))
 
   @Test
-  def testRecordDelete: Unit =
+  def testRecordDelete(): Unit =
     cleanXmlFile(xmlFilePathName)
     Registration().recordInsert[Registration](registration1, xmlFilePathName)
     Registration().recordInsert[Registration](registration2, xmlFilePathName)
@@ -171,18 +171,18 @@ class RegistrationTest:
     Registration().recordDelete(record.getId, xmlFilePathName)
 
   @Test
-  def testRecordDeleteInesistentXmlFile: Unit =
+  def testRecordDeleteInesistentXmlFile(): Unit =
     val record = registration1.copy()
     assertFalse(Registration().recordDelete(record.getId, "path inesistente"))
 
   @Test
-  def testRecordDeleteEmptyXmlFile: Unit =
+  def testRecordDeleteEmptyXmlFile(): Unit =
     cleanXmlFile(xmlFilePathName)
     val record = registration1.copy()
     assertFalse(Registration().recordDelete(record.getId, xmlFilePathName))
 
   @Test
-  def testRecordDeleteInesistentId: Unit =
+  def testRecordDeleteInesistentId(): Unit =
     cleanXmlFile(xmlFilePathName)
     Registration().recordInsert[Registration](registration1, xmlFilePathName)
     Registration().recordInsert[Registration](registration2, xmlFilePathName)

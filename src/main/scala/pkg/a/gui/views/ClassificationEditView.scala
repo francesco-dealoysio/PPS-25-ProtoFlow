@@ -14,7 +14,7 @@ object ClassificationEditView extends Form:
   def apply(selectedClassification: Classification, onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val classificationLogic = new Classification()
-    val validator = ClassificationValidator()
+    val validator = new ClassificationValidator()
 
     val id = stringField("", selectedClassification.getId)
     id.control.setDisable(true)
@@ -32,11 +32,11 @@ object ClassificationEditView extends Form:
       )
 
     def clearErrors(): Unit =
-      clearFormFieldErrors(classification, description)
+      clearFormFieldErrors(monitoredFields*)
       result.clear()
 
     def resetForm(): Unit =
-      resetFields(classification, description)
+      resetFields(monitoredFields*)
       clearErrors()
       classification.requestFocus()
 
