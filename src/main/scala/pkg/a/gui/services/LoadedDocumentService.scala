@@ -13,11 +13,17 @@ class LoadedDocumentService:
   def getLoadedDocuments: List[LoadedDocument] =
     loadedDocumentLogic.getRecords[LoadedDocument]().toList
 
+  def getLoadedDocuments(predicate: Any => Boolean): List[LoadedDocument] =
+    loadedDocumentLogic.getRecordsByFilter[LoadedDocument](predicate).toList
+
   def deleteLoadedDocument(id: String): Boolean =
     loadedDocumentLogic.recordDelete(id)
 
   def getRegisteredDocuments: List[RegisteredDocument] =
     registeredDocumentLogic.getRecords[RegisteredDocument]().toList
+
+  def getRegisteredDocuments(predicate: Any => Boolean): List[RegisteredDocument] =
+    registeredDocumentLogic.getRecordsByFilter[RegisteredDocument](predicate).toList
 
   def deleteRegisteredDocument(id: String): Boolean =
     registeredDocumentLogic.recordDelete(id)
