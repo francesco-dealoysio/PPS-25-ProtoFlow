@@ -7,17 +7,20 @@ import pkg.d.util.Logger.*
 case class Role(
                 private var id: String = "",
                 private var role: String = "",
+                private var name: String = "",
                 private var description: String = ""
                 ) extends Entity:
   def this() =
-    this("","","")
+    this("","","", "")
 
   def setId(value: String): Unit = id = value
   def setRole(value: String): Unit = role = value
+  def setName(value: String): Unit = name = value
   def setDescription(value: String): Unit = description = value
 
   def getId: String = id
   def getRole: String = role
+  def getName: String = name
   def getDescription: String = description
 
   override def xmlFile = "roles.xml"

@@ -3,31 +3,37 @@ package pkg.a.gui.text
 object UiText:
 
   object Common:
-    val RequiredMarker = " *"
+    private val RequiredMarker = " *"
+    private val UserIcon = "👤"
     val ApplicationName = "ProtoFlow"
     val MenuIcon = "☰"
-    val UserIcon = "👤"
-    val EmptyValue = "-"
 
-    def headerUserInfo(username: String, roleDescription: String): String =
-      s"$username\n$roleDescription"
+    def headerUserInfo(username: String, roleName: String): String =
+      s"$username\n$roleName"
 
-    def footerUserInfo(username: String, roleDescription: String): String =
-      s"$UserIcon $username ($roleDescription)"
+    def footerUserInfo(username: String, roleName: String): String =
+      s"$UserIcon $username ($roleName)"
 
     object Dialogs:
       object Logout:
-        val TitleDialog = "Conferma logout"
-        val HeaderDialog = "Vuoi uscire da ProtoFlow?"
-        val ContentDialog = "La sessione corrente verrà terminata."
+        val Title = "Conferma logout"
+        val Header = "Vuoi uscire da ProtoFlow?"
+        val Content = "La sessione corrente verrà terminata."
 
       object UnsavedChanges:
-        val TitleUnsavedChanges = "Modifiche non salvate"
-        val HeaderUnSavedChanges = "Vuoi uscire senza salvare?"
-        val ContentUnSavedChanges = "Le informazioni inserite o modificate non verranno mantenute."
+        val Title = "Modifiche non salvate"
+        val Header = "Vuoi uscire senza salvare?"
+        val Content = "Le informazioni inserite o modificate non verranno mantenute."
 
     object Documents:
       val NoDocuments = "Nessun documento disponibile."
+
+      object Fields:
+        val Id = "Id"
+        val ProtocolNumber = "Numero protocollo"
+        val Sender = "Mittente"
+        val Recipient = "Destinatario"
+        val Subject = "Oggetto"
 
     object WindowTitles:
       val Login = s"${Common.ApplicationName} - Login"
@@ -56,39 +62,40 @@ object UiText:
       val Login = "Accedi"
       val RequestRegistration = "Richiedi registrazione"
 
-  object Fields:
-    object Labels:
-      val Id = "Id"
-      val Name = "Nome"
-      val Surname = "Cognome"
-      val Email = "Email"
-      val Phone = "Telefono"
-      val Role = "Ruolo"
-      val Description = "Descrizione"
-      val Area = "Area"
-      val Assignment = "Mansione"
-      val Username = "Username"
-      val Password = "Password"
-      val Classification = "Classifica"
-      val Date = "Data"
+    object Fields:
+      object Labels:
+        val Id = "Id"
+        val Name = "Nome"
+        val Surname = "Cognome"
+        val Email = "Email"
+        val Phone = "Telefono"
+        val Role = "Ruolo"
+        val Description = "Descrizione"
+        val Area = "Area"
+        val Assignment = "Mansione"
+        val Username = "Username"
+        val Password = "Password"
+        val Classification = "Classifica"
+        val Date = "Data"
+        val RoleName = "Nome ruolo"
 
-      def required(label: String): String =
-        s"$label${Common.RequiredMarker}"
+        def required(label: String): String =
+          s"$label$RequiredMarker"
 
-    object Prompts:
-      val Name = "Inserisci il nome"
-      val Surname = "Inserisci il cognome"
-      val Email = "Inserisci l'email"
-      val Phone = "Inserisci il telefono"
-      val Role = "Inserisci il ruolo"
-      val SelectRole = "Seleziona il ruolo"
-      val Description = "Inserisci la descrizione"
-      val Area = "Inserisci l'area"
-      val Assignment = "Inserisci la mansione"
-      val Username = "Inserisci lo username"
-      val Password = "Inserisci la password"
-      val Classification = "Inserisci la classifica"
-      val KeepPassword = "Lascia vuoto per non modificare la password"
+      object Prompts:
+        val Name = "Inserisci il nome"
+        val Surname = "Inserisci il cognome"
+        val Email = "Inserisci l'email"
+        val Phone = "Inserisci il telefono"
+        val Role = "Inserisci il ruolo"
+        val SelectRole = "Seleziona il ruolo"
+        val Description = "Inserisci la descrizione"
+        val Area = "Inserisci l'area"
+        val Assignment = "Inserisci la mansione"
+        val Username = "Inserisci lo username"
+        val Password = "Inserisci la password"
+        val Classification = "Inserisci la classifica"
+        val KeepPassword = "Lascia vuoto per non modificare la password"
 
   object Roles:
     object Add:
@@ -160,7 +167,7 @@ object UiText:
       val Subtitle = "Modifica email, telefono o password del tuo account."
       val Success = "Profilo modificato correttamente."
       val Error = "Errore durante la modifica del profilo."
-    
+
     object Add:
       val Title = "Aggiunta account"
       val Subtitle = "Inserisci i dati del nuovo account."
@@ -230,15 +237,11 @@ object UiText:
 
   object LoadedDocuments:
     object Fields:
-      val Id = "Id"
       val DocumentDate = "Data documento"
       val DocumentTime = "Ora documento"
       val ProcessedBy = "Preso in carico da"
       val DocumentProtocol = "Protocollo mittente"
       val DocumentType = "Tipo documento"
-      val Sender = "Mittente"
-      val Recipient = "Destinatario"
-      val Subject = "Oggetto"
       val Remarks = "Note"
 
     object Prompts:
@@ -289,10 +292,6 @@ object UiText:
       val PrintError = "Non è stato possibile stampare la scheda del documento."
 
     object Fields:
-      val Id = "Id"
-      val ProtocolNumber = "Numero protocollo"
-      val Sender = "Mittente"
-      val Subject = "Oggetto"
       val Type = "Tipo"
       val ProtocolledBy = "Protocollato da"
       val RegisteredDate = "Data protocollo"
@@ -339,16 +338,12 @@ object UiText:
       val PrintFileNamePrefix = "documento_archiviato"
       val PrintSuccess = "Scheda del documento stampata correttamente nella cartella protoflow/prints."
       val PrintError = "Non è stato possibile stampare la scheda del documento."
-        
+
     object Fields:
-      val Id = "Id"
       val ProtocolNumber = "Numero protocollo"
       val ArchivedDate = "Data archiviazione"
       val ArchivedTime = "Ora archiviazione"
       val ArchivedBy = "Operatore archiviatore"
-      val Sender = "Mittente"
-      val Recipient = "Destinatario"
-      val Subject = "Oggetto"
       val ArchiveLocation = "Collocazione archivistica"
 
     object Prompts:
@@ -361,6 +356,8 @@ object UiText:
       val ArchivedDateRequired = "La data di archiviazione è obbligatoria"
       val ArchivedTimeRequired = "L'ora di archiviazione è obbligatoria"
       val ArchivedByRequired = "L'operatore archiviatore è obbligatorio"
+      val ArchivedDateInvalid = "La data di archiviazione non è valida"
+      val ArchivedTimeInvalid = "L'ora di archiviazione non è valida"
 
     object Process:
       val Title = "Archiviazione documento"
@@ -384,7 +381,6 @@ object UiText:
       val PrintError = "Errore durante la stampa dell'elenco."
 
   object Login:
-    val ApplicationTitle = "ProtoFlow"
     val ApplicationSubtitle = "Enterprise Document Protocol System"
     val EmptyCredentials = "Inserisci username e password."
     val InvalidCredentials = "Accesso negato. Username o password non corretti."
@@ -412,11 +408,7 @@ object UiText:
   object Registration:
     val Title = "Registrazione"
     val Subtitle = "Compila il modulo per richiedere l'accreditamento al sistema ProtoFlow."
-
-    val NamePrompt = "Inserisci il nome"
-    val SurnamePrompt = "Inserisci il cognome"
     val EmailPrompt = "nome.cognome@email.it"
-    val PhonePrompt = "Inserisci il telefono"
     val RolePrompt = "Seleziona ruolo"
     val AreaPrompt = "Seleziona area"
     val AssignmentPrompt = "Inserisci incarico"
@@ -426,8 +418,6 @@ object UiText:
     val ValidationSeparator = "\n- "
 
     object ExitDialog:
-      val Title = "Modifiche non salvate"
-      val Header = "Vuoi uscire senza salvare?"
       val Content = "I dati inseriti nella richiesta di registrazione verranno persi."
 
   object DocumentLogs:
@@ -441,12 +431,12 @@ object UiText:
       val ProcessedBy = "Operatore"
 
     object Operations:
-      val Loading = "loading"
-      val Registering = "registering"
-      val Archiving = "archiving"
-      val LoadingLabel = "Presa in carico"
-      val RegisteringLabel = "Protocollazione"
-      val ArchivingLabel = "Archiviazione"
+      private val Loading = "loading"
+      private val Registering = "registering"
+      private val Archiving = "archiving"
+      private val LoadingLabel = "Presa in carico"
+      private val RegisteringLabel = "Protocollazione"
+      private val ArchivingLabel = "Archiviazione"
 
       val values: Seq[(String, String)] = Seq(
         Loading -> LoadingLabel,
@@ -504,6 +494,7 @@ object UiText:
 
     object Role:
       val RoleRequired = "Il campo Ruolo è obbligatorio."
+      val NameRequired = "Il campo Nome ruolo è obbligatorio."
       val DescriptionRequired = "Il campo Descrizione è obbligatorio."
       val DuplicateRole = "Esiste già un ruolo con questo nome."
 

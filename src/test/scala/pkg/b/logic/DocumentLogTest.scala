@@ -2,7 +2,7 @@ package pkg.b.logic
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, insertElemIntoXML, searchFieldValue}
+import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
 import pkg.d.util.Util.inTestFilePathName
 import java.nio.file.{Files, Paths}
 
@@ -52,38 +52,38 @@ class DocumentLogTest:
     Files.deleteIfExists(Paths.get(inTestFilePathName("test.xml")))
 
   @Test
-  def testGetRecordsInexistentXmlFile: Unit =
+  def testGetRecordsInexistentXmlFile(): Unit =
     assertEquals(DocumentLog().getRecords[DocumentLog]("path inesistente"), Seq.empty[DocumentLog])
 
   @Test
-  def testGetRecordsEmptyXmlFile: Unit =
+  def testGetRecordsEmptyXmlFile(): Unit =
     assertEquals(DocumentLog().getRecords[DocumentLog](xmlFilePathName), Seq.empty[DocumentLog])
 
   @Test
-  def testGetRecordsFound: Unit =
+  def testGetRecordsFound(): Unit =
     DocumentLog().recordInsert[DocumentLog](documentLog1, xmlFilePathName)
     DocumentLog().recordInsert[DocumentLog](documentLog2, xmlFilePathName)
     assertEquals(DocumentLog().getRecords[DocumentLog](xmlFilePathName), List(documentLog1, documentLog2))
 
   @Test
-  def testGetRecordByIdInexistentXmlFile: Unit =
+  def testGetRecordByIdInexistentXmlFile(): Unit =
     assertEquals(DocumentLog().getRecordById[DocumentLog]("2", "path inesistente"), empty)
 
   @Test
-  def testGetRecordByIdEmptyXmlFile: Unit =
+  def testGetRecordByIdEmptyXmlFile(): Unit =
     assertEquals(DocumentLog().getRecordById[DocumentLog]("2", xmlFilePathName), empty)
 
   @Test
-  def testGetRecordByIdFoundRecord: Unit =
+  def testGetRecordByIdFoundRecord(): Unit =
     DocumentLog().recordInsert[DocumentLog](documentLog2, xmlFilePathName)
     assertEquals(DocumentLog().getRecordById[DocumentLog]("2", xmlFilePathName), documentLog2)
 
   @Test
-  def testGetRecordsIdInexistentId: Unit =
+  def testGetRecordsIdInexistentId(): Unit =
     assertEquals(DocumentLog().getRecordById[DocumentLog]("?", xmlFilePathName), empty)
 
   @Test
-  def testGetRecordsByFilter: Unit =
+  def testGetRecordsByFilter(): Unit =
     cleanXmlFile(xmlFilePathName)
     DocumentLog().recordInsert[DocumentLog](documentLog1, xmlFilePathName)
     DocumentLog().recordInsert[DocumentLog](documentLog2, xmlFilePathName)
@@ -96,24 +96,24 @@ class DocumentLogTest:
     assertEquals(DocumentLog().getRecordsByFilter[DocumentLog](a => a.getOperationType == "loading", xmlFilePathName), sequence)
 
   @Test
-  def testRecordInsertInexistentXmlFile: Unit =
+  def testRecordInsertInexistentXmlFile(): Unit =
     assertFalse(DocumentLog().recordInsert[DocumentLog](documentLog1, "path inesistente"))
 
   @Test
-  def testRecordInsert: Unit =
+  def testRecordInsert(): Unit =
     DocumentLog().recordInsert[DocumentLog](documentLog1, xmlFilePathName)
     val record = DocumentLog().getRecordById[DocumentLog]("1", xmlFilePathName)
     assertEquals(record, documentLog1)
 
   @Test
-  def testRecordInsertDuplicateId: Unit =
+  def testRecordInsertDuplicateId(): Unit =
     cleanXmlFile(xmlFilePathName)
     DocumentLog().recordInsert[DocumentLog](documentLog1, xmlFilePathName)
     val record = documentLog1.copy()
     assertFalse(DocumentLog().recordInsert[DocumentLog](record, xmlFilePathName))
 
   @Test
-  def testRecordUpdateInexistentXmlFile: Unit =
+  def testRecordUpdateInexistentXmlFile(): Unit =
     DocumentLog().recordInsert[DocumentLog](documentLog1, xmlFilePathName)
     assertEquals(DocumentLog().getRecordById[DocumentLog]("1", xmlFilePathName).getOperationType, "loading")
     val record = documentLog1.copy()
@@ -122,7 +122,7 @@ class DocumentLogTest:
     assertNotEquals(DocumentLog().getRecordById[DocumentLog]("1", xmlFilePathName).getOperationType, "registering")
 
   @Test
-  def testRecordUpdateEmptyXmlFile: Unit =
+  def testRecordUpdateEmptyXmlFile(): Unit =
     cleanXmlFile(xmlFilePathName)
     val record = documentLog1.copy()
     record.setOperationType("registering")
@@ -130,7 +130,7 @@ class DocumentLogTest:
     assertNotEquals(DocumentLog().getRecordById[DocumentLog]("1", xmlFilePathName).getOperationType, "registering")
 
   @Test
-  def testRecordUpdateInexistentId: Unit =
+  def testRecordUpdateInexistentId(): Unit =
     val record = DocumentLog().getRecordById[DocumentLog]("1", xmlFilePathName)
     record.setOperationType("100")
     record.setId("?")
@@ -139,7 +139,7 @@ class DocumentLogTest:
     assertEquals(recordUpdated, empty)
 
   @Test
-  def testRecordUpdate: Unit =
+  def testRecordUpdate(): Unit =
     DocumentLog().recordInsert[DocumentLog](documentLog1, xmlFilePathName)
     assertEquals("loading", DocumentLog().getRecordById[DocumentLog]("1", xmlFilePathName).getOperationType)
     val record = documentLog1.copy()
@@ -147,7 +147,7 @@ class DocumentLogTest:
     assertTrue(DocumentLog().recordUpdate[DocumentLog](record, xmlFilePathName))
 
   @Test
-  def testRecordDelete: Unit =
+  def testRecordDelete(): Unit =
     cleanXmlFile(xmlFilePathName)
     DocumentLog().recordInsert[DocumentLog](documentLog1, xmlFilePathName)
     DocumentLog().recordInsert[DocumentLog](documentLog2, xmlFilePathName)
@@ -157,18 +157,18 @@ class DocumentLogTest:
     assertEquals(DocumentLog().getRecordById[DocumentLog](record.getId, xmlFilePathName), empty)
 
   @Test
-  def testRecordDeleteInesistentXmlFile: Unit =
+  def testRecordDeleteInesistentXmlFile(): Unit =
     val record = documentLog1.copy()
     assertFalse(DocumentLog().recordDelete(record.getId, "path inesistente"))
 
   @Test
-  def testRecordDeleteEmptyXmlFile: Unit =
+  def testRecordDeleteEmptyXmlFile(): Unit =
     cleanXmlFile(xmlFilePathName)
     val record = documentLog1.copy()
     assertFalse(DocumentLog().recordDelete(record.getId, xmlFilePathName))
 
   @Test
-  def testRecordDeleteInesistentId: Unit =
+  def testRecordDeleteInesistentId(): Unit =
     cleanXmlFile(xmlFilePathName)
     DocumentLog().recordInsert[DocumentLog](documentLog1, xmlFilePathName)
     DocumentLog().recordInsert[DocumentLog](documentLog2, xmlFilePathName)
@@ -178,7 +178,7 @@ class DocumentLogTest:
     assertFalse(DocumentLog().recordDelete(record.getId, xmlFilePathName))
 
   @Test
-  def testWriteDocumentOperationLog: Unit =
+  def testWriteDocumentOperationLog(): Unit =
     import pkg.b.logic.Account
     import pkg.d.util.Util.cipher
     val user = Account(

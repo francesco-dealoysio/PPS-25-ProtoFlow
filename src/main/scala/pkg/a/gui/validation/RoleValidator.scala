@@ -9,15 +9,12 @@ class RoleValidator:
     Seq(
       validateRequired(RoleRequired, role.getRole),
       validateRequired(DescriptionRequired, role.getDescription),
-      validateUniqueRole(role.getRole, existingRoles, currentRoleId)
+      validateUniqueRole(role.getRole, existingRoles, currentRoleId),
+      validateUniqueName(role.getName, existingRoles, currentRoleId)
     ).flatten
 
   def isValid(role: Role, existingRoles: Seq[Role], currentRoleId: Option[String] = None): Boolean =
-    validate(
-      role,
-      existingRoles,
-      currentRoleId
-    ).isEmpty
+    validate(role, existingRoles, currentRoleId).isEmpty
 
   private def validateRequired(errorMessage: String, value: String): Option[String] =
     if value.trim.isEmpty then
@@ -39,6 +36,21 @@ class RoleValidator:
               .getRole
               .trim
               .equalsIgnoreCase(normalizedName)
+
+      if duplicateExists then
+        Some(DuplicateRole)
+      else
+        None
+
+  private def validateUniqueName(roleName: String, existingRoles: Seq[Role], currentRoleId: Option[String]): Option[String] =
+    val normalizedName = roleName.trim
+    if normalizedName.isEmpty then
+      None
+    else
+      val duplicateExists =
+        existingRoles.exists: existingRole =>
+          !currentRoleId.contains(existingRole.getId) &&
+            existingRole.getName.trim.equalsIgnoreCase(normalizedName)
 
       if duplicateExists then
         Some(DuplicateRole)

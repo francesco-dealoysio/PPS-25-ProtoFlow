@@ -4,7 +4,8 @@ import pkg.a.gui.services.LoginService
 import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
 import pkg.a.gui.text.UiStyles.Login.*
 import pkg.a.gui.text.UiText.Common.Buttons
-import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Common.ApplicationName
+import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Login
 import pkg.a.gui.traits.Form
 import pkg.a.gui.services.LoginService.LoginError
@@ -84,7 +85,7 @@ object LoginView extends Form:
 
     val titleSection =
       titleBox(
-        titleText = Login.ApplicationTitle,
+        titleText = ApplicationName,
         subtitleText = Login.ApplicationSubtitle,
         titleStyle = TitleStyle,
         subtitleStyle = SubtitleStyle
@@ -119,10 +120,10 @@ object LoginView extends Form:
       alignment = Pos.Center
       children = Seq(usernameBox, passwordBox)
 
-    val clearButton = resetButton(() => clearFields(), Buttons.Clear)
-    val accessButton = primaryButton(Buttons.Login, () => access())
+    val clearButton = resetButton(clearFields, Buttons.Clear)
+    val accessButton = primaryButton(Buttons.Login, access)
     val buttonsBox = actionBar(Seq(clearButton, accessButton), barAlignment = Pos.Center)
-    val registrationButton = secondaryButton(Buttons.RequestRegistration, () => onRegistrationRequest())
+    val registrationButton = secondaryButton(Buttons.RequestRegistration, onRegistrationRequest)
     registrationButton.maxWidth = 220
 
     val card = new VBox:

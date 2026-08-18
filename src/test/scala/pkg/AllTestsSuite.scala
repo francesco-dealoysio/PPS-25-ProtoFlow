@@ -2,7 +2,7 @@ package pkg
 
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
-import pkg.a.gui.{AccountValidatorTest, ClassificationValidatorTest, HomePageViewModelTest, RegistrationRequestServiceTest, RegistrationValidatorTest}
+import pkg.a.gui.{AccountValidatorTest, ClassificationValidatorTest, HomePageViewModelTest, RegistrationRequestServiceTest, RegistrationValidatorTest, DocumentArchivingValidatorTest}
 import pkg.b.logic.{AccountTest, ArchivedDocumentTest, ClassificationTest, DocumentLogTest, ErrorLogTest, LoadedDocumentTest, RegisteredDocumentTest, RegistrationTest, RoleTest}
 import pkg.c.data.{PropertiesTest, XmlTest}
 import pkg.d.util.{DateTimeTest, FiltersTest, XmlToPdfTest}
@@ -25,6 +25,7 @@ import pkg.d.util.{DateTimeTest, FiltersTest, XmlToPdfTest}
     classOf[HomePageViewModelTest],
     classOf[RegistrationRequestServiceTest],
     classOf[RegistrationValidatorTest],
+    classOf[DocumentArchivingValidatorTest],
 
     classOf[PropertiesTest],
     classOf[XmlTest],

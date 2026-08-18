@@ -41,18 +41,4 @@
       03bb8ba244594956f513d61391d7946867731184ccc679373f66c8b7b80017be004f11c6790c7e7c749668c77e418bb04988923cbf7381b447b2357cc371911b
     </password>
   </record>
-  <record>
-    <id>161</id>
-    <surname>Giacobbe</surname>
-    <name>Claudio</name>
-    <email>claudio@gmail.com</email>
-    <phone>3544325503</phone>
-    <role>oper</role>
-    <area>addestramento</area>
-    <assignment>Grande</assignment>
-    <username>cgiacobbe</username>
-    <password>
-      71aff96c4a25ef60e4a441fc379e00844236dd3713920f546ea61e0b2df9524212610646935d61e998b3e8d0edbcbca8d7bffb705352f014fd4b5f1e0505cfed
-    </password>
-  </record>
 </accounts>

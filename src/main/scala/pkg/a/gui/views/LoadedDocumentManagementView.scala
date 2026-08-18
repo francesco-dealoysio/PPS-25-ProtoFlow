@@ -7,6 +7,7 @@ import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.{XmlToPdf, getLoadedDocumentPredicate}
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Management as Text}
+import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.{BorderPane, HBox}
@@ -36,29 +37,13 @@ object LoadedDocumentManagementView extends Management:
       value = Text.AllOperators
 
     table.columns ++= Seq(
-      stringColumn[LoadedDocument](Fields.Id, Some(160))(_.getId),
-      stringColumn[LoadedDocument](Fields.Sender, Some(160))(_.getSender),
-      stringColumn[LoadedDocument](Fields.Subject, Some(220))(_.getSubject),
+      stringColumn[LoadedDocument](CommonDocumentFields.Id, Some(160))(_.getId),
+      stringColumn[LoadedDocument](CommonDocumentFields.Sender, Some(160))(_.getSender),
+      stringColumn[LoadedDocument](CommonDocumentFields.Subject, Some(220))(_.getSubject),
       stringColumn[LoadedDocument](Fields.DocumentType, Some(110))(_.getDocumentType),
       stringColumn[LoadedDocument](Fields.DocumentDate, Some(110))(_.getDocumentDate),
       stringColumn[LoadedDocument](Fields.ProcessedBy, Some(140))(_.getProcessedBy)
     )
-
-    def updateOperatorFilter(loadedDocuments: Seq[LoadedDocument]): Unit =
-      val operators =
-        loadedDocuments
-          .map(_.getProcessedBy.trim)
-          .filter(_.nonEmpty)
-          .distinct
-          .sorted
-
-      val currentSelection = operatorFilter.value.value
-      operatorFilter.items = ObservableBuffer(Text.AllOperators +: operators *)
-
-      if currentSelection != null && operatorFilter.items.value.contains(currentSelection) then
-        operatorFilter.value = currentSelection
-      else
-        operatorFilter.value = Text.AllOperators
 
     def loadDocuments(): Unit =
       result.clear()
@@ -163,13 +148,14 @@ object LoadedDocumentManagementView extends Management:
         success = printed
       )
 
+    val refreshButton = secondaryButton(Buttons.Refresh, loadDocuments)
+    val printListButton = printButton(printDocumentsList)
     val refreshButton = secondaryButton(Buttons.Refresh, () => loadDocuments())
     val printListButton = printButton(action = () => printDocumentsList())
     val resetFilterButton = secondaryButton(Buttons.ResetFilter, () => resetFilters())
 
     val registerButton = primaryButton(Buttons.Register, () => withSelectedItem(table, result, Text.SelectToRegister)(onRegister))
-
-    val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedDocument())
+    val deleteButton = dangerButton(Buttons.Delete, deleteSelectedDocument)
 
     disableWithoutSelection(table, registerButton, deleteButton)
 

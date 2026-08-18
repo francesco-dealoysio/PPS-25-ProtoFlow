@@ -2,14 +2,13 @@ package pkg.a.gui.services
 
 import pkg.b.logic.{ArchivedDocument, RegisteredDocument}
 import pkg.d.util.Logger.logger
-
-import java.time.{LocalDate, LocalTime}
-import scala.util.Try
+import pkg.a.gui.validation.DocumentArchivingValidator
 
 class ArchivedDocumentService:
 
   private val registeredDocumentLogic = new RegisteredDocument()
   private val archivedDocumentLogic = new ArchivedDocument()
+  private val documentArchivingValidator = new DocumentArchivingValidator()
 
   def getRegisteredDocuments: List[RegisteredDocument] =
     registeredDocumentLogic
@@ -69,21 +68,16 @@ class ArchivedDocumentService:
                                  archivedTime: String,
                                  operatorUsername: String
                                ): Option[String] =
-
     if source == null then
-      Some("Documento protocollato non valido")
+      Some("Documento non valido")
     else if source.getId.trim.isEmpty then
-      Some("Documento protocollato non valido")
+      Some("Id documento non valido")
     else if isAlreadyArchived(source) then
       Some("Il documento risulta già archiviato")
-    else if operatorUsername.trim.isEmpty then
-      Some("L'operatore archiviatore è obbligatorio")
-    else if !isValidDate(archivedDate) then
-      Some("La data di archiviazione non è valida")
-    else if !isValidTime(archivedTime) then
-      Some("L'ora di archiviazione non è valida")
     else
-      None
+      documentArchivingValidator
+        .validate(archivedDate, archivedTime, operatorUsername)
+        .headOption
 
   private def isAlreadyArchived(source: RegisteredDocument): Boolean =
     archivedDocumentLogic
@@ -136,9 +130,3 @@ class ArchivedDocumentService:
 
   private def rollbackArchivedDocument(archived: ArchivedDocument): Unit =
     archivedDocumentLogic.recordDelete(archived.getId)
-
-  private def isValidDate(value: String): Boolean =
-    value.trim.nonEmpty && Try(LocalDate.parse(value.trim)).isSuccess
-
-  private def isValidTime(value: String): Boolean =
-    value.trim.nonEmpty && Try(LocalTime.parse(value.trim)).isSuccess

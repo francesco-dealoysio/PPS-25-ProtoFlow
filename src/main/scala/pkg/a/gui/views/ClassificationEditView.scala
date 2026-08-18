@@ -5,7 +5,7 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Classifications.Edit as Text
-import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.Validation.Classification as Validation
 import pkg.a.gui.validation.ClassificationValidator
 
@@ -14,7 +14,7 @@ object ClassificationEditView extends Form:
   def apply(selectedClassification: Classification, onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val classificationLogic = new Classification()
-    val validator = ClassificationValidator()
+    val validator = new ClassificationValidator()
 
     val id = stringField("", selectedClassification.getId)
     id.control.setDisable(true)
@@ -32,11 +32,11 @@ object ClassificationEditView extends Form:
       )
 
     def clearErrors(): Unit =
-      clearFormFieldErrors(classification, description)
+      clearFormFieldErrors(monitoredFields*)
       result.clear()
 
     def resetForm(): Unit =
-      resetFields(classification, description)
+      resetFields(monitoredFields*)
       clearErrors()
       classification.requestFocus()
 

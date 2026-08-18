@@ -1,9 +1,10 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Prompts}
 import pkg.a.gui.text.UiText.LoadedDocuments.Add as Text
 import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
+import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.traits.Form
 import pkg.a.gui.validation.LoadedDocumentValidator
@@ -15,7 +16,6 @@ import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.scene.control.Alert
 import scalafx.scene.layout.BorderPane
-import java.time.LocalDate
 
 object LoadedDocumentAddView extends Form:
 
@@ -23,9 +23,8 @@ object LoadedDocumentAddView extends Form:
 
     val documentLogic = new LoadedDocument()
     val validator = new LoadedDocumentValidator()
-    val initialDate = LocalDate.now()
     val defaultTime = localTime
-    val documentDate = dateField(initialDate)
+    val documentDate = dateField(localDate)
     val documentTime = stringField(Prompts.DocumentTime, defaultTime)
     val documentProtocol = stringField(Prompts.DocumentProtocol)
     val documentType = stringField(Prompts.DocumentType)
@@ -121,9 +120,9 @@ object LoadedDocumentAddView extends Form:
           formRow(Labels.required(Fields.DocumentTime), documentTime),
           formRow(Labels.required(Fields.DocumentProtocol), documentProtocol),
           formRow(Labels.required(Fields.DocumentType), documentType),
-          formRow(Labels.required(Fields.Sender), sender),
-          formRow(Labels.required(Fields.Recipient), recipient),
-          formRow(Labels.required(Fields.Subject), subject),
+          formRow(Labels.required(CommonDocumentFields.Sender), sender),
+          formRow(Labels.required(CommonDocumentFields.Recipient), recipient),
+          formRow(Labels.required(CommonDocumentFields.Subject), subject),
           formRow(Fields.Remarks, remarks)
         )
       )

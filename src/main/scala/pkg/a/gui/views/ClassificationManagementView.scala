@@ -3,11 +3,10 @@ package pkg.a.gui.views
 import pkg.a.gui.traits.Management
 import pkg.b.logic.Classification
 import scalafx.collections.ObservableBuffer
-import pkg.d.util.Logger.*
 import pkg.d.util.Util.inDatabaseFilePathName
 import pkg.d.util.XmlToPdf
 import pkg.a.gui.text.UiText.Common.Buttons
-import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.Classifications.Management as Text
 import scalafx.scene.layout.BorderPane
 
@@ -78,15 +77,15 @@ object ClassificationManagementView extends Management:
 
     val editButton = secondaryButton(Buttons.Edit, () => withSelectedItem(table, result, Text.SelectToEdit)(onEdit))
 
-    val deleteButton = dangerButton(Buttons.Delete, () => deleteSelectedClassification())
+    val deleteButton = dangerButton(Buttons.Delete, deleteSelectedClassification)
     val exitButton = closeButton(onExit)
-    val print = printButton(() => printClassifications())
+    val print = printButton(printClassifications)
     disableWithoutSelection(table, editButton, deleteButton)
     val bottomActions = actionBar(Seq(exitButton, print, editButton, deleteButton, addButton))
 
     val header = titleBox(Text.Title, Text.Subtitle)
 
-    loadClassifications() // Prima lettura dal file XML.
+    loadClassifications()
 
     managementPage(
       growNode = Some(table),

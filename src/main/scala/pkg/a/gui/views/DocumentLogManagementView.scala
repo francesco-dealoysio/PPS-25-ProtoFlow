@@ -169,9 +169,9 @@ object DocumentLogManagementView extends Management:
       loadLogs()
 
     val exitButton = closeButton(onExit)
-    val refreshButton = secondaryButton(Buttons.Refresh, () => loadLogs())
-    val print = printButton(() => printLogs())
-    val resetFilterButton = secondaryButton(Buttons.ResetFilter, () => resetFilters())
+    val refreshButton = secondaryButton(Buttons.Refresh, loadLogs)
+    val print = printButton(printLogs)
+    val resetFilterButton = secondaryButton(Buttons.ResetFilter, resetFilters)
 
     val viewButton = primaryButton(DocumentLogs.Management.View, () => withSelectedItem(table, result, Text.SelectToView)(onView))
 

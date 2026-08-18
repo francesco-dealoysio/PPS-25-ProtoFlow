@@ -105,21 +105,21 @@ class AccountValidatorTest:
     assertTrue(errors.contains(DuplicateUsername))
 
   @Test
-  def testEditingAccountDoesNotConsiderItselfDuplicate: Unit =
+  def testEditingAccountDoesNotConsiderItselfDuplicate(): Unit =
     val accountToValidate = validForm().copy(id = "1", username = "frank")
     val errors = viewModel.validate(accountToValidate, "", existingAccounts, Some("1"), false)
     assertTrue(errors.isEmpty)
     assertTrue(viewModel.isValid(accountToValidate, "", existingAccounts, Some("1"), false))
 
   @Test
-  def testEditingAccountDetectsAnotherDuplicateUsername: Unit =
+  def testEditingAccountDetectsAnotherDuplicateUsername(): Unit =
     val accountToValidate = validForm().copy(id = "1", username = "rosma")
     val errors = viewModel.validate(accountToValidate, "", existingAccounts, Some("1"), false)
     assertTrue(errors.contains(DuplicateUsername))
     assertFalse(viewModel.isValid(accountToValidate, "", existingAccounts, Some("1"), false))
 
   @Test
-  def testAllRequiredFieldsEmptyReturnAllErrors: Unit =
+  def testAllRequiredFieldsEmptyReturnAllErrors(): Unit =
     val accountToValidate = Account()
     val errors = viewModel.validate(accountToValidate, "", existingAccounts)
 

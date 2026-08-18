@@ -55,7 +55,7 @@ object DocumentLogDetailsView extends Form:
       )
 
     val exitButton = closeButton(onExit)
-    val printButton = secondaryButton(Buttons.Print, () => printLogDetails())
+    val printButton = secondaryButton(Buttons.Print, printLogDetails)
 
     formPage(
       titleText = Text.Title,

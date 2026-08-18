@@ -2,17 +2,18 @@ package pkg.a.gui.views
 
 import pkg.a.gui.services.LoadedDocumentService
 import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
-import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields
+import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.RegisteredDocuments.Process as Text
 import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
 import pkg.a.gui.traits.Form
 import pkg.a.gui.validation.LoadedDocumentValidator
 import pkg.b.logic.LoadedDocument
+import pkg.d.util.DateTime.localDate
 import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
-import java.time.LocalDate
 
 object DocumentRegistrationView extends Form:
 
@@ -27,7 +28,7 @@ object DocumentRegistrationView extends Form:
     val validator = new LoadedDocumentValidator()
     val id = stringField("", selectedDocument.getId)
     id.control.setDisable(true)
-    val documentDate = dateField(LocalDate.parse(selectedDocument.getDocumentDate))
+    val documentDate = dateField(localDate)
     val documentTime = stringField("", selectedDocument.getDocumentTime)
     val documentProtocol = stringField("", selectedDocument.getDocumentProtocol)
     val documentType = stringField("", selectedDocument.getDocumentType)
@@ -117,14 +118,14 @@ object DocumentRegistrationView extends Form:
     val form =
       formGrid(
         Seq(
-          formRow(Fields.Id, id),
+          formRow(CommonDocumentFields.Id, id),
           formRow(Labels.required(Fields.DocumentDate), documentDate),
           formRow(Labels.required(Fields.DocumentTime), documentTime),
           formRow(Labels.required(Fields.DocumentProtocol), documentProtocol),
           formRow(Labels.required(Fields.DocumentType), documentType),
-          formRow(Labels.required(Fields.Sender), sender),
-          formRow(Labels.required(Fields.Recipient), recipient),
-          formRow(Labels.required(Fields.Subject), subject),
+          formRow(Labels.required(CommonDocumentFields.Sender), sender),
+          formRow(Labels.required(CommonDocumentFields.Recipient), recipient),
+          formRow(Labels.required(CommonDocumentFields.Subject), subject),
           formRow(Fields.Remarks, remarks)
         )
       )

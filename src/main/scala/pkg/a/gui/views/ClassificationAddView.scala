@@ -8,7 +8,7 @@ import pkg.d.util.Util.inIdsFilePathName
 import scalafx.application.Platform
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Classifications.Add as Text
-import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Validation.Classification as Validation
 import pkg.a.gui.validation.ClassificationValidator
 
@@ -32,7 +32,7 @@ object ClassificationAddView extends Form:
       )
 
     def clearErrors(): Unit =
-      clearFormFieldErrors(classification, description)
+      clearFormFieldErrors(monitoredFields*)
       result.clear()
 
     def validateForm(): Boolean =
@@ -48,7 +48,7 @@ object ClassificationAddView extends Form:
         case Validation.DescriptionRequired => description
 
     def resetForm(): Unit =
-      resetFields(classification, description)
+      resetFields(monitoredFields*)
       clearErrors()
       classification.requestFocus()
 

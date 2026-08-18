@@ -9,8 +9,6 @@ object HomePageOperView extends HomePage:
 
   override protected val pageTitle: String = "Homepage Operatore"
 
-  override protected val roleDescription: String = "Operatore Protocollo"
-
   override protected val menuItems: Seq[MenuItem] =
     Seq(
       MenuItem(Dashboard, MenuAction.Dashboard),

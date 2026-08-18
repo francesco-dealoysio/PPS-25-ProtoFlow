@@ -7,7 +7,7 @@ import pkg.d.util.Util.inIdsFilePathName
 import scalafx.application.Platform
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiStyles.Common.*
-import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Roles.Add as Text
 import pkg.a.gui.text.UiText.Validation.Role as Validation
 import pkg.a.gui.validation.RoleValidator
@@ -31,7 +31,7 @@ object RoleAddView extends Form:
       )
 
     def clearErrors(): Unit =
-      clearFormFieldErrors(role, description)
+      clearFormFieldErrors(monitoredFields*)
       result.clear()
 
     def validateForm(): Boolean =
@@ -47,7 +47,7 @@ object RoleAddView extends Form:
         case Validation.DescriptionRequired => description
 
     def resetForm(): Unit =
-      resetFields(role, description)
+      resetFields(monitoredFields*)
       clearErrors()
       role.requestFocus()
 
@@ -66,7 +66,7 @@ object RoleAddView extends Form:
             formSaved = true
             onSaved()
 
-    val reset = resetButton(() => resetForm())
+    val reset = resetButton(resetForm)
     val exit = closeButton(onExit)
 
     val form =

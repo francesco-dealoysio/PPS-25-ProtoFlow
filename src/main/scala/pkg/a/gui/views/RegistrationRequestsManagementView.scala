@@ -8,14 +8,10 @@ import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
 import pkg.a.gui.text.UiText.Common.Buttons
-import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.RegistrationRequests.Management as Text
 
-import java.time.format.DateTimeFormatter
-
 object RegistrationRequestsManagementView extends Management:
-
-  private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
 
   def apply(
              onProcess: Registration => Unit = _ => (),
@@ -36,7 +32,7 @@ object RegistrationRequestsManagementView extends Management:
       stringColumn[Registration](Labels.Role, Some(150))(_.getRole),
       stringColumn[Registration](Labels.Area, Some(140))(_.getArea),
       stringColumn[Registration](Labels.Assignment, Some(140))(_.getAssignment),
-      stringColumn[Registration](Labels.Date, Some(150))(request => DateTime.parseDateTime(request.getDate).format(dateFormatter))
+      stringColumn[Registration](Labels.Date, Some(150))(request => DateTime.displayDateTime(request.getDate))
     )
 
     def loadPendingRequests(): Unit =
@@ -60,8 +56,8 @@ object RegistrationRequestsManagementView extends Management:
         success = printed
       )
 
-    val refreshButton = secondaryButton(Buttons.Refresh, () => loadPendingRequests())
-    val printButton = secondaryButton(Buttons.PrintList, () => printPendingList())
+    val refreshButton = secondaryButton(Buttons.Refresh, loadPendingRequests)
+    val printButton = secondaryButton(Buttons.PrintList, printPendingList)
     val processButton = primaryButton(Buttons.Process, () => withSelectedItem(table, result, Text.SelectToProcess)(onProcess))
 
     disableWithoutSelection(table, processButton)

@@ -30,6 +30,12 @@ object DateTime:
   def parseDateTime(value: String): LocalDateTime =
     LocalDateTime.parse(value, StorageDateTimeFormatter)
 
+  def parseDate(value: String): LocalDate =
+    LocalDate.parse(value, StorageDateFormatter)
+
+  def displayDateTime(value: String): String =
+    parseDateTime(value).format(DisplayDateTimeFormatter)
+
   def dynamicDateTimeProperty(): StringProperty =
     val dateTimeProperty =
       StringProperty(currentDateTime)

@@ -4,7 +4,7 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.Role
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiStyles.Common.*
-import pkg.a.gui.text.UiText.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Roles.Edit as Text
 import pkg.a.gui.text.UiText.Validation.Role as Validation
 import pkg.a.gui.validation.RoleValidator
@@ -17,24 +17,26 @@ object RoleEditView extends Form:
     val validator = new RoleValidator()
 
     val role = stringField("", selectedRole.getRole)
-
+    role.control.setDisable(true)
+    val name = stringField("", selectedRole.getName)
     val description = areaField("", DescriptionAreaStyle, selectedRole.getDescription)
-    val monitoredFields = Seq(role, description)
+    val monitoredFields = Seq(name, description)
     val result = createResultMessage()
 
     def clearErrors(): Unit =
-      clearFormFieldErrors(role, description)
+      clearFormFieldErrors(monitoredFields*)
       result.clear()
 
     def currentRole(): Role =
       Role(
         id = selectedRole.getId,
-        role = role.value.toLowerCase,
+        role = selectedRole.getRole,
+        name = name.value,
         description = description.value
       )
 
     def resetForm(): Unit =
-      resetFields(role, description)
+      resetFields(monitoredFields*)
       clearErrors()
       role.requestFocus()
 
@@ -66,13 +68,14 @@ object RoleEditView extends Form:
             formSaved = true
             onSaved()
 
-    val reset = resetButton(() => resetForm())
+    val reset = resetButton(resetForm)
     val exit = closeButton(onExit)
 
     val form =
       formGrid(
         Seq(
           formRow(Labels.Role, role),
+          formRow(Labels.RoleName, name),
           formRow(Labels.Description, description),
         )
       )

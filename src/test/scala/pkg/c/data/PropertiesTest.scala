@@ -3,8 +3,7 @@ package pkg.c.data
 import org.junit.*
 import org.junit.Assert.*
 
-import java.io.{File, IOException}
-import java.nio.file.{Files, Paths}
+import java.io.File
 import java.util.Properties
 
 import pkg.c.data.Properties.*
@@ -17,19 +16,19 @@ class PropertiesTest:
   clearPropsFileProperties(propsFile)
 
   @Test
-  def testCreatePropsFile: Unit =
+  def testCreatePropsFile(): Unit =
     createPropsFile(propsFile, comment)
     assertTrue(File("testfile.properties").exists())
 
   @Test
-  def testSetPropsFileProperty: Unit =
+  def testSetPropsFileProperty(): Unit =
     val key: String = "classifica"
     val value: String = "amministrazione"
     setPropsFileProperty(propsFile: String, key: String, value: String)
     assertEquals("amministrazione", getPropsFileProperty(propsFile, key))
 
   @Test
-  def testGetPropsFileProperty: Unit =
+  def testGetPropsFileProperty(): Unit =
     val key: String = "classifica"
     val value: String = "amministrazione"
     setPropsFileProperty(propsFile: String, key: String, value: String)
@@ -37,7 +36,7 @@ class PropertiesTest:
     assertEquals("<not set>", getPropsFileProperty(propsFile, "inesistente"))
 
   @Test
-  def testRemovePropsFileProperty: Unit =
+  def testRemovePropsFileProperty(): Unit =
     clearPropsFileProperties(propsFile)
     removePropsFileProperty(propsFile, "colore") // inesistente
     setPropsFileProperty(propsFile, "colore", "rosso")
@@ -46,7 +45,7 @@ class PropertiesTest:
     assertEquals("<not set>", getPropsFileProperty(propsFile, "colore"))
 
   @Test
-  def testClearPropsFileProperties: Unit =
+  def testClearPropsFileProperties(): Unit =
     setPropsFileProperty(propsFile, "colore", "rosso")
     setPropsFileProperty(propsFile, "auto", "topolina")
     assertEquals("rosso", getPropsFileProperty(propsFile, "colore"))
@@ -56,7 +55,7 @@ class PropertiesTest:
     assertEquals("<not set>", getPropsFileProperty(propsFile, "auto"))
 
   @Test
-  def testGetPropsFileProperties: Unit =
+  def testGetPropsFileProperties(): Unit =
     setPropsFileProperty(propsFile, "colore", "rosso")
     setPropsFileProperty(propsFile, "auto", "topolina")
     val props = getPropsFileProperties(propsFile)
@@ -64,7 +63,7 @@ class PropertiesTest:
     assertEquals("topolina", props.getProperty("auto"))
 
   @Test
-  def testSetPropsFileProperties: Unit =
+  def testSetPropsFileProperties(): Unit =
     val props = new Properties()
     props.setProperty("figura", "triangolo")
     props.setProperty("altezza", "10")

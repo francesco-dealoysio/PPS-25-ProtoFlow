@@ -52,16 +52,19 @@ object DummyData:
     <record>
       <id>1</id>
       <role>admin</role>
+      <name>Amministratore</name>
       <description>Attività di amministrazione del sistema</description>
     </record>
     <record>
       <id>2</id>
       <role>oper</role>
+      <name>Operatore</name>
       <description>Attività di protocollazione</description>
     </record>
     <record>
       <id>3</id>
       <role>viewer</role>
+      <name>Viewer</name>
       <description>Ricerca e visualizzazione nel cono di visibilità</description>
     </record>
   </roles>

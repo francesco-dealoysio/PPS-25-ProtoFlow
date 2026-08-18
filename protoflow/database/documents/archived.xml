@@ -30,7 +30,7 @@
     <sender>dfg</sender>
     <recipient>dgdfg</recipient>
     <subject>dfg</subject>
-    <remarks></remarks>
+    <remarks/>
     <loadedDate>2026-08-12</loadedDate>
     <loadedTime>12:50:23.22</loadedTime>
     <loadedBy>tommy</loadedBy>
@@ -42,5 +42,27 @@
     <archivedTime>12:50:46.70</archivedTime>
     <archivedBy>tommy</archivedBy>
     <archiveLocation>dg</archiveLocation>
+  </record>
+  <record>
+    <id>122</id>
+    <documentDate>2026-08-12</documentDate>
+    <documentTime>12:20:18.81</documentTime>
+    <documentProtocol>df</documentProtocol>
+    <documentType>hfg</documentType>
+    <sender>afs</sender>
+    <recipient>hgfdhdfg</recipient>
+    <subject>fdh</subject>
+    <remarks></remarks>
+    <loadedDate>2026-08-12</loadedDate>
+    <loadedTime>12:20:25.79</loadedTime>
+    <loadedBy>tommy</loadedBy>
+    <protocolNumber>2026/122</protocolNumber>
+    <registeredDate>2026-08-13</registeredDate>
+    <registeredTime>12:54:33.90</registeredTime>
+    <registeredBy>tommy</registeredBy>
+    <archivedDate>2026-08-13</archivedDate>
+    <archivedTime>12:54:38.85</archivedTime>
+    <archivedBy>tommy</archivedBy>
+    <archiveLocation></archiveLocation>
   </record>
 </archivedDocuments>

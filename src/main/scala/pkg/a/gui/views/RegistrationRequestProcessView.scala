@@ -7,16 +7,13 @@ import pkg.d.util.{DateTime, XmlToPdf}
 import scalafx.geometry.Insets
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
-import java.time.format.DateTimeFormatter
 import pkg.a.gui.text.UiText.Common.Buttons
-import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.RegistrationRequests.{Management as ManagementText, Process as Text}
 import pkg.a.gui.text.UiStyles.Requests.*
 import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
 
 object RegistrationRequestProcessView extends Management:
-
-  private val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
 
   def apply(
              request: Registration,
@@ -44,7 +41,7 @@ object RegistrationRequestProcessView extends Management:
       Labels.Role -> request.getRole,
       Labels.Area -> request.getArea,
       Labels.Assignment -> request.getAssignment,
-      Labels.Date -> DateTime.parseDateTime(request.getDate).format(dateFormatter)
+      Labels.Date -> DateTime.displayDateTime(request.getDate)
     )
 
     detailRows.zipWithIndex.foreach:
@@ -157,9 +154,9 @@ object RegistrationRequestProcessView extends Management:
             case Left(error) =>
               result.show(error, success = false)
 
-    val printButton = secondaryButton(Buttons.Print, () => printPendingRequest())
-    val rejectButton = dangerButton(Buttons.Reject, () => reject())
-    val approveButton = primaryButton(Buttons.Approve, () => approve())
+    val printButton = secondaryButton(Buttons.Print, printPendingRequest)
+    val rejectButton = dangerButton(Buttons.Reject, reject)
+    val approveButton = primaryButton(Buttons.Approve, approve)
     val exitButton = closeButton(onExit)
 
     val actionsBox = actionBar(Seq(exitButton, printButton, rejectButton, approveButton))

@@ -1,7 +1,7 @@
 package pkg.a.gui.traits
 
 import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
-import pkg.b.logic.Account
+import pkg.b.logic.{Account, Role}
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, TableColumn, TableView}
 import scalafx.scene.layout.*
@@ -12,7 +12,6 @@ import pkg.a.gui.text.UiText.Common.Documents.NoDocuments
 trait HomePage extends Root:
 
   protected def pageTitle: String
-  protected def roleDescription: String
   protected def menuItems: Seq[MenuItem]
 
   protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit
@@ -27,6 +26,13 @@ trait HomePage extends Root:
       show(dashboardFactory())
 
   final def apply(viewModel: HomePageViewModel, currentAccount: Account, onLogout: () => Unit = () => ()): BorderPane =
+    val roleLogic = new Role()
+    val roleName =
+      roleLogic
+        .getRecords[Role]()
+        .find(_.getRole.equalsIgnoreCase(currentAccount.getRole))
+        .map(_.getName)
+        .getOrElse(currentAccount.getRole)
 
     val contentArea =
       new StackPane:
@@ -48,9 +54,9 @@ trait HomePage extends Root:
         case MenuAction.Logout =>
           val confirmed =
             askConfirmation(
-              titleText = TitleDialog,
-              header = HeaderDialog,
-              content = ContentDialog
+              titleText = Title,
+              header = Header,
+              content = Content
             )
 
           if confirmed then
@@ -70,7 +76,7 @@ trait HomePage extends Root:
 
     createRoot(
       currentUser = currentAccount.getUsername,
-      roleDescription = roleDescription,
+      roleName = roleName,
       contentArea = contentArea,
       menu = sidebar,
       onProfileOpen = () => navigate(MenuAction.Profilo)

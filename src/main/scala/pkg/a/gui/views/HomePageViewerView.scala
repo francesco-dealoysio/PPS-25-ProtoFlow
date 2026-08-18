@@ -8,7 +8,6 @@ import pkg.b.logic.Account
 object HomePageViewerView extends HomePage:
 
   override protected val pageTitle: String = "Homepage Viewer"
-  override protected val roleDescription: String = "Viewer"
 
   override protected val menuItems: Seq[MenuItem] =
     Seq(

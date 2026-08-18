@@ -3,6 +3,7 @@ package pkg.a.gui.views
 import pkg.a.gui.text.UiText.ArchivedDocuments.{Details as Text, Fields as ArchiveFields, Prompts as ArchivePrompts}
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.LoadedDocuments.{Fields as DocumentFields, Prompts as DocumentPrompts}
+import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegistrationFields
 import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
 import pkg.a.gui.traits.Form
@@ -40,14 +41,14 @@ object ArchivedDocumentDetailsView extends Form:
     val documentForm =
       formGrid(
         Seq(
-          formRow(RegistrationFields.ProtocolNumber, protocolNumber),
+          formRow(CommonDocumentFields.ProtocolNumber, protocolNumber),
           formRow(RegistrationFields.RegisteredDate, registeredDate),
           formRow(RegistrationFields.RegisteredTime, registeredTime),
           formRow(RegistrationFields.RegisteredBy, registeredBy),
           formRow(DocumentFields.DocumentType, documentType),
-          formRow(DocumentFields.Sender, sender),
-          formRow(DocumentFields.Recipient, recipient),
-          formRow(DocumentFields.Subject, subject),
+          formRow(CommonDocumentFields.Sender, sender),
+          formRow(CommonDocumentFields.Recipient, recipient),
+          formRow(CommonDocumentFields.Subject, subject),
           formRow(DocumentFields.Remarks, remarks)
         )
       )
@@ -99,7 +100,7 @@ object ArchivedDocumentDetailsView extends Form:
       )
 
     val exitButton = closeButton(onExit)
-    val printButton = secondaryButton(Buttons.Print, () => printDocumentDetails())
+    val printButton = secondaryButton(Buttons.Print, printDocumentDetails)
 
     formPage(
       titleText = Text.Title,

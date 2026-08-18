@@ -3,8 +3,10 @@ package pkg.a.gui.views
 import pkg.a.gui.services.RegistrationRequestService
 import pkg.a.gui.text.UiStyles.Registration.*
 import pkg.a.gui.text.UiText.Common.Buttons
-import pkg.a.gui.text.UiText.Fields.Labels
+import pkg.a.gui.text.UiText.Common.Fields.Labels
+import pkg.a.gui.text.UiText.Common.Fields.Prompts
 import pkg.a.gui.text.UiText.Registration as Text
+import pkg.a.gui.text.UiText.Common.Dialogs
 import pkg.a.gui.traits.Form
 import pkg.a.gui.validation.RegistrationValidator
 import pkg.b.logic.{Classification, Role, Registration as RegistrationModel}
@@ -19,10 +21,10 @@ object RegistrationView extends Form:
     val service = new RegistrationRequestService()
     val roleLogic = new Role()
     val classificationLogic = new Classification()
-    val name = stringField(Text.NamePrompt)
-    val surname = stringField(Text.SurnamePrompt)
+    val name = stringField(Prompts.Name)
+    val surname = stringField(Prompts.Surname)
     val email = stringField(Text.EmailPrompt)
-    val phone = stringField(Text.PhonePrompt)
+    val phone = stringField(Prompts.Phone)
     val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), Text.RolePrompt)
     val area = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), Text.AreaPrompt)
     val assignment = stringField(Text.AssignmentPrompt)
@@ -92,15 +94,15 @@ object RegistrationView extends Form:
               success = false
             )
 
-    val submit = primaryButton(Buttons.RequestRegistration, () => submitRequest())
-    val reset = resetButton(() => resetForm())
+    val submit = primaryButton(Buttons.RequestRegistration, submitRequest)
+    val reset = resetButton(resetForm)
 
     def exitRegistration(): Unit =
       val canExit =
         if hasChanges then
           askConfirmation(
-            titleText = Text.ExitDialog.Title,
-            header = Text.ExitDialog.Header,
+            titleText = Dialogs.UnsavedChanges.Title,
+            header = Dialogs.UnsavedChanges.Header,
             content = Text.ExitDialog.Content
           )
         else
@@ -108,7 +110,7 @@ object RegistrationView extends Form:
 
       if canExit then onExit()
 
-    val exit = closeButton(onExit = () => exitRegistration(), text = Buttons.Close)
+    val exit = closeButton(exitRegistration, Buttons.Close)
 
     val formGrid = new GridPane:
       hgap = 18
@@ -141,9 +143,6 @@ object RegistrationView extends Form:
     formPage(
       titleText = Text.Title,
       subtitleText = Text.Subtitle,
-      titleStyle = TitleStyle,
-      subtitleStyle = SubtitleStyle,
-      rootStyle = RootStyle,
       contentStyle = Some(CardStyle),
       form = formGrid,
       resultMessage = result.label,
