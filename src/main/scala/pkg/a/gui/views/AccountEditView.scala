@@ -189,10 +189,10 @@ object AccountEditView extends Form:
       if profileMode then (ProfileText.Title, ProfileText.Subtitle)
       else (EditText.Title, EditText.Subtitle)
     formPage(
-      titleText = titleText,
-      subtitleText = subtitleText,
+      header = FormHeader(titleText, subtitleText),
       form = form,
       resultMessage = result.label,
       actions = actionBar(actions),
+      initialFocus = Some(if profileMode then email else surname),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

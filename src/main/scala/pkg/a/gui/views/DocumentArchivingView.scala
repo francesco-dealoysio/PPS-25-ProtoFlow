@@ -10,7 +10,6 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.RegisteredDocument
 import pkg.d.util.DateTime.{localDate, localTime}
 import pkg.a.gui.validation.DocumentArchivingValidator
-import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.geometry.Pos
 import scalafx.scene.layout.{HBox, Priority}
@@ -162,14 +161,11 @@ object DocumentArchivingView extends Form:
         HBox.setHgrow(documentForm, Priority.Always)
         HBox.setHgrow(archiveForm, Priority.Always)
 
-    Platform.runLater:
-      archiveLocation.requestFocus()
-
     formPage(
-      titleText = Text.Title,
-      subtitleText = Text.Subtitle,
+      header = FormHeader(Text.Title, Text.Subtitle),
       form = form,
       resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
+      initialFocus = Some(archiveLocation),
       hasUnsavedChanges = () => hasFormChanges(formSaved, editableFields)
     )

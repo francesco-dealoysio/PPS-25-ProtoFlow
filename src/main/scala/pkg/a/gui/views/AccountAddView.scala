@@ -4,7 +4,6 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.{Account, Classification, Role}
 import pkg.d.util.IdGen
 import pkg.d.util.Util.{inIdsFilePathName, cipher}
-import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Accounts.Add as Text
@@ -109,14 +108,12 @@ object AccountAddView extends Form:
         )
       )
 
-    Platform.runLater:
-      surname.requestFocus()
 
     formPage(
-      titleText = Text.Title,
-      subtitleText = Text.Subtitle,
+      header = FormHeader(Text.Title, Text.Subtitle),
       form = form,
       resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
+      initialFocus = Some(surname),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

@@ -1,7 +1,6 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.services.LoginService
-import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
 import pkg.a.gui.text.UiStyles.Login.*
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Common.ApplicationName
@@ -10,25 +9,16 @@ import pkg.a.gui.text.UiText.Login
 import pkg.a.gui.traits.Form
 import pkg.a.gui.services.LoginService.LoginError
 import pkg.b.logic.Account
-import scalafx.Includes.jfxKeyEvent2sfx
 import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.control.{Label, PasswordField, TextField}
-import scalafx.scene.input.KeyCode
+import scalafx.scene.control.Label
 import scalafx.scene.layout.{BorderPane, Region, StackPane, VBox}
 
 object LoginView extends Form:
 
   def apply(onLoginSuccess: Account => Unit, onRegistrationRequest: () => Unit): BorderPane =
 
-    val usernameField = new TextField:
-      maxWidth = 220
-      promptText = Prompts.Username
-      styleClass += FormFieldStyle
-
-    val passwordField = new PasswordField:
-      maxWidth = 220
-      promptText = Prompts.Password
-      styleClass += FormFieldStyle
+    val username = stringField(Prompts.Username)
+    val password = passwordFormField(Prompts.Password)
 
     val result =
       createResultMessage(
@@ -37,42 +27,36 @@ object LoginView extends Form:
       )
 
     def clearFields(): Unit =
-      usernameField.clear()
-      passwordField.clear()
+      resetFields(username, password)
       result.clear()
-      usernameField.requestFocus()
+      username.requestFocus()
 
     def access(): Unit =
-      val username = usernameField.text.value.trim
-      val password = passwordField.text.value.trim
-
-      if username.isEmpty || password.isEmpty then
+      if username.value.isEmpty || password.value.isEmpty then
         result.show(Login.EmptyCredentials, false)
-        usernameField.requestFocus()
+        username.requestFocus()
       else
-        LoginService.login(username, password) match
+        LoginService.login(username.value, password.value) match
           case Right(user) =>
             onLoginSuccess(user)
 
           case Left(LoginError.EmptyCredentials) =>
             result.show(Login.EmptyCredentials, false)
-            usernameField.requestFocus()
+            username.requestFocus()
 
           case Left(LoginError.InvalidCredentials) =>
             result.show(Login.InvalidCredentials, false)
-            passwordField.clear()
-            passwordField.requestFocus()
+            password.reset()
+            password.requestFocus()
 
           case Left(LoginError.UnknownRole(role)) =>
             result.show(Login.unknownRole(role), false)
 
-    usernameField.onKeyPressed = event =>
-      if event.code == KeyCode.Enter then
-        passwordField.requestFocus()
+    username.control.onAction = _ =>
+      password.requestFocus()
 
-    passwordField.onKeyPressed = event =>
-      if event.code == KeyCode.Enter then
-        access()
+    password.control.onAction = _ =>
+      access()
 
     val logo = new StackPane:
       minWidth = 58
@@ -103,7 +87,7 @@ object LoginView extends Form:
       maxWidth = 220
       children = Seq(
         fieldLabel(Labels.required(Labels.Username)),
-        usernameField
+        username.control
       )
 
     val passwordBox = new VBox:
@@ -112,7 +96,7 @@ object LoginView extends Form:
       maxWidth = 220
       children = Seq(
         fieldLabel(Labels.required(Labels.Password)),
-        passwordField
+        password.control
       )
 
     val formBox = new VBox:

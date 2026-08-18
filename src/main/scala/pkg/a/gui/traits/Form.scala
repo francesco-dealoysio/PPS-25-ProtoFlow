@@ -7,6 +7,7 @@ import scalafx.scene.layout.*
 import pkg.d.util.DateTime
 import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.text.UiText.Common.Buttons.*
+import scalafx.application.Platform
 
 trait Form extends Common:
 
@@ -158,54 +159,58 @@ trait Form extends Common:
           else DateTime.parseDate(value)
     )
 
+  protected case class FormHeader(title: String, subtitle: String, titleStyle: String = TitleStyle, subtitleStyle: String = SubtitleStyle)
+
+  protected case class PageConfig(rootStyle: String = RootStyle, contentStyle: Option[String] = None, actionsAtBottom: Boolean = true)
+
   protected def formPage(
-                          titleText: String,
-                          subtitleText: String,
-                          titleStyle: String = TitleStyle,
-                          subtitleStyle: String = SubtitleStyle,
-                          rootStyle: String = RootStyle,
+                          header: FormHeader,
                           form: Node,
                           resultMessage: Label,
                           actions: HBox,
-                          contentStyle: Option[String] = None,
+                          initialFocus: Option[FormField[? <: Node]] = None,
                           hasUnsavedChanges: () => Boolean = () => false,
-                          actionsAtBottom: Boolean = true
+                          config: PageConfig = PageConfig()
                         ): BorderPane =
 
-    val header =
-      titleBox(
-        titleText = titleText,
-        subtitleText = subtitleText,
-        titleStyle = titleStyle,
-        subtitleStyle = subtitleStyle
-      )
+
+    val titleBoxNode = titleBox(
+      titleText = header.title,
+      subtitleText = header.subtitle,
+      titleStyle = header.titleStyle,
+      subtitleStyle = header.subtitleStyle
+    )
+
     val spacer = new Region
     VBox.setVgrow(spacer, Priority.Always)
+
     val pageChildren =
-      if actionsAtBottom then
-        Seq(header, form, resultMessage, spacer, actions)
+      if config.actionsAtBottom then
+        Seq(titleBoxNode, form, resultMessage, spacer, actions)
       else
-        Seq(header, form, resultMessage, actions)
-    val content =
-      new VBox:
-        spacing = 20
-        padding = Insets(25)
-        maxWidth = 800
-        maxHeight = Double.MaxValue
-        contentStyle.foreach(styleClass += _)
-        children = pageChildren
+        Seq(titleBoxNode, form, resultMessage, actions)
+
+    val content = new VBox:
+      spacing = 20
+      padding = Insets(25)
+      maxWidth = 800
+      maxHeight = Double.MaxValue
+      config.contentStyle.foreach(styleClass += _)
+      children = pageChildren
 
     val page = new BorderPane:
-      styleClass += rootStyle
-      center =
-        new StackPane:
-          alignment = Pos.TopCenter
-          children = Seq(content)
+      styleClass += config.rootStyle
+      center = new StackPane:
+        alignment = Pos.TopCenter
+        children = Seq(content)
 
-    page.delegate
-      .getProperties
-      .put("has-unsaved-changes", hasUnsavedChanges)
+    page.delegate.getProperties.put("has-unsaved-changes", hasUnsavedChanges)
+    initialFocus.foreach(field => focusOnOpen(field.control))
     page
+
+  private def focusOnOpen(control: Node): Unit =
+    Platform.runLater:
+      control.requestFocus()
 
   private def formField[C <: Node](control: C, initialValue: String)(readValue: C => String, writeValue: (C, String) => Unit): FormField[C] =
     FormField(

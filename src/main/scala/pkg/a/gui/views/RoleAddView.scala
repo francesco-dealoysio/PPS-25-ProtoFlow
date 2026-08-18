@@ -4,7 +4,6 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.Role
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
-import scalafx.application.Platform
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
@@ -77,14 +76,11 @@ object RoleAddView extends Form:
         )
       )
 
-    Platform.runLater:
-      role.requestFocus()
-
     formPage(
-      titleText = Text.Title,
-      subtitleText = Text.Subtitle,
+      header = FormHeader(Text.Title, Text.Subtitle),
       form = form,
       resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
+      initialFocus = Some(role),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

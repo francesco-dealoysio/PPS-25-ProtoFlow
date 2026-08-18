@@ -103,8 +103,7 @@ object ArchivedDocumentDetailsView extends Form:
     val printButton = secondaryButton(Buttons.Print, printDocumentDetails)
 
     formPage(
-      titleText = Text.Title,
-      subtitleText = Text.Subtitle,
+      header = FormHeader(Text.Title, Text.Subtitle),
       form = form,
       resultMessage = result.label,
       actions = actionBar(Seq(exitButton, printButton))
