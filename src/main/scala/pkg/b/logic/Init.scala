@@ -124,6 +124,9 @@ object Init:
     if (Files.notExists(Paths.get(inLogFilePathName("documentOperations.xml"))))
       createEmptyXmlFile(inLogFilePathName("documentOperations.xml"), "operations")
 
+    if (Files.notExists(Paths.get(inLogFilePathName("accessLog.xml"))))
+      createEmptyXmlFile(inLogFilePathName("accessLog.xml"), "accessLog")
+
     // init ids
     IdGen(inIdsFilePathName("errorlogId"))
     IdGen(inIdsFilePathName("accountId"))

@@ -1,8 +1,9 @@
 package pkg.a.gui.services
 
-import pkg.b.logic.Account
+import pkg.b.logic.{Account, AccessLog}
 import pkg.c.data.Properties.getPropsFileProperty
 import pkg.c.data.Xml.*
+import pkg.d.util.DateTime
 import pkg.d.util.Util.cipher
 
 object LoginService:
@@ -21,6 +22,7 @@ object LoginService:
     else
       checkCredentials(cleanUsername, cleanPassword) match
         case Some(account) =>
+          AccessLog().writeAccessLog(account.getUsername, account.getRole, DateTime.localDate, DateTime.localTime)
           Right(account)
 
         case None =>

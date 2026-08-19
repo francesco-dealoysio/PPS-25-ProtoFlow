@@ -476,6 +476,27 @@ object UiText:
       val PrintSuccess = "Dettaglio del log stampato correttamente in PDF."
       val PrintError = "Errore durante la stampa del dettaglio del log."
 
+  object Statistics:
+    val Title = "Statistiche"
+    val Subtitle = "Visualizza gli indicatori relativi all'utilizzo del sistema."
+
+    val RegisteredByMonthTitle = "Documenti protocollati per mese"
+    val ArchivedByMonthTitle = "Documenti archiviati per mese"
+    val AccessesByRoleTitle = "Accessi per ruolo"
+    val AccessesByUserTitle = "Accessi per utente"
+
+    val RegistrationsTotal = "Richieste elaborate"
+    val RegistrationsApproved = "Approvate"
+    val RegistrationsRejected = "Rifiutate"
+
+    val UserColumn = "Utente"
+    val AccessCountColumn = "Numero accessi"
+
+    val PrintTitle = "Statistiche Utilizzo Sistema"
+    val PrintFileName = "statistiche_utilizzo_sistema"
+    val PrintSuccess = "Statistiche stampate correttamente nella cartella protoflow/prints."
+    val PrintError = "Non è stato possibile stampare le statistiche."
+
   object Validation:
     object Account:
       val SurnameRequired = "Il campo Cognome è obbligatorio."

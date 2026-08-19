@@ -78,6 +78,26 @@ object XmlToPdf:
 
           document.add(table)
 
+  def printSections(pdfFileName: String, title: String, sections: Seq[(String, Seq[String], Seq[Seq[String]])]): Boolean =
+    if sections.forall(_._3.isEmpty) then
+      false
+    else
+      createPdf(pdfFileName, title, landscape = false): document =>
+        sections.foreach: (sectionTitle, headers, rows) =>
+          addTitle(document, sectionTitle)
+
+          val table = new PdfPTable(headers.size)
+          table.setWidthPercentage(100f)
+
+          headers.foreach: header =>
+            table.addCell(headerCell(header))
+
+          rows.foreach: row =>
+            row.foreach: cell =>
+              table.addCell(cell)
+
+          document.add(table)
+
   private def createPdf(pdfFileName: String, title: String, landscape: Boolean)(content: Document => Unit): Boolean =
     var document: Document = null
 

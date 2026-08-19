@@ -31,6 +31,7 @@ class Navigator(stage: JFXApp3.PrimaryStage):
 
     stage.scene = scene
     stage.sizeToScene()
+    stage.centerOnScreen()
 
   private def showRegistration(): Unit =
     stage.title = WindowTitles.Registration
@@ -48,6 +49,8 @@ class Navigator(stage: JFXApp3.PrimaryStage):
     addPageStylesheets(scene, "/registration.css")
 
     stage.scene = scene
+    stage.sizeToScene()
+    stage.centerOnScreen()
 
   private def showHome(account: Account): Unit =
     homePageFor(account) match
@@ -74,6 +77,7 @@ class Navigator(stage: JFXApp3.PrimaryStage):
         stage.sizeToScene()
         stage.minWidth = 1100
         stage.minHeight = 800
+        stage.centerOnScreen()
 
       case None =>
         showLogin()

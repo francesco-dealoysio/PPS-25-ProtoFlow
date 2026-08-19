@@ -30,7 +30,7 @@ object HomePageAdminView extends HomePage:
         showProfileEdit(currentAccount, navigator)
 
       case MenuAction.Statistiche =>
-        navigator.show(createPlaceholder("Statistiche"))
+        showStatistics(navigator)
 
       case MenuAction.Log =>
         showDocumentLogManagement(navigator)
@@ -167,6 +167,13 @@ object HomePageAdminView extends HomePage:
       AccountEditView.profile(
         selectedAccount = selected,
         onSaved = () => navigator.dashboard(),
+        onExit = () => navigator.dashboard()
+      )
+    )
+
+  private def showStatistics(navigator: Navigator): Unit =
+    navigator.show(
+      StatisticsView(
         onExit = () => navigator.dashboard()
       )
     )
