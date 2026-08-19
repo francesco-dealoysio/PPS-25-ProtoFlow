@@ -1,9 +1,10 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.text.UiText.ArchivedDocuments.{Details as Text, Fields as ArchiveFields, Prompts as ArchivePrompts}
+import pkg.a.gui.text.UiText.ArchivedDocuments.{Details as Text, Fields as ArchiveFields}
 import pkg.a.gui.text.UiText.Common.Buttons
-import pkg.a.gui.text.UiText.LoadedDocuments.{Fields as DocumentFields, Prompts as DocumentPrompts}
+import pkg.a.gui.text.UiText.LoadedDocuments.{Fields as DocumentFields}
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
+import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegistrationFields
 import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
 import pkg.a.gui.traits.Form
@@ -19,6 +20,7 @@ object ArchivedDocumentDetailsView extends Form:
   def apply(selectedDocument: ArchivedDocument, onExit: () => Unit = () => ()): BorderPane =
     val id = stringField("", selectedDocument.getId)
     val protocolNumber = stringField("", selectedDocument.getProtocolNumber)
+    val classification = stringField("", selectedDocument.getClassification)
     val registeredDate = stringField("", selectedDocument.getRegisteredDate)
     val registeredTime = stringField("", selectedDocument.getRegisteredTime)
     val registeredBy = stringField("", selectedDocument.getRegisteredBy)
@@ -33,7 +35,7 @@ object ArchivedDocumentDetailsView extends Form:
     val archiveLocation = stringField("", selectedDocument.getArchiveLocation)
 
     val readOnlyFields: Seq[FormField[? <: Node]] =
-      Seq(id, protocolNumber, registeredDate, registeredTime, registeredBy, documentType, sender, recipient, subject, remarks, archivedDate, archivedTime, archivedBy, archiveLocation)
+      Seq(id, protocolNumber, classification, registeredDate, registeredTime, registeredBy, documentType, sender, recipient, subject, remarks, archivedDate, archivedTime, archivedBy, archiveLocation)
 
     readOnlyFields.foreach: field =>
       field.control.setDisable(true)
@@ -42,6 +44,7 @@ object ArchivedDocumentDetailsView extends Form:
       formGrid(
         Seq(
           formRow(CommonDocumentFields.ProtocolNumber, protocolNumber),
+          formRow(Labels.Classification, classification),
           formRow(RegistrationFields.RegisteredDate, registeredDate),
           formRow(RegistrationFields.RegisteredTime, registeredTime),
           formRow(RegistrationFields.RegisteredBy, registeredBy),

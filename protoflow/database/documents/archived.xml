@@ -118,7 +118,7 @@
     <sender>43dfdfgdf</sender>
     <recipient>gdfg</recipient>
     <subject>dfg</subject>
-    <remarks></remarks>
+    <remarks/>
     <loadedDate>2026-08-19</loadedDate>
     <loadedTime>16:39:14.14</loadedTime>
     <loadedBy>tommy</loadedBy>
@@ -130,5 +130,97 @@
     <archivedTime>16:39:30.67</archivedTime>
     <archivedBy>tommy</archivedBy>
     <archiveLocation>fdg</archiveLocation>
+  </record>
+  <record>
+    <id>95</id>
+    <documentDate>2026-08-19</documentDate>
+    <documentTime>16:38:57.07</documentTime>
+    <documentProtocol>sf</documentProtocol>
+    <documentType>sfsd</documentType>
+    <sender>fsdf</sender>
+    <recipient>sdfsd</recipient>
+    <subject>fsdf</subject>
+    <remarks/>
+    <loadedDate>2026-08-19</loadedDate>
+    <loadedTime>16:39:02.32</loadedTime>
+    <loadedBy>tommy</loadedBy>
+    <protocolNumber>2026/95</protocolNumber>
+    <registeredDate>2026-08-19</registeredDate>
+    <registeredTime>21:49:51.28</registeredTime>
+    <registeredBy>tommy</registeredBy>
+    <archivedDate>2026-08-19</archivedDate>
+    <archivedTime>21:50:35.31</archivedTime>
+    <archivedBy>tommy</archivedBy>
+    <archiveLocation>nm</archiveLocation>
+    <classification>infrastrutture</classification>
+  </record>
+  <record>
+    <id>106</id>
+    <documentDate>2026-08-19</documentDate>
+    <documentTime>22:11:42.93</documentTime>
+    <documentProtocol>sfg</documentProtocol>
+    <documentType>sg</documentType>
+    <sender>sdgsd</sender>
+    <recipient>gsdgsd</recipient>
+    <subject>gsd</subject>
+    <remarks/>
+    <loadedDate>2026-08-19</loadedDate>
+    <loadedTime>22:11:47.84</loadedTime>
+    <loadedBy>tommy</loadedBy>
+    <protocolNumber>2026/106</protocolNumber>
+    <registeredDate>2026-08-19</registeredDate>
+    <registeredTime>22:12:02.26</registeredTime>
+    <registeredBy>tommy</registeredBy>
+    <archivedDate>2026-08-19</archivedDate>
+    <archivedTime>22:14:49.88</archivedTime>
+    <archivedBy>tommy</archivedBy>
+    <archiveLocation>gc</archiveLocation>
+    <classification>materiali</classification>
+  </record>
+  <record>
+    <id>109</id>
+    <documentDate>2026-08-19</documentDate>
+    <documentTime>22:12:45.95</documentTime>
+    <documentProtocol>dfgdg</documentProtocol>
+    <documentType>dgdfgdf</documentType>
+    <sender>gdf</sender>
+    <recipient>gdfgdfgd</recipient>
+    <subject>fgdfg</subject>
+    <remarks/>
+    <loadedDate>2026-08-19</loadedDate>
+    <loadedTime>22:12:51.51</loadedTime>
+    <loadedBy>tommy</loadedBy>
+    <protocolNumber>2026/109</protocolNumber>
+    <registeredDate>2026-08-19</registeredDate>
+    <registeredTime>22:14:27.14</registeredTime>
+    <registeredBy>tommy</registeredBy>
+    <archivedDate>2026-08-19</archivedDate>
+    <archivedTime>22:15:40.23</archivedTime>
+    <archivedBy>tommy</archivedBy>
+    <archiveLocation>bvc</archiveLocation>
+    <classification>personale</classification>
+  </record>
+  <record>
+    <id>107</id>
+    <documentDate>2026-08-19</documentDate>
+    <documentTime>22:12:05.30</documentTime>
+    <documentProtocol>fsdg</documentProtocol>
+    <documentType>sfgsdgf</documentType>
+    <sender>sdfgsdg</sender>
+    <recipient>sdfg</recipient>
+    <subject>sdfgsd</subject>
+    <remarks></remarks>
+    <loadedDate>2026-08-19</loadedDate>
+    <loadedTime>22:12:10.84</loadedTime>
+    <loadedBy>tommy</loadedBy>
+    <protocolNumber>2026/107</protocolNumber>
+    <registeredDate>2026-08-19</registeredDate>
+    <registeredTime>22:12:27.50</registeredTime>
+    <registeredBy>tommy</registeredBy>
+    <archivedDate>2026-08-19</archivedDate>
+    <archivedTime>22:15:45.41</archivedTime>
+    <archivedBy>tommy</archivedBy>
+    <archiveLocation>g</archiveLocation>
+    <classification>addestramento</classification>
   </record>
 </archivedDocuments>

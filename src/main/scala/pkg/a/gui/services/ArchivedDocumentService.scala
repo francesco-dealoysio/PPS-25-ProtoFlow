@@ -113,7 +113,8 @@ class ArchivedDocumentService:
       archivedDate = archivedDate.trim,
       archivedTime = archivedTime.trim,
       archivedBy = operatorUsername.trim,
-      archiveLocation = archiveLocation.trim
+      archiveLocation = archiveLocation.trim,
+      classification = source.getClassification
     )
 
   private def saveArchivedDocument(source: RegisteredDocument, archived: ArchivedDocument): Either[String, ArchivedDocument] =

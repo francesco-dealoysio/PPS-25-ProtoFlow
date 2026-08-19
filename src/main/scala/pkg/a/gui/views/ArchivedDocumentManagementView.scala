@@ -14,7 +14,7 @@ import pkg.a.gui.text.UiText.Common.Buttons
 
 object ArchivedDocumentManagementView extends Management:
 
-  def apply(onView: ArchivedDocument => Unit = _ => (), onExit: () => Unit = () => ()): BorderPane =
+  def apply(onView: ArchivedDocument => Unit = _ => (), onExit: () => Unit = () => (), documentFilter: ArchivedDocument => Boolean = _ => true): BorderPane =
 
     val service = new ArchivedDocumentService()
     val documents = ObservableBuffer.empty[ArchivedDocument]
@@ -22,7 +22,6 @@ object ArchivedDocumentManagementView extends Management:
     val result = createResultMessage()
 
     val table = managementTable(documents, Text.Empty)
-
     val fromDateFilter = new DatePicker()
     val toDateFilter = new DatePicker()
 
@@ -42,6 +41,9 @@ object ArchivedDocumentManagementView extends Management:
       stringColumn[ArchivedDocument](CommonDocumentFields.Subject, Some(220))(_.getSubject),
       stringColumn[ArchivedDocument](Fields.ArchiveLocation, Some(180))(_.getArchiveLocation)
     )
+
+    def availableDocuments(): List[ArchivedDocument] =
+      service.getArchivedDocuments.filter(documentFilter)
 
     def updateOperatorFilter(loadedDocuments: Seq[ArchivedDocument]): Unit =
       val operators =
@@ -63,8 +65,7 @@ object ArchivedDocumentManagementView extends Management:
       result.clear()
 
       val loadedDocuments =
-        service
-          .getArchivedDocuments
+        availableDocuments()
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
       updateOperatorFilter(loadedDocuments)
@@ -106,14 +107,13 @@ object ArchivedDocumentManagementView extends Management:
 
     def searchDocuments(): Unit =
       result.clear()
-
       val criteria = buildFilterCriteria()
-
       val filteredDocuments =
         if criteria.isEmpty then
-          service.getArchivedDocuments
+          availableDocuments()
         else
-          service.getArchivedDocuments(getDocumentPredicate(criteria))
+          val predicate = getDocumentPredicate(criteria)
+          availableDocuments().filter(document => predicate(document))
 
       val sortedDocuments = filteredDocuments.sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 

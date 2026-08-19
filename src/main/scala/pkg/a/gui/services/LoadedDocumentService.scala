@@ -30,7 +30,7 @@ class LoadedDocumentService:
    * Genera un numero di protocollo, crea il RegisteredDocument dai dati del form (eventualmente
    * corretti dall'operatore) e sposta il documento da "presi in carico" a "protocollati".
    */
-  def registerDocument(source: LoadedDocument, edited: LoadedDocument, operatorUsername: String): Either[String, RegisteredDocument] =
+  def registerDocument(source: LoadedDocument, edited: LoadedDocument, operatorUsername: String, classification: String): Either[String, RegisteredDocument] =
 
     val protocolNumber = s"${localDate.take(4)}/${source.getId}"
 
@@ -51,10 +51,13 @@ class LoadedDocumentService:
         protocolNumber = protocolNumber,
         registeredDate = localDate,
         registeredTime = localTime,
-        registeredBy = operatorUsername
+        registeredBy = operatorUsername,
+        classification = classification.trim
       )
 
-    if !registeredDocumentLogic.recordInsert(registered) then
+    if classification.trim.isEmpty then
+      Left("Seleziona una classifica")
+    else if !registeredDocumentLogic.recordInsert(registered) then
       Left("Errore durante la protocollazione del documento")
     else if !loadedDocumentLogic.recordDelete(source.getId) then
       Left("Errore durante la rimozione del documento dai presi in carico")

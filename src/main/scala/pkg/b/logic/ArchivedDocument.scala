@@ -33,7 +33,9 @@ case class ArchivedDocument(
                              private var archivedDate: String = "",
                              private var archivedTime: String = "",
                              private var archivedBy: String = "",
-                             private var archiveLocation: String = ""
+                             private var archiveLocation: String = "",
+
+                             private var classification: String = ""
                            ) extends Entity:
 
   def this() =
@@ -59,6 +61,7 @@ case class ArchivedDocument(
   def setArchivedTime(value: String): Unit = archivedTime = value
   def setArchivedBy(value: String): Unit = archivedBy = value
   def setArchiveLocation(value: String): Unit = archiveLocation = value
+  def setClassification(value: String): Unit = classification = value
   def getId: String = id
   def getDocumentDate: String = documentDate
   def getDocumentTime: String = documentTime
@@ -79,6 +82,7 @@ case class ArchivedDocument(
   def getArchivedTime: String = archivedTime
   def getArchivedBy: String = archivedBy
   def getArchiveLocation: String = archiveLocation
+  def getClassification: String = classification
 
   override def xmlFile: String = "archived.xml"
 

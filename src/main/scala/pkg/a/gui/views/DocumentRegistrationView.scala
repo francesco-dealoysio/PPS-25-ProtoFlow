@@ -2,14 +2,14 @@ package pkg.a.gui.views
 
 import pkg.a.gui.services.LoadedDocumentService
 import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
-import pkg.a.gui.text.UiText.Common.Fields.Labels
+import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.RegisteredDocuments.Process as Text
 import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
 import pkg.a.gui.traits.Form
 import pkg.a.gui.validation.LoadedDocumentValidator
-import pkg.b.logic.LoadedDocument
+import pkg.b.logic.{Classification, LoadedDocument}
 import pkg.d.util.DateTime.localDate
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
@@ -25,6 +25,7 @@ object DocumentRegistrationView extends Form:
 
     val service = new LoadedDocumentService()
     val validator = new LoadedDocumentValidator()
+    val classificationLogic = new Classification()
     val id = stringField("", selectedDocument.getId)
     id.control.setDisable(true)
     val documentDate = dateField(localDate)
@@ -35,8 +36,9 @@ object DocumentRegistrationView extends Form:
     val recipient = stringField("", selectedDocument.getRecipient)
     val subject = stringField("", selectedDocument.getSubject)
     val remarks = areaField("", DescriptionAreaStyle, selectedDocument.getRemarks)
+    val classification = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), Prompts.Classification)
 
-    val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks)
+    val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks, classification)
 
     val result = createResultMessage()
 
@@ -63,14 +65,24 @@ object DocumentRegistrationView extends Form:
     def validateForm(): Boolean =
       clearErrors()
       val errors = validator.validate(editedDocument())
-      showFormFieldErrors(errors):
-        case Validation.DocumentDateRequired => documentDate
-        case Validation.DocumentTimeRequired => documentTime
-        case Validation.DocumentProtocolRequired => documentProtocol
-        case Validation.DocumentTypeRequired => documentType
-        case Validation.SenderRequired => sender
-        case Validation.RecipientRequired => recipient
-        case Validation.SubjectRequired => subject
+      val documentValid =
+        showFormFieldErrors(errors):
+          case Validation.DocumentDateRequired => documentDate
+          case Validation.DocumentTimeRequired => documentTime
+          case Validation.DocumentProtocolRequired => documentProtocol
+          case Validation.DocumentTypeRequired => documentType
+          case Validation.SenderRequired => sender
+          case Validation.RecipientRequired => recipient
+          case Validation.SubjectRequired => subject
+
+      val classificationValid =
+        if classification.value.isEmpty then
+          classification.showError("Seleziona una classifica.")
+          false
+        else
+          true
+
+      documentValid && classificationValid
 
     def resetForm(): Unit =
       resetFields(monitoredFields*)
@@ -95,7 +107,8 @@ object DocumentRegistrationView extends Form:
             service.registerDocument(
               selectedDocument,
               editedDocument(),
-              operatorUsername
+              operatorUsername,
+              classification.value
             ) match
               case Right(registered) =>
                 result.show(
@@ -121,6 +134,7 @@ object DocumentRegistrationView extends Form:
           formRow(Labels.required(Fields.DocumentDate), documentDate),
           formRow(Labels.required(Fields.DocumentTime), documentTime),
           formRow(Labels.required(Fields.DocumentProtocol), documentProtocol),
+          formRow(Labels.required(Labels.Classification), classification),
           formRow(Labels.required(Fields.DocumentType), documentType),
           formRow(Labels.required(CommonDocumentFields.Sender), sender),
           formRow(Labels.required(CommonDocumentFields.Recipient), recipient),

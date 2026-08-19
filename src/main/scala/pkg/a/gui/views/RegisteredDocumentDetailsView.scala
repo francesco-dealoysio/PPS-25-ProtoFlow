@@ -2,6 +2,7 @@ package pkg.a.gui.views
 
 import pkg.a.gui.text.UiText.RegisteredDocuments.{Details as Text, Fields as RegistrationFields}
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
+import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields as DocumentFields
 import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
@@ -17,6 +18,7 @@ object RegisteredDocumentDetailsView extends Form:
   def apply(selectedDocument: RegisteredDocument, onExit: () => Unit = () => ()): BorderPane =
     val id = stringField("", selectedDocument.getId)
     val protocolNumber = stringField("", selectedDocument.getProtocolNumber)
+    val classification = stringField("", selectedDocument.getClassification)
     val registeredDate = stringField("", selectedDocument.getRegisteredDate)
     val registeredTime = stringField("", selectedDocument.getRegisteredTime)
     val registeredBy = stringField("", selectedDocument.getRegisteredBy)
@@ -27,7 +29,7 @@ object RegisteredDocumentDetailsView extends Form:
     val remarks = areaField("", DescriptionAreaStyle, selectedDocument.getRemarks)
 
     val readOnlyFields: Seq[FormField[? <: Node]] =
-      Seq(id, protocolNumber, registeredDate, registeredTime, registeredBy, documentType, sender, recipient, subject, remarks)
+      Seq(id, protocolNumber, classification, registeredDate, registeredTime, registeredBy, documentType, sender, recipient, subject, remarks)
 
     readOnlyFields.foreach: field =>
       field.control.setDisable(true)
@@ -36,6 +38,7 @@ object RegisteredDocumentDetailsView extends Form:
       formGrid(
         Seq(
           formRow(CommonDocumentFields.ProtocolNumber, protocolNumber),
+          formRow(Labels.Classification, classification),
           formRow(RegistrationFields.RegisteredDate, registeredDate),
           formRow(RegistrationFields.RegisteredTime, registeredTime),
           formRow(RegistrationFields.RegisteredBy, registeredBy),

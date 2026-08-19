@@ -24,7 +24,7 @@ object HomePageViewerView extends HomePage:
         showProfileEdit(currentAccount, navigator)
 
       case MenuAction.VisualizzazioneArchiviazioni =>
-        showArchivedDocuments(navigator)
+        showArchivedDocuments(currentAccount, navigator)
 
       case _ =>
         ()
@@ -38,18 +38,19 @@ object HomePageViewerView extends HomePage:
       )
     )
 
-  private def showArchivedDocuments(navigator: Navigator): Unit =
+  private def showArchivedDocuments(currentAccount: Account, navigator: Navigator): Unit =
     navigator.show(
       ArchivedDocumentManagementView(
-        onView = selected => showArchivedDocumentDetails(selected, navigator),
-        onExit = () => navigator.dashboard()
+        onView = selected => showArchivedDocumentDetails(selected, currentAccount, navigator),
+        onExit = () => navigator.dashboard(),
+        documentFilter = document => document.getClassification.trim.equalsIgnoreCase(currentAccount.getArea.trim)
       )
     )
 
-  private def showArchivedDocumentDetails(selected: ArchivedDocument, navigator: Navigator): Unit =
+  private def showArchivedDocumentDetails(selected: ArchivedDocument, currentAccount: Account, navigator: Navigator): Unit =
     navigator.show(
       ArchivedDocumentDetailsView(
         selectedDocument = selected,
-        onExit = () => showArchivedDocuments(navigator)
+        onExit = () => showArchivedDocuments(currentAccount, navigator)
       )
     )

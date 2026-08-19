@@ -21,7 +21,8 @@ case class RegisteredDocument(
                          private var protocolNumber: String = "",
                          private var registeredDate: String = "",
                          private var registeredTime: String = "",
-                         private var registeredBy: String = ""
+                         private var registeredBy: String = "",
+                         private var classification: String = ""
                        ) extends Entity:
   def this() =
     this("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
@@ -42,6 +43,7 @@ case class RegisteredDocument(
   def setRegisteredDate(value: String): Unit = registeredDate = value
   def setRegisteredTime(value: String): Unit = registeredTime = value
   def setRegisteredBy(value: String): Unit = registeredBy = value
+  def setClassification(value: String): Unit = classification = value
 
   def getId: String = id
   def getDocumentDate: String = documentDate
@@ -59,6 +61,7 @@ case class RegisteredDocument(
   def getRegisteredDate: String = registeredDate
   def getRegisteredTime: String = registeredTime
   def getRegisteredBy: String = registeredBy
+  def getClassification: String = classification
 
   override def xmlFile = "registered.xml"
 
