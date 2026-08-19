@@ -497,6 +497,55 @@ object UiText:
     val PrintSuccess = "Statistiche stampate correttamente nella cartella protoflow/prints."
     val PrintError = "Non è stato possibile stampare le statistiche."
 
+  object DocumentManagementControl:
+    val Title = "Controllo di Gestione Documenti"
+    val Subtitle = "Visualizza lo stato di lavorazione di tutti i documenti nel sistema."
+    val Empty = "Non sono presenti documenti nel sistema."
+    val LoadError = "Errore durante il caricamento dei documenti."
+
+    val IdColumn = "Id/Protocollo"
+    val ClassificationColumn = "Classifica"
+    val RegisteredDateColumn = "Data di protocollazione"
+    val OperatorColumn = "Operatore incaricato"
+    val StageColumn = "Stato di lavorazione"
+
+    val NotAvailable = "-"
+
+    val ViewDetails = "Visualizza Dettaglio"
+    val SelectToView = "Seleziona un documento da visualizzare."
+
+    val DetailsTitle = "Dettaglio documento in gestione"
+    val DetailsSubtitle = "Visualizza tutte le informazioni del documento selezionato."
+
+    object Fields:
+      val LoadedDate = "Data presa in carico"
+      val LoadedTime = "Ora presa in carico"
+
+    val PrintTitle = "Elenco Documenti in Gestione"
+    val PrintFileName = "documenti_in_gestione_elenco"
+    val PrintSuccess = "Elenco stampato correttamente nella cartella protoflow/prints."
+    val PrintError = "Non è stato possibile stampare l'elenco."
+
+    object Stages:
+      private val Loading = "loading"
+      private val Registering = "registering"
+      private val Archiving = "archiving"
+      private val LoadingLabel = "Presa in carico"
+      private val RegisteringLabel = "Protocollato"
+      private val ArchivingLabel = "Archiviato"
+
+      private val values: Seq[(String, String)] = Seq(
+        Loading -> LoadingLabel,
+        Registering -> RegisteringLabel,
+        Archiving -> ArchivingLabel
+      )
+
+      def labelOf(stage: String): String =
+        values
+          .find(_._1 == stage)
+          .map(_._2)
+          .getOrElse(stage)
+
   object Validation:
     object Account:
       val SurnameRequired = "Il campo Cognome è obbligatorio."

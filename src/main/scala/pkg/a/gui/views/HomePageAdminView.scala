@@ -1,5 +1,6 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.services.DocumentManagementControlService.ManagedDocument
 import pkg.a.gui.structures.{MenuAction, MenuItem}
 import pkg.a.gui.text.UiText.Menu.*
 import pkg.a.gui.traits.HomePage
@@ -36,7 +37,7 @@ object HomePageAdminView extends HomePage:
         showDocumentLogManagement(navigator)
 
       case MenuAction.ControlloGestione =>
-        navigator.show(createPlaceholder("Controllo di gestione"))
+        showDocumentManagementControl(navigator)
 
       case MenuAction.Registrazioni =>
         showRegistrationRequests(navigator, currentAccount.getUsername)
@@ -175,6 +176,22 @@ object HomePageAdminView extends HomePage:
     navigator.show(
       StatisticsView(
         onExit = () => navigator.dashboard()
+      )
+    )
+
+  private def showDocumentManagementControl(navigator: Navigator): Unit =
+    navigator.show(
+      DocumentManagementControlView(
+        onViewDetails = selected => showDocumentManagementDetails(selected, navigator),
+        onExit = () => navigator.dashboard()
+      )
+    )
+
+  private def showDocumentManagementDetails(selected: ManagedDocument, navigator: Navigator): Unit =
+    navigator.show(
+      DocumentManagementDetailsView(
+        selectedDocument = selected,
+        onExit = () => showDocumentManagementControl(navigator)
       )
     )
 
