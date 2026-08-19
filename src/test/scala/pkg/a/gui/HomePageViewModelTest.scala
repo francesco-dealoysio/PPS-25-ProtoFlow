@@ -14,8 +14,8 @@ class HomePageViewModelTest:
 
   @Test
   def testSelectChangesCurrentSection(): Unit =
-    viewModel.select(MenuAction.VisualizzazioneProtocollazioni)
-    assertEquals(MenuAction.VisualizzazioneProtocollazioni, viewModel.currentSection)
+    viewModel.select(MenuAction.VisualizzazioneArchiviazioni)
+    assertEquals(MenuAction.VisualizzazioneArchiviazioni, viewModel.currentSection)
 
   @Test
   def testSelectCanReturnToDashboard(): Unit =

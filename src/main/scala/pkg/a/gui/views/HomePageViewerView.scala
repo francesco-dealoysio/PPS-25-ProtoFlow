@@ -3,7 +3,7 @@ package pkg.a.gui.views
 import pkg.a.gui.structures.{MenuAction, MenuItem}
 import pkg.a.gui.text.UiText.Menu.*
 import pkg.a.gui.traits.HomePage
-import pkg.b.logic.Account
+import pkg.b.logic.{Account, ArchivedDocument}
 
 object HomePageViewerView extends HomePage:
 
@@ -13,7 +13,7 @@ object HomePageViewerView extends HomePage:
     Seq(
       MenuItem(Dashboard, MenuAction.Dashboard),
       MenuItem(Profile, MenuAction.Profilo),
-      MenuItem(Protocols, MenuAction.VisualizzazioneProtocollazioni),
+      MenuItem(ArchivedDocuments, MenuAction.VisualizzazioneArchiviazioni),
       MenuItem(Logout, MenuAction.Logout)
     )
 
@@ -23,8 +23,8 @@ object HomePageViewerView extends HomePage:
       case MenuAction.Profilo =>
         showProfileEdit(currentAccount, navigator)
 
-      case MenuAction.VisualizzazioneProtocollazioni =>
-        navigator.show(createPlaceholder("Visualizzazione Protocollazioni"))
+      case MenuAction.VisualizzazioneArchiviazioni =>
+        showArchivedDocuments(navigator)
 
       case _ =>
         ()
@@ -35,5 +35,21 @@ object HomePageViewerView extends HomePage:
         selectedAccount = selected,
         onSaved = () => navigator.dashboard(),
         onExit = () => navigator.dashboard()
+      )
+    )
+
+  private def showArchivedDocuments(navigator: Navigator): Unit =
+    navigator.show(
+      ArchivedDocumentManagementView(
+        onView = selected => showArchivedDocumentDetails(selected, navigator),
+        onExit = () => navigator.dashboard()
+      )
+    )
+
+  private def showArchivedDocumentDetails(selected: ArchivedDocument, navigator: Navigator): Unit =
+    navigator.show(
+      ArchivedDocumentDetailsView(
+        selectedDocument = selected,
+        onExit = () => showArchivedDocuments(navigator)
       )
     )

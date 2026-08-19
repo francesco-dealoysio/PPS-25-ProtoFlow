@@ -94,17 +94,6 @@
     -fx-font-size: 13px;
 }
 
-/* Placeholder */
-.placeholder-container {
-    -fx-padding: 30;
-}
-
-.placeholder-title {
-    -fx-font-size: 26px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #111827;
-}
-
 .footer-user-info {
     -fx-cursor: hand;
 }

@@ -39,8 +39,6 @@ object UiStyles:
     val ContentAreaStyle = "content-area"
     val SidebarStyle = "sidebar"
     val SidebarButtonStyle = "sidebar-button"
-    val PlaceholderContainerStyle = "placeholder-container"
-    val PlaceholderTitleStyle = "placeholder-title"
     val DashboardContainerStyle = "dashboard-container"
     val PageTitleStyle = "page-title"
     val CardsContainerStyle = "cards-container"

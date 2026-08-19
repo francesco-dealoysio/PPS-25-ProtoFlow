@@ -3,7 +3,7 @@ package pkg.a.gui.structures
 enum MenuAction:
   case Dashboard
   case Profilo
-  case VisualizzazioneProtocollazioni
+  case VisualizzazioneArchiviazioni
 
   case NuovaPresaInCarico
   case DocumentiDaProtocollare

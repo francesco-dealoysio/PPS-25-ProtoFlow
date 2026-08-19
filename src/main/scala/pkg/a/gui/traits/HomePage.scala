@@ -16,7 +16,6 @@ trait HomePage extends Root:
 
   protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit
 
-
   protected final class Navigator(contentArea: StackPane, dashboardFactory: () => Pane):
 
     def show(view: => Pane): Unit =
@@ -95,11 +94,6 @@ trait HomePage extends Root:
       prefWidth = 230
       styleClass += SidebarStyle
       children = buttons
-
-  protected def createPlaceholder(title: String): VBox =
-    new VBox:
-      styleClass += PlaceholderContainerStyle
-      children = Seq(fieldLabel(title, PlaceholderTitleStyle))
 
   private def dashboardContent(): VBox =
     new VBox:
