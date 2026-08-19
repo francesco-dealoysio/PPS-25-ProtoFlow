@@ -81,10 +81,10 @@ object RoleEditView extends Form:
       )
 
     formPage(
-      titleText = Text.Title,
-      subtitleText = Text.Subtitle,
+      header = FormHeader(Text.Title, Text.Subtitle),
       form = form,
       resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
+      initialFocus = Some(role),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

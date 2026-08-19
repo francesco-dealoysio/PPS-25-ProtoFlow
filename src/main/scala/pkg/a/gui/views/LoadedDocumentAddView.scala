@@ -12,7 +12,6 @@ import pkg.b.logic.LoadedDocument
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
 import pkg.d.util.DateTime.{localDate, localTime}
-import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.scene.control.Alert
 import scalafx.scene.layout.BorderPane
@@ -127,14 +126,11 @@ object LoadedDocumentAddView extends Form:
         )
       )
 
-    Platform.runLater:
-      documentProtocol.requestFocus()
-
     formPage(
-      titleText = Text.Title,
-      subtitleText = Text.Subtitle,
+      header = FormHeader(Text.Title, Text.Subtitle),
       form = form,
       resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
+      initialFocus = Some(documentProtocol),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

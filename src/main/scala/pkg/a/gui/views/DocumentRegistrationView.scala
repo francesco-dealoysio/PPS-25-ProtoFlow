@@ -11,7 +11,6 @@ import pkg.a.gui.traits.Form
 import pkg.a.gui.validation.LoadedDocumentValidator
 import pkg.b.logic.LoadedDocument
 import pkg.d.util.DateTime.localDate
-import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
 
@@ -130,14 +129,11 @@ object DocumentRegistrationView extends Form:
         )
       )
 
-    Platform.runLater:
-      documentProtocol.requestFocus()
-
     formPage(
-      titleText = Text.Title,
-      subtitleText = Text.Subtitle,
+      header = FormHeader(Text.Title, Text.Subtitle),
       form = form,
       resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
+      initialFocus = Some(documentProtocol),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

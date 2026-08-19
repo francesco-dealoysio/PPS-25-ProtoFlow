@@ -5,7 +5,6 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
-import scalafx.application.Platform
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Classifications.Add as Text
 import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
@@ -79,14 +78,11 @@ object ClassificationAddView extends Form:
         )
       )
 
-    Platform.runLater:
-      classification.requestFocus()
-
     formPage(
-      titleText = Text.Title,
-      subtitleText = Text.Subtitle,
+      header = FormHeader(Text.Title, Text.Subtitle),
       form = form,
       resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
+      initialFocus = Some(classification),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

@@ -141,10 +141,10 @@ object RegistrationView extends Form:
     val buttonsBox = actionBar(Seq(exit, reset, submit))
 
     formPage(
-      titleText = Text.Title,
-      subtitleText = Text.Subtitle,
-      contentStyle = Some(CardStyle),
+      header = FormHeader(Text.Title, Text.Subtitle),
       form = formGrid,
       resultMessage = result.label,
-      actions = buttonsBox
+      actions = buttonsBox,
+      initialFocus = Some(name),
+      config = PageConfig(contentStyle = Some(CardStyle))
     )
