@@ -2,15 +2,13 @@ package pkg.a.gui.views
 
 import pkg.a.gui.text.UiText.ArchivedDocuments.{Details as Text, Fields as ArchiveFields}
 import pkg.a.gui.text.UiText.Common.Buttons
-import pkg.a.gui.text.UiText.LoadedDocuments.{Fields as DocumentFields}
+import pkg.a.gui.text.UiText.LoadedDocuments.Fields as DocumentFields
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegistrationFields
-import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
 import pkg.a.gui.traits.Form
 import pkg.b.logic.ArchivedDocument
 import scalafx.geometry.Pos
-import scalafx.scene.Node
 import scalafx.scene.layout.{BorderPane, HBox, Priority}
 import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.XmlToPdf
@@ -18,27 +16,20 @@ import pkg.d.util.XmlToPdf
 object ArchivedDocumentDetailsView extends Form:
 
   def apply(selectedDocument: ArchivedDocument, onExit: () => Unit = () => ()): BorderPane =
-    val id = stringField("", selectedDocument.getId)
-    val protocolNumber = stringField("", selectedDocument.getProtocolNumber)
-    val classification = stringField("", selectedDocument.getClassification)
-    val registeredDate = stringField("", selectedDocument.getRegisteredDate)
-    val registeredTime = stringField("", selectedDocument.getRegisteredTime)
-    val registeredBy = stringField("", selectedDocument.getRegisteredBy)
-    val documentType = stringField("", selectedDocument.getDocumentType)
-    val sender = stringField("", selectedDocument.getSender)
-    val recipient = stringField("", selectedDocument.getRecipient)
-    val subject = stringField("", selectedDocument.getSubject)
-    val remarks = areaField("", DescriptionAreaStyle, selectedDocument.getRemarks)
-    val archivedDate = stringField("", selectedDocument.getArchivedDate)
-    val archivedTime = stringField("", selectedDocument.getArchivedTime)
-    val archivedBy = stringField("", selectedDocument.getArchivedBy)
-    val archiveLocation = stringField("", selectedDocument.getArchiveLocation)
-
-    val readOnlyFields: Seq[FormField[? <: Node]] =
-      Seq(id, protocolNumber, classification, registeredDate, registeredTime, registeredBy, documentType, sender, recipient, subject, remarks, archivedDate, archivedTime, archivedBy, archiveLocation)
-
-    readOnlyFields.foreach: field =>
-      field.control.setDisable(true)
+    val protocolNumber = readOnlyStringField(selectedDocument.getProtocolNumber)
+    val classification = readOnlyStringField(selectedDocument.getClassification)
+    val registeredDate = readOnlyStringField(selectedDocument.getRegisteredDate)
+    val registeredTime = readOnlyStringField(selectedDocument.getRegisteredTime)
+    val registeredBy = readOnlyStringField(selectedDocument.getRegisteredBy)
+    val documentType = readOnlyStringField(selectedDocument.getDocumentType)
+    val sender = readOnlyStringField(selectedDocument.getSender)
+    val recipient = readOnlyStringField(selectedDocument.getRecipient)
+    val subject = readOnlyStringField(selectedDocument.getSubject)
+    val remarks = readOnlyAreaField(selectedDocument.getRemarks)
+    val archivedDate = readOnlyStringField(selectedDocument.getArchivedDate)
+    val archivedTime = readOnlyStringField(selectedDocument.getArchivedTime)
+    val archivedBy = readOnlyStringField(selectedDocument.getArchivedBy)
+    val archiveLocation = readOnlyStringField(selectedDocument.getArchiveLocation)
 
     val documentForm =
       formGrid(
@@ -82,8 +73,7 @@ object ArchivedDocumentDetailsView extends Form:
     HBox.setHgrow(documentForm, Priority.Always)
     HBox.setHgrow(archiveForm, Priority.Always)
 
-    val result =
-      createResultMessage()
+    val result = createResultMessage()
 
     def printDocumentDetails(): Unit =
       val safeProtocolNumber =

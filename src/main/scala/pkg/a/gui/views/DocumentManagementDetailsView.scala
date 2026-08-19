@@ -7,7 +7,6 @@ import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields as LoadedFields
 import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegisteredFields
 import pkg.a.gui.text.UiText.ArchivedDocuments.Fields as ArchivedFields
-import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
 import pkg.a.gui.traits.Form
 import scalafx.scene.layout.BorderPane
 
@@ -18,41 +17,29 @@ object DocumentManagementDetailsView extends Form:
     def orNotAvailable(value: String): String =
       if value.nonEmpty then value else Text.NotAvailable
 
-    val id = stringField("", selectedDocument.id)
-    val stage = stringField("", Text.Stages.labelOf(selectedDocument.stage))
-    val operator = stringField("", orNotAvailable(selectedDocument.operator))
+    val id = readOnlyStringField(selectedDocument.id)
+    val stage = readOnlyStringField(Text.Stages.labelOf(selectedDocument.stage))
+    val operator = readOnlyStringField(orNotAvailable(selectedDocument.operator))
 
-    val documentType = stringField("", orNotAvailable(selectedDocument.documentType))
-    val sender = stringField("", orNotAvailable(selectedDocument.sender))
-    val recipient = stringField("", orNotAvailable(selectedDocument.recipient))
-    val subject = stringField("", orNotAvailable(selectedDocument.subject))
-    val remarks = areaField("", DescriptionAreaStyle, selectedDocument.remarks)
+    val documentType = readOnlyStringField(orNotAvailable(selectedDocument.documentType))
+    val sender = readOnlyStringField(orNotAvailable(selectedDocument.sender))
+    val recipient = readOnlyStringField(orNotAvailable(selectedDocument.recipient))
+    val subject = readOnlyStringField(orNotAvailable(selectedDocument.subject))
+    val remarks = readOnlyAreaField(orNotAvailable(selectedDocument.remarks))
 
-    val loadedDate = stringField("", orNotAvailable(selectedDocument.loadedDate))
-    val loadedTime = stringField("", orNotAvailable(selectedDocument.loadedTime))
-    val loadedBy = stringField("", orNotAvailable(selectedDocument.loadedBy))
+    val loadedDate = readOnlyStringField(orNotAvailable(selectedDocument.loadedDate))
+    val loadedTime = readOnlyStringField(orNotAvailable(selectedDocument.loadedTime))
+    val loadedBy = readOnlyStringField(orNotAvailable(selectedDocument.loadedBy))
 
-    val protocolNumber = stringField("", orNotAvailable(selectedDocument.protocolNumber))
-    val registeredDate = stringField("", orNotAvailable(selectedDocument.registeredDate))
-    val registeredTime = stringField("", orNotAvailable(selectedDocument.registeredTime))
-    val registeredBy = stringField("", orNotAvailable(selectedDocument.registeredBy))
+    val protocolNumber = readOnlyStringField(orNotAvailable(selectedDocument.protocolNumber))
+    val registeredDate = readOnlyStringField(orNotAvailable(selectedDocument.registeredDate))
+    val registeredTime = readOnlyStringField(orNotAvailable(selectedDocument.registeredTime))
+    val registeredBy = readOnlyStringField(orNotAvailable(selectedDocument.registeredBy))
 
-    val archivedDate = stringField("", orNotAvailable(selectedDocument.archivedDate))
-    val archivedTime = stringField("", orNotAvailable(selectedDocument.archivedTime))
-    val archivedBy = stringField("", orNotAvailable(selectedDocument.archivedBy))
-    val archiveLocation = stringField("", orNotAvailable(selectedDocument.archiveLocation))
-
-    val readOnlyFields =
-      Seq(
-        id, stage, operator,
-        documentType, sender, recipient, subject, remarks,
-        loadedDate, loadedTime, loadedBy,
-        protocolNumber, registeredDate, registeredTime, registeredBy,
-        archivedDate, archivedTime, archivedBy, archiveLocation
-      )
-
-    readOnlyFields.foreach: field =>
-      field.control.setDisable(true)
+    val archivedDate = readOnlyStringField(orNotAvailable(selectedDocument.archivedDate))
+    val archivedTime = readOnlyStringField(orNotAvailable(selectedDocument.archivedTime))
+    val archivedBy = readOnlyStringField(orNotAvailable(selectedDocument.archivedBy))
+    val archiveLocation = readOnlyStringField(orNotAvailable(selectedDocument.archiveLocation))
 
     val documentForm =
       formGrid(

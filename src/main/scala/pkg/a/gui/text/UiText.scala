@@ -163,8 +163,10 @@ object UiText:
 
   object Accounts:
     object Profile:
-      val Title = "Modifica profilo"
-      val Subtitle = "Modifica email, telefono o password del tuo account."
+      val Title = "Profilo"
+      val Subtitle = "Visualizza le informazioni del tuo account e modifica i dati personali."
+      val AccountInfo = "Informazioni account"
+      val EditableInfo = "Modifica dati personali"
       val Success = "Profilo modificato correttamente."
       val Error = "Errore durante la modifica del profilo."
 

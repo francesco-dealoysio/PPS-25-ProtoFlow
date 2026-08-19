@@ -16,8 +16,7 @@ object ClassificationEditView extends Form:
     val classificationLogic = new Classification()
     val validator = new ClassificationValidator()
 
-    val id = stringField("", selectedClassification.getId)
-    id.control.setDisable(true)
+    val id = readOnlyStringField(selectedClassification.getId)
     val classification = stringField("", selectedClassification.getClassification)
     val description = areaField("", DescriptionAreaStyle, selectedClassification.getDescription)
 

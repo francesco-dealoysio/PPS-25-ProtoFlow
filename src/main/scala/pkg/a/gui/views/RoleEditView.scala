@@ -4,7 +4,7 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.Role
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiStyles.Common.*
-import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.Roles.Edit as Text
 import pkg.a.gui.text.UiText.Validation.Role as Validation
 import pkg.a.gui.validation.RoleValidator
@@ -16,8 +16,7 @@ object RoleEditView extends Form:
     val roleLogic = new Role()
     val validator = new RoleValidator()
 
-    val role = stringField("", selectedRole.getRole)
-    role.control.setDisable(true)
+    val role = readOnlyStringField(selectedRole.getRole)
     val name = stringField("", selectedRole.getName)
     val description = areaField("", DescriptionAreaStyle, selectedRole.getDescription)
     val monitoredFields = Seq(name, description)
@@ -85,6 +84,6 @@ object RoleEditView extends Form:
       form = form,
       resultMessage = result.label,
       actions = actionBar(Seq(exit, reset, save)),
-      initialFocus = Some(role),
+      initialFocus = Some(name),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

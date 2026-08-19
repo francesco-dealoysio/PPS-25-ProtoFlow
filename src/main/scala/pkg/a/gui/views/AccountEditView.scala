@@ -1,5 +1,6 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.text.UiStyles.Common.FormSectionTitleStyle
 import pkg.a.gui.traits.Form
 import pkg.a.gui.text.UiText.Accounts.{Edit as EditText, Profile as ProfileText}
 import pkg.a.gui.text.UiText.Common.Buttons
@@ -10,7 +11,7 @@ import pkg.b.logic.{Account, Classification, Role}
 import pkg.d.util.Util.{cipher, inDatabaseFilePathName}
 import pkg.d.util.XmlToPdf
 import scalafx.scene.Node
-import scalafx.scene.layout.BorderPane
+import scalafx.scene.layout.{BorderPane, VBox}
 
 object AccountEditView extends Form:
 
@@ -28,17 +29,18 @@ object AccountEditView extends Form:
     val accountLogic = new Account()
     val roleLogic = new Role()
     val roles = roleLogic.getRecords[Role]()
+
     val selectedRoleName =
       roles
         .find(_.getRole.equalsIgnoreCase(selectedAccount.getRole))
         .map(_.getName)
         .getOrElse(selectedAccount.getRole)
+
     val classificationLogic = new Classification()
     val validator = new AccountValidator()
     val profileMode = mode == EditMode.Profile
 
-    val id = stringField("", selectedAccount.getId)
-    id.control.setDisable(true)
+    val id = readOnlyStringField(selectedAccount.getId)
     val surname = stringField("", selectedAccount.getSurname)
     val name = stringField("", selectedAccount.getName)
     val email = stringField("", selectedAccount.getEmail)
@@ -48,9 +50,15 @@ object AccountEditView extends Form:
     val assignment = stringField("", selectedAccount.getAssignment)
     val username = stringField("", selectedAccount.getUsername)
     val password = passwordFormField(Prompts.KeepPassword)
-    val accountFields: Seq[FormField[? <: Node]] = Seq(surname, name, email, phone, role, area, assignment, username, password)
-    val profileFields: Seq[FormField[? <: Node]] = Seq(email, phone, password)
+    val profileUsername = readOnlyStringField(selectedAccount.getUsername)
+    val profileRole = readOnlyStringField(selectedRoleName)
+    val profileClassification = readOnlyStringField(selectedAccount.getArea)
+    val profileAssignment = readOnlyStringField(selectedAccount.getAssignment)
 
+    val accountFields: Seq[FormField[? <: Node]] =
+      Seq(surname, name, email, phone, role, area, assignment, username, password)
+
+    val profileFields: Seq[FormField[? <: Node]] = Seq(email, phone, password)
     val monitoredFields = if profileMode then profileFields else accountFields
     val result = createResultMessage()
 
@@ -67,7 +75,12 @@ object AccountEditView extends Form:
           case raw =>
             cipher(raw)
 
-      val selectedRole = roles.find(_.getName.trim == role.value).map(_.getRole).getOrElse(selectedAccount.getRole)
+      val selectedRole =
+        roles
+          .find(_.getName.trim == role.value)
+          .map(_.getRole)
+          .getOrElse(selectedAccount.getRole)
+
       Account(
         id = selectedAccount.getId,
         surname = surname.value,
@@ -85,8 +98,10 @@ object AccountEditView extends Form:
       resetFields(monitoredFields*)
       clearErrors()
 
-      if profileMode then email.requestFocus()
-      else surname.requestFocus()
+      if profileMode then
+        email.requestFocus()
+      else
+        surname.requestFocus()
 
     def validateForm(): Boolean =
       clearErrors()
@@ -105,7 +120,7 @@ object AccountEditView extends Form:
 
       if profileMode then
         showFormFieldErrors(errors):
-          case Validation.EmailRequired | Validation.EmailInvalid=> email
+          case Validation.EmailRequired | Validation.EmailInvalid => email
       else
         showFormFieldErrors(errors):
           case Validation.SurnameRequired => surname
@@ -119,21 +134,29 @@ object AccountEditView extends Form:
     val save =
       saveButton: () =>
         if validateForm() then
-          val updated = accountLogic.recordUpdate(currentAccount())
+          val updated =
+            accountLogic.recordUpdate(currentAccount())
+
           val (successMsg, errorMsg) =
-            if profileMode then (ProfileText.Success, ProfileText.Error)
-            else (EditText.Success, EditText.Error)
+            if profileMode then
+              (ProfileText.Success, ProfileText.Error)
+            else
+              (EditText.Success, EditText.Error)
 
           result.show(
-            message = if updated then successMsg else errorMsg,
+            message =
+              if updated then successMsg
+              else errorMsg,
             success = updated
           )
 
           if updated then
             formSaved = true
+
             if profileMode then
               selectedAccount.setEmail(email.value)
               selectedAccount.setPhone(phone.value)
+
               if password.value.nonEmpty then
                 selectedAccount.setPassword(password.value)
 
@@ -155,12 +178,23 @@ object AccountEditView extends Form:
             )
 
           result.show(
-            message = if printed then EditText.PrintSuccess else EditText.PrintError,
+            message =
+              if printed then EditText.PrintSuccess
+              else EditText.PrintError,
             success = printed
           )
       )
 
-    val profileRows =
+
+    val profileInfoRows =
+      Seq(
+        formRow(Labels.Username, profileUsername),
+        formRow(Labels.Role, profileRole),
+        formRow(Labels.Classification, profileClassification),
+        formRow(Labels.Assignment, profileAssignment)
+      )
+
+    val profileEditRows =
       Seq(
         formRow(Labels.Email, email),
         formRow(Labels.Phone, phone),
@@ -181,13 +215,29 @@ object AccountEditView extends Form:
         formRow(Labels.Password, password)
       )
 
-    val form = formGrid(if profileMode then profileRows else accountRows)
+
+    val form =
+      if profileMode then
+        new VBox:
+          spacing = 16
+
+          children = Seq(
+            fieldLabel(ProfileText.AccountInfo, FormSectionTitleStyle),
+            formGrid(profileInfoRows),
+            fieldLabel(ProfileText.EditableInfo, FormSectionTitleStyle),
+            formGrid(profileEditRows)
+          )
+      else
+        formGrid(accountRows)
 
     val actions = Seq(Some(exit), Option.unless(profileMode)(print), Some(reset), Some(save)).flatten
 
     val (titleText, subtitleText) =
-      if profileMode then (ProfileText.Title, ProfileText.Subtitle)
-      else (EditText.Title, EditText.Subtitle)
+      if profileMode then
+        (ProfileText.Title, ProfileText.Subtitle)
+      else
+        (EditText.Title, EditText.Subtitle)
+
     formPage(
       header = FormHeader(titleText, subtitleText),
       form = form,

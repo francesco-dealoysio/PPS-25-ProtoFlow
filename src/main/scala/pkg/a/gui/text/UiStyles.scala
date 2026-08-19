@@ -14,6 +14,9 @@ object UiStyles:
     val TableStyle = "content-table"
 
     val FormFieldStyle = "form-field"
+    val ReadOnlyFormFieldStyle = "read-only-form-field"
+    val FormSectionTitleStyle = "form-section-title"
+
     val DescriptionAreaStyle = "description-area"
     val FieldErrorStyle = "field-error"
     val FormFieldErrorStyle = "form-field-error"

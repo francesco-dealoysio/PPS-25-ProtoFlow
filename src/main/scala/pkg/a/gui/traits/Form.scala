@@ -159,6 +159,20 @@ trait Form extends Common:
           else DateTime.parseDate(value)
     )
 
+  protected def readOnlyStringField(initialValue: String = ""): FormField[TextField] =
+    val field = stringField("", initialValue)
+    field.control.editable = false
+    field.control.focusTraversable = false
+    field.control.styleClass += ReadOnlyFormFieldStyle
+    field
+
+  protected def readOnlyAreaField(initialValue: String = "", styleName: String = DescriptionAreaStyle, rows: Int = 5): FormField[TextArea] =
+    val field = areaField("", styleName, initialValue, rows)
+    field.control.editable = false
+    field.control.focusTraversable = false
+    field.control.styleClass += ReadOnlyFormFieldStyle
+    field
+
   protected case class FormHeader(title: String, subtitle: String, titleStyle: String = TitleStyle, subtitleStyle: String = SubtitleStyle)
 
   protected case class PageConfig(rootStyle: String = RootStyle, contentStyle: Option[String] = None, actionsAtBottom: Boolean = true)

@@ -1,7 +1,6 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.services.ArchivedDocumentService
-import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.text.UiText.ArchivedDocuments.{Errors as ArchiveErrors, Fields as ArchiveFields, Process as Text}
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields as DocumentFields
 import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegistrationFields
@@ -28,35 +27,22 @@ object DocumentArchivingView extends Form:
     val result = createResultMessage()
     val validator = new DocumentArchivingValidator()
 
-    val id = stringField("", selectedDocument.getId)
-    val protocolNumber = stringField("", selectedDocument.getProtocolNumber)
-    val registeredDate = stringField("", selectedDocument.getRegisteredDate)
-    val registeredTime = stringField("", selectedDocument.getRegisteredTime)
-    val registeredBy = stringField("", selectedDocument.getRegisteredBy)
-    val documentType = stringField("", selectedDocument.getDocumentType)
-    val sender = stringField("", selectedDocument.getSender)
-    val recipient = stringField("", selectedDocument.getRecipient)
-    val subject = stringField("", selectedDocument.getSubject)
-    val remarks = areaField("", DescriptionAreaStyle, selectedDocument.getRemarks)
+    val id = readOnlyStringField(selectedDocument.getId)
+    val protocolNumber = readOnlyStringField(selectedDocument.getProtocolNumber)
+    val registeredDate = readOnlyStringField(selectedDocument.getRegisteredDate)
+    val registeredTime = readOnlyStringField(selectedDocument.getRegisteredTime)
+    val registeredBy = readOnlyStringField(selectedDocument.getRegisteredBy)
+    val documentType = readOnlyStringField(selectedDocument.getDocumentType)
+    val sender = readOnlyStringField(selectedDocument.getSender)
+    val recipient = readOnlyStringField(selectedDocument.getRecipient)
+    val subject = readOnlyStringField(selectedDocument.getSubject)
+    val remarks = readOnlyAreaField(selectedDocument.getRemarks)
 
-    /*
-     * Dati propri dell'archiviazione.
-     */
     val archivedDate = dateField(localDate)
     val archivedTime = stringField("", localTime)
-    val archivedBy = stringField("", operatorUsername)
+    val archivedBy = readOnlyStringField(operatorUsername)
     val archiveLocation = stringField()
 
-    /*
-     * I dati già protocollati sono solamente visualizzati.
-     */
-    Seq(id, protocolNumber, registeredDate, registeredTime, registeredBy, documentType, sender, recipient, subject, remarks, archivedBy
-    ).foreach: field =>
-      field.control.setDisable(true)
-
-    /*
-     * Solo questi campi possono realmente cambiare.
-     */
     val editableFields: Seq[FormField[? <: Node]] =
       Seq(archivedDate, archivedTime, archiveLocation)
 

@@ -6,25 +6,18 @@ import pkg.a.gui.traits.Form
 import pkg.b.logic.DocumentLog
 import pkg.d.util.Util.inLogFilePathName
 import pkg.d.util.XmlToPdf
-
-import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
 
 object DocumentLogDetailsView extends Form:
 
   def apply(selectedLog: DocumentLog, onExit: () => Unit = () => ()): BorderPane =
 
-    val id = stringField("", selectedLog.getId)
-    val documentId = stringField("", selectedLog.getDocumentId)
-    val operationType = stringField("",  Operations.labelOf(selectedLog.getOperationType))
-    val processedDate = stringField("", selectedLog.getProcessedDate)
-    val processedTime = stringField("", selectedLog.getProcessedTime)
-    val processedBy = stringField("", selectedLog.getProcessedBy)
-
-    val fields: Seq[FormField[? <: Node]] =
-      Seq(id, documentId, operationType, processedDate, processedTime, processedBy)
-
-    fields.foreach(_.control.setDisable(true))
+    val id = readOnlyStringField(selectedLog.getId)
+    val documentId = readOnlyStringField(selectedLog.getDocumentId)
+    val operationType = readOnlyStringField(Operations.labelOf(selectedLog.getOperationType))
+    val processedDate = readOnlyStringField(selectedLog.getProcessedDate)
+    val processedTime = readOnlyStringField(selectedLog.getProcessedTime)
+    val processedBy = readOnlyStringField(selectedLog.getProcessedBy)
 
     val form =
       formGrid(
