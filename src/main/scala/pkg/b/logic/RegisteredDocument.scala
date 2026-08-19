@@ -73,15 +73,16 @@ case class RegisteredDocument(
     try
       val record = obj.asInstanceOf[RegisteredDocument]
       val id = record.id
-      if !(fieldExists("id", id, xmlFilePathName)) then
+      if !fieldExists("id", id, xmlFilePathName) then
         result = insertElemIntoXML(xmlFilePathName, obj)
-        DocumentLog().writeDocumentOperationLog(
-          record.id,
-          "registering",
-          record.registeredDate,
-          record.registeredTime,
-          record.registeredBy
-        )
+        if result then
+          DocumentLog().writeDocumentOperationLog(
+            record.id,
+            "registering",
+            record.registeredDate,
+            record.registeredTime,
+            record.registeredBy
+          )
       else
         throw new RuntimeException("Valore duplicato (id)!")
     catch

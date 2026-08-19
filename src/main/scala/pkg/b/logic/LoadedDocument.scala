@@ -60,13 +60,14 @@ case class LoadedDocument(
       val id = record.id
       if !fieldExists("id", id, xmlFilePathName) then
         result = insertElemIntoXML(xmlFilePathName, obj)
-        DocumentLog().writeDocumentOperationLog(
-          record.id,
-          "loading",
-          record.processedDate,
-          record.processedTime,
-          record.processedBy
-        )
+        if result then
+          DocumentLog().writeDocumentOperationLog(
+            record.id,
+            "loading",
+            record.processedDate,
+            record.processedTime,
+            record.processedBy
+          )
       else
         throw new RuntimeException("Valore duplicato (id)!")
     catch

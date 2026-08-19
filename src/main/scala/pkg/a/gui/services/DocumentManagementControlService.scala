@@ -1,6 +1,6 @@
 package pkg.a.gui.services
 
-import pkg.b.logic.{ArchivedDocument, LoadedDocument, RegisteredDocument}
+import pkg.b.logic.{ArchivedDocument, DocumentLog, LoadedDocument, RegisteredDocument}
 
 object DocumentManagementControlService:
 
@@ -31,6 +31,20 @@ object DocumentManagementControlService:
     val Registering = "registering"
     val Archiving = "archiving"
 
+  case class ManagementPhase(
+                              operationType: String,
+                              date: String,
+                              time: String,
+                              operator: String,
+                              outcome: String
+                            )
+
+  case class DocumentManagementSummary(
+                                        documentCode: String,
+                                        classification: String,
+                                        phases: List[ManagementPhase]
+                                      )
+
   def getManagedDocuments(
                             loadedFilePathName: String = "",
                             registeredFilePathName: String = "",
@@ -43,6 +57,45 @@ object DocumentManagementControlService:
     (fromLoaded ++ fromRegistered ++ fromArchived)
       .sortBy(_.id.toIntOption.getOrElse(Int.MaxValue))
       .toList
+
+  def getDocumentManagementSummary(document: ManagedDocument, documentLogFilePathName: String = ""): DocumentManagementSummary =
+
+    val logs =
+      if documentLogFilePathName.isEmpty then
+        DocumentLog().getRecordsByFilter[DocumentLog](_.getDocumentId == document.id)
+      else
+        DocumentLog().getRecordsByFilter[DocumentLog](_.getDocumentId == document.id, documentLogFilePathName)
+
+    val phaseOrder = Map(
+      Stages.Loading -> 0,
+      Stages.Registering -> 1,
+      Stages.Archiving -> 2
+    )
+
+    val phases =
+      logs
+        .sortBy: log =>
+          (
+            phaseOrder.getOrElse(log.getOperationType, Int.MaxValue),
+            log.getId.toIntOption.getOrElse(Int.MaxValue)
+          )
+        .map: log =>
+          ManagementPhase(
+            operationType = log.getOperationType,
+            date = log.getProcessedDate,
+            time = log.getProcessedTime,
+            operator = log.getProcessedBy,
+            outcome = "Completata con successo"
+          )
+        .toList
+
+    DocumentManagementSummary(
+      documentCode =
+        if document.protocolNumber.nonEmpty then document.protocolNumber
+        else document.id,
+      classification = "",
+      phases = phases
+    )
 
   private def loadedDocuments(xmlFilePathName: String): Seq[LoadedDocument] =
     if xmlFilePathName.isEmpty then LoadedDocument().getRecords[LoadedDocument]()

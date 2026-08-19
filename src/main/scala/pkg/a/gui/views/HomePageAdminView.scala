@@ -1,5 +1,6 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.services.DocumentManagementControlService
 import pkg.a.gui.services.DocumentManagementControlService.ManagedDocument
 import pkg.a.gui.structures.{MenuAction, MenuItem}
 import pkg.a.gui.text.UiText.Menu.*
@@ -37,7 +38,7 @@ object HomePageAdminView extends HomePage:
         showDocumentLogManagement(navigator)
 
       case MenuAction.ControlloGestione =>
-        showDocumentManagementControl(navigator)
+        showDocumentManagementControl(navigator, currentAccount.getUsername)
 
       case MenuAction.Registrazioni =>
         showRegistrationRequests(navigator, currentAccount.getUsername)
@@ -179,19 +180,30 @@ object HomePageAdminView extends HomePage:
       )
     )
 
-  private def showDocumentManagementControl(navigator: Navigator): Unit =
+  private def showDocumentManagementControl(navigator: Navigator, currentUsername: String): Unit =
     navigator.show(
       DocumentManagementControlView(
-        onViewDetails = selected => showDocumentManagementDetails(selected, navigator),
+        onViewDetails = selected => showDocumentManagementDetails(selected, navigator, currentUsername),
+        onSummary = selected => showDocumentManagementSummary(selected, navigator, currentUsername),
         onExit = () => navigator.dashboard()
       )
     )
 
-  private def showDocumentManagementDetails(selected: ManagedDocument, navigator: Navigator): Unit =
+  private def showDocumentManagementSummary(selected: ManagedDocument, navigator: Navigator, currentUsername: String): Unit =
+    val summary = DocumentManagementControlService.getDocumentManagementSummary(selected)
+    navigator.show(
+      DocumentManagementSummaryView(
+        summary = summary,
+        generatedBy = currentUsername,
+        onExit = () => showDocumentManagementControl(navigator, currentUsername)
+      )
+    )
+
+  private def showDocumentManagementDetails(selected: ManagedDocument, navigator: Navigator, currentUsername: String): Unit =
     navigator.show(
       DocumentManagementDetailsView(
         selectedDocument = selected,
-        onExit = () => showDocumentManagementControl(navigator)
+        onExit = () => showDocumentManagementControl(navigator, currentUsername)
       )
     )
 

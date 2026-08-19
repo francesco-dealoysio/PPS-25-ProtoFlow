@@ -1,0 +1,34 @@
+<operations>
+  <record>
+    <id>4850</id>
+    <documentId>95</documentId>
+    <operationType>loading</operationType>
+    <processedDate>2026-08-19</processedDate>
+    <processedTime>16:39:02.32</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+  <record>
+    <id>4851</id>
+    <documentId>96</documentId>
+    <operationType>loading</operationType>
+    <processedDate>2026-08-19</processedDate>
+    <processedTime>16:39:14.14</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+  <record>
+    <id>4852</id>
+    <documentId>96</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-08-19</processedDate>
+    <processedTime>16:39:22.72</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+  <record>
+    <id>4853</id>
+    <documentId>96</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-08-19</processedDate>
+    <processedTime>16:39:30.67</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+</operations>

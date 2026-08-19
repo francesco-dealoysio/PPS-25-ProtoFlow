@@ -10,7 +10,7 @@ import pkg.a.gui.text.UiText.Common.ApplicationName
 object RunApp extends JFXApp3:
 
   override def start(): Unit =
-    Init.init
+    Init.init()
     stage = new JFXApp3.PrimaryStage:
       title = ApplicationName
     

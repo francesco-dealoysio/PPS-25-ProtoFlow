@@ -11,7 +11,7 @@ import DummyData.*
 
 object Init:
 
-  def init: Unit =
+  def init(): Unit =
 
     // Creazione struttura per i dati nel folder corrente
     createDirectoryStructure
@@ -121,8 +121,11 @@ object Init:
     if (Files.notExists(Paths.get(inDocumentsFilePathName("loaded.xml"))))
       createEmptyXmlFile(inDocumentsFilePathName("loaded.xml"), "loaded")
 
-    if (Files.notExists(Paths.get(inLogFilePathName("documentOperations.xml"))))
-      createEmptyXmlFile(inLogFilePathName("documentOperations.xml"), "operations")
+    val documentOperationsPath = inLogFilePathName("documentOperations.xml")
+    val documentOperationsFile = Paths.get(documentOperationsPath)
+    
+    if Files.notExists(documentOperationsFile) || Files.size(documentOperationsFile) == 0 then
+      createEmptyXmlFile(documentOperationsPath, "operations")
 
     if (Files.notExists(Paths.get(inLogFilePathName("accessLog.xml"))))
       createEmptyXmlFile(inLogFilePathName("accessLog.xml"), "accessLog")
@@ -137,4 +140,4 @@ object Init:
     IdGen(inIdsFilePathName("registrationRequestId")) // eliminare
 
   @main def tryInit: Unit =
-    init
+    init()

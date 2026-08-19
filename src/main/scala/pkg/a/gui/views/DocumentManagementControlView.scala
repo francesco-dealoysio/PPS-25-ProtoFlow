@@ -11,7 +11,7 @@ import scalafx.scene.layout.BorderPane
 
 object DocumentManagementControlView extends Management:
 
-  def apply(onViewDetails: ManagedDocument => Unit = _ => (), onExit: () => Unit = () => ()): BorderPane =
+  def apply(onViewDetails: ManagedDocument => Unit = _ => (), onSummary: ManagedDocument => Unit = _ => (), onExit: () => Unit = () => ()): BorderPane =
 
     val documents = ObservableBuffer.empty[ManagedDocument]
     val result = createResultMessage()
@@ -69,11 +69,11 @@ object DocumentManagementControlView extends Management:
     val refreshButton = secondaryButton(Buttons.Refresh, loadDocuments)
     val printListButton = printButton(printDocumentsList)
     val viewButton = primaryButton(Text.ViewDetails, () => withSelectedItem(table, result, Text.SelectToView)(onViewDetails))
-
-    disableWithoutSelection(table, viewButton)
+    val summaryButton = primaryButton(Text.Summary, () => withSelectedItem(table, result, Text.SelectToSummary)(onSummary))
+    disableWithoutSelection(table, viewButton, summaryButton)
 
     val exitButton = closeButton(onExit)
-    val bottomActions = actionBar(Seq(exitButton, refreshButton, printListButton, viewButton))
+    val bottomActions = actionBar(Seq(exitButton, refreshButton, printListButton, viewButton, summaryButton))
 
     val header = titleBox(Text.Title, Text.Subtitle)
 
