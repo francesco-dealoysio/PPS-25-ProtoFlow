@@ -10,15 +10,11 @@ import pkg.a.gui.text.UiText.RegisteredDocuments.{Fields, Management as Text}
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
-import scalafx.scene.layout.{BorderPane, HBox}
+import scalafx.scene.layout.BorderPane
 
 object RegisteredDocumentManagementView extends Management:
 
-  def apply(
-             onArchive: RegisteredDocument => Unit = _ => (),
-             onView: RegisteredDocument => Unit = _ => (),
-             onExit: () => Unit = () => ()
-           ): BorderPane =
+  def apply(onArchive: RegisteredDocument => Unit = _ => (), onView: RegisteredDocument => Unit = _ => (), onExit: () => Unit = () => ()): BorderPane =
 
     val service = new LoadedDocumentService()
     val documents = ObservableBuffer.empty[RegisteredDocument]
@@ -46,22 +42,6 @@ object RegisteredDocumentManagementView extends Management:
       stringColumn[RegisteredDocument](Fields.ProtocolledBy, Some(130))(_.getRegisteredBy)
     )
 
-    def updateOperatorFilter(loadedDocuments: Seq[RegisteredDocument]): Unit =
-      val operators =
-        loadedDocuments
-          .map(_.getRegisteredBy.trim)
-          .filter(_.nonEmpty)
-          .distinct
-          .sorted
-
-      val currentSelection = operatorFilter.value.value
-      operatorFilter.items = ObservableBuffer(Text.AllOperators +: operators *)
-
-      if currentSelection != null && operatorFilter.items.value.contains(currentSelection) then
-        operatorFilter.value = currentSelection
-      else
-        operatorFilter.value = Text.AllOperators
-
     def loadDocuments(): Unit =
       result.clear()
 
@@ -70,7 +50,7 @@ object RegisteredDocumentManagementView extends Management:
           .getRegisteredDocuments
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
-      updateOperatorFilter(loadedDocuments)
+      updateComboFilter(operatorFilter, Text.AllOperators, loadedDocuments)(_.getRegisteredBy)
 
       documents.setAll(loadedDocuments*)
       table.selectionModel.value.clearSelection()
@@ -80,32 +60,13 @@ object RegisteredDocumentManagementView extends Management:
 
     clearResultOnSelection(table, result)
 
-    def buildFilterCriteria(): List[(String, String, List[String])] =
-
-      val fromDateCriteria =
-        Option(fromDateFilter.value.value)
-          .map(date => ("getRegisteredDate", ">=", List(date.toString)))
-          .toList
-
-      val toDateCriteria =
-        Option(toDateFilter.value.value)
-          .map(date => ("getRegisteredDate", "<=", List(date.toString)))
-          .toList
-
-      val subjectCriteria =
-        Option(subjectFilter.text.value)
-          .map(_.trim)
-          .filter(_.nonEmpty)
-          .map(value => ("getSubject", "contains", List(value)))
-          .toList
-
-      val operatorCriteria =
-        Option(operatorFilter.value.value)
-          .filter(_ != Text.AllOperators)
-          .map(value => ("getRegisteredBy", "=", List(value)))
-          .toList
-
-      fromDateCriteria ++ toDateCriteria ++ subjectCriteria ++ operatorCriteria
+    def buildFilterCriteria(): List[FilterCriterion] =
+      List(
+        dateCriterion(fromDateFilter, "getRegisteredDate", ">="),
+        dateCriterion(toDateFilter, "getRegisteredDate", "<="),
+        textCriterion(subjectFilter, "getSubject", "contains"),
+        comboCriterion(operatorFilter, Text.AllOperators, "getRegisteredBy")
+      ).flatten
 
     def searchDocuments(): Unit =
       result.clear()
@@ -118,13 +79,7 @@ object RegisteredDocumentManagementView extends Management:
         else
           service.getRegisteredDocuments(getRegisteredDocumentPredicate(criteria))
 
-      val sortedDocuments = filteredDocuments.sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
-
-      documents.setAll(sortedDocuments*)
-      table.selectionModel.value.clearSelection()
-
-      if sortedDocuments.isEmpty then
-        result.show(Text.NoFilterResults, success = true)
+      showFilteredItems(documents, table, filteredDocuments, result)(_.getId)
 
     def resetFilters(): Unit =
       fromDateFilter.value = null
@@ -183,15 +138,7 @@ object RegisteredDocumentManagementView extends Management:
     val bottomActions = actionBar(Seq(resetFilterButton, exitButton, refreshButton, printListButton, deleteButton, viewButton, archiveButton))
     val header = titleBox(Text.Title, Text.Subtitle)
 
-    val filters =
-      new HBox:
-        spacing = 10
-        children = Seq(
-          fromDateFilter,
-          toDateFilter,
-          subjectFilter,
-          operatorFilter
-        )
+    val filters = filterBar(fromDateFilter, toDateFilter, subjectFilter, operatorFilter)
 
     loadDocuments()
 

@@ -8,8 +8,9 @@ import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Insets
 import scalafx.scene.Node
-import scalafx.scene.control.{Button, Label, TableColumn, TableView}
-import scalafx.scene.layout.{BorderPane, Priority, VBox}
+import pkg.a.gui.text.UiText.ArchivedDocuments.Management.NoFilterResults
+import scalafx.scene.control.{Button, ComboBox, DatePicker, Label, TableColumn, TableView, TextField}
+import scalafx.scene.layout.{BorderPane, HBox, Priority, VBox}
 
 trait Management extends Common:
 
@@ -80,6 +81,56 @@ trait Management extends Common:
       styleClass += rootStyle
       center = content
 
+  protected type FilterCriterion = (String, String, List[String])
+
+  protected def dateCriterion(filter: DatePicker, field: String, operator: String): Option[FilterCriterion] =
+    Option(filter.value.value)
+      .map(date => (field, operator, List(date.toString)))
+
+  protected def textCriterion(filter: TextField, field: String, operator: String): Option[FilterCriterion] =
+    Option(filter.text.value)
+      .map(_.trim)
+      .filter(_.nonEmpty)
+      .map(value => (field, operator, List(value)))
+
+  protected def comboCriterion(filter: ComboBox[String], defaultValue: String, field: String, operator: String = "="): Option[FilterCriterion] =
+    Option(filter.value.value)
+      .filter(_ != defaultValue)
+      .map(value => (field, operator, List(value)))
+
+  protected def updateComboFilter[T](filter: ComboBox[String], defaultValue: String, elements: Seq[T])(valueOf: T => String): Unit =
+    val values =
+      elements
+        .map(valueOf)
+        .map(_.trim)
+        .filter(_.nonEmpty)
+        .distinct
+        .sorted
+
+    val currentSelection = filter.value.value
+
+    filter.items = ObservableBuffer((defaultValue +: values) *)
+
+    if currentSelection != null &&
+      filter.items.value.contains(currentSelection)
+    then
+      filter.value = currentSelection
+    else
+      filter.value = defaultValue
+
+  protected def filterBar(filters: Node*): HBox =
+    new HBox:
+      spacing = 10
+      children = filters
+
+  protected def showFilteredItems[T](items: ObservableBuffer[T], table: TableView[T], filteredItems: Seq[T], result: ResultMessage)(idOf: T => String): Unit =
+    val sortedItems = filteredItems.sortBy(item => idOf(item).toIntOption.getOrElse(Int.MaxValue))
+
+    items.setAll(sortedItems*)
+    table.selectionModel.value.clearSelection()
+
+    if sortedItems.isEmpty then
+      result.show(NoFilterResults, success = true)
 
   private def selectedItem[T](table: TableView[T]): Option[T] =
     Option(table.selectionModel.value.selectedItem.value)

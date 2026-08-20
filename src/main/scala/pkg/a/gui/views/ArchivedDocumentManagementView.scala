@@ -7,7 +7,7 @@ import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.{XmlToPdf, getDocumentPredicate}
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
-import scalafx.scene.layout.{BorderPane, HBox}
+import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.ArchivedDocuments.{Fields, Management as Text}
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.Common.Buttons
@@ -45,22 +45,6 @@ object ArchivedDocumentManagementView extends Management:
     def availableDocuments(): List[ArchivedDocument] =
       service.getArchivedDocuments.filter(documentFilter)
 
-    def updateOperatorFilter(loadedDocuments: Seq[ArchivedDocument]): Unit =
-      val operators =
-        loadedDocuments
-          .map(_.getArchivedBy.trim)
-          .filter(_.nonEmpty)
-          .distinct
-          .sorted
-
-      val currentSelection = operatorFilter.value.value
-      operatorFilter.items = ObservableBuffer(Text.AllOperators +: operators *)
-
-      if currentSelection != null && operatorFilter.items.value.contains(currentSelection) then
-        operatorFilter.value = currentSelection
-      else
-        operatorFilter.value = Text.AllOperators
-
     def loadDocuments(): Unit =
       result.clear()
 
@@ -68,7 +52,7 @@ object ArchivedDocumentManagementView extends Management:
         availableDocuments()
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
-      updateOperatorFilter(loadedDocuments)
+      updateComboFilter(operatorFilter, Text.AllOperators, loadedDocuments)(_.getArchivedBy)
 
       documents.setAll(loadedDocuments*)
       table.selectionModel.value.clearSelection()
@@ -78,32 +62,13 @@ object ArchivedDocumentManagementView extends Management:
 
     clearResultOnSelection(table, result)
 
-    def buildFilterCriteria(): List[(String, String, List[String])] =
-
-      val fromDateCriteria =
-        Option(fromDateFilter.value.value)
-          .map(date => ("getArchivedDate", ">=", List(date.toString)))
-          .toList
-
-      val toDateCriteria =
-        Option(toDateFilter.value.value)
-          .map(date => ("getArchivedDate", "<=", List(date.toString)))
-          .toList
-
-      val subjectCriteria =
-        Option(subjectFilter.text.value)
-          .map(_.trim)
-          .filter(_.nonEmpty)
-          .map(value => ("getSubject", "contains", List(value)))
-          .toList
-
-      val operatorCriteria =
-        Option(operatorFilter.value.value)
-          .filter(_ != Text.AllOperators)
-          .map(value => ("getArchivedBy", "=", List(value)))
-          .toList
-
-      fromDateCriteria ++ toDateCriteria ++ subjectCriteria ++ operatorCriteria
+    def buildFilterCriteria(): List[FilterCriterion] =
+      List(
+        dateCriterion(fromDateFilter, "getArchivedDate", ">="),
+        dateCriterion(toDateFilter, "getArchivedDate", "<="),
+        textCriterion(subjectFilter, "getSubject", "contains"),
+        comboCriterion(operatorFilter, Text.AllOperators, "getArchivedBy")
+      ).flatten
 
     def searchDocuments(): Unit =
       result.clear()
@@ -115,13 +80,7 @@ object ArchivedDocumentManagementView extends Management:
           val predicate = getDocumentPredicate(criteria)
           availableDocuments().filter(document => predicate(document))
 
-      val sortedDocuments = filteredDocuments.sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
-
-      documents.setAll(sortedDocuments*)
-      table.selectionModel.value.clearSelection()
-
-      if sortedDocuments.isEmpty then
-        result.show(Text.NoFilterResults, success = true)
+      showFilteredItems(documents, table, filteredDocuments, result)(_.getId)
 
     def resetFilters(): Unit =
       fromDateFilter.value = null
@@ -159,15 +118,7 @@ object ArchivedDocumentManagementView extends Management:
 
     val header = titleBox(Text.Title, Text.Subtitle)
 
-    val filters =
-      new HBox:
-        spacing = 10
-        children = Seq(
-          fromDateFilter,
-          toDateFilter,
-          subjectFilter,
-          operatorFilter
-        )
+    val filters = filterBar(fromDateFilter, toDateFilter, subjectFilter, operatorFilter)
 
     loadDocuments()
 

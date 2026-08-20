@@ -10,7 +10,7 @@ import pkg.d.util.{XmlToPdf, getDocumentOperationsLogPredicate}
 
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.{ComboBox, DatePicker, TextField}
-import scalafx.scene.layout.{BorderPane, HBox}
+import scalafx.scene.layout.BorderPane
 
 object DocumentLogManagementView extends Management:
 
@@ -52,7 +52,7 @@ object DocumentLogManagementView extends Management:
           .getRecords[DocumentLog]()
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
-      updateOperatorFilter(loadedLogs)
+      updateComboFilter(operatorFilter, Text.AllOperators, loadedLogs)(_.getProcessedBy)
 
       logs.setAll(loadedLogs*)
       table.selectionModel.value.clearSelection()
@@ -60,66 +60,25 @@ object DocumentLogManagementView extends Management:
       if loadedLogs.isEmpty then
         result.show(Text.Empty, success = true)
 
-    def updateOperatorFilter(loadedLogs: Seq[DocumentLog]): Unit =
-      val operators =
-        loadedLogs
-          .map(_.getProcessedBy.trim)
-          .filter(_.nonEmpty)
-          .distinct
-          .sorted
-
-      val currentSelection = operatorFilter.value.value
-      operatorFilter.items = ObservableBuffer(Text.AllOperators +: operators *)
-
-      if currentSelection != null && operatorFilter.items.value.contains(currentSelection) then
-        operatorFilter.value = currentSelection
-      else
-        operatorFilter.value = Text.AllOperators
-
     def selectedOperationType: Option[String] =
       Operations.valueOf(operationFilter.value.value)
 
-    def buildFilterCriteria(): List[(String, String, List[String])] =
-
-      val operationCriteria =
+    def buildFilterCriteria(): List[FilterCriterion] =
+      val operationCriterion =
         selectedOperationType
           .map(value => ("getOperationType", "=", List(value)))
-          .toList
 
-      val fromDateCriteria =
-        Option(fromDateFilter.value.value)
-          .map(date => ("getProcessedDate", ">=", List(date.toString)))
-          .toList
-
-      val toDateCriteria =
-        Option(toDateFilter.value.value)
-          .map(date => ("getProcessedDate", "<=", List(date.toString)))
-          .toList
-
-      val documentIdCriteria =
-        Option(documentIdFilter.text.value)
-          .map(_.trim)
-          .filter(_.nonEmpty)
-          .map(value => ("getDocumentId", "=", List(value)))
-          .toList
-
-      val operatorCriteria =
-        Option(operatorFilter.value.value)
-          .filter(_ != Text.AllOperators)
-          .map(value => ("getProcessedBy", "=", List(value)))
-          .toList
-
-      operationCriteria ++
-        fromDateCriteria ++
-        toDateCriteria ++
-        documentIdCriteria ++
-        operatorCriteria
+      List(
+        operationCriterion,
+        dateCriterion(fromDateFilter, "getProcessedDate", ">="),
+        dateCriterion(toDateFilter, "getProcessedDate", "<="),
+        textCriterion(documentIdFilter, "getDocumentId", "="),
+        comboCriterion(operatorFilter, Text.AllOperators, "getProcessedBy")
+      ).flatten
 
     def searchLogs(): Unit =
       result.clear()
-
       val criteria = buildFilterCriteria()
-
       val filteredLogs =
         if criteria.isEmpty then
           DocumentLog().getRecords[DocumentLog]()
@@ -128,13 +87,7 @@ object DocumentLogManagementView extends Management:
 
           DocumentLog().getRecordsByFilter[DocumentLog](predicate)
 
-      val sortedLogs = filteredLogs.sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
-
-      logs.setAll(sortedLogs*)
-      table.selectionModel.value.clearSelection()
-
-      if sortedLogs.isEmpty then
-        result.show(Text.NoFilterResults, success = true)
+      showFilteredItems(logs, table, filteredLogs, result)(_.getId)
 
     clearResultOnSelection(table, result)
 
@@ -175,16 +128,7 @@ object DocumentLogManagementView extends Management:
 
     val viewButton = primaryButton(DocumentLogs.Management.View, () => withSelectedItem(table, result, Text.SelectToView)(onView))
 
-    val filters =
-      new HBox:
-        spacing = 10
-        children = Seq(
-          operationFilter,
-          fromDateFilter,
-          toDateFilter,
-          documentIdFilter,
-          operatorFilter
-        )
+    val filters = filterBar(operationFilter, fromDateFilter, toDateFilter, documentIdFilter, operatorFilter)
 
     disableWithoutSelection(table, viewButton)
 
