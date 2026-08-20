@@ -17,6 +17,7 @@ object RoleAddView extends Form:
     val roleLogic = new Role()
     val validator = new RoleValidator()
     val role = stringField(prompt = Prompts.Role)
+    val name = stringField(prompt = Prompts.RoleName)
     val description = areaField(prompt = Prompts.Description)
     val result = createResultMessage()
     val monitoredFields = Seq(role, description)
@@ -25,6 +26,7 @@ object RoleAddView extends Form:
       Role(
         id = id,
         role = role.value.toLowerCase,
+        name = name.value,
         description = description.value
       )
 

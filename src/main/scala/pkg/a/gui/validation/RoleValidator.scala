@@ -9,6 +9,7 @@ class RoleValidator:
     Seq(
       validateRequired(RoleRequired, role.getRole),
       validateRequired(DescriptionRequired, role.getDescription),
+      validateRequired(RoleRequired, role.getName),
       validateUniqueRole(role.getRole, existingRoles, currentRoleId),
       validateUniqueName(role.getName, existingRoles, currentRoleId)
     ).flatten
@@ -53,6 +54,6 @@ class RoleValidator:
             existingRole.getName.trim.equalsIgnoreCase(normalizedName)
 
       if duplicateExists then
-        Some(DuplicateRole)
+        Some(DuplicateRoleName)
       else
         None

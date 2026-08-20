@@ -96,6 +96,7 @@ object UiText:
         val Password = "Inserisci la password"
         val Classification = "Inserisci la classifica"
         val KeepPassword = "Lascia vuoto per non modificare la password"
+        val RoleName = "Inserisci il nome del ruolo"
 
   object Roles:
     object Add:
@@ -583,7 +584,8 @@ object UiText:
       val RoleRequired = "Il campo Ruolo è obbligatorio."
       val NameRequired = "Il campo Nome ruolo è obbligatorio."
       val DescriptionRequired = "Il campo Descrizione è obbligatorio."
-      val DuplicateRole = "Esiste già un ruolo con questo nome."
+      val DuplicateRole = "Esiste già questo ruolo."
+      val DuplicateRoleName = "Esiste già un ruolo con questo nome."
 
     object LoadedDocument:
       val DocumentDateRequired = "Il campo Data documento è obbligatorio."
