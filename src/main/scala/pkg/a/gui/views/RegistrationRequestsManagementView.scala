@@ -36,7 +36,7 @@ object RegistrationRequestsManagementView extends Management:
     )
 
     def loadPendingRequests(): Unit =
-      loadTableItemsSafely(table, requests, result, Text.Empty, Text.LoadError):
+      loadTableItemsSafely(requests, result, Text.Empty, Text.LoadError):
         service
           .getPendingRequests
           .sortBy(_.getDate)

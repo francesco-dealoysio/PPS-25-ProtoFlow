@@ -5,7 +5,6 @@ import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Prompts}
 import pkg.a.gui.text.UiText.LoadedDocuments.Add as Text
 import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
-import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.traits.Form
 import pkg.a.gui.validation.LoadedDocumentValidator
 import pkg.b.logic.LoadedDocument
@@ -24,13 +23,13 @@ object LoadedDocumentAddView extends Form:
     val validator = new LoadedDocumentValidator()
     val defaultTime = localTime
     val documentDate = dateField(localDate)
-    val documentTime = stringField(Prompts.DocumentTime, defaultTime)
-    val documentProtocol = stringField(Prompts.DocumentProtocol)
-    val documentType = stringField(Prompts.DocumentType)
-    val sender = stringField(Prompts.Sender)
-    val recipient = stringField(Prompts.Recipient)
-    val subject = stringField(Prompts.Subject)
-    val remarks = areaField(Prompts.Remarks, DescriptionAreaStyle)
+    val documentTime = stringField(defaultTime, Prompts.DocumentTime)
+    val documentProtocol = stringField(prompt = Prompts.DocumentProtocol)
+    val documentType = stringField(prompt = Prompts.DocumentType)
+    val sender = stringField(prompt = Prompts.Sender)
+    val recipient = stringField(prompt = Prompts.Recipient)
+    val subject = stringField(prompt = Prompts.Subject)
+    val remarks = areaField(prompt = Prompts.Remarks)
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks)
     val result = createResultMessage()
 

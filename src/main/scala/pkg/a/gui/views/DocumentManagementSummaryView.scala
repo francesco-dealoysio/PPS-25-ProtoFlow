@@ -13,8 +13,8 @@ object DocumentManagementSummaryView extends Form with Management:
 
   def apply(summary: DocumentManagementSummary, generatedBy: String, onExit: () => Unit = () => ()): BorderPane =
     val result = createResultMessage()
-    val documentCode = stringField("", summary.documentCode)
-    val classification = stringField("", summary.classification)
+    val documentCode = stringField(summary.documentCode)
+    val classification = stringField(summary.classification)
 
     Seq(documentCode, classification)
       .foreach(_.control.setDisable(true))

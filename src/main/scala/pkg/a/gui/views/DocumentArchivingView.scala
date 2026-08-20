@@ -39,7 +39,7 @@ object DocumentArchivingView extends Form:
     val remarks = readOnlyAreaField(selectedDocument.getRemarks)
 
     val archivedDate = dateField(localDate)
-    val archivedTime = stringField("", localTime)
+    val archivedTime = stringField(localTime)
     val archivedBy = readOnlyStringField(operatorUsername)
     val archiveLocation = stringField()
 

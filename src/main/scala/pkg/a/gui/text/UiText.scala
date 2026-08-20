@@ -92,7 +92,7 @@ object UiText:
         val Description = "Inserisci la descrizione"
         val Area = "Inserisci l'area"
         val Assignment = "Inserisci la mansione"
-        val Username = "Inserisci lo username"
+        val Username = "Inserisci l' username"
         val Password = "Inserisci la password"
         val Classification = "Inserisci la classifica"
         val KeepPassword = "Lascia vuoto per non modificare la password"

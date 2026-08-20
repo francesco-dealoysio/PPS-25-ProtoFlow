@@ -27,7 +27,7 @@ object ClassificationManagementView extends Management:
     )
 
     def loadClassifications(): Unit =
-      loadTableItemsSafely(table, classifications, result, Text.Empty, Text.LoadError):
+      loadTableItemsSafely(classifications, result, Text.Empty, Text.LoadError):
         classificationLogic
           .getRecords[Classification]()
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))

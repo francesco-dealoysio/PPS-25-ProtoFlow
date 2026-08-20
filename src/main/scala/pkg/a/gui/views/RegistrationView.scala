@@ -21,20 +21,19 @@ object RegistrationView extends Form:
     val service = new RegistrationRequestService()
     val roleLogic = new Role()
     val classificationLogic = new Classification()
-    val name = stringField(Prompts.Name)
-    val surname = stringField(Prompts.Surname)
-    val email = stringField(Text.EmailPrompt)
-    val phone = stringField(Prompts.Phone)
-    val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), Text.RolePrompt)
-    val area = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), Text.AreaPrompt)
-    val assignment = stringField(Text.AssignmentPrompt)
+    val name = stringField(prompt = Prompts.Name)
+    val surname = stringField(prompt = Prompts.Surname)
+    val email = stringField(prompt = Text.EmailPrompt)
+    val phone = stringField(prompt = Prompts.Phone)
+    val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), prompt =Text.RolePrompt)
+    val area = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), prompt = Text.AreaPrompt)
+    val assignment = stringField(prompt = Text.AssignmentPrompt)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(name, surname, email, phone, role, area, assignment)
     val result = createResultMessage()
 
     def currentRequest(): RegistrationModel =
       RegistrationModel(
-        id = "",
         name = name.value,
         surname = surname.value,
         email = email.value,

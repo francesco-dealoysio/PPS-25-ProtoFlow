@@ -49,7 +49,7 @@ case class Role(
       val role = record.role
 
       val  found = countRecordsByFilter[Role](a => a.id != id && a.role == role, xmlFilePathName, classOf[Role])
-      if (found == 0) then
+      if found == 0 then
         result = updateElemOfXML(xmlFilePathName, obj)
       else
         throw new RuntimeException("Valori duplicati (ruolo)!")

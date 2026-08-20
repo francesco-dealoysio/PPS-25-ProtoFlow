@@ -2,7 +2,7 @@ package pkg.a.gui.traits
 
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Node
-import scalafx.scene.control.{Button, ComboBox, DatePicker, Label, PasswordField, TextArea, TextField}
+import scalafx.scene.control.{Button, ComboBox, DatePicker, Label, PasswordField, TextArea, TextField, TextInputControl}
 import scalafx.scene.layout.*
 import pkg.d.util.DateTime
 import pkg.a.gui.text.UiStyles.Common.*
@@ -30,26 +30,14 @@ trait Form extends Common:
       errorLabel.text = message
       errorLabel.visible = true
       errorLabel.managed = true
-
-      control match
-        case styledControl: scalafx.scene.control.Control =>
-          if !styledControl.styleClass.contains(FormFieldErrorStyle) then
-            styledControl.styleClass += FormFieldErrorStyle
-
-        case _ =>
-          ()
+      if !control.styleClass.contains(FormFieldErrorStyle) then
+        control.styleClass += FormFieldErrorStyle
 
     def clearError(): Unit =
       errorLabel.text = ""
       errorLabel.visible = false
       errorLabel.managed = false
-
-      control match
-        case styledControl: scalafx.scene.control.Control =>
-          styledControl.styleClass.remove(FormFieldErrorStyle)
-
-        case _ =>
-          ()
+      control.styleClass.remove(FormFieldErrorStyle)
 
   protected def resetFields(fields: FormField[? <: Node]*): Unit =
     fields.foreach(_.reset())
@@ -67,13 +55,13 @@ trait Form extends Common:
   protected def clearFormFieldErrors(fields: FormField[? <: Node]*): Unit =
     fields.foreach(_.clearError())
 
-  protected def stringField(prompt: String = "", initialValue: String = ""): FormField[TextField] =
+  protected def stringField(initialValue: String = "", prompt: String = ""): FormField[TextField] =
     formField(textField(prompt, initialValue), initialValue)(
       readValue = _.text.value,
       writeValue = (field, value) => field.text = value
     )
 
-  protected def areaField(prompt: String, styleName: String, initialValue: String = "", rows: Int = 5): FormField[TextArea] =
+  protected def areaField(initialValue: String = "", styleName: String = DescriptionAreaStyle, prompt: String = "", rows: Int = 5): FormField[TextArea] =
     formField(textArea(prompt, styleName, initialValue, rows), initialValue)(
       readValue = _.text.value,
       writeValue = (field, value) => field.text = value
@@ -91,7 +79,7 @@ trait Form extends Common:
       writeValue = (field, value) => field.text = value
     )
 
-  protected def stringComboField(items: Seq[String], prompt: String, initialValue: String = ""): FormField[ComboBox[String]] =
+  protected def stringComboField(items: Seq[String], initialValue: String = "", prompt: String = ""): FormField[ComboBox[String]] =
     val control =
       new ComboBox[String](items):
         if initialValue.nonEmpty then
@@ -160,18 +148,10 @@ trait Form extends Common:
     )
 
   protected def readOnlyStringField(initialValue: String = ""): FormField[TextField] =
-    val field = stringField("", initialValue)
-    field.control.editable = false
-    field.control.focusTraversable = false
-    field.control.styleClass += ReadOnlyFormFieldStyle
-    field
+    makeReadOnly(stringField(initialValue))
 
   protected def readOnlyAreaField(initialValue: String = "", styleName: String = DescriptionAreaStyle, rows: Int = 5): FormField[TextArea] =
-    val field = areaField("", styleName, initialValue, rows)
-    field.control.editable = false
-    field.control.focusTraversable = false
-    field.control.styleClass += ReadOnlyFormFieldStyle
-    field
+    makeReadOnly(areaField(initialValue, styleName, rows = rows))
 
   protected case class FormHeader(title: String, subtitle: String, titleStyle: String = TitleStyle, subtitleStyle: String = SubtitleStyle)
 
@@ -221,6 +201,12 @@ trait Form extends Common:
     page.delegate.getProperties.put("has-unsaved-changes", hasUnsavedChanges)
     initialFocus.foreach(field => focusOnOpen(field.control))
     page
+
+  private def makeReadOnly[C <: TextInputControl](field: FormField[C]): FormField[C] =
+    field.control.editable = false
+    field.control.focusTraversable = false
+    field.control.styleClass += ReadOnlyFormFieldStyle
+    field
 
   private def focusOnOpen(control: Node): Unit =
     Platform.runLater:

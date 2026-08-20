@@ -17,7 +17,7 @@ object LoginView extends Form:
 
   def apply(onLoginSuccess: Account => Unit, onRegistrationRequest: () => Unit): BorderPane =
 
-    val username = stringField(Prompts.Username)
+    val username = stringField(prompt = Prompts.Username)
     val password = passwordFormField(Prompts.Password)
 
     val result =

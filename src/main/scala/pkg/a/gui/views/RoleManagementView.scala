@@ -15,7 +15,6 @@ object RoleManagementView extends Management:
   def apply(
              onAdd: () => Unit = () => (),
              onEdit: Role => Unit = _ => (),
-             onDelete: Role => Unit = _ => (),
              onExit: () => Unit = () => ()
            ): BorderPane =
 
@@ -31,7 +30,7 @@ object RoleManagementView extends Management:
     )
 
     def loadRoles(): Unit =
-      loadTableItemsSafely(table, roles, result, Text.Empty, Text.LoadError):
+      loadTableItemsSafely(roles, result, Text.Empty, Text.LoadError):
         roleLogic
           .getRecords[Role]()
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))

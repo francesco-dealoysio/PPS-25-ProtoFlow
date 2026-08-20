@@ -5,7 +5,6 @@ import pkg.b.logic.Role
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
 import scalafx.scene.layout.BorderPane
-import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Roles.Add as Text
 import pkg.a.gui.text.UiText.Validation.Role as Validation
@@ -17,8 +16,8 @@ object RoleAddView extends Form:
 
     val roleLogic = new Role()
     val validator = new RoleValidator()
-    val role = stringField(Prompts.Role)
-    val description = areaField(Prompts.Description, DescriptionAreaStyle)
+    val role = stringField(prompt = Prompts.Role)
+    val description = areaField(prompt = Prompts.Description)
     val result = createResultMessage()
     val monitoredFields = Seq(role, description)
 

@@ -31,7 +31,7 @@ object DocumentManagementControlView extends Management:
     )
 
     def loadDocuments(): Unit =
-      loadTableItemsSafely(table, documents, result, Text.Empty, Text.LoadError):
+      loadTableItemsSafely(documents, result, Text.Empty, Text.LoadError):
         DocumentManagementControlService.getManagedDocuments()
 
     clearResultOnSelection(table, result)

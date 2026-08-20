@@ -165,7 +165,7 @@ object DocumentLogManagementView extends Management:
       fromDateFilter.value = null
       toDateFilter.value = null
       documentIdFilter.clear()
-      operatorFilter.value = Text.AllOperations
+      operatorFilter.value = Text.AllOperators
       loadLogs()
 
     val exitButton = closeButton(onExit)

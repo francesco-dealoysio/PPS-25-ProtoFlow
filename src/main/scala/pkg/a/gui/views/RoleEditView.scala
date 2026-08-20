@@ -17,8 +17,8 @@ object RoleEditView extends Form:
     val validator = new RoleValidator()
 
     val role = readOnlyStringField(selectedRole.getRole)
-    val name = stringField("", selectedRole.getName)
-    val description = areaField("", DescriptionAreaStyle, selectedRole.getDescription)
+    val name = stringField(selectedRole.getName)
+    val description = areaField(selectedRole.getDescription, DescriptionAreaStyle)
     val monitoredFields = Seq(name, description)
     val result = createResultMessage()
 

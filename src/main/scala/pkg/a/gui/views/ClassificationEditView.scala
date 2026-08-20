@@ -1,6 +1,5 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
 import scalafx.scene.layout.BorderPane
@@ -17,8 +16,8 @@ object ClassificationEditView extends Form:
     val validator = new ClassificationValidator()
 
     val id = readOnlyStringField(selectedClassification.getId)
-    val classification = stringField("", selectedClassification.getClassification)
-    val description = areaField("", DescriptionAreaStyle, selectedClassification.getDescription)
+    val classification = stringField(selectedClassification.getClassification)
+    val description = areaField(selectedClassification.getDescription)
 
     val monitoredFields = Seq(classification, description)
     val result = createResultMessage()

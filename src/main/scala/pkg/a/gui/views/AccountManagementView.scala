@@ -35,7 +35,7 @@ object AccountManagementView extends Management:
     )
 
     def loadAccounts(): Unit =
-      loadTableItemsSafely(table, accounts, result, Text.Empty, Text.LoadError):
+      loadTableItemsSafely(accounts, result, Text.Empty, Text.LoadError):
         accountLogic
           .getRecords[Account]()
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))

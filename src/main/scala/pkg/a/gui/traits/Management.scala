@@ -13,15 +13,6 @@ import scalafx.scene.layout.{BorderPane, Priority, VBox}
 
 trait Management extends Common:
 
-  protected case class ManagementTable[T](items: ObservableBuffer[T], table: TableView[T], result: ResultMessage)
-
-  protected def createManagementTable[T](emptyText: String): ManagementTable[T] =
-    val items = ObservableBuffer.empty[T]
-    val result = createResultMessage()
-    val table = managementTable(items, emptyText)
-    clearResultOnSelection(table, result)
-    ManagementTable(items, table, result)
-
   protected def managementTable[T](items: ObservableBuffer[T], emptyText: String): TableView[T] =
     new TableView[T](items):
       columnResizePolicy = TableView.ConstrainedResizePolicy
@@ -62,7 +53,7 @@ trait Management extends Common:
       case None =>
         result.show(noSelectionMessage, success = false)
 
-  protected def loadTableItemsSafely[T](table: TableView[T], items: ObservableBuffer[T], result: ResultMessage, emptyMessage: String, loadErrorMessage: String)(load: => Seq[T]): Unit =
+  protected def loadTableItemsSafely[T](items: ObservableBuffer[T], result: ResultMessage, emptyMessage: String, loadErrorMessage: String)(load: => Seq[T]): Unit =
     try
       val loadedItems = load
       items.clear()

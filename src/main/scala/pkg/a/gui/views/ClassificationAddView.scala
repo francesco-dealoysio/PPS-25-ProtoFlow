@@ -1,6 +1,5 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
 import pkg.d.util.IdGen
@@ -18,8 +17,8 @@ object ClassificationAddView extends Form:
     val classificationLogic = new Classification()
     val validator = new ClassificationValidator()
 
-    val classification = stringField(Prompts.Classification)
-    val description = areaField(Prompts.Description, DescriptionAreaStyle)
+    val classification = stringField(prompt = Prompts.Classification)
+    val description = areaField(prompt = Prompts.Description)
     val monitoredFields = Seq(classification, description)
     val result = createResultMessage()
 
