@@ -25,6 +25,11 @@ can(viewer, visualizzazione_archiviazioni).
 % this one predicate, not every call site.
 authorized(Role, Action) :- can(Role, Action).
 
+% permitted_actions(Role, Actions)
+% Actions is the list of every action Role is authorized to perform,
+% in the order the can/2 facts for Role were declared above.
+permitted_actions(Role, Actions) :- findall(Action, can(Role, Action), Actions).
+
 % can_delete_role(Role)
 % the admin role is a system invariant: it can never be removed,
 % regardless of how many accounts currently use it.

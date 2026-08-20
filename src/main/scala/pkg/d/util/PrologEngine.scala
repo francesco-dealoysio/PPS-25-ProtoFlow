@@ -1,6 +1,6 @@
 package pkg.d.util
 
-import alice.tuprolog.{Prolog, Term, Theory}
+import alice.tuprolog.{Prolog, Struct, Term, Theory}
 
 import scala.language.implicitConversions
 
@@ -29,3 +29,14 @@ object PrologEngine:
             else exhausted = true
             result
       .to(LazyList)
+
+  // The Ith argument of a solved goal, e.g. arg(permitted_actions(admin,[a,b]), 1) = [a,b].
+  def arg(solvedGoal: Term, i: Int): Term =
+    solvedGoal.asInstanceOf[Struct].getArg(i).getTerm
+
+  // The elements of a Prolog list term, as Terms (call .toString for atoms).
+  def listElements(list: Term): List[Term] =
+    val elements = scala.collection.mutable.ListBuffer.empty[Term]
+    val it = list.asInstanceOf[Struct].listIterator()
+    while it.hasNext do elements += it.next()
+    elements.toList

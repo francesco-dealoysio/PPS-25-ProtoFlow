@@ -28,3 +28,16 @@ object AuthorizationEngine:
 
   def canDeleteAccount(role: String, adminCount: Int): Boolean =
     engine(s"can_delete_account(${role.toLowerCase}, $adminCount)").nonEmpty
+
+  // controllo_gestione -> ControlloGestione, the inverse of toAtom.
+  private def fromAtom(atom: String): Option[MenuAction] =
+    MenuAction.values.find(toAtom(_) == atom)
+
+  // The actions Role is authorized to perform, in the order declared in authorization.pl.
+  def permittedActions(role: String): Seq[MenuAction] =
+    engine(s"permitted_actions(${role.toLowerCase}, Actions)").headOption match
+      case Some(solvedGoal) =>
+        val actionsList = PrologEngine.arg(solvedGoal, 1)
+        PrologEngine.listElements(actionsList).flatMap(term => fromAtom(term.toString))
+      case None =>
+        Seq.empty

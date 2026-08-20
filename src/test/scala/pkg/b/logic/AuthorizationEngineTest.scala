@@ -55,3 +55,17 @@ class AuthorizationEngineTest:
     assertFalse(AuthorizationEngine.canDeleteAccount("admin", 1))
     assertTrue(AuthorizationEngine.canDeleteAccount("admin", 2))
     assertTrue(AuthorizationEngine.canDeleteAccount("oper", 1))
+
+  @Test
+  def permittedActionsMatchesIsAuthorizedForEveryRole(): Unit =
+    val roles = Seq("admin", "oper", "viewer")
+    for role <- roles; action <- MenuAction.values do
+      assertEquals(
+        s"mismatch for $role/$action",
+        AuthorizationEngine.isAuthorized(role, action),
+        AuthorizationEngine.permittedActions(role).contains(action)
+      )
+
+  @Test
+  def permittedActionsIsEmptyForUnknownRole(): Unit =
+    assertTrue(AuthorizationEngine.permittedActions("guest").isEmpty)

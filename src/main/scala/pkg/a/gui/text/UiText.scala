@@ -1,5 +1,7 @@
 package pkg.a.gui.text
 
+import pkg.a.gui.structures.MenuAction
+
 object UiText:
 
   object Common:
@@ -410,6 +412,23 @@ object UiText:
     val DocumentsToRegister = "Documenti da protocollare"
     val DocumentsToArchive = "Documenti da archiviare"
     val ArchivedDocuments = "Documenti archiviati"
+
+    // Label for each MenuAction whose presence in the menu is decided by
+    // AuthorizationEngine.permittedActions, rather than hardcoded per view.
+    val labels: Map[MenuAction, String] = Map(
+      MenuAction.Statistiche -> Statistics,
+      MenuAction.Log -> Log,
+      MenuAction.ControlloGestione -> ManagementControl,
+      MenuAction.Registrazioni -> Registrations,
+      MenuAction.AccountUtenti -> UserAccounts,
+      MenuAction.Ruoli -> Roles,
+      MenuAction.Classifiche -> Classifications,
+      MenuAction.NuovaPresaInCarico -> NewAssignment,
+      MenuAction.DocumentiDaProtocollare -> DocumentsToRegister,
+      MenuAction.DocumentiDaArchiviare -> DocumentsToArchive,
+      MenuAction.DocumentiArchiviati -> ArchivedDocuments,
+      MenuAction.VisualizzazioneArchiviazioni -> ArchivedDocuments
+    )
     val Logout = "Logout"
 
   object Registration:
