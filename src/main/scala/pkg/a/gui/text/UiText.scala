@@ -25,6 +25,11 @@ object UiText:
         val Header = "Vuoi uscire senza salvare?"
         val Content = "Le informazioni inserite o modificate non verranno mantenute."
 
+      object Denied:
+        val Title = "Azione non consentita"
+        val Header = "Non hai i permessi per questa azione."
+        val Content = "Il tuo ruolo non è autorizzato a eseguire questa operazione."
+
     object Documents:
       val NoDocuments = "Nessun documento disponibile."
 

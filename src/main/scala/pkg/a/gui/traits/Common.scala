@@ -24,6 +24,13 @@ trait Common:
         contentText = content
     dialog.showAndWait().contains(ButtonType.OK)
 
+  protected def showError(titleText: String, header: String, content: String): Unit =
+    new Alert(Alert.AlertType.Error):
+      title = titleText
+      headerText = header
+      contentText = content
+    .showAndWait()
+
   protected def createResultMessage(baseStyle: String = MessageStyle, successStyle: String = MessageSuccessStyle, errorStyle: String = MessageErrorStyle): ResultMessage =
     ResultMessage(messageLabel(baseStyle), successStyle, errorStyle)
 

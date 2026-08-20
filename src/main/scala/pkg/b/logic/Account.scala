@@ -81,14 +81,12 @@ case class Account(
     val accounts = getRecords[Account](xmlFilePathName)
     accounts.find(_.getId == id) match
       case Some(account) =>
-        val isLastAdmin =
-          account.getRole.equalsIgnoreCase("admin") &&
-            accounts.count(_.getRole.equalsIgnoreCase("admin")) <= 1
+        val adminCount = accounts.count(_.getRole.equalsIgnoreCase("admin"))
 
-        if isLastAdmin then
-          false
-        else
+        if AuthorizationEngine.canDeleteAccount(account.getRole, adminCount) then
           super.recordDelete(id, xmlFilePathName)
+        else
+          false
 
       case None =>
         false
