@@ -7,7 +7,7 @@ import pkg.b.logic.Registration
 
 class RegistrationValidatorTest:
 
-  private val viewModel = RegistrationValidator()
+  private val validator = RegistrationValidator()
 
   @Test
   def testValidRegistrationRequest(): Unit =
@@ -41,15 +41,15 @@ class RegistrationValidatorTest:
 
   // Test Helpers
   private def assertValid(request: Registration): Unit =
-    val errors = viewModel.validate(request)
+    val errors = validator.validate(request)
     assertTrue(errors.isEmpty)
-    assertTrue(viewModel.isValid(request))
+    assertTrue(validator.isValid(request))
 
   private def assertInvalid(request: Registration)(expectedErrors: String*): Unit =
-    val errors = viewModel.validate(request)
+    val errors = validator.validate(request)
     assertEquals(expectedErrors.size, errors.size)
     expectedErrors.foreach(error => assertTrue(errors.contains(error)))
-    assertFalse(viewModel.isValid(request))
+    assertFalse(validator.isValid(request))
 
   private def validRequest(): Registration =
     Registration(

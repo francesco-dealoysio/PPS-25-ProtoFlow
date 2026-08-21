@@ -16,6 +16,7 @@ object DocumentManagementControlService:
                                loadedTime: String,
                                loadedBy: String,
                                protocolNumber: String,
+                               classification: String,
                                registeredDate: String,
                                registeredTime: String,
                                registeredBy: String,
@@ -93,7 +94,7 @@ object DocumentManagementControlService:
       documentCode =
         if document.protocolNumber.nonEmpty then document.protocolNumber
         else document.id,
-      classification = "",
+      classification = document.classification,
       phases = phases
     )
 
@@ -122,6 +123,7 @@ object DocumentManagementControlService:
       loadedTime = document.getProcessedTime,
       loadedBy = document.getProcessedBy,
       protocolNumber = "",
+      classification = "",
       registeredDate = "",
       registeredTime = "",
       registeredBy = "",
@@ -145,6 +147,7 @@ object DocumentManagementControlService:
       loadedTime = document.getLoadedTime,
       loadedBy = document.getLoadedBy,
       protocolNumber = document.getProtocolNumber,
+      classification = document.getClassification,
       registeredDate = document.getRegisteredDate,
       registeredTime = document.getRegisteredTime,
       registeredBy = document.getRegisteredBy,
@@ -168,6 +171,7 @@ object DocumentManagementControlService:
       loadedTime = document.getLoadedTime,
       loadedBy = document.getLoadedBy,
       protocolNumber = document.getProtocolNumber,
+      classification = document.getClassification,
       registeredDate = document.getRegisteredDate,
       registeredTime = document.getRegisteredTime,
       registeredBy = document.getRegisteredBy,

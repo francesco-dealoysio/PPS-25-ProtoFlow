@@ -3,16 +3,18 @@ package pkg.a.gui.traits
 import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
 import pkg.b.logic.{Account, Role}
 import scalafx.geometry.Pos
-import scalafx.scene.control.{Button, TableColumn, TableView}
+import scalafx.scene.control.Button
 import scalafx.scene.layout.*
 import pkg.a.gui.text.UiStyles.HomePage.*
 import pkg.a.gui.text.UiText.Common.Dialogs.Logout.*
-import pkg.a.gui.text.UiText.Common.Documents.NoDocuments
+import pkg.a.gui.services.DocumentManagementControlService
+import pkg.a.gui.services.DocumentManagementControlService.Stages
 
 trait HomePage extends Root:
 
   protected def pageTitle: String
   protected def menuItems: Seq[MenuItem]
+  protected def dashboardView(currentAccount: Account): Pane
 
   protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit
 
@@ -36,12 +38,12 @@ trait HomePage extends Root:
     val contentArea =
       new StackPane:
         styleClass += ContentAreaStyle
-        children = Seq(dashboardContent())
+        children = Seq(dashboardView(currentAccount))
 
     val navigator =
       new Navigator(
         contentArea = contentArea,
-        dashboardFactory = () => dashboardContent()
+        dashboardFactory = () => dashboardView(currentAccount)
       )
 
     def navigate(action: MenuAction): Unit =
@@ -94,48 +96,3 @@ trait HomePage extends Root:
       prefWidth = 230
       styleClass += SidebarStyle
       children = buttons
-
-  private def dashboardContent(): VBox =
-    new VBox:
-      styleClass += DashboardContainerStyle
-      children = Seq(
-        fieldLabel(pageTitle, PageTitleStyle),
-        createCards(),
-        createDocumentsTable()
-      )
-
-  private def createCards(): HBox =
-    new HBox:
-      styleClass += CardsContainerStyle
-      children = Seq(
-        statCard("Totale Documenti", "0", "Nessun documento"),
-        statCard("In Carico", "0", "Nessun documento"),
-        statCard("Registrati", "0", "Nessun documento"),
-        statCard("Archiviati", "0", "Nessun documento")
-      )
-
-  private def statCard(title: String, value: String, subtitle: String): VBox =
-    new VBox:
-      prefWidth = 190
-      styleClass += StatCardStyle
-      children = Seq(
-        fieldLabel(title, StatCardTitleStyle),
-        fieldLabel(value, StatCardValueStyle),
-        fieldLabel(subtitle, StatCardSubtitleStyle)
-      )
-
-  private def createDocumentsTable(): TableView[Unit] =
-    new TableView[Unit]:
-      styleClass += DocumentsTableStyle
-      placeholder = fieldLabel(NoDocuments, TablePlaceholderStyle)
-      columns ++=
-        Seq(
-          "Protocollo",
-          "Oggetto",
-          "Mittente",
-          "Categoria",
-          "Stato",
-          "Data"
-        ).map: title =>
-          new TableColumn[Unit, String]:
-            text = title

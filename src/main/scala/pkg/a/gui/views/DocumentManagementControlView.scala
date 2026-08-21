@@ -21,8 +21,8 @@ object DocumentManagementControlView extends Management:
     table.columns ++= Seq(
       stringColumn[ManagedDocument](Text.IdColumn, Some(160)): document =>
         if document.protocolNumber.nonEmpty then document.protocolNumber else document.id,
-      stringColumn[ManagedDocument](Text.ClassificationColumn, Some(120)): _ =>
-        Text.NotAvailable,
+      stringColumn[ManagedDocument](Text.ClassificationColumn, Some(120)): document =>
+        if document.classification.nonEmpty then document.classification else Text.NotAvailable,
       stringColumn[ManagedDocument](Text.RegisteredDateColumn, Some(150)): document =>
         if document.registeredDate.nonEmpty then document.registeredDate else Text.NotAvailable,
       stringColumn[ManagedDocument](Text.OperatorColumn, Some(180))(_.operator),
@@ -41,7 +41,7 @@ object DocumentManagementControlView extends Management:
         documents.map: document =>
           Seq(
             if document.protocolNumber.nonEmpty then document.protocolNumber else document.id,
-            Text.NotAvailable,
+            if document.classification.nonEmpty then document.classification else Text.NotAvailable,
             if document.registeredDate.nonEmpty then document.registeredDate else Text.NotAvailable,
             document.operator,
             Text.Stages.labelOf(document.stage)

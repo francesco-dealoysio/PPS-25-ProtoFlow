@@ -8,7 +8,7 @@ import pkg.a.gui.validation.ClassificationValidator
 
 class ClassificationValidatorTest:
 
-  private val viewModel = ClassificationValidator()
+  private val validator = ClassificationValidator()
 
   @Test
   def testValidFormAndEmptyFields(): Unit =
@@ -33,15 +33,15 @@ class ClassificationValidatorTest:
 
   // Test Helpers
   private def assertValid(classification: Classification, currentId: Option[String] = None): Unit =
-    val errors = viewModel.validate(classification, existingClassifications, currentId)
+    val errors = validator.validate(classification, existingClassifications, currentId)
     assertTrue(errors.isEmpty)
-    assertTrue(viewModel.isValid(classification, existingClassifications, currentId))
+    assertTrue(validator.isValid(classification, existingClassifications, currentId))
 
   private def assertInvalid(classification: Classification, currentId: Option[String] = None)(expectedErrors: String*): Unit =
-    val errors: Seq[String] = viewModel.validate(classification, existingClassifications, currentId)
+    val errors: Seq[String] = validator.validate(classification, existingClassifications, currentId)
     assertEquals(expectedErrors.size, errors.size)
     expectedErrors.foreach(error => assertTrue(errors.contains(error)))
-    assertFalse(viewModel.isValid(classification, existingClassifications, currentId))
+    assertFalse(validator.isValid(classification, existingClassifications, currentId))
 
   private def validForm(): Classification =
     Classification(classification = "Informatica", description = "Gestione servizi")

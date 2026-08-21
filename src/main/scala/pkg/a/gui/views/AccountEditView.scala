@@ -126,7 +126,7 @@ object AccountEditView extends Form:
           case Validation.SurnameRequired => surname
           case Validation.NameRequired => name
           case Validation.EmailRequired | Validation.EmailInvalid => email
-          case Validation.RoleRequired => role
+          case Validation.RoleRequired | Validation.LastAdminRoleChange => role
           case Validation.UsernameRequired | Validation.DuplicateUsername => username
 
     var formSaved = false

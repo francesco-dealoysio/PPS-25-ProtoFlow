@@ -4,10 +4,14 @@ import pkg.a.gui.structures.{MenuAction, MenuItem}
 import pkg.a.gui.text.UiText.Menu.*
 import pkg.a.gui.traits.HomePage
 import pkg.b.logic.{Account, ArchivedDocument}
+import scalafx.scene.layout.Pane
 
 object HomePageViewerView extends HomePage:
 
   override protected val pageTitle: String = "Homepage Viewer"
+
+  override protected def dashboardView(currentAccount: Account): Pane =
+    ViewerDashboardView(currentAccount, pageTitle)
 
   override protected val menuItems: Seq[MenuItem] =
     Seq(

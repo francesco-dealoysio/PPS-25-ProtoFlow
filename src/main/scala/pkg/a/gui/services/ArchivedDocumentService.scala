@@ -11,19 +11,13 @@ class ArchivedDocumentService:
   private val documentArchivingValidator = new DocumentArchivingValidator()
 
   def getRegisteredDocuments: List[RegisteredDocument] =
-    registeredDocumentLogic
-      .getRecords[RegisteredDocument]()
-      .toList
+    registeredDocumentLogic.getRecords[RegisteredDocument]().toList
 
   def getArchivedDocuments: List[ArchivedDocument] =
-    archivedDocumentLogic
-      .getRecords[ArchivedDocument]()
-      .toList
+    archivedDocumentLogic.getRecords[ArchivedDocument]().toList
 
   def getArchivedDocuments(predicate: Any => Boolean): List[ArchivedDocument] =
-    archivedDocumentLogic
-      .getRecordsByFilter[ArchivedDocument](predicate)
-      .toList
+    archivedDocumentLogic.getRecordsByFilter[ArchivedDocument](predicate).toList
 
   def deleteArchivedDocument(id: String): Boolean =
     archivedDocumentLogic.recordDelete(id)

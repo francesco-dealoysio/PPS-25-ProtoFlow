@@ -125,6 +125,7 @@ object UiText:
       val PrintError = "Non è stato possibile stampare l'elenco dei ruoli."
       val PrintTitle = "Elenco Ruoli"
       val AdminRoleDeleteError = "Non è possibile eliminare il ruolo di amministratore."
+      val RoleInUseDeleteError = "Non è possibile eliminare un ruolo assegnato a un account o presente in una richiesta di registrazione in attesa."
 
       def deleted(role: String): String =
         s"Il ruolo '$role' è stato eliminato correttamente."
@@ -574,6 +575,7 @@ object UiText:
       val UsernameRequired = "Il campo Username è obbligatorio."
       val PasswordRequired = "Il campo Password è obbligatorio."
       val DuplicateUsername = "Esiste già un account con questo username."
+      val LastAdminRoleChange = "Non è possibile modificare il ruolo dell'ultimo amministratore."
 
     object Classification:
       val ClassificationRequired = "Il campo Classifica è obbligatorio."

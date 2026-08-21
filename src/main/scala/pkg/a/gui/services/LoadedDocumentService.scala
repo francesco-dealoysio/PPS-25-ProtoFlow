@@ -57,9 +57,24 @@ class LoadedDocumentService:
 
     if classification.trim.isEmpty then
       Left("Seleziona una classifica")
-    else if !registeredDocumentLogic.recordInsert(registered) then
-      Left("Errore durante la protocollazione del documento")
-    else if !loadedDocumentLogic.recordDelete(source.getId) then
-      Left("Errore durante la rimozione del documento dai presi in carico")
     else
-      Right(registered)
+      saveRegisteredDocument(source, registered)
+
+
+  private def saveRegisteredDocument(source: LoadedDocument, registered: RegisteredDocument): Either[String, RegisteredDocument] =
+
+    val inserted = registeredDocumentLogic.recordInsert(registered)
+
+    if !inserted then
+      Left("Errore durante la protocollazione del documento")
+    else
+      val removed = loadedDocumentLogic.recordDelete(source.getId)
+
+      if removed then
+        Right(registered)
+      else
+        rollbackRegisteredDocument(registered)
+        Left("Errore durante la rimozione del documento dai presi in carico")
+
+  private def rollbackRegisteredDocument(registered: RegisteredDocument): Unit =
+    registeredDocumentLogic.recordDelete(registered.getId)

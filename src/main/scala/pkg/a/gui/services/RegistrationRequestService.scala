@@ -20,6 +20,7 @@ class RegistrationRequestService(
                                  ):
 
   private val registrationLogic = new Registration()
+  private val accountLogic = new Account()
   private val registrationValidator = new RegistrationValidator()
 
   def requestsFilePath: String = registrationsFilePath
@@ -72,7 +73,6 @@ class RegistrationRequestService(
         Left("Richiesta non trovata")
 
       case Some(request) =>
-        val accountLogic = new Account()
         val existingAccounts = accountLogic.getRecords[Account](accountsFilePathName)
         val username = generateUsername(request, existingAccounts)
         val plainPassword = generatePassword()
@@ -107,6 +107,7 @@ class RegistrationRequestService(
               Right(RegistrationApproval(updated, account, plainPassword))
 
             case Left(error) =>
+              rollbackAccount(account)
               Left(error)
 
   /** Rifiuta la richiesta, richiedendo una motivazione, e ne aggiorna lo stato a "Rejected". */
@@ -129,9 +130,12 @@ class RegistrationRequestService(
 
           updateRequestState(processedRequest)
 
+  private def rollbackAccount(account: Account): Unit =
+    accountLogic.recordDelete(account.getId, accountsFilePathName)
+
   private def findPending(id: String): Option[Registration] =
     registrationLogic
-      .getRecordsByFilter[Registration](_.getId == id, registrationsFilePath)
+      .getRecordsByFilter[Registration](request => request.getId == id && request.getState == "Pending", registrationsFilePath)
       .headOption
 
   private def updateRequestState(processedRequest: Registration): Either[String, Registration] =
@@ -146,7 +150,7 @@ class RegistrationRequestService(
         .toLowerCase
         .replaceAll("[^a-z]", "")
 
-    val existingUsernames = existingAccounts.map(_.getUsername.toLowerCase).toSet
+    val existingUsernames = existingAccounts.map(_.getUsername.trim).toSet
 
     LazyList.iterate(1)(_ + 1)
       .map(index => if index == 1 then base else s"$base$index")

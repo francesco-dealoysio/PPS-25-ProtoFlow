@@ -1,7 +1,6 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.services.LoadedDocumentService
-import pkg.a.gui.text.UiStyles.Common.DescriptionAreaStyle
 import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
@@ -10,7 +9,6 @@ import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
 import pkg.a.gui.traits.Form
 import pkg.a.gui.validation.LoadedDocumentValidator
 import pkg.b.logic.{Classification, LoadedDocument}
-import pkg.d.util.DateTime.localDate
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
 
@@ -27,7 +25,7 @@ object DocumentRegistrationView extends Form:
     val validator = new LoadedDocumentValidator()
     val classificationLogic = new Classification()
     val id = readOnlyStringField(selectedDocument.getId)
-    val documentDate = dateField(localDate)
+    val documentDate = dateField(selectedDocument.getDocumentDate)
     val documentTime = stringField(selectedDocument.getDocumentTime)
     val documentProtocol = stringField(selectedDocument.getDocumentProtocol)
     val documentType = stringField(selectedDocument.getDocumentType)
