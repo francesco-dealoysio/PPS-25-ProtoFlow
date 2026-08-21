@@ -74,6 +74,3 @@ case class LoadedDocument(
       case e: Exception =>
         logger(e)
     result
-
-@main def tryLoadedDocument: Unit =
-  println("Tested in LoadedDocumentTest")

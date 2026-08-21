@@ -2,9 +2,9 @@ package pkg.d.util
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.b.logic.{DocumentLog, ArchivedDocument, RegisteredDocument, LoadedDocument}
-
+import pkg.b.logic.{ArchivedDocument, DocumentLog, LoadedDocument, RegisteredDocument}
 import pkg.c.data.Xml.createEmptyXmlFile
+import pkg.d.util.Filters.{getDocumentOperationsLogPredicate, getDocumentPredicate, getLoadedDocumentPredicate, getRegisteredDocumentPredicate}
 import pkg.d.util.Util.inTestFilePathName
 
 import java.nio.file.{Files, Paths}
@@ -820,7 +820,7 @@ class FiltersTest:
    * Test3 Filter criteria test on RegisteredDocument
    */
   @Test
-  def test3FilterByIdNotFound: Unit =
+  def test3FilterByIdNotFound(): Unit =
     val predicate = getRegisteredDocumentPredicate(
       List(
         ("getId", "=", List("?"))
@@ -829,7 +829,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), Seq.empty[RegisteredDocument])
 
   @Test
-  def test3FilterIDLessThan: Unit =
+  def test3FilterIDLessThan(): Unit =
     val expectedSequence = Seq(
       registeredDocument1,
       registeredDocument2
@@ -842,7 +842,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterIDLessThanOrEqual: Unit =
+  def test3FilterIDLessThanOrEqual(): Unit =
     val expectedSequence = Seq(
       registeredDocument1,
       registeredDocument2,
@@ -856,7 +856,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterById: Unit =
+  def test3FilterById(): Unit =
     val expectedSequence = Seq(
       registeredDocument11
     )
@@ -868,7 +868,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterIdGreaterThan: Unit =
+  def test3FilterIdGreaterThan(): Unit =
     val expectedSequence = Seq(
       registeredDocument11,
       registeredDocument120
@@ -881,7 +881,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterIdGreaterThanOrEqualTo: Unit =
+  def test3FilterIdGreaterThanOrEqualTo(): Unit =
     val expectedSequence = Seq(
       registeredDocument5,
       registeredDocument11,
@@ -895,7 +895,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterContainsIds: Unit =
+  def test3FilterContainsIds(): Unit =
     val expectedSequence = Seq(
       registeredDocument2,
       registeredDocument120
@@ -908,7 +908,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterByDateLessThan: Unit =
+  def test3FilterByDateLessThan(): Unit =
     val expectedSequence = Seq(
       registeredDocument1,
       registeredDocument2
@@ -921,7 +921,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterByDateLessThanOrEqual: Unit =
+  def test3FilterByDateLessThanOrEqual(): Unit =
     val expectedSequence = Seq(
       registeredDocument1,
       registeredDocument2,
@@ -935,7 +935,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterByDate: Unit =
+  def test3FilterByDate(): Unit =
     val expectedSequence = Seq(
       registeredDocument11
     )
@@ -947,7 +947,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterByDateGreaterThanOrEqualTo: Unit =
+  def test3FilterByDateGreaterThanOrEqualTo(): Unit =
     val expectedSequence = Seq(
       registeredDocument11,
       registeredDocument120
@@ -960,7 +960,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterByDateGreater: Unit =
+  def test3FilterByDateGreater(): Unit =
     val expectedSequence = Seq(
       registeredDocument5,
       registeredDocument11,
@@ -974,7 +974,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterByDateInterval: Unit =
+  def test3FilterByDateInterval(): Unit =
     val expectedSequence = Seq(
       registeredDocument2,
       registeredDocument5,
@@ -989,7 +989,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterContainsDate: Unit =
+  def test3FilterContainsDate(): Unit =
     val expectedSequence = Seq(
       registeredDocument2,
       registeredDocument11
@@ -1002,7 +1002,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterContainsRegisteredBy: Unit =
+  def test3FilterContainsRegisteredBy(): Unit =
     val expectedSequence = Seq(
       registeredDocument1,
       registeredDocument120
@@ -1015,7 +1015,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterByOperators: Unit =
+  def test3FilterByOperators(): Unit =
     val expectedSequence = Seq(
       registeredDocument11
     )
@@ -1028,7 +1028,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterTextInSubject: Unit =
+  def test3FilterTextInSubject(): Unit =
     val expectedSequence = Seq(
       registeredDocument2,
       registeredDocument5
@@ -1041,7 +1041,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterCombined1: Unit =
+  def test3FilterCombined1(): Unit =
     val expectedSequence = Seq(
       registeredDocument1
     )
@@ -1057,7 +1057,7 @@ class FiltersTest:
     assertEquals(RegisteredDocument().getRecordsByFilter[RegisteredDocument](predicate, xmlFilePathName3), expectedSequence)
 
   @Test
-  def test3FilterCombined2: Unit =
+  def test3FilterCombined2(): Unit =
     val expectedSequence = Seq(
       registeredDocument2,
       registeredDocument5
@@ -1076,7 +1076,7 @@ class FiltersTest:
    * Test4 Filter criteria test on LoadedDocument
    */
   @Test
-  def test4FilterByIdNotFound: Unit =
+  def test4FilterByIdNotFound(): Unit =
     val predicate = getLoadedDocumentPredicate(
       List(
         ("getId", "=", List("?"))
@@ -1085,7 +1085,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), Seq.empty[LoadedDocument])
 
   @Test
-  def test4FilterIDLessThan: Unit =
+  def test4FilterIDLessThan(): Unit =
     val expectedSequence = Seq(
       loadedDocument1,
       loadedDocument2
@@ -1098,7 +1098,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterIDLessThanOrEqual: Unit =
+  def test4FilterIDLessThanOrEqual(): Unit =
     val expectedSequence = Seq(
       loadedDocument1,
       loadedDocument2,
@@ -1112,7 +1112,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterById: Unit =
+  def test4FilterById(): Unit =
     val expectedSequence = Seq(
       loadedDocument11
     )
@@ -1124,7 +1124,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterIdGreaterThan: Unit =
+  def test4FilterIdGreaterThan(): Unit =
     val expectedSequence = Seq(
       loadedDocument11,
       loadedDocument120
@@ -1137,7 +1137,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterIdGreaterThanOrEqualTo: Unit =
+  def test4FilterIdGreaterThanOrEqualTo(): Unit =
     val expectedSequence = Seq(
       loadedDocument5,
       loadedDocument11,
@@ -1151,7 +1151,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterContainsIds: Unit =
+  def test4FilterContainsIds(): Unit =
     val expectedSequence = Seq(
       loadedDocument2,
       loadedDocument120
@@ -1164,7 +1164,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterByDateLessThan: Unit =
+  def test4FilterByDateLessThan(): Unit =
     val expectedSequence = Seq(
       loadedDocument1,
       loadedDocument2
@@ -1177,7 +1177,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterByDateLessThanOrEqual: Unit =
+  def test4FilterByDateLessThanOrEqual(): Unit =
     val expectedSequence = Seq(
       loadedDocument1,
       loadedDocument2,
@@ -1191,7 +1191,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterByDate: Unit =
+  def test4FilterByDate(): Unit =
     val expectedSequence = Seq(
       loadedDocument11
     )
@@ -1203,7 +1203,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterByDateGreaterThanOrEqualTo: Unit =
+  def test4FilterByDateGreaterThanOrEqualTo(): Unit =
     val expectedSequence = Seq(
       loadedDocument11,
       loadedDocument120
@@ -1216,7 +1216,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterByDateGreater: Unit =
+  def test4FilterByDateGreater(): Unit =
     val expectedSequence = Seq(
       loadedDocument5,
       loadedDocument11,
@@ -1230,7 +1230,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterByDateInterval: Unit =
+  def test4FilterByDateInterval(): Unit =
     val expectedSequence = Seq(
       loadedDocument2,
       loadedDocument5,
@@ -1245,7 +1245,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterContainsDate: Unit =
+  def test4FilterContainsDate(): Unit =
     val expectedSequence = Seq(
       loadedDocument2,
       loadedDocument11
@@ -1258,7 +1258,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterContainsProcessedBy: Unit =
+  def test4FilterContainsProcessedBy(): Unit =
     val expectedSequence = Seq(
       loadedDocument2,
       loadedDocument5,
@@ -1272,7 +1272,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterTextInSubject: Unit =
+  def test4FilterTextInSubject(): Unit =
     val expectedSequence = Seq(
       loadedDocument2,
       loadedDocument5
@@ -1285,7 +1285,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterCombined1: Unit =
+  def test4FilterCombined1(): Unit =
     val expectedSequence = Seq(
       loadedDocument1
     )
@@ -1301,7 +1301,7 @@ class FiltersTest:
     assertEquals(LoadedDocument().getRecordsByFilter[LoadedDocument](predicate, xmlFilePathName4), expectedSequence)
 
   @Test
-  def test4FilterCombined2: Unit =
+  def test4FilterCombined2(): Unit =
     val expectedSequence = Seq(
       loadedDocument2,
       loadedDocument5

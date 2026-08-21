@@ -20,7 +20,7 @@ object RoleAddView extends Form:
     val name = stringField(prompt = Prompts.RoleName)
     val description = areaField(prompt = Prompts.Description)
     val result = createResultMessage()
-    val monitoredFields = Seq(role, description)
+    val monitoredFields = Seq(role, name, description)
 
     def currentRole(id: String = ""): Role =
       Role(
@@ -73,6 +73,7 @@ object RoleAddView extends Form:
       formGrid(
         Seq(
           formRow(Labels.required(Labels.Role), role),
+          formRow(Labels.required(Labels.RoleName), name),
           formRow(Labels.required(Labels.Description), description)
         )
       )

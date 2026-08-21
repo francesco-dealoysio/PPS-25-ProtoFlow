@@ -86,6 +86,3 @@ trait Entity:
     catch
       case e: Exception =>
         logger(e); 0
-
-@main def tryEntity: Unit =
-  println("Tested in AllTestsSuite")

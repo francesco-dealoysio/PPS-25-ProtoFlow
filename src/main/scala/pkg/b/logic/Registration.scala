@@ -54,6 +54,3 @@ case class Registration(
   def getAssignedUsername: String = assignedUsername
 
   override def xmlFile = "registrations.xml"
-
-@main def tryRegistration: Unit =
-  println("Tested in RegistrationTest.scala")

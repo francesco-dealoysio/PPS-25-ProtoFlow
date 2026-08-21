@@ -113,7 +113,3 @@ case class ArchivedDocument(
       case e: Exception =>
         logger(e)
     result
-
-
-@main def tryArchivedDocument: Unit =
-  println("Tested in ArchivedDocumentTest")

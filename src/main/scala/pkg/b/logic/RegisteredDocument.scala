@@ -92,6 +92,3 @@ case class RegisteredDocument(
       case e: Exception =>
         logger(e)
     result
-
-@main def tryRegisteredDocument: Unit =
-  println("Tested in RegisteredDocumentTest")

@@ -4,7 +4,8 @@ import pkg.a.gui.services.LoadedDocumentService
 import pkg.a.gui.traits.Management
 import pkg.b.logic.LoadedDocument
 import pkg.d.util.Util.inDocumentsFilePathName
-import pkg.d.util.{XmlToPdf, getLoadedDocumentPredicate}
+import pkg.d.util.Filters.getLoadedDocumentPredicate
+import pkg.d.util.XmlToPdf
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Management as Text}
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields

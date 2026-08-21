@@ -1,6 +1,6 @@
 package pkg.d.util
 
-object Filters
+object Filters:
 
   private case class FilterCriteria(
                              field: String,
@@ -553,39 +553,3 @@ object Filters
     )
     combineLoadedDocumentPredicates(criteriaGroup)
   }
-
-  @main def tryFilters: Unit =
-    println("Tested in FiltersTest")
-/*
-    import pkg.b.logic.DocumentLog
-
-    val predicate = getDocumentOperationsLogPredicate(
-      List(
-        ("getDocumentId", ">", List("3")),
-        ("getDocumentId", "<", List("21")),
-        ("getProcessedDate", ">=", List("2026-07-09")),
-        ("getProcessedDate", "<=", List("2026-07-21")),
-        ("getProcessedBy", "!=", List("Rossi")),
-        ("getOperationType", "contains", List("loading", "archiving")),
-      )
-    )
-
-    val result = DocumentLog().getRecordsByFilter[DocumentLog](predicate)
-    result.foreach(r => println(r))
-
-    import pkg.b.logic.ArchivedDocument
-
-    val predicate1 = getDocumentPredicate(
-      List(
-        ("getId", ">", List("1")),
-        ("getId", "<", List("12"))
-      )
-    )
-
-    val result1 = ArchivedDocument().getRecordsByFilter[ArchivedDocument](predicate1)
-    result1.foreach(r =>
-      print("(" + r.getId + ", ")
-      print(r.getArchivedDate + ", ")
-      println(r.getArchivedBy + ")")
-    )
-*/

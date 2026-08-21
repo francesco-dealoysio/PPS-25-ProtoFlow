@@ -59,7 +59,3 @@ object FileSystem:
         case ex: IOException =>
           System.err.println(s"Errore nella creazione di $dir: ${ex.getMessage}")
     }
-  
-  @main def tryFileSystem: Unit =
-
-    println("")

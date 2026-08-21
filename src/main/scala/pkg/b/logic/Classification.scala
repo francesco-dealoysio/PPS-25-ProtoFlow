@@ -55,6 +55,3 @@ case class Classification(
         logger(e)
         false
     result
-
-@main def tryClassifica: Unit =
-  println("Tested in ClassificationTest.scala")

@@ -11,7 +11,6 @@ import pkg.a.gui.traits.Form
 import pkg.a.gui.validation.RegistrationValidator
 import pkg.b.logic.{Classification, Role, Registration as RegistrationModel}
 import scalafx.scene.Node
-import scalafx.scene.control.Button
 import scalafx.scene.layout.{BorderPane, GridPane}
 
 object RegistrationView extends Form:

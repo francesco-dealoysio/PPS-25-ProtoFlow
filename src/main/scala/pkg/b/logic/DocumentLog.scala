@@ -60,32 +60,3 @@ case class DocumentLog(
 
     logDocumentOperation.recordInsert(logDocumentOperation,DocumentLog().defaultXmlFilePathName)
   }
-
-@main def tryDocumentLog: Unit =
-  println("Tested in DocumentLogTest.scala")
-  /*
-  import pkg.b.logic.Account
-  import pkg.d.util.Util.cipher
-  import pkg.d.util.DateTime.{localDate, localTime}
-  val user = Account(
-    "1",
-    "Rossi",
-    "Mario",
-    "mario.rossi@studio.unibo.it",
-    "06/12345678",
-    "admin",
-    "Ufficio informatica",
-    "Tecnico informatico",
-    "tecnico1",
-    cipher("topolino")
-  )
-  val documentId = "2"
-  val operationType = "loading"
-  DocumentLog().writeDocumentOperationLog(
-    documentId,
-    "loading",
-    localDate,
-    localTime,
-    user.getName + " " + user.getSurname
-  )
-*/

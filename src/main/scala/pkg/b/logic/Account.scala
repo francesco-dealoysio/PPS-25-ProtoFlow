@@ -92,6 +92,3 @@ case class Account(
 
       case None =>
         false
-
-@main def tryAccount: Unit =
-  println("Tested in AccountTest.scala")

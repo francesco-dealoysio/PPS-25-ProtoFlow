@@ -6,8 +6,8 @@ import pkg.a.gui.text.UiText.DocumentLogs.{Fields, Management as Text, Operation
 import pkg.a.gui.traits.Management
 import pkg.b.logic.DocumentLog
 import pkg.d.util.Util.inLogFilePathName
-import pkg.d.util.{XmlToPdf, getDocumentOperationsLogPredicate}
-
+import pkg.d.util.Filters.getDocumentOperationsLogPredicate
+import pkg.d.util.XmlToPdf
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.{ComboBox, DatePicker, TextField}
 import scalafx.scene.layout.BorderPane

@@ -7,8 +7,6 @@ import scalafx.scene.control.Button
 import scalafx.scene.layout.*
 import pkg.a.gui.text.UiStyles.HomePage.*
 import pkg.a.gui.text.UiText.Common.Dialogs.Logout.*
-import pkg.a.gui.services.DocumentManagementControlService
-import pkg.a.gui.services.DocumentManagementControlService.Stages
 
 trait HomePage extends Root:
 

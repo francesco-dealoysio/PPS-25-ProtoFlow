@@ -51,7 +51,7 @@ object Logger:
     else
       loggingInProgress.set(true)
       try
-        import java.nio.file.{Files, Path, Paths}
+        import java.nio.file.{Files, Paths}
         import pkg.c.data.Xml.createEmptyXmlFile
 /*
         val configuredPath = Paths.get(inLogFilePathName("errors.xml"))

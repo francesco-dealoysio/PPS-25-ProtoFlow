@@ -4,7 +4,8 @@ import pkg.a.gui.services.ArchivedDocumentService
 import pkg.a.gui.traits.Management
 import pkg.b.logic.ArchivedDocument
 import pkg.d.util.Util.inDocumentsFilePathName
-import pkg.d.util.{XmlToPdf, getDocumentPredicate}
+import pkg.d.util.Filters.getDocumentPredicate
+import pkg.d.util.XmlToPdf
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.BorderPane

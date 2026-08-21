@@ -52,16 +52,6 @@ object UiStyles:
     val DocumentsTableStyle = "documents-table"
     val TablePlaceholderStyle = "table-placeholder"
 
-  object Operation:
-    val PageTitleStyle = "operation-page-title"
-    val PageTitleLabelStyle = "operation-page-title-lbl"
-    val ToolbarStyle = "operation-page-toolbar"
-
-  object Inline:
-    val AppBackgroundStyle = "-fx-background-color: lightgray;"
-    val ErrorTextStyle = "-fx-text-fill: red;"
-    val DefaultTextStyle = "-fx-text-fill: black;"
-
   object Requests:
     val DetailsGridStyle = "request-details-grid"
     val DetailsCardStyle = "request-details-card"

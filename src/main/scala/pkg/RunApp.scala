@@ -1,6 +1,5 @@
 package pkg
 
-// Entry point to run the application
 import pkg.b.logic.Init
 import pkg.a.gui.Navigator
 import scalafx.application.JFXApp3

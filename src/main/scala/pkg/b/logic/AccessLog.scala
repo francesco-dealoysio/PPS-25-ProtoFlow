@@ -50,6 +50,3 @@ case class AccessLog(
 
     log.recordInsert(log, log.defaultXmlFilePathName)
   }
-
-@main def tryAccessLog: Unit =
-  println("Tested in AccessLogTest.scala")

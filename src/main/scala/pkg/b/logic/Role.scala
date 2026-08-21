@@ -69,6 +69,3 @@ case class Role(
           super.recordDelete(id, xmlFilePathName)
       case None =>
         false
-
-@main def tryRole: Unit =
-    println("Tested in RoleTest.scala")

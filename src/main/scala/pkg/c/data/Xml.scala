@@ -145,6 +145,3 @@ object Xml:
         logger(ex match { case e: Exception => e })
         println(s"Error loading XML: ${ex.getMessage}")
       result
-
-  @main def tryXml(): Unit =
-    println("Tested in XmlTest.scala")
