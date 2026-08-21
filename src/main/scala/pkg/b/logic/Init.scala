@@ -137,3 +137,6 @@ object Init:
     IdGen(inIdsFilePathName("classificationId"))
     IdGen(inIdsFilePathName("registrationId"))
     IdGen(inIdsFilePathName("loadedDocumentId"))
+
+  @main def tryInit(): Unit =
+    init()  
