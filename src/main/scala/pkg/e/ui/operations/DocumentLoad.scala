@@ -8,7 +8,6 @@ import pkg.d.util.Util.{inDocumentsFilePathName, inIdsFilePathName}
 import pkg.e.ui.traits.{GUI, Homepage, Operation}
 import scalafx.scene.control.*
 import scalafx.scene.layout.VBox
-
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import scala.util.{Failure, Success, Try}

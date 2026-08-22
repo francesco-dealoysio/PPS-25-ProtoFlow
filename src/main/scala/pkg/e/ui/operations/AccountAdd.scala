@@ -7,8 +7,6 @@ import pkg.d.util.IdGen
 import pkg.d.util.Util.{cipher, inDatabaseFilePathName, inDocumentsFilePathName, inIdsFilePathName}
 import pkg.e.ui.traits.{GUI, Homepage, Management, Operation}
 import scalafx.scene.control.*
-import scalafx.Includes.jfxKeyEvent2sfx
-import scalafx.scene.input.KeyCode
 import scalafx.scene.layout.VBox
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -24,11 +22,13 @@ class AccountAdd(val user: Account, val parentMask: Management) extends Operatio
   operationType = "insert"
 
   objEntity = new Account
+  objEntityUndo = objEntity // nok
+  objEntityUndo.asInstanceOf[Account].setName("Pippo")
 
   xmlFilePathName = inDatabaseFilePathName("accounts.xml")
 
   override def menu: VBox = parentMask.menu
-
+/*
   var surnameLbl: Label = _
   var surnameFld: TextField = _
   var nameLbl: Label = _
@@ -47,9 +47,28 @@ class AccountAdd(val user: Account, val parentMask: Management) extends Operatio
   var usernameFld: TextField = _
   var passwordLbl: Label = _
   var passwordFld: PasswordField = _
+*/
+  var surnameLbl = new Label("Cognome *")
+  var surnameFld = new TextField()
+  var nameLbl = new Label("Nome *")
+  var nameFld = new TextField()
+  var emailLbl = new Label("Email *")
+  var emailFld = new TextField()
+  var phoneLbl = new Label("Telefono *")
+  var phoneFld = new TextField()
+  var roleLbl = new Label("Ruolo *")
+  var roleFld = new ComboBox[String]()
+  var areaLbl = new Label("Area *")
+  var areaFld = new ComboBox[String]()
+  var assignmentLbl = new Label("Incarico *")
+  var assignmentFld = new TextField()
+  var usernameLbl = new Label("Username *")
+  var usernameFld = new TextField()
+  var passwordLbl = new Label("Password *")
+  var passwordFld = new PasswordField()
 
   override def start(): Unit =
-
+/*
     surnameLbl = new Label("Cognome *")
     surnameFld = new TextField()
     nameLbl = new Label("Nome *")
@@ -68,7 +87,7 @@ class AccountAdd(val user: Account, val parentMask: Management) extends Operatio
     usernameFld = new TextField()
     passwordLbl = new Label("Password *")
     passwordFld = new PasswordField()
-
+*/
     controls = Seq(
       surnameLbl,
       surnameFld,
@@ -92,6 +111,8 @@ class AccountAdd(val user: Account, val parentMask: Management) extends Operatio
 
     fieldsLoad
 
+    setNextFocusOnEnter(controls)
+
     setDirtyOnChange(controls)
 
     super.start()
@@ -101,14 +122,10 @@ class AccountAdd(val user: Account, val parentMask: Management) extends Operatio
   def fieldsLoad: Unit =
 
     surnameFld.text = objEntity.asInstanceOf[Account].getSurname
-    surnameFld.onKeyPressed = event =>
-      if event.code == KeyCode.Enter then
-        nameFld.requestFocus()
 
     nameFld.text = objEntity.asInstanceOf[Account].getName
     emailFld.text = objEntity.asInstanceOf[Account].getEmail
     phoneFld.text = objEntity.asInstanceOf[Account].getPhone
-
 
     roleFld.getItems.addAll(Role().getRecords[Role]().map(r => r.getRole).sorted *)
     roleFld.getSelectionModel.select(objEntity.asInstanceOf[Account].getRole) // qui non serve
@@ -163,6 +180,7 @@ class AccountAdd(val user: Account, val parentMask: Management) extends Operatio
     esito
 
   override def objUpdate: Unit =
+
     objEntity.asInstanceOf[Account].setId(IdGen(inIdsFilePathName("loadedDocumentId")))
     objEntity.asInstanceOf[Account].setSurname(surnameFld.text.value.trim)
     objEntity.asInstanceOf[Account].setName(nameFld.text.value.trim)

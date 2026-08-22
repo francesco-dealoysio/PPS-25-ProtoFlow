@@ -8,6 +8,8 @@ import scalafx.scene.control.*
 import scalafx.scene.layout.{BorderPane, GridPane, HBox, VBox}
 import scalafx.scene.paint.Color
 import scalafx.scene.text.TextAlignment
+import scalafx.Includes.jfxKeyEvent2sfx
+import scalafx.scene.input.KeyCode
 
 trait Operation extends GUI:
   def fieldsLoad: Unit
@@ -18,6 +20,7 @@ trait Operation extends GUI:
 
   var operationType: String = ""
   var objEntity: Entity = null
+  var objEntityUndo: Entity = null
   var xmlFilePathName: String = ""
 
   var pageTitle: String = "Titolo Operazione"
@@ -129,6 +132,7 @@ trait Operation extends GUI:
     resetBtn = new Button("Ripristina") {
       disable = true
       onAction = _ =>
+        objEntity
         fieldsLoad
         dirty = false
         execBtn.disable = true
@@ -176,6 +180,15 @@ trait Operation extends GUI:
     left = menu
     center = page
   }
+
+  protected  def setNextFocusOnEnter(controlSeq: Seq[Control]): Unit =
+    controlSeq.zipWithIndex.foreach {
+      case (ctl, row) if (row % 2 == 1) =>
+        ctl.onKeyPressed = event =>
+          if event.code == KeyCode.Enter then
+            controlSeq((row + 2) % controlSeq.size).requestFocus()
+      case _ => ()
+    }
 
   protected def setDirtyOnChange(controlSeq: Seq[Control]): Unit =
     controlSeq.zipWithIndex.foreach {

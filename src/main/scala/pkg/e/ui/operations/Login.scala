@@ -46,12 +46,13 @@ class Login(val user: Account, val parentMask: GUI) extends Operation:
         if valid then {
 
           val username = usernameFld.text.value.trim
-          val password = cipher(passwordFld.getText)
+          val password = passwordFld.getText
+          //val password = cipher(passwordFld.getText)
 
           val found = Account().getRecordsByFilter[Account](a =>
             a.getUsername == username &&
-            //a.getPassword == cipher(password)
-            a.getPassword == password
+            a.getPassword == cipher(password)
+            //a.getPassword == password
           )
 
           if (found.size > 0) then

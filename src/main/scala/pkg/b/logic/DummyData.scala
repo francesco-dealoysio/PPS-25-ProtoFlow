@@ -12,8 +12,8 @@ object DummyData:
   val accounts: Elem = <accounts>
     <record>
       <id>1</id>
-      <surname>de aloysio</surname>
-      <name>francesco</name>
+      <surname>de Aloysio</surname>
+      <name>Francesco</name>
       <email>francesco.dealoysio@studio.unibo.it</email>
       <phone>06/11111111</phone>
       <role>admin</role>
