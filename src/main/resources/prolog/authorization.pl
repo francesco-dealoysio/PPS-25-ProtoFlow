@@ -10,6 +10,7 @@ can(admin, registrazioni).
 can(admin, account_utenti).
 can(admin, ruoli).
 can(admin, classifiche).
+can(admin, gestione_autorizzazioni).
 
 can(oper, nuova_presa_in_carico).
 can(oper, documenti_da_protocollare).

@@ -6,6 +6,12 @@ import pkg.a.gui.structures.MenuAction
 
 class AuthorizationEngineTest:
 
+  // Custom rules are persisted to a real file and shared by a single engine instance,
+  // so every test that adds one must remove it again, pass or fail.
+  @After
+  def cleanUpCustomRules(): Unit =
+    AuthorizationEngine.removeCustomRule("oper", MenuAction.Ruoli)
+
   @Test
   def adminCanManageRolesAccountsAndClassifications(): Unit =
     assertTrue(AuthorizationEngine.isAuthorized("admin", MenuAction.Ruoli))
@@ -15,6 +21,7 @@ class AuthorizationEngineTest:
     assertTrue(AuthorizationEngine.isAuthorized("admin", MenuAction.Log))
     assertTrue(AuthorizationEngine.isAuthorized("admin", MenuAction.ControlloGestione))
     assertTrue(AuthorizationEngine.isAuthorized("admin", MenuAction.Registrazioni))
+    assertTrue(AuthorizationEngine.isAuthorized("admin", MenuAction.GestioneAutorizzazioni))
 
   @Test
   def adminCannotDoOperatoreOrViewerActions(): Unit =
@@ -69,3 +76,43 @@ class AuthorizationEngineTest:
   @Test
   def permittedActionsIsEmptyForUnknownRole(): Unit =
     assertTrue(AuthorizationEngine.permittedActions("guest").isEmpty)
+
+  @Test
+  def addingACustomRuleGrantsItImmediately(): Unit =
+    assertFalse(AuthorizationEngine.isAuthorized("oper", MenuAction.Ruoli))
+
+    assertTrue(AuthorizationEngine.addCustomRule("oper", MenuAction.Ruoli))
+
+    assertTrue(AuthorizationEngine.isAuthorized("oper", MenuAction.Ruoli))
+    assertTrue(AuthorizationEngine.permittedActions("oper").contains(MenuAction.Ruoli))
+    assertTrue(AuthorizationEngine.listCustomRules().contains(("oper", MenuAction.Ruoli)))
+
+  @Test
+  def addingTheSameCustomRuleTwiceIsANoOp(): Unit =
+    assertTrue(AuthorizationEngine.addCustomRule("oper", MenuAction.Ruoli))
+    assertFalse(AuthorizationEngine.addCustomRule("oper", MenuAction.Ruoli))
+
+  @Test
+  def removingACustomRuleRevokesIt(): Unit =
+    AuthorizationEngine.addCustomRule("oper", MenuAction.Ruoli)
+
+    assertTrue(AuthorizationEngine.removeCustomRule("oper", MenuAction.Ruoli))
+
+    assertFalse(AuthorizationEngine.isAuthorized("oper", MenuAction.Ruoli))
+    assertFalse(AuthorizationEngine.listCustomRules().contains(("oper", MenuAction.Ruoli)))
+
+  @Test
+  def cannotRemoveARuleFromTheBaseTheoryAsIfItWereCustom(): Unit =
+    assertFalse(AuthorizationEngine.removeCustomRule("admin", MenuAction.Ruoli))
+    assertTrue(AuthorizationEngine.isAuthorized("admin", MenuAction.Ruoli))
+
+  @Test
+  def addingARuleAlreadyGrantedByTheBaseTheoryIsANoOp(): Unit =
+    // admin already has statistiche from authorization.pl: customizing it again must not
+    // assert a duplicate can/2 fact, or permitted_actions would list it twice (findall
+    // returns one solution per matching clause).
+    assertFalse(AuthorizationEngine.addCustomRule("admin", MenuAction.Statistiche))
+    assertFalse(AuthorizationEngine.listCustomRules().contains(("admin", MenuAction.Statistiche)))
+
+    val occurrences = AuthorizationEngine.permittedActions("admin").count(_ == MenuAction.Statistiche)
+    assertEquals(1, occurrences)

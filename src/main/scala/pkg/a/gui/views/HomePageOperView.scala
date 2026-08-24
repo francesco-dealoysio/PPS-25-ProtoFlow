@@ -9,7 +9,7 @@ object HomePageOperView extends HomePage:
 
   override protected val pageTitle: String = "Homepage Operatore"
 
-  override protected val menuItems: Seq[MenuItem] =
+  override protected def menuItems: Seq[MenuItem] =
     Seq(MenuItem(Dashboard, MenuAction.Dashboard), MenuItem(Profile, MenuAction.Profilo)) ++
       AuthorizationEngine.permittedActions("oper").map(action => MenuItem(labels(action), action)) ++
       Seq(MenuItem(Logout, MenuAction.Logout))

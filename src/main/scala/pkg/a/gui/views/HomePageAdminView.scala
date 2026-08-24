@@ -11,7 +11,7 @@ object HomePageAdminView extends HomePage:
 
   override protected val pageTitle: String = "Homepage Amministratore"
 
-  override protected val menuItems: Seq[MenuItem] =
+  override protected def menuItems: Seq[MenuItem] =
     Seq(MenuItem(Dashboard, MenuAction.Dashboard), MenuItem(Profile, MenuAction.Profilo)) ++
       AuthorizationEngine.permittedActions("admin").map(action => MenuItem(labels(action), action)) ++
       Seq(MenuItem(Logout, MenuAction.Logout))
@@ -42,6 +42,9 @@ object HomePageAdminView extends HomePage:
 
       case MenuAction.Classifiche =>
         showClassificationManagement(navigator)
+
+      case MenuAction.GestioneAutorizzazioni =>
+        showAuthorizationRulesManagement(navigator)
 
       case _ =>
         ()
@@ -152,6 +155,22 @@ object HomePageAdminView extends HomePage:
         selectedClassification = selected,
         onSaved = () => showClassificationManagement(navigator),
         onExit = () => showClassificationManagement(navigator)
+      )
+    )
+
+  private def showAuthorizationRulesManagement(navigator: Navigator): Unit =
+    navigator.show(
+      AuthorizationRulesManagementView(
+        onAdd = () => showAuthorizationRuleAdd(navigator),
+        onExit = () => navigator.dashboard()
+      )
+    )
+
+  private def showAuthorizationRuleAdd(navigator: Navigator): Unit =
+    navigator.show(
+      AuthorizationRuleAddView(
+        onSaved = () => showAuthorizationRulesManagement(navigator),
+        onExit = () => showAuthorizationRulesManagement(navigator)
       )
     )
 

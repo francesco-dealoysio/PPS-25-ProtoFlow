@@ -85,6 +85,7 @@ object UiText:
         val Classification = "Classifica"
         val Date = "Data"
         val RoleName = "Nome ruolo"
+        val Action = "Azione"
 
         def required(label: String): String =
           s"$label$RequiredMarker"
@@ -96,6 +97,7 @@ object UiText:
         val Phone = "Inserisci il telefono"
         val Role = "Inserisci il ruolo"
         val SelectRole = "Seleziona il ruolo"
+        val SelectAction = "Seleziona l'azione"
         val Description = "Inserisci la descrizione"
         val Area = "Inserisci l'area"
         val Assignment = "Inserisci la mansione"
@@ -167,6 +169,30 @@ object UiText:
 
       def deleted(classification: String): String =
         s"La classifica '$classification' è stata eliminata correttamente."
+
+  object AuthorizationRules:
+
+    object Add:
+      val Title = "Aggiunta regola di autorizzazione"
+      val Subtitle = "Concedi a un ruolo il permesso di eseguire un'azione, tramite una regola Prolog personalizzata."
+      val Success = "Regola aggiunta correttamente."
+      val AlreadyExists = "Questo ruolo ha già il permesso per questa azione."
+      val RoleRequired = "Seleziona un ruolo."
+      val ActionRequired = "Seleziona un'azione."
+
+    object Management:
+      val Title = "Gestione Autorizzazioni"
+      val Subtitle = "Regole di autorizzazione personalizzate, aggiunte oltre a quelle di base del sistema."
+      val Empty = "Non sono presenti regole personalizzate."
+      val SelectToDelete = "Seleziona una regola da rimuovere."
+      val DeleteTitle = "Rimozione regola"
+      val DeleteConfirmation = "Confermi la rimozione della regola selezionata?"
+      val DeleteError = "Non è stato possibile rimuovere la regola."
+      val RoleColumn = "Ruolo"
+      val ActionColumn = "Azione"
+
+      def deleted(role: String, action: String): String =
+        s"Regola rimossa: $role non può più eseguire '$action'."
 
   object Accounts:
     object Profile:
@@ -412,6 +438,7 @@ object UiText:
     val DocumentsToRegister = "Documenti da protocollare"
     val DocumentsToArchive = "Documenti da archiviare"
     val ArchivedDocuments = "Documenti archiviati"
+    val AuthorizationRules = "Autorizzazioni"
 
     // Label for each MenuAction whose presence in the menu is decided by
     // AuthorizationEngine.permittedActions, rather than hardcoded per view.
@@ -427,6 +454,7 @@ object UiText:
       MenuAction.DocumentiDaProtocollare -> DocumentsToRegister,
       MenuAction.DocumentiDaArchiviare -> DocumentsToArchive,
       MenuAction.DocumentiArchiviati -> ArchivedDocuments,
+      MenuAction.GestioneAutorizzazioni -> AuthorizationRules,
       MenuAction.VisualizzazioneArchiviazioni -> ArchivedDocuments
     )
     val Logout = "Logout"

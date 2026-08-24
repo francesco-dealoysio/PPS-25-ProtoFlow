@@ -17,6 +17,7 @@ enum MenuAction:
   case AccountUtenti
   case Ruoli
   case Classifiche
+  case GestioneAutorizzazioni
 
   case Logout
 
