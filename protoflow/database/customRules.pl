@@ -1,1 +1,0 @@
-can(oper, ruoli).
