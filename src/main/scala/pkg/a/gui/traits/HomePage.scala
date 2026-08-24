@@ -1,12 +1,13 @@
 package pkg.a.gui.traits
 
 import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
-import pkg.b.logic.{Account, Role}
+import pkg.b.logic.{Account, AuthorizationEngine, Role}
 import scalafx.geometry.Pos
 import scalafx.scene.control.Button
 import scalafx.scene.layout.*
 import pkg.a.gui.text.UiStyles.HomePage.*
-import pkg.a.gui.text.UiText.Common.Dialogs.Logout.*
+import pkg.a.gui.text.UiText.Common.Dialogs.Logout
+import pkg.a.gui.text.UiText.Common.Dialogs.Denied
 
 trait HomePage extends Root:
 
@@ -53,9 +54,9 @@ trait HomePage extends Root:
         case MenuAction.Logout =>
           val confirmed =
             askConfirmation(
-              titleText = Title,
-              header = Header,
-              content = Content
+              titleText = Logout.Title,
+              header = Logout.Header,
+              content = Logout.Content
             )
 
           if confirmed then
@@ -63,13 +64,20 @@ trait HomePage extends Root:
             onLogout()
 
         case action =>
-          viewModel.select(action)
+          if AuthorizationEngine.isAuthorized(currentAccount.getRole, action) then
+            viewModel.select(action)
 
-          handleAction(
-            action = action,
-            navigator = navigator,
-            currentAccount = currentAccount
-          )
+            handleAction(
+              action = action,
+              navigator = navigator,
+              currentAccount = currentAccount
+            )
+          else
+            showError(
+              titleText = Denied.Title,
+              header = Denied.Header,
+              content = Denied.Content
+            )
 
     val sidebar = createSidebar(action => navigate(action))
 

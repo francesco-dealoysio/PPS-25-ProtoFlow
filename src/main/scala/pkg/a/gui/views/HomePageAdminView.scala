@@ -5,7 +5,7 @@ import pkg.a.gui.services.DocumentManagementControlService.ManagedDocument
 import pkg.a.gui.structures.{MenuAction, MenuItem}
 import pkg.a.gui.text.UiText.Menu.*
 import pkg.a.gui.traits.HomePage
-import pkg.b.logic.{Account, Classification, DocumentLog, Registration, Role}
+import pkg.b.logic.{Account, AuthorizationEngine, Classification, DocumentLog, Registration, Role}
 import scalafx.scene.layout.Pane
 
 object HomePageAdminView extends HomePage:
@@ -15,19 +15,10 @@ object HomePageAdminView extends HomePage:
   override protected def dashboardView(currentAccount: Account): Pane =
     AdminDashboardView(currentAccount, pageTitle)
 
-  override protected val menuItems: Seq[MenuItem] =
-    Seq(
-      MenuItem(Dashboard, MenuAction.Dashboard),
-      MenuItem(Profile, MenuAction.Profilo),
-      MenuItem(Statistics, MenuAction.Statistiche),
-      MenuItem(Log, MenuAction.Log),
-      MenuItem(ManagementControl, MenuAction.ControlloGestione),
-      MenuItem(Registrations, MenuAction.Registrazioni),
-      MenuItem(UserAccounts, MenuAction.AccountUtenti),
-      MenuItem(Roles, MenuAction.Ruoli),
-      MenuItem(Classifications, MenuAction.Classifiche),
-      MenuItem(Logout, MenuAction.Logout)
-    )
+  override protected def menuItems: Seq[MenuItem] =
+    Seq(MenuItem(Dashboard, MenuAction.Dashboard), MenuItem(Profile, MenuAction.Profilo)) ++
+      AuthorizationEngine.permittedActions("admin").map(action => MenuItem(labels(action), action)) ++
+      Seq(MenuItem(Logout, MenuAction.Logout))
 
   override protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit =
     action match
@@ -55,6 +46,9 @@ object HomePageAdminView extends HomePage:
 
       case MenuAction.Classifiche =>
         showClassificationManagement(navigator)
+
+      case MenuAction.GestioneAutorizzazioni =>
+        showAuthorizationRulesManagement(navigator)
 
       case _ =>
         ()
@@ -165,6 +159,22 @@ object HomePageAdminView extends HomePage:
         selectedClassification = selected,
         onSaved = () => showClassificationManagement(navigator),
         onExit = () => showClassificationManagement(navigator)
+      )
+    )
+
+  private def showAuthorizationRulesManagement(navigator: Navigator): Unit =
+    navigator.show(
+      AuthorizationRulesManagementView(
+        onAdd = () => showAuthorizationRuleAdd(navigator),
+        onExit = () => navigator.dashboard()
+      )
+    )
+
+  private def showAuthorizationRuleAdd(navigator: Navigator): Unit =
+    navigator.show(
+      AuthorizationRuleAddView(
+        onSaved = () => showAuthorizationRulesManagement(navigator),
+        onExit = () => showAuthorizationRulesManagement(navigator)
       )
     )
 

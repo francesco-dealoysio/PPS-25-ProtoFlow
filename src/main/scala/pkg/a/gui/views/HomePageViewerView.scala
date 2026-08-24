@@ -3,7 +3,7 @@ package pkg.a.gui.views
 import pkg.a.gui.structures.{MenuAction, MenuItem}
 import pkg.a.gui.text.UiText.Menu.*
 import pkg.a.gui.traits.HomePage
-import pkg.b.logic.{Account, ArchivedDocument}
+import pkg.b.logic.{Account, ArchivedDocument, AuthorizationEngine}
 import scalafx.scene.layout.Pane
 
 object HomePageViewerView extends HomePage:
@@ -13,13 +13,10 @@ object HomePageViewerView extends HomePage:
   override protected def dashboardView(currentAccount: Account): Pane =
     ViewerDashboardView(currentAccount, pageTitle)
 
-  override protected val menuItems: Seq[MenuItem] =
-    Seq(
-      MenuItem(Dashboard, MenuAction.Dashboard),
-      MenuItem(Profile, MenuAction.Profilo),
-      MenuItem(ArchivedDocuments, MenuAction.VisualizzazioneArchiviazioni),
-      MenuItem(Logout, MenuAction.Logout)
-    )
+  override protected def menuItems: Seq[MenuItem] =
+    Seq(MenuItem(Dashboard, MenuAction.Dashboard), MenuItem(Profile, MenuAction.Profilo)) ++
+      AuthorizationEngine.permittedActions("viewer").map(action => MenuItem(labels(action), action)) ++
+      Seq(MenuItem(Logout, MenuAction.Logout))
 
   override protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit =
     action match

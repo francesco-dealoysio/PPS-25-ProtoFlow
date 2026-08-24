@@ -63,9 +63,9 @@ case class Role(
     val roles = getRecords[Role](xmlFilePathName)
     roles.find(_.getId == id) match
       case Some(role) =>
-        if role.getRole.equalsIgnoreCase("admin") then
-          false
-        else
+        if AuthorizationEngine.canDeleteRole(role.getRole) then
           super.recordDelete(id, xmlFilePathName)
+        else
+          false
       case None =>
         false
