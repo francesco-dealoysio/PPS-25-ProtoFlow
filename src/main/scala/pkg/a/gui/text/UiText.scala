@@ -270,6 +270,12 @@ object UiText:
         s"Richiesta approvata. Account creato con username '$username' e password temporanea '$password': comunicali al richiedente."
 
   object LoadedDocuments:
+    object DocumentTypes:
+      val Package = "Plico"
+      val Email = "Email"
+      val Letter = "Lettera"
+      val All = Seq(Package, Email, Letter)
+
     object Fields:
       val DocumentDate = "Data documento"
       val ProcessedBy = "Preso in carico da"
@@ -279,7 +285,7 @@ object UiText:
 
     object Prompts:
       val DocumentProtocol = "Inserisci il protocollo del mittente"
-      val DocumentType = "Inserisci il tipo di documento"
+      val DocumentType = "Seleziona il tipo di documento"
       val Sender = "Inserisci il mittente"
       val Recipient = "Inserisci il destinatario"
       val Subject = "Inserisci l'oggetto"
@@ -312,6 +318,8 @@ object UiText:
       val PrintFileName = "documenti_presi_in_carico_elenco"
       val PrintSuccess = "Elenco stampato correttamente in PDF."
       val PrintError = "Errore durante la stampa dell'elenco (nessun documento presente?)."
+
+
 
   object RegisteredDocuments:
 

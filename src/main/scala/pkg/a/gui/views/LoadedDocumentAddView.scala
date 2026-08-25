@@ -1,7 +1,7 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.text.UiText.Common.Fields.Labels
-import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Prompts}
+import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Prompts, DocumentTypes}
 import pkg.a.gui.text.UiText.LoadedDocuments.Add as Text
 import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
@@ -23,7 +23,7 @@ object LoadedDocumentAddView extends Form:
     val validator = new LoadedDocumentValidator()
     val documentDate = dateField(localDate)
     val documentProtocol = stringField(prompt = Prompts.DocumentProtocol)
-    val documentType = stringField(prompt = Prompts.DocumentType)
+    val documentType = stringComboField(DocumentTypes.All, prompt = Prompts.DocumentType)
     val sender = stringField(prompt = Prompts.Sender)
     val recipient = stringField(prompt = Prompts.Recipient)
     val subject = stringField(prompt = Prompts.Subject)
