@@ -23,7 +23,6 @@ class RegisteredDocumentTest:
     registeredDocument1 = RegisteredDocument(
       "1",
       "2026-07-10",
-      "22:19:13.86",
       "2024/002342/F.D.",
       "email",
       "ACEA",
@@ -42,7 +41,6 @@ class RegisteredDocumentTest:
     registeredDocument2 = RegisteredDocument(
       "2",
       "2026-07-10",
-      "22:19:13.86",
       "2024/002342/F.D.",
       "letter",
       "ACEA",
@@ -61,7 +59,6 @@ class RegisteredDocumentTest:
     registeredDocument3 = RegisteredDocument(
       "3",
       "2026-07-10",
-      "22:19:13.86",
       "2024/002342/F.D.",
       "letter",
       "ACEA",

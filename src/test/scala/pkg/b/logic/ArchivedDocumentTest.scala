@@ -24,7 +24,6 @@ class ArchivedDocumentTest:
       ArchivedDocument(
         id = "1",
         documentDate = "2026-07-10",
-        documentTime = "22:19:13",
         documentProtocol = "2024/002342/F.D.",
         documentType = "email",
         sender = "ACEA",

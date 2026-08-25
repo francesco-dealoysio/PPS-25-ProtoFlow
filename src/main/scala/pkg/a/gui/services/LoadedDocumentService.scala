@@ -38,7 +38,6 @@ class LoadedDocumentService:
       RegisteredDocument(
         id = source.getId,
         documentDate = edited.getDocumentDate,
-        documentTime = edited.getDocumentTime,
         documentProtocol = edited.getDocumentProtocol,
         documentType = edited.getDocumentType,
         sender = edited.getSender,

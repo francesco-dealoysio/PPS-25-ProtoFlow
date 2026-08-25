@@ -67,7 +67,7 @@ object Util:
     folderPath + fs + fileName
 
 
-  @main def tryUtil: Unit =
+  @main def tryUtil(): Unit =
     import pkg.d.util.Logger.*
     
     // test loadImage

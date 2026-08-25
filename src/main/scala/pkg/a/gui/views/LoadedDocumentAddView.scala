@@ -21,16 +21,14 @@ object LoadedDocumentAddView extends Form:
 
     val documentLogic = new LoadedDocument()
     val validator = new LoadedDocumentValidator()
-    val defaultTime = localTime
     val documentDate = dateField(localDate)
-    val documentTime = stringField(defaultTime, Prompts.DocumentTime)
     val documentProtocol = stringField(prompt = Prompts.DocumentProtocol)
     val documentType = stringField(prompt = Prompts.DocumentType)
     val sender = stringField(prompt = Prompts.Sender)
     val recipient = stringField(prompt = Prompts.Recipient)
     val subject = stringField(prompt = Prompts.Subject)
     val remarks = areaField(prompt = Prompts.Remarks)
-    val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks)
+    val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentProtocol, documentType, sender, recipient, subject, remarks)
     val result = createResultMessage()
 
     def clearErrors(): Unit =
@@ -41,7 +39,6 @@ object LoadedDocumentAddView extends Form:
       LoadedDocument(
         id = id,
         documentDate = documentDate.value,
-        documentTime = documentTime.value,
         documentProtocol = documentProtocol.value,
         documentType = documentType.value,
         sender = sender.value,
@@ -55,7 +52,6 @@ object LoadedDocumentAddView extends Form:
       val errors = validator.validate(currentDocument())
       showFormFieldErrors(errors):
         case Validation.DocumentDateRequired => documentDate
-        case Validation.DocumentTimeRequired => documentTime
         case Validation.DocumentProtocolRequired => documentProtocol
         case Validation.DocumentTypeRequired => documentType
         case Validation.SenderRequired => sender
@@ -115,7 +111,6 @@ object LoadedDocumentAddView extends Form:
       formGrid(
         Seq(
           formRow(Labels.required(Fields.DocumentDate), documentDate),
-          formRow(Labels.required(Fields.DocumentTime), documentTime),
           formRow(Labels.required(Fields.DocumentProtocol), documentProtocol),
           formRow(Labels.required(Fields.DocumentType), documentType),
           formRow(Labels.required(CommonDocumentFields.Sender), sender),

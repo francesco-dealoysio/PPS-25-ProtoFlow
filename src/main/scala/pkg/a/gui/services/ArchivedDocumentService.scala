@@ -91,7 +91,6 @@ class ArchivedDocumentService:
     ArchivedDocument(
       id = source.getId,
       documentDate = source.getDocumentDate,
-      documentTime = source.getDocumentTime,
       documentProtocol = source.getDocumentProtocol,
       documentType = source.getDocumentType,
       sender = source.getSender,

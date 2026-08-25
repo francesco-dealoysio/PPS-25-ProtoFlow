@@ -26,7 +26,6 @@ object DocumentRegistrationView extends Form:
     val classificationLogic = new Classification()
     val id = readOnlyStringField(selectedDocument.getId)
     val documentDate = dateField(selectedDocument.getDocumentDate)
-    val documentTime = stringField(selectedDocument.getDocumentTime)
     val documentProtocol = stringField(selectedDocument.getDocumentProtocol)
     val documentType = stringField(selectedDocument.getDocumentType)
     val sender = stringField(selectedDocument.getSender)
@@ -35,7 +34,7 @@ object DocumentRegistrationView extends Form:
     val remarks = areaField(selectedDocument.getRemarks)
     val classification = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), prompt = Prompts.Classification)
 
-    val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentTime, documentProtocol, documentType, sender, recipient, subject, remarks, classification)
+    val monitoredFields: Seq[FormField[? <: Node]] = Seq(documentDate, documentProtocol, documentType, sender, recipient, subject, remarks, classification)
 
     val result = createResultMessage()
 
@@ -47,7 +46,6 @@ object DocumentRegistrationView extends Form:
       LoadedDocument(
         id = selectedDocument.getId,
         documentDate = documentDate.value,
-        documentTime = documentTime.value,
         documentProtocol = documentProtocol.value,
         documentType = documentType.value,
         sender = sender.value,
@@ -65,7 +63,6 @@ object DocumentRegistrationView extends Form:
       val documentValid =
         showFormFieldErrors(errors):
           case Validation.DocumentDateRequired => documentDate
-          case Validation.DocumentTimeRequired => documentTime
           case Validation.DocumentProtocolRequired => documentProtocol
           case Validation.DocumentTypeRequired => documentType
           case Validation.SenderRequired => sender
@@ -129,7 +126,6 @@ object DocumentRegistrationView extends Form:
         Seq(
           formRow(CommonDocumentFields.Id, id),
           formRow(Labels.required(Fields.DocumentDate), documentDate),
-          formRow(Labels.required(Fields.DocumentTime), documentTime),
           formRow(Labels.required(Fields.DocumentProtocol), documentProtocol),
           formRow(Labels.required(Labels.Classification), classification),
           formRow(Labels.required(Fields.DocumentType), documentType),

@@ -198,7 +198,6 @@ class DocumentLogTest:
     val loadedDocument = LoadedDocument(
       "1",
       "2026-07-10",
-      "22:19:13.86",
       "2024/002342/F.D.",
       "email",
       "ACEA",

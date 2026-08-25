@@ -8,7 +8,6 @@ import pkg.d.util.Util.inDocumentsFilePathName
 case class RegisteredDocument(
                          private var id: String = "",
                          private var documentDate: String = "",
-                         private var documentTime: String = "",
                          private var documentProtocol: String = "",
                          private var documentType: String = "",
                          private var sender: String = "",
@@ -29,7 +28,6 @@ case class RegisteredDocument(
 
   def setId(value: String): Unit = id = value
   def setDocumentDate(value: String): Unit = documentDate = value
-  def setDocumentTime(value: String): Unit = documentTime = value
   def setDocumentProtocol(value: String): Unit = documentProtocol = value
   def setDocumentType(value: String): Unit = documentType = value
   def setSender(value: String): Unit = sender = value
@@ -47,7 +45,6 @@ case class RegisteredDocument(
 
   def getId: String = id
   def getDocumentDate: String = documentDate
-  def getDocumentTime: String = documentTime
   def getDocumentProtocol: String = documentProtocol
   def getDocumentType: String = documentType
   def getSender: String = sender

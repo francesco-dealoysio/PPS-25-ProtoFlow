@@ -8,7 +8,6 @@ class LoadedDocumentValidator:
   def validate(document: LoadedDocument): Seq[String] =
     Seq(
       validateRequired(DocumentDateRequired, document.getDocumentDate),
-      validateRequired(DocumentTimeRequired, document.getDocumentTime),
       validateRequired(DocumentProtocolRequired, document.getDocumentProtocol),
       validateRequired(DocumentTypeRequired, document.getDocumentType),
       validateRequired(SenderRequired, document.getSender),

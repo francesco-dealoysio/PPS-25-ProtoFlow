@@ -272,14 +272,12 @@ object UiText:
   object LoadedDocuments:
     object Fields:
       val DocumentDate = "Data documento"
-      val DocumentTime = "Ora documento"
       val ProcessedBy = "Preso in carico da"
       val DocumentProtocol = "Protocollo mittente"
       val DocumentType = "Tipo documento"
       val Remarks = "Note"
 
     object Prompts:
-      val DocumentTime = "Inserisci l'ora del documento (HH:mm:ss)"
       val DocumentProtocol = "Inserisci il protocollo del mittente"
       val DocumentType = "Inserisci il tipo di documento"
       val Sender = "Inserisci il mittente"
@@ -638,7 +636,6 @@ object UiText:
 
     object LoadedDocument:
       val DocumentDateRequired = "Il campo Data documento è obbligatorio."
-      val DocumentTimeRequired = "Il campo Ora documento è obbligatorio."
       val DocumentProtocolRequired = "Il campo Protocollo mittente è obbligatorio."
       val DocumentTypeRequired = "Il campo Tipo documento è obbligatorio."
       val SenderRequired = "Il campo Mittente è obbligatorio."
