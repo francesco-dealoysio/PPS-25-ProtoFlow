@@ -50,6 +50,7 @@ object RoleEditView extends Form:
 
       showFormFieldErrors(errors):
         case Validation.RoleRequired | Validation.DuplicateRole => role
+        case Validation.NameRequired | Validation.DuplicateRoleName => name
         case Validation.DescriptionRequired  => description
 
     var formSaved = false
