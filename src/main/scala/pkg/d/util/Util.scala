@@ -59,10 +59,12 @@ object Util:
     inFolderFilePathName("test", fileName)
 
   def inFolderFilePathName(folder: String, fileName: String): String =
-    import pkg.c.data.Properties.getPropsFileProperty
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-    getPropsFileProperty(baseFolder + fs + "protoflow.properties", folder + ".folder") + fs + fileName
+    val folderPath =
+      if folder == "documents" then baseFolder + fs + "database" + fs + "documents"
+      else baseFolder + fs + folder
+    folderPath + fs + fileName
 
 
   @main def tryUtil: Unit =
