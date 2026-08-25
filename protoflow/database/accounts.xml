@@ -1,19 +1,5 @@
 <accounts>
   <record>
-    <id>1</id>
-    <surname>de aloysio</surname>
-    <name>francesco</name>
-    <email>francesco.dealoysio@studio.unibo.it</email>
-    <phone>06/11111111</phone>
-    <role>admin</role>
-    <area>presidenza</area>
-    <assignment>presidente</assignment>
-    <username>frank</username>
-    <password>
-      03bb8ba244594956f513d61391d7946867731184ccc679373f66c8b7b80017be004f11c6790c7e7c749668c77e418bb04988923cbf7381b447b2357cc371911b
-    </password>
-  </record>
-  <record>
     <id>2</id>
     <surname>testa</surname>
     <name>thomas</name>
@@ -42,17 +28,17 @@
     </password>
   </record>
   <record>
-    <id>9</id>
-    <surname>Pallino</surname>
-    <name>Pinco</name>
-    <email>pallino.pinco@gmail.com</email>
-    <phone>352345154</phone>
-    <role>oper</role>
-    <area>Amministrazione</area>
-    <assignment>Addetto</assignment>
-    <username>ppallino</username>
+    <id>1</id>
+    <surname>de aloysio</surname>
+    <name>francesco</name>
+    <email>ciao@gmail.com</email>
+    <phone></phone>
+    <role>admin</role>
+    <area>presidenza</area>
+    <assignment>presidente</assignment>
+    <username>frank</username>
     <password>
-      da22b2b878335ac0f6d2e80b145f6d63ffdfc4481c59883330fd0e544cf46a9cb2e1eb85deb665175562a5c0616670017d0779f43f892f1eaf3e30ed446be4ae
+      03bb8ba244594956f513d61391d7946867731184ccc679373f66c8b7b80017be004f11c6790c7e7c749668c77e418bb04988923cbf7381b447b2357cc371911b
     </password>
   </record>
 </accounts>

@@ -53,7 +53,6 @@ object UiText:
       val Delete = "Elimina"
       val Save = "Salva"
       val Reset = "Reset"
-      val Clear = "Pulisci"
       val Close = "Chiudi"
       val Print = "Stampa"
       val PrintList = "Stampa elenco"
@@ -219,7 +218,7 @@ object UiText:
       val PrintTitle = "Scheda Account Utente"
 
     object Management:
-      val Title = "Gestione Account Utente"
+      val Title = "Gestione Account Utentif"
       val Subtitle = "Visualizza, aggiungi, modifica ed elimina gli account degli utenti del sistema."
       val Empty = "Non sono presenti account nel sistema."
       val LoadError = "Errore durante il caricamento degli account."

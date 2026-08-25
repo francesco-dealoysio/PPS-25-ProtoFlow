@@ -9,7 +9,7 @@ import scalafx.scene.control.*
 import scalafx.scene.layout.*
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Common.Fields.Labels
-import pkg.a.gui.text.UiText.RegistrationRequests.{Management as ManagementText, Process as Text}
+import pkg.a.gui.text.UiText.RegistrationRequests.Process as Text
 import pkg.a.gui.text.UiStyles.Requests.*
 import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
 
@@ -161,7 +161,7 @@ object RegistrationRequestProcessView extends Management:
 
     val actionsBox = actionBar(Seq(exitButton, printButton, rejectButton, approveButton))
 
-    val header = titleBox(ManagementText.Title, ManagementText.Subtitle)
+    val header = titleBox(Text.Title, Text.Subtitle)
 
     managementPage(
       pageChildren = Seq(

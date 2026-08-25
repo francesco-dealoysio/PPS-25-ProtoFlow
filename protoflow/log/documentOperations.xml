@@ -47,4 +47,20 @@
     <processedTime>11:00:30.06</processedTime>
     <processedBy>tommy</processedBy>
   </record>
+  <record>
+    <id>6</id>
+    <documentId>9</documentId>
+    <operationType>loading</operationType>
+    <processedDate>2026-08-25</processedDate>
+    <processedTime>16:37:45.40</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+  <record>
+    <id>7</id>
+    <documentId>9</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-08-25</processedDate>
+    <processedTime>16:51:35.81</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
 </operations>
