@@ -58,13 +58,12 @@ object ClassificationEditView extends Form:
       saveButton: () =>
         if validateForm() then
           val updated = classificationLogic.recordUpdate[Classification](currentClassification())
-          result.show(
-            message = if updated then Text.Success else Text.Error,
-            success = updated
-          )
           if updated then
             formSaved = true
+            showSuccess(Text.Title, Text.Success)
             onSaved()
+          else
+            result.show(Text.Error, success = false)
 
     val reset = resetButton(resetForm)
     val exit = closeButton(onExit)

@@ -134,33 +134,25 @@ object AccountEditView extends Form:
     val save =
       saveButton: () =>
         if validateForm() then
-          val updated =
-            accountLogic.recordUpdate(currentAccount())
-
+          val updated = accountLogic.recordUpdate(currentAccount())
           val (successMsg, errorMsg) =
             if profileMode then
               (ProfileText.Success, ProfileText.Error)
             else
               (EditText.Success, EditText.Error)
 
-          result.show(
-            message =
-              if updated then successMsg
-              else errorMsg,
-            success = updated
-          )
-
           if updated then
             formSaved = true
-
             if profileMode then
               selectedAccount.setEmail(email.value)
               selectedAccount.setPhone(phone.value)
-
               if password.value.nonEmpty then
                 selectedAccount.setPassword(password.value)
 
+            showSuccess(if profileMode then ProfileText.Title else EditText.Title, successMsg)
             onSaved()
+          else
+            result.show(errorMsg, success = false)
 
     val reset = resetButton(resetForm)
     val exit = closeButton(onExit)

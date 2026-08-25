@@ -31,6 +31,13 @@ trait Common:
       contentText = content
     .showAndWait()
 
+  protected def showSuccess(titleText: String, content: String): Unit =
+    new Alert(Alert.AlertType.Information):
+      title = titleText
+      headerText = None
+      contentText = content
+    .showAndWait()
+
   protected def createResultMessage(baseStyle: String = MessageStyle, successStyle: String = MessageSuccessStyle, errorStyle: String = MessageErrorStyle): ResultMessage =
     ResultMessage(messageLabel(baseStyle), successStyle, errorStyle)
 
