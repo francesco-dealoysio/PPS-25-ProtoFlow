@@ -440,6 +440,7 @@ object UiText:
     // Label for each MenuAction whose presence in the menu is decided by
     // AuthorizationEngine.permittedActions, rather than hardcoded per view.
     val labels: Map[MenuAction, String] = Map(
+      MenuAction.Profilo -> Profile,
       MenuAction.Statistiche -> Statistics,
       MenuAction.Log -> Log,
       MenuAction.ControlloGestione -> ManagementControl,
