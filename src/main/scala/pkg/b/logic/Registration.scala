@@ -12,7 +12,6 @@ case class Registration(
                     private var assignment: String = "",
                     private var date: String = "",
                     private var state: String = "",
-                    private var result: String = "",
                     private var motivation: String = "",
                     private var processedBy: String = "",
                     private var processedDate: String = "",
@@ -31,7 +30,6 @@ case class Registration(
   def setAssignment(value: String): Unit = assignment = value
   def setDate(value: String): Unit = date = value
   def setState(value: String): Unit = state = value
-  def setResult(value: String): Unit = result = value
   def setMotivation(value: String): Unit = motivation = value
   def setProcessedBy(value: String): Unit = processedBy = value
   def setProcessedDate(value: String): Unit = processedDate = value
@@ -47,7 +45,6 @@ case class Registration(
   def getAssignment: String = assignment
   def getDate: String = date
   def getState: String = state
-  def getResult: String = result
   def getMotivation: String = motivation
   def getProcessedBy: String = processedBy
   def getProcessedDate: String = processedDate

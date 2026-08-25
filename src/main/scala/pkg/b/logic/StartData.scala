@@ -123,8 +123,7 @@ object StartData:
       <area>personale</area>
       <assignment>addetto</assignment>
       <date>06/07/2026</date>
-      <state>evadere</state>
-      <result></result>
+      <state>Pending</state>
       <motivation></motivation>
     </record>
   </registrations>
