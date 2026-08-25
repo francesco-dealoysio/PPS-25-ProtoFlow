@@ -27,23 +27,23 @@ class LoadedDocumentService:
     registeredDocumentLogic.recordDelete(id)
 
   /**
-   * Genera un numero di protocollo, crea il RegisteredDocument dai dati del form (eventualmente
-   * corretti dall'operatore) e sposta il documento da "presi in carico" a "protocollati".
+   * Genera un numero di protocollo, crea il RegisteredDocument
+   * e sposta il documento da "presi in carico" a "protocollati".
    */
-  def registerDocument(source: LoadedDocument, edited: LoadedDocument, operatorUsername: String, classification: String): Either[String, RegisteredDocument] =
+  def registerDocument(source: LoadedDocument, operatorUsername: String, classification: String): Either[String, RegisteredDocument] =
 
     val protocolNumber = s"${localDate.take(4)}/${source.getId}"
 
     val registered =
       RegisteredDocument(
         id = source.getId,
-        documentDate = edited.getDocumentDate,
-        documentProtocol = edited.getDocumentProtocol,
-        documentType = edited.getDocumentType,
-        sender = edited.getSender,
-        recipient = edited.getRecipient,
-        subject = edited.getSubject,
-        remarks = edited.getRemarks,
+        documentDate = source.getDocumentDate,
+        documentProtocol = source.getDocumentProtocol,
+        documentType = source.getDocumentType,
+        sender = source.getSender,
+        recipient = source.getRecipient,
+        subject = source.getSubject,
+        remarks = source.getRemarks,
         loadedDate = source.getProcessedDate,
         loadedTime = source.getProcessedTime,
         loadedBy = source.getProcessedBy,

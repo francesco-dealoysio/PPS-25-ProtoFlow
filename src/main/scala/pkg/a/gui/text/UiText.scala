@@ -340,7 +340,7 @@ object UiText:
 
     object Process:
       val Title = "Protocollazione documento"
-      val Subtitle = "Verifica e correggi i dati del documento preso in carico, poi conferma la protocollazione."
+      val Subtitle = "Visualizza i dati del documento, seleziona la classifica e conferma la protocollazione."
       val Success = "Documento protocollato correttamente."
       val Error = "Errore durante la protocollazione del documento."
 
