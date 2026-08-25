@@ -3,6 +3,7 @@
 % Role and Action are always ground atoms: this is a plain fact table,
 % mirroring pkg.b.logic.Role.role and pkg.a.gui.structures.MenuAction.
 
+can(admin, profilo).
 can(admin, statistiche).
 can(admin, log).
 can(admin, controllo_gestione).
@@ -12,11 +13,13 @@ can(admin, ruoli).
 can(admin, classifiche).
 can(admin, gestione_autorizzazioni).
 
+can(oper, profilo).
 can(oper, nuova_presa_in_carico).
 can(oper, documenti_da_protocollare).
 can(oper, documenti_da_archiviare).
 can(oper, documenti_archiviati).
 
+can(viewer, profilo).
 can(viewer, visualizzazione_archiviazioni).
 
 % authorized(Role, Action)

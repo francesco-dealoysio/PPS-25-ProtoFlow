@@ -14,7 +14,7 @@ object HomePageOperView extends HomePage:
     OperDashboardView(currentAccount, pageTitle)
 
   override protected def menuItems: Seq[MenuItem] =
-    Seq(MenuItem(Dashboard, MenuAction.Dashboard), MenuItem(Profile, MenuAction.Profilo)) ++
+    Seq(MenuItem(Dashboard, MenuAction.Dashboard)) ++
       AuthorizationEngine.permittedActions("oper").map(action => MenuItem(labels(action), action)) ++
       Seq(MenuItem(Logout, MenuAction.Logout))
 

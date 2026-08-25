@@ -14,7 +14,7 @@ object HomePageViewerView extends HomePage:
     ViewerDashboardView(currentAccount, pageTitle)
 
   override protected def menuItems: Seq[MenuItem] =
-    Seq(MenuItem(Dashboard, MenuAction.Dashboard), MenuItem(Profile, MenuAction.Profilo)) ++
+    Seq(MenuItem(Dashboard, MenuAction.Dashboard)) ++
       AuthorizationEngine.permittedActions("viewer").map(action => MenuItem(labels(action), action)) ++
       Seq(MenuItem(Logout, MenuAction.Logout))
 

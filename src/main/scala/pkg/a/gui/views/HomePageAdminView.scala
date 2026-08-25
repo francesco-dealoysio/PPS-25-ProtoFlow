@@ -16,7 +16,7 @@ object HomePageAdminView extends HomePage:
     AdminDashboardView(currentAccount, pageTitle)
 
   override protected def menuItems: Seq[MenuItem] =
-    Seq(MenuItem(Dashboard, MenuAction.Dashboard), MenuItem(Profile, MenuAction.Profilo)) ++
+    Seq(MenuItem(Dashboard, MenuAction.Dashboard)) ++
       AuthorizationEngine.permittedActions("admin").map(action => MenuItem(labels(action), action)) ++
       Seq(MenuItem(Logout, MenuAction.Logout))
 
