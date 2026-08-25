@@ -1,0 +1,64 @@
+<errors>
+  <record>
+    <id>2</id>
+    <date>2026-08-25</date>
+    <time>10:51:51.24</time>
+    <class>pkg.b.logic.Entity</class>
+    <method>recordInsert</method>
+    <line>54</line>
+    <message>Valori duplicati (id)!</message>
+    <stack>
+      at pkg.b.logic.Entity.recordInsert(Entity.scala:54)
+      at pkg.b.logic.Entity.recordInsert$(Entity.scala:7)
+      at pkg.b.logic.AccessLog.recordInsert(AccessLog.scala:9)
+      at pkg.b.logic.AccessLog.writeAccessLog(AccessLog.scala:51)
+      at pkg.a.gui.services.LoginService$.login(LoginService.scala:30)
+      at pkg.a.gui.views.LoginView$.access$1(LoginView.scala:39)
+      at pkg.a.gui.views.LoginView$.apply$$anonfun$2(LoginView.scala:59)
+      at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+      at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
+      at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
+      at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+      at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+      at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+      at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+      at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+      at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+      at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+      at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+      at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+      at javafx.event.Event.fireEvent(Event.java:198)
+      at javafx.scene.Node.fireEvent(Node.java:8875)
+      at com.sun.javafx.scene.control.behavior.TextFieldBehavior.fire(TextFieldBehavior.java:161)
+      at com.sun.javafx.scene.control.behavior.TextInputControlBehavior.lambda$keyMapping$62(TextInputControlBehavior.java:344)
+      at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274)
+      at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
+      at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+      at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232)
+      at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189)
+      at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+      at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+      at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+      at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+      at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+      at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+      at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+      at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+      at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+      at javafx.event.Event.fireEvent(Event.java:198)
+      at javafx.scene.Scene.processKeyEvent(Scene.java:2194)
+      at javafx.scene.Scene$ScenePeerListener.keyEvent(Scene.java:2715)
+      at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:218)
+      at com.sun.javafx.tk.quantum.GlassViewEventHandler$KeyEventNotification.run(GlassViewEventHandler.java:150)
+      at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+      at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleKeyEvent$1(GlassViewEventHandler.java:250)
+      at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+      at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleKeyEvent(GlassViewEventHandler.java:249)
+      at com.sun.glass.ui.View.handleKeyEvent(View.java:542)
+      at com.sun.glass.ui.View.notifyKey(View.java:966)
+      at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+      at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185)
+      at java.base/java.lang.Thread.run(Thread.java:1583)
+    </stack>
+  </record>
+</errors>

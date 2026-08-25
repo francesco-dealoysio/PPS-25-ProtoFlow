@@ -3,7 +3,7 @@ package pkg.b.logic
 import scala.xml.Elem
 import pkg.d.util.Util.cipher
 
-object DummyData:
+object StartData:
 
   private val passwd1 = cipher("topolino")
   private val passwd2 = cipher("tommy$123")
@@ -72,35 +72,35 @@ object DummyData:
   val classifications: Elem = <classifications>
     <record>
       <id>1</id>
-      <classification>presidenza</classification>
+      <classification>Presidenza</classification>
     </record>
     <record>
       <id>2</id>
-      <classification>segreteria</classification>
+      <classification>Segreteria</classification>
     </record>
     <record>
       <id>3</id>
-      <classification>amministrazione</classification>
+      <classification>Amministrazione</classification>
     </record>
     <record>
       <id>4</id>
-      <classification>personale</classification>
+      <classification>Personale</classification>
     </record>
     <record>
       <id>5</id>
-      <classification>materiali</classification>
+      <classification>Materiali</classification>
     </record>
     <record>
       <id>6</id>
-      <classification>infrastrutture</classification>
+      <classification>Infrastrutture</classification>
     </record>
     <record>
       <id>7</id>
-      <classification>addestramento</classification>
+      <classification>Addestramento</classification>
     </record>
     <record>
       <id>8</id>
-      <classification>informatica</classification>
+      <classification>Informatica</classification>
     </record>
   </classifications>
 

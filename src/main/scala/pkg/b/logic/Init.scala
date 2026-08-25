@@ -7,7 +7,7 @@ import pkg.c.data.Properties.*
 import pkg.d.util.Util.*
 import pkg.d.util.IdGen
 import Xml.*
-import DummyData.*
+import StartData.*
 
 object Init:
 
@@ -15,7 +15,7 @@ object Init:
 
     // Creazione struttura per i dati nel folder corrente
     createDirectoryStructure
-
+/*
     // Creazione file di configurazione nel folder corrente
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
@@ -100,8 +100,8 @@ object Init:
     createFile(path + fs + "5. Implementazione.MD", "")
     createFile(path + fs + "6. Testing.MD", "")
     createFile(path + fs + "7. Retrospettiva.MD", "")
-
-    // Creazione dati fittizi
+*/
+    // Creazione dati iniziali
 
     if (Files.notExists(Paths.get(inDatabaseFilePathName("accounts.xml"))))
       saveXML(inDatabaseFilePathName("accounts.xml"), accounts)
@@ -132,9 +132,9 @@ object Init:
 
     // init ids
     IdGen(inIdsFilePathName("errorlogId"))
-    IdGen(inIdsFilePathName("accountId"))
-    IdGen(inIdsFilePathName("roleId"))
-    IdGen(inIdsFilePathName("classificationId"))
+    IdGen(inIdsFilePathName("accountId"), 3)
+    IdGen(inIdsFilePathName("roleId"), 3)
+    IdGen(inIdsFilePathName("classificationId"), 8)
     IdGen(inIdsFilePathName("registrationId"))
     IdGen(inIdsFilePathName("loadedDocumentId"))
 

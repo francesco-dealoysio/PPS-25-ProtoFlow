@@ -1,10 +1,10 @@
 <roles>
-    <record>
-        <id>1</id>
-        <role>admin</role>
-        <name>Amministratore</name>
-        <description>Gestione completa del sistema e degli utenti</description>
-    </record>
+  <record>
+    <id>1</id>
+    <role>admin</role>
+    <name>Amministratore</name>
+    <description>Attività di amministrazione del sistema</description>
+  </record>
   <record>
     <id>2</id>
     <role>oper</role>
