@@ -73,8 +73,8 @@ object ClassificationEditView extends Form:
       formGrid(
         Seq(
           formRow(Labels.Id, id),
-          formRow(Labels.Classification, classification),
-          formRow(Labels.Description, description)
+          formRow(Labels.required(Labels.Classification), classification),
+          formRow(Labels.required(Labels.Description), description)
         )
       )
 
