@@ -58,7 +58,7 @@ object RegistrationRequestsManagementView extends Management:
       )
 
     val refreshButton = secondaryButton(Buttons.Refresh, loadPendingRequests)
-    val printButton = secondaryButton(Buttons.PrintList, printPendingList)
+    val printButton = secondaryButton(Buttons.Print, printPendingList)
     val processButton = primaryButton(Buttons.Process, () => withSelectedItem(table, result, Text.SelectToProcess)(onProcess))
 
     disableWithoutSelection(table, processButton)

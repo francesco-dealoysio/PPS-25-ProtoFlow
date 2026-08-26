@@ -55,7 +55,6 @@ object UiText:
       val Reset = "Reset"
       val Close = "Chiudi"
       val Print = "Stampa"
-      val PrintList = "Stampa elenco"
       val Refresh = "Aggiorna"
       val Approve = "Approva"
       val Reject = "Rifiuta"

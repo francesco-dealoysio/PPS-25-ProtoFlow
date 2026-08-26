@@ -100,9 +100,9 @@ object AccountManagementView extends Management:
     disableWithoutSelection(table, editButton, deleteButton)
 
     val exitButton = closeButton(onExit)
-    val printButton = secondaryButton(Buttons.PrintList, printAccounts)
+    val printButton = secondaryButton(Buttons.Print, printAccounts)
 
-    val bottomActions = actionBar(Seq(exitButton, editButton, deleteButton, addButton))
+    val bottomActions = actionBar(Seq(exitButton, printButton, editButton, deleteButton, addButton))
 
     val header = titleBox(Text.Title, Text.Subtitle)
 

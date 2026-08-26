@@ -2,7 +2,6 @@ package pkg.d.util
 
 import org.openpdf.text.*
 import org.openpdf.text.pdf.*
-
 import java.io.{File, FileOutputStream}
 import scala.xml.{Elem, XML}
 
@@ -178,43 +177,44 @@ object XmlToPdf:
         document.add(phasesTable)
 
   private def createPdf(pdfFileName: String, title: String, landscape: Boolean, addDefaultTitle: Boolean = true, pageEvent: Option[PdfPageEventHelper] = None, bottomMargin: Float = 36f)(content: Document => Unit): Boolean =
-    var document: Document = null
-    try
-      printsFolder.mkdirs()
 
-      val fileName =
-        if pdfFileName.toLowerCase.endsWith(".pdf") then
-          pdfFileName
-        else
-          s"$pdfFileName.pdf"
+      var document: Document = null
 
-      val pageSize =
-        if landscape then
-          PageSize.A4.rotate()
-        else
-          PageSize.A4
+      try
+        printsFolder.mkdirs()
 
-      document = new Document(pageSize, 36f, 36f, 36f, bottomMargin)
-      val writer = PdfWriter.getInstance(document, new FileOutputStream(new File(printsFolder, fileName)))
-      pageEvent.foreach: event =>
-        writer.setPageEvent(event)
+        val fileName =
+          if pdfFileName.toLowerCase.endsWith(".pdf") then
+            pdfFileName
+          else
+            s"$pdfFileName.pdf"
 
-      document.open()
+        val pdfFile = new File(printsFolder, fileName)
+        val pageSize = if landscape then PageSize.A4.rotate() else PageSize.A4
+        document = new Document(pageSize, 36f, 36f, 36f, bottomMargin)
+        val writer = PdfWriter.getInstance(document, new FileOutputStream(pdfFile))
 
-      if addDefaultTitle then
-        addTitle(document, title)
+        pageEvent.foreach: event =>
+          writer.setPageEvent(event)
 
-      content(document)
-      true
+        document.open()
 
-    catch
-      case exception: Exception =>
-        println(s"Errore durante la creazione del PDF: ${exception.getMessage}")
-        false
+        if addDefaultTitle then
+          addTitle(document, title)
 
-    finally
-      if document != null && document.isOpen then
+        content(document)
         document.close()
+        openPdf(pdfFile)
+        true
+
+      catch
+        case exception: Exception =>
+          println(s"Errore durante la creazione del PDF: ${exception.getMessage}")
+          false
+
+      finally
+        if document != null && document.isOpen then
+          document.close()
 
   private def addSummaryHeader(document: Document, applicationTitle: String, reportTitle: String, generatedAtLabel: String, generatedAt: String, logoResourcePath: String): Unit =
     val header = new PdfPTable(2)
@@ -276,3 +276,10 @@ object XmlToPdf:
     val cell = new PdfPCell(new Phrase(text))
     cell.setGrayFill(0.85f)
     cell
+
+  private def openPdf(file: File): Unit =
+    try
+      PdfViewer.open(file)
+    catch
+      case exception: Exception =>
+        println(s"Impossibile aprire il PDF: ${exception.getMessage}")

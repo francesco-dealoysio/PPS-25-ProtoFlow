@@ -22,6 +22,7 @@ libraryDependencies ++= Seq(
   "org.scalafx" %% "scalafx" % "21.0.0-R32",
   "com.github.librepdf" % "openpdf" % "3.0.5",
   "it.unibo.alice.tuprolog" % "tuprolog" % "3.3.0",
+  "org.apache.pdfbox" % "pdfbox" % "3.0.8",
   "junit" % "junit" % "4.13.2" % Test,
   "com.github.sbt" % "junit-interface" % "0.13.3" % Test
 )
