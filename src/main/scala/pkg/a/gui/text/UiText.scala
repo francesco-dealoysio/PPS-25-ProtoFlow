@@ -218,7 +218,7 @@ object UiText:
       val PrintTitle = "Scheda Account Utente"
 
     object Management:
-      val Title = "Gestione Account Utentif"
+      val Title = "Gestione Account Utenti"
       val Subtitle = "Visualizza, aggiungi, modifica ed elimina gli account degli utenti del sistema."
       val Empty = "Non sono presenti account nel sistema."
       val LoadError = "Errore durante il caricamento degli account."
@@ -254,6 +254,7 @@ object UiText:
       val RejectSuccess = "Richiesta rifiutata correttamente."
       val PrintSuccess = "Scheda stampata correttamente in PDF."
       val PrintError = "Errore durante la stampa della scheda."
+      val TemporaryPasswordLabel = "Password temporanea"
 
       val RejectTitle = "Conferma rifiuto"
       val RejectHeader = "Rifiutare la richiesta selezionata?"

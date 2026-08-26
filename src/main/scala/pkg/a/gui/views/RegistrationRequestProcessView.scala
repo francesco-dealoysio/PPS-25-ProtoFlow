@@ -109,12 +109,16 @@ object RegistrationRequestProcessView extends Management:
               xmlPath = service.requestsFilePath,
               recordId = approval.request.getId,
               pdfFileName = s"richiesta_${approval.request.getId}_approvata",
-              title = Text.PrintApprovedTitle
+              title = Text.PrintApprovedTitle,
+              additionalFields = Seq(Text.TemporaryPasswordLabel -> approval.generatedPassword)
             )
 
-            result.show(
-              Text.approved(approval.account.getUsername, approval.generatedPassword),
-              success = true
+            showSuccess(
+              Text.ApproveTitle,
+              Text.approved(
+                approval.account.getUsername,
+                approval.generatedPassword
+              )
             )
 
             onProcessed()

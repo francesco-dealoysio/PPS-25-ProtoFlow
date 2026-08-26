@@ -24,10 +24,42 @@
     <assignment>Addetto</assignment>
     <date>2026-08-25 11:13:15.05</date>
     <state>Approved</state>
-    <result></result>
-    <motivation></motivation>
+    <result/>
+    <motivation/>
     <processedBy>frank</processedBy>
     <processedDate>2026-08-25 11:19:50.25</processedDate>
     <assignedUsername>ppallino</assignedUsername>
+  </record>
+  <record>
+    <id>15</id>
+    <surname>Magno</surname>
+    <name>Carlo</name>
+    <email>carlo@magno.com</email>
+    <phone/>
+    <role>viewer</role>
+    <area>Infrastrutture</area>
+    <assignment>Astro</assignment>
+    <date>2026-08-26 11:29:48.25</date>
+    <state>Approved</state>
+    <motivation/>
+    <processedBy>frank</processedBy>
+    <processedDate>2026-08-26 11:30:08.48</processedDate>
+    <assignedUsername>cmagno</assignedUsername>
+  </record>
+  <record>
+    <id>17</id>
+    <surname>remo</surname>
+    <name>romolo</name>
+    <email>rgd@gmail.com</email>
+    <phone></phone>
+    <role>viewer</role>
+    <area>Addestramento</area>
+    <assignment>fsd</assignment>
+    <date>2026-08-26 11:34:20.30</date>
+    <state>Approved</state>
+    <motivation></motivation>
+    <processedBy>frank</processedBy>
+    <processedDate>2026-08-26 11:34:43.43</processedDate>
+    <assignedUsername>rremo</assignedUsername>
   </record>
 </registrations>

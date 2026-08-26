@@ -71,7 +71,7 @@ object XmlToPdf:
 
         document.add(table)
 
-  def printDetails(xmlPath: String, recordId: String, pdfFileName: String, title: String): Boolean =
+  def printDetails(xmlPath: String, recordId: String, pdfFileName: String, title: String, additionalFields: Seq[(String, String)] = Seq.empty): Boolean =
     val record =
       loadRecords(xmlPath)
         .find: record =>
@@ -88,10 +88,12 @@ object XmlToPdf:
           table.setWidthPercentage(100f)
           table.setWidths(Array(1.5f, 4f))
 
-          selected.child.collect:
-            case element: Elem =>
-              element.label -> element.text.trim
-          .foreach: (field, value) =>
+          val xmlFields =
+            selected.child.collect:
+              case element: Elem =>
+                element.label -> element.text.trim
+
+          (xmlFields ++ additionalFields).foreach: (field, value) =>
             table.addCell(headerCell(field))
             table.addCell(value)
 
