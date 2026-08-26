@@ -7,6 +7,8 @@ import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Common.Fields.Labels
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.layout.BorderPane
+import pkg.d.util.Util.inDatabaseFilePathName
+import pkg.d.util.XmlToPdf
 
 object AccountManagementView extends Management:
 
@@ -73,6 +75,19 @@ object AccountManagementView extends Management:
             else
               result.show(Text.DeleteError, success = false)
 
+    def printAccounts(): Unit =
+      val printed =
+        XmlToPdf.printList(
+          xmlPath = inDatabaseFilePathName("accounts.xml"),
+          pdfFileName = Text.PrintFileName,
+          title = Text.PrintTitle,
+          fields = Seq("id", "surname", "name", "username", "email", "phone", "role", "area", "assignment")
+        )
+      result.show(
+        if printed then Text.PrintSuccess else Text.PrintError,
+        success = printed
+      )
+
     clearResultOnSelection(table, result)
 
     val addButton = primaryButton(Buttons.Add, () =>
@@ -85,6 +100,7 @@ object AccountManagementView extends Management:
     disableWithoutSelection(table, editButton, deleteButton)
 
     val exitButton = closeButton(onExit)
+    val printButton = secondaryButton(Buttons.PrintList, printAccounts)
 
     val bottomActions = actionBar(Seq(exitButton, editButton, deleteButton, addButton))
 

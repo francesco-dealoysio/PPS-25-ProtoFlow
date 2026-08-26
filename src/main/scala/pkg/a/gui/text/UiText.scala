@@ -228,6 +228,10 @@ object UiText:
       val DeleteConfirmation = "Confermi l'eliminazione dell'account selezionato?"
       val DeleteError = "Non è stato possibile eliminare l'account."
       val LastAdminDeleteError = "Non è possibile eliminare l'ultimo account amministratore."
+      val PrintTitle = "Elenco Account Utenti"
+      val PrintFileName = "elenco-account"
+      val PrintSuccess = "Elenco account stampato correttamente in PDF."
+      val PrintError = "Errore durante la stampa dell'elenco account."
       def deletedAccount(username: String): String =
         s"L'account '$username' è stato eliminato correttamente."
 
