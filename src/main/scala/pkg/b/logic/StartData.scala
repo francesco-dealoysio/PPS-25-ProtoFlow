@@ -111,19 +111,3 @@ object StartData:
       <description>Informatica</description>
     </record>
   </classifications>
-
-  val registrations: Elem = <registrations>
-    <record>
-      <id>1</id>
-      <surname>rossi</surname>
-      <name>mario</name>
-      <email>mario.rossi@alice.it</email>
-      <phone>06/1234567</phone>
-      <role>viewer</role>
-      <area>personale</area>
-      <assignment>addetto</assignment>
-      <date>06/07/2026</date>
-      <state>Pending</state>
-      <motivation></motivation>
-    </record>
-  </registrations>

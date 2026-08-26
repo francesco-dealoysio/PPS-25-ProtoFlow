@@ -1,0 +1,23 @@
+<accessLog>
+  <record>
+    <id>0</id>
+    <username>frank</username>
+    <role>admin</role>
+    <processedDate>2026-08-26</processedDate>
+    <processedTime>17:23:40.12</processedTime>
+  </record>
+  <record>
+    <id>1</id>
+    <username>frank</username>
+    <role>admin</role>
+    <processedDate>2026-08-26</processedDate>
+    <processedTime>17:28:53.12</processedTime>
+  </record>
+  <record>
+    <id>2</id>
+    <username>frank</username>
+    <role>admin</role>
+    <processedDate>2026-08-26</processedDate>
+    <processedTime>17:45:00.35</processedTime>
+  </record>
+</accessLog>

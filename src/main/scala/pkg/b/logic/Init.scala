@@ -113,7 +113,7 @@ object Init:
       saveXML(inDatabaseFilePathName("classifications.xml"), classifications)
 
     if (Files.notExists(Paths.get(inDatabaseFilePathName("registrations.xml"))))
-      saveXML(inDatabaseFilePathName("registrations.xml"), registrations)
+      createEmptyXmlFile(inDatabaseFilePathName("registrations.xml"), "registrations")
 
     if (Files.notExists(Paths.get(inLogFilePathName("errors.xml"))))
       createEmptyXmlFile(inLogFilePathName("errors.xml"), "errors")
