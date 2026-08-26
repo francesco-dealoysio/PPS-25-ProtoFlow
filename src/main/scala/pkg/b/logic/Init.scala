@@ -15,7 +15,7 @@ object Init:
 
     // Creazione struttura per i dati nel folder corrente
     createDirectoryStructure
-/*
+
     // Creazione file di configurazione nel folder corrente
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
@@ -31,7 +31,7 @@ object Init:
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "log.folder", logFolder)
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "ids.folder", idFolder)
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "test.folder", testFolder)
-
+/*
     // Struttura per la documentazione
     createDirectory("protoflow" + fs + "documentazione")
     createDirectory("protoflow" + fs + "documentazione" + fs + "releases")
@@ -120,17 +120,23 @@ object Init:
 
     if (Files.notExists(Paths.get(inDocumentsFilePathName("loaded.xml"))))
       createEmptyXmlFile(inDocumentsFilePathName("loaded.xml"), "loaded")
-
+/*
+    if (Files.notExists(Paths.get(inLogFilePathName("documentOperations.xml"))))
+      createEmptyXmlFile(inLogFilePathName("documentOperations.xml"), "operations")
+*/
+    // ????
     val documentOperationsPath = inLogFilePathName("documentOperations.xml")
     val documentOperationsFile = Paths.get(documentOperationsPath)
     
     if Files.notExists(documentOperationsFile) || Files.size(documentOperationsFile) == 0 then
       createEmptyXmlFile(documentOperationsPath, "operations")
+    // ????
 
     if (Files.notExists(Paths.get(inLogFilePathName("accessLog.xml"))))
       createEmptyXmlFile(inLogFilePathName("accessLog.xml"), "accessLog")
 
     // init ids
+    IdGen(inIdsFilePathName("accessLogId"))
     IdGen(inIdsFilePathName("errorlogId"))
     IdGen(inIdsFilePathName("accountId"), 3)
     IdGen(inIdsFilePathName("roleId"), 3)

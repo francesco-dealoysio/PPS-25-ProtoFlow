@@ -41,4 +41,18 @@
       80c98e267ac4efab4d0e403d2114128a00c65b78a749643fd1005138b0c6b8f4afe3a32d9e150cd8462f68ce26840ac61f13e788ffb18e344ecaf09a6a7094bc
     </password>
   </record>
+  <record>
+    <id>20</id>
+    <surname>Rossi</surname>
+    <name>Mario</name>
+    <email>mario.rossi@alice.it</email>
+    <phone>756767</phone>
+    <role>admin</role>
+    <area>Segreteria</area>
+    <assignment>Addetto</assignment>
+    <username>mrossi</username>
+    <password>
+      70ec3e6ee938462a1dc8b70324e27364c3be0928b0c8595f15f09b90a6753e2298ef89b74537c15f2a5263bad5489e8635ff53859f70565b8109ad1b0f0a73ce
+    </password>
+  </record>
 </accounts>

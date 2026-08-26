@@ -23,12 +23,14 @@ object LoginService:
           Left(LoginError.UnknownRole(account.getRole))
 
         case Some(account) =>
+          
           AccessLog().writeAccessLog(
             account.getUsername,
             account.getRole,
             DateTime.localDate,
             DateTime.localTime
           )
+          
           Right(account)
 
         case None =>
