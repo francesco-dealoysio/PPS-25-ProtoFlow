@@ -35,7 +35,7 @@ class DocumentManagementControlServiceTest:
       RegisteredDocument(
         id = "1",
         subject = "Contratto",
-        protocolNumber = "2026/1",
+        protocolNumber = "2026/1/Amministrazione",
         registeredDate = "2026-07-20",
         registeredBy = "Rossi",
         loadedBy = "Bianchi"
@@ -47,7 +47,7 @@ class DocumentManagementControlServiceTest:
       ArchivedDocument(
         id = "2",
         subject = "Fattura",
-        protocolNumber = "2026/2",
+        protocolNumber = "2026/2/Personale",
         registeredDate = "2026-07-10",
         registeredBy = "Rossi",
         archivedDate = "2026-07-25",
@@ -98,7 +98,7 @@ class DocumentManagementControlServiceTest:
 
     val registered = result.find(_.id == "1").get
     assertEquals(Stages.Registering, registered.stage)
-    assertEquals("2026/1", registered.protocolNumber)
+    assertEquals("2026/1/Amministrazione", registered.protocolNumber)
     assertEquals("2026-07-20", registered.registeredDate)
     assertEquals("Rossi", registered.operator)
     assertEquals("", registered.archivedBy)
@@ -114,6 +114,6 @@ class DocumentManagementControlServiceTest:
 
     val archived = result.find(_.id == "2").get
     assertEquals(Stages.Archiving, archived.stage)
-    assertEquals("2026/2", archived.protocolNumber)
+    assertEquals("2026/2/Personale", archived.protocolNumber)
     assertEquals("Armadio 3", archived.archiveLocation)
     assertEquals("Verdi", archived.operator)

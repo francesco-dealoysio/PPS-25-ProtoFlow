@@ -32,7 +32,7 @@ class RegisteredDocumentTest:
       "2026-07-10",
       "22:19:13.86",
       "Rossi",
-      "2026/000001",
+      "2026/1/Amministrazione",
       "2026-07-11",
       "09:00:00.00",
       "Bianchi"
@@ -50,7 +50,7 @@ class RegisteredDocumentTest:
       "2026-07-10",
       "22:19:13.86",
       "Bianchi",
-      "2026/000002",
+      "2026/2/Personale",
       "2026-07-11",
       "09:00:00.00",
       "Neri"
@@ -68,7 +68,7 @@ class RegisteredDocumentTest:
       "2026-07-10",
       "22:19:13.86",
       "Neri",
-      "2026/000003",
+      "2026/3/Segreteria",
       "2026-07-11",
       "09:00:00.00",
       "Bianchi"

@@ -32,7 +32,7 @@ class LoadedDocumentService:
    */
   def registerDocument(source: LoadedDocument, operatorUsername: String, classification: String): Either[String, RegisteredDocument] =
 
-    val protocolNumber = s"${localDate.take(4)}/${source.getId}"
+    val protocolNumber = s"${localDate.take(4)}/${source.getId}/${classification.trim}"
 
     val registered =
       RegisteredDocument(
