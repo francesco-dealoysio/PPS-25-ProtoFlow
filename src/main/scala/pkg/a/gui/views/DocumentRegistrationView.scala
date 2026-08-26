@@ -71,12 +71,13 @@ object DocumentRegistrationView extends Form:
               classification.value
             ) match
               case Right(registered) =>
-                result.show(
-                  message = s"${Text.Success} Numero di protocollo: ${registered.getProtocolNumber}.",
-                  success = true
+                formSaved = true
+
+                showSuccess(
+                  Text.Title,
+                  s"${Text.Success} Numero di protocollo: ${registered.getProtocolNumber}."
                 )
 
-                formSaved = true
                 onRegistered()
 
               case Left(error) =>

@@ -260,7 +260,23 @@
     <documentId>2</documentId>
     <operationType>archiving</operationType>
     <processedDate>2026-07-25</processedDate>
-    <processedTime></processedTime>
+    <processedTime/>
     <processedBy>Verdi</processedBy>
+  </record>
+  <record>
+    <id>33</id>
+    <documentId>1</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-08-26</processedDate>
+    <processedTime>11:47:45.22</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+  <record>
+    <id>34</id>
+    <documentId>16</documentId>
+    <operationType>loading</operationType>
+    <processedDate>2026-08-26</processedDate>
+    <processedTime>11:48:00.99</processedTime>
+    <processedBy>tommy</processedBy>
   </record>
 </operations>
