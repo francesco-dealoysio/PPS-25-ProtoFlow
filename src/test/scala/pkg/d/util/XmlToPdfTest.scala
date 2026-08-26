@@ -19,7 +19,7 @@ class XmlToPdfTest:
     prepareTestXml()
     Files.deleteIfExists(listPdfPath)
 
-    val result = XmlToPdf.printList(xmlPath.toString, "test-accounts-list.pdf", "Elenco account di test")
+    val result = XmlToPdf.printList(xmlPath.toString, "test-accounts-list.pdf", "Elenco account di test", openAfterCreation = false)
 
     assertTrue(result)
     assertTrue(Files.exists(listPdfPath))
@@ -33,7 +33,7 @@ class XmlToPdfTest:
     prepareTestXml()
     Files.deleteIfExists(detailsPdfPath)
 
-    val result = XmlToPdf.printDetails(xmlPath.toString, "2", "test-account-details.pdf", "Scheda account di test")
+    val result = XmlToPdf.printDetails(xmlPath.toString, "2", "test-account-details.pdf", "Scheda account di test", openAfterCreation = false)
 
     assertTrue(result)
     assertTrue(Files.exists(detailsPdfPath))

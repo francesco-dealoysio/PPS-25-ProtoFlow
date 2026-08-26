@@ -7,7 +7,8 @@ import scala.xml.{Elem, XML}
 
 object XmlToPdf:
 
-  private val printsFolder = new File(System.getProperty("user.dir"), "protoflow/prints")
+  private val printsFolder =
+    new File(System.getProperty("user.dir"), "protoflow/prints")
 
   case class SummaryPrintData(
                                applicationTitle: String,
@@ -28,7 +29,14 @@ object XmlToPdf:
                                logoResourcePath: String
                              )
 
-  def printList(xmlPath: String, pdfFileName: String, title: String, fields: Seq[String] = Seq.empty, recordIds: Seq[String] = Seq.empty): Boolean =
+  def printList(
+                 xmlPath: String,
+                 pdfFileName: String,
+                 title: String,
+                 fields: Seq[String] = Seq.empty,
+                 recordIds: Seq[String] = Seq.empty,
+                 openAfterCreation: Boolean = true
+               ): Boolean =
     val allRecords = loadRecords(xmlPath)
 
     val records =
@@ -41,14 +49,19 @@ object XmlToPdf:
     if records.isEmpty then
       false
     else
-      createPdf(pdfFileName, title, landscape = true): document =>
+      createPdf(
+        pdfFileName = pdfFileName,
+        title = title,
+        landscape = true,
+        openAfterCreation = openAfterCreation
+      ): document =>
         val availableColumns =
           records
-          .flatMap:
-            _.child.collect:
-              case element: Elem => element.label
-          .distinct
-        
+            .flatMap:
+              _.child.collect:
+                case element: Elem => element.label
+            .distinct
+
         val columns =
           if fields.nonEmpty then
             fields.filter(availableColumns.contains)
@@ -56,7 +69,6 @@ object XmlToPdf:
             availableColumns
 
         val table = new PdfPTable(columns.size)
-
         table.setWidthPercentage(100f)
 
         columns.foreach: column =>
@@ -64,16 +76,20 @@ object XmlToPdf:
 
         records.foreach: record =>
           columns.foreach: column =>
-            table.addCell(
-              (record \ column).text.trim
-            )
+            table.addCell((record \ column).text.trim)
 
         document.add(table)
 
-  def printDetails(xmlPath: String, recordId: String, pdfFileName: String, title: String, additionalFields: Seq[(String, String)] = Seq.empty): Boolean =
+  def printDetails(
+                    xmlPath: String,
+                    recordId: String,
+                    pdfFileName: String,
+                    title: String,
+                    additionalFields: Seq[(String, String)] = Seq.empty,
+                    openAfterCreation: Boolean = true
+                  ): Boolean =
     val record =
-      loadRecords(xmlPath)
-        .find: record =>
+      loadRecords(xmlPath).find: record =>
           (record \ "id").text.trim == recordId
 
     record match
@@ -81,7 +97,12 @@ object XmlToPdf:
         false
 
       case Some(selected) =>
-        createPdf(pdfFileName, title, landscape = false): document =>
+        createPdf(
+          pdfFileName = pdfFileName,
+          title = title,
+          landscape = false,
+          openAfterCreation = openAfterCreation
+        ): document =>
           val table = new PdfPTable(2)
 
           table.setWidthPercentage(100f)
@@ -98,11 +119,16 @@ object XmlToPdf:
 
           document.add(table)
 
-  def printSections(pdfFileName: String, title: String, sections: Seq[(String, Seq[String], Seq[Seq[String]])]): Boolean =
+  def printSections(pdfFileName: String, title: String, sections: Seq[(String, Seq[String], Seq[Seq[String]])], openAfterCreation: Boolean = true): Boolean =
     if sections.forall(_._3.isEmpty) then
       false
     else
-      createPdf(pdfFileName, title, landscape = false): document =>
+      createPdf(
+        pdfFileName = pdfFileName,
+        title = title,
+        landscape = false,
+        openAfterCreation = openAfterCreation
+      ): document =>
         sections.foreach: (sectionTitle, headers, rows) =>
           addTitle(document, sectionTitle)
 
@@ -118,11 +144,8 @@ object XmlToPdf:
 
           document.add(table)
 
-  def printDocumentManagementSummary(pdfFileName: String, data: SummaryPrintData): Boolean =
-
-    if data.phaseHeaders.isEmpty ||
-      data.phaseRows.exists(_.size != data.phaseHeaders.size)
-    then
+  def printDocumentManagementSummary(pdfFileName: String, data: SummaryPrintData, openAfterCreation: Boolean = true): Boolean =
+    if data.phaseHeaders.isEmpty || data.phaseRows.exists(_.size != data.phaseHeaders.size) then
       false
     else
       createPdf(
@@ -137,7 +160,8 @@ object XmlToPdf:
             pageLabel = data.pageLabel
           )
         ),
-        bottomMargin = 55f
+        bottomMargin = 55f,
+        openAfterCreation = openAfterCreation
       ): document =>
 
         addSummaryHeader(
@@ -152,16 +176,22 @@ object XmlToPdf:
         addSectionTitle(document, data.documentDataSectionTitle)
 
         val documentTable = new PdfPTable(2)
+
         documentTable.setWidthPercentage(100f)
         documentTable.setWidths(Array(1.7f, 4f))
 
         documentTable.addCell(headerCell(data.documentCodeLabel))
         documentTable.addCell(data.documentCode)
+
         documentTable.addCell(headerCell(data.classificationLabel))
         documentTable.addCell(data.classification)
+
         document.add(documentTable)
+
         addSectionTitle(document, data.phasesSectionTitle)
+
         val phasesTable = new PdfPTable(data.phaseHeaders.size)
+
         phasesTable.setWidthPercentage(100f)
 
         if data.phaseHeaders.size == 4 then
@@ -176,61 +206,71 @@ object XmlToPdf:
 
         document.add(phasesTable)
 
-  private def createPdf(pdfFileName: String, title: String, landscape: Boolean, addDefaultTitle: Boolean = true, pageEvent: Option[PdfPageEventHelper] = None, bottomMargin: Float = 36f)(content: Document => Unit): Boolean =
+  private def createPdf(
+                         pdfFileName: String,
+                         title: String,
+                         landscape: Boolean,
+                         addDefaultTitle: Boolean = true,
+                         pageEvent: Option[PdfPageEventHelper] = None,
+                         bottomMargin: Float = 36f,
+                         openAfterCreation: Boolean = true
+                       )(content: Document => Unit): Boolean =
 
-      var document: Document = null
+    var document: Document = null
 
-      try
-        printsFolder.mkdirs()
+    try
+      printsFolder.mkdirs()
 
-        val fileName =
-          if pdfFileName.toLowerCase.endsWith(".pdf") then
-            pdfFileName
-          else
-            s"$pdfFileName.pdf"
+      val fileName = if pdfFileName.toLowerCase.endsWith(".pdf") then pdfFileName else s"$pdfFileName.pdf"
+      val pdfFile = new File(printsFolder, fileName)
+      val pageSize = if landscape then PageSize.A4.rotate() else PageSize.A4
+      document = new Document(pageSize, 36f, 36f, 36f, bottomMargin)
+      val writer = PdfWriter.getInstance(document, new FileOutputStream(pdfFile))
 
-        val pdfFile = new File(printsFolder, fileName)
-        val pageSize = if landscape then PageSize.A4.rotate() else PageSize.A4
-        document = new Document(pageSize, 36f, 36f, 36f, bottomMargin)
-        val writer = PdfWriter.getInstance(document, new FileOutputStream(pdfFile))
+      pageEvent.foreach: event =>
+        writer.setPageEvent(event)
 
-        pageEvent.foreach: event =>
-          writer.setPageEvent(event)
+      document.open()
 
-        document.open()
+      if addDefaultTitle then
+        addTitle(document, title)
 
-        if addDefaultTitle then
-          addTitle(document, title)
-
-        content(document)
-        document.close()
+      content(document)
+      document.close()
+      if openAfterCreation then
         openPdf(pdfFile)
-        true
 
-      catch
-        case exception: Exception =>
-          println(s"Errore durante la creazione del PDF: ${exception.getMessage}")
-          false
+      true
 
-      finally
-        if document != null && document.isOpen then
-          document.close()
+    catch
+      case exception: Exception =>
+        println(s"Errore durante la creazione del PDF: ${exception.getMessage}")
+        false
 
-  private def addSummaryHeader(document: Document, applicationTitle: String, reportTitle: String, generatedAtLabel: String, generatedAt: String, logoResourcePath: String): Unit =
+    finally
+      if document != null && document.isOpen then
+        document.close()
+
+  private def addSummaryHeader(
+                                document: Document,
+                                applicationTitle: String,
+                                reportTitle: String,
+                                generatedAtLabel: String,
+                                generatedAt: String,
+                                logoResourcePath: String
+                              ): Unit =
+
     val header = new PdfPTable(2)
     header.setWidthPercentage(100f)
     header.setWidths(Array(1f, 5f))
     header.setSpacingAfter(18f)
-
     val logoCell = new PdfPCell()
     logoCell.setBorder(Rectangle.NO_BORDER)
     logoCell.setVerticalAlignment(Element.ALIGN_MIDDLE)
-
-    Option(getClass.getResource(logoResourcePath))
-      .foreach: logoUrl =>
-        val logo = Image.getInstance(logoUrl)
-        logo.scaleToFit(50f, 50f)
-        logoCell.addElement(logo)
+    Option(getClass.getResource(logoResourcePath)).foreach: logoUrl =>
+      val logo = Image.getInstance(logoUrl)
+      logo.scaleToFit(50f, 50f)
+      logoCell.addElement(logo)
 
     header.addCell(logoCell)
 
@@ -240,8 +280,8 @@ object XmlToPdf:
     applicationParagraph.setSpacingAfter(4f)
     val reportParagraph = new Paragraph(reportTitle, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 13f))
     reportParagraph.setSpacingAfter(4f)
-    val generatedAtParagraph = new Paragraph(s"$generatedAtLabel: $generatedAt", FontFactory.getFont(FontFactory.HELVETICA, 9f))
 
+    val generatedAtParagraph = new Paragraph(s"$generatedAtLabel: $generatedAt", FontFactory.getFont(FontFactory.HELVETICA, 9f))
     textCell.addElement(applicationParagraph)
     textCell.addElement(reportParagraph)
     textCell.addElement(generatedAtParagraph)
@@ -255,16 +295,27 @@ object XmlToPdf:
     document.add(paragraph)
 
   private class SummaryFooter(generatedByLabel: String, generatedBy: String, pageLabel: String) extends PdfPageEventHelper:
+
     override def onEndPage(writer: PdfWriter, document: Document): Unit =
       val footerFont = FontFactory.getFont(FontFactory.HELVETICA, 8f)
       val y = document.bottom() - 20f
-      ColumnText.showTextAligned(writer.getDirectContent, Element.ALIGN_LEFT, new Phrase(s"$generatedByLabel: $generatedBy", footerFont), document.left(), y, 0f)
-      ColumnText.showTextAligned(writer.getDirectContent, Element.ALIGN_RIGHT, new Phrase(s"$pageLabel ${writer.getPageNumber}", footerFont), document.right(), y, 0f)
+      ColumnText.showTextAligned(
+        writer.getDirectContent,
+        Element.ALIGN_LEFT,
+        new Phrase(s"$generatedByLabel: $generatedBy", footerFont), document.left(), y, 0f
+      )
+
+      ColumnText.showTextAligned(
+        writer.getDirectContent,
+        Element.ALIGN_RIGHT,
+        new Phrase(s"$pageLabel ${writer.getPageNumber}", footerFont), document.right(), y, 0f
+      )
 
   private def loadRecords(xmlPath: String): Seq[Elem] =
-    (XML.loadFile(xmlPath) \\ "record").collect:
-      case element: Elem =>
-        element
+    (XML.loadFile(xmlPath) \\ "record")
+      .collect:
+        case element: Elem =>
+          element
 
   private def addTitle(document: Document, title: String): Unit =
     val paragraph = new Paragraph(title)
