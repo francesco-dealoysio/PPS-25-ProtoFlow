@@ -61,6 +61,9 @@ object Util:
     
   def inTestFilePathName(fileName: String) =
     inFolderFilePathName("test", fileName)
+    
+  def inPrintsFilePathName(fileName: String) =
+    inFolderFilePathName("prints", fileName)
 
   def inFolderFilePathName(folder: String, fileName: String): String =
     import pkg.c.data.Xml.createEmptyXmlFile

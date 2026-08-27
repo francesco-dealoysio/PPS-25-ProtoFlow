@@ -44,7 +44,8 @@ object FileSystem:
       baseDir.resolve("protoflow/database/documents"),
       baseDir.resolve("protoflow/ids"),
       baseDir.resolve("protoflow/log"),
-      baseDir.resolve("protoflow/test")
+      baseDir.resolve("protoflow/test"),
+      baseDir.resolve("protoflow/prints")
     )
   
     structure.foreach { dir =>

@@ -27,3 +27,14 @@ libraryDependencies ++= Seq(
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.20" % Test
+
+libraryDependencies += "org.apache.pdfbox" % "pdfbox" % "2.0.30"
+//libraryDependencies += "org.apache.pdfbox" % "pdfbox-tools" % "2.0.30" // For PDFPagePanel
+
+//libraryDependencies += "org.icepdf.os" % "icepdf-core" % "7.2.2"
+//libraryDependencies += "org.icepdf.os" % "icepdf-viewer" % "7.2.2"
+
+//libraryDependencies += "org.icepdf.os" % "icepdf-core" % "7.1.0"   // Core PDF rendering
+//libraryDependencies += "org.icepdf.os" % "icepdf-viewer" % "7.1.0"  // Optional Swing viewer
+
+//libraryDependencies += "org.icepdf.os" % "icepdf-core" % "7.2.0"
