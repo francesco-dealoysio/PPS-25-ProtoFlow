@@ -13,7 +13,7 @@ import java.io.File
 
 object PdfViewerApp3:
 
-  @main def tryPdfViewerApp3: Unit =
+  @main def tryPdfViewerWithZoom: Unit =
     val fileChooser = new JFileChooser()
     fileChooser.setDialogTitle("Select a PDF file")
     if fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION then
