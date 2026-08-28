@@ -24,15 +24,10 @@ object RegisteredDocumentManagementView extends Management:
 
     val table = managementTable(documents, Text.Empty)
 
-    val fromDateFilter = new DatePicker()
-    val toDateFilter = new DatePicker()
-
-    val subjectFilter = new TextField:
-      promptText = CommonDocumentFields.Subject
-
-    val operatorFilter = new ComboBox[String]:
-      items = ObservableBuffer(Text.AllOperators)
-      value = Text.AllOperators
+    val fromDateFilter = dateFilter()
+    val toDateFilter = dateFilter()
+    val subjectFilter = textFilter(CommonDocumentFields.Subject)
+    val operatorFilter = comboFilter(Text.AllOperators)
 
     table.columns ++= Seq(
       stringColumn[RegisteredDocument](CommonDocumentFields.Id, Some(140))(_.getId),
@@ -143,17 +138,11 @@ object RegisteredDocumentManagementView extends Management:
 
     loadDocuments()
 
-    fromDateFilter.value.onChange:
-      searchDocuments()
-
-    toDateFilter.value.onChange:
-      searchDocuments()
-
-    subjectFilter.text.onChange:
-      searchDocuments()
-
-    operatorFilter.value.onChange:
-      searchDocuments()
+    bindSearch(
+      dateFilters = Seq(fromDateFilter, toDateFilter),
+      textFilters = Seq(subjectFilter),
+      comboFilters = Seq(operatorFilter)
+    )(searchDocuments)
 
     managementPage(
       growNode = Some(table),

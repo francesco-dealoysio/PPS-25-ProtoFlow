@@ -1,9 +1,8 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.structures.{MenuAction, MenuItem}
-import pkg.a.gui.text.UiText.Menu.*
+import pkg.a.gui.structures.MenuAction
 import pkg.a.gui.traits.HomePage
-import pkg.b.logic.{Account, ArchivedDocument, AuthorizationEngine}
+import pkg.b.logic.{Account, ArchivedDocument}
 import scalafx.scene.layout.Pane
 
 object HomePageViewerView extends HomePage:
@@ -12,11 +11,6 @@ object HomePageViewerView extends HomePage:
 
   override protected def dashboardView(currentAccount: Account): Pane =
     ViewerDashboardView(currentAccount, pageTitle)
-
-  override protected def menuItems: Seq[MenuItem] =
-    Seq(MenuItem(Dashboard, MenuAction.Dashboard)) ++
-      AuthorizationEngine.permittedActions("viewer").map(action => MenuItem(labels(action), action)) ++
-      Seq(MenuItem(Logout, MenuAction.Logout))
 
   override protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit =
     action match
@@ -40,18 +34,14 @@ object HomePageViewerView extends HomePage:
     )
 
   private def showArchivedDocuments(currentAccount: Account, navigator: Navigator): Unit =
-    navigator.show(
-      ArchivedDocumentManagementView(
-        onView = selected => showArchivedDocumentDetails(selected, currentAccount, navigator),
-        onExit = () => navigator.dashboard(),
-        documentFilter = document => document.getClassification.trim.equalsIgnoreCase(currentAccount.getArea.trim)
-      )
-    )
-
-  private def showArchivedDocumentDetails(selected: ArchivedDocument, currentAccount: Account, navigator: Navigator): Unit =
-    navigator.show(
-      ArchivedDocumentDetailsView(
-        selectedDocument = selected,
-        onExit = () => showArchivedDocuments(currentAccount, navigator)
-      )
+    showSelectionFlow[ArchivedDocument](
+      navigator,
+      (onView, onExit) =>
+        ArchivedDocumentManagementView(onView, onExit,
+          documentFilter =
+            _.getClassification
+              .trim
+              .equalsIgnoreCase(currentAccount.getArea.trim)
+        ),
+      (selected, back) => ArchivedDocumentDetailsView(selected, back)
     )

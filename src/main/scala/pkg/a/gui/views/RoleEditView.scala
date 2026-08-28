@@ -37,7 +37,7 @@ object RoleEditView extends Form:
     def resetForm(): Unit =
       resetFields(monitoredFields*)
       clearErrors()
-      role.requestFocus()
+      name.requestFocus()
 
     def validateForm(): Boolean = 
       clearErrors()

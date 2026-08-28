@@ -10,9 +10,25 @@
     <assignment>Addetto</assignment>
     <date>2026-08-26 17:17:54.30</date>
     <state>Pending</state>
+    <motivation/>
+    <processedBy/>
+    <processedDate/>
+    <assignedUsername/>
+  </record>
+  <record>
+    <id>38</id>
+    <surname>sssssss</surname>
+    <name>ssssss</name>
+    <email>sssssss@ssssss.com</email>
+    <phone></phone>
+    <role>oper</role>
+    <area>Amministrazione</area>
+    <assignment>sssss</assignment>
+    <date>2026-08-28 14:56:00.38</date>
+    <state>Approved</state>
     <motivation></motivation>
-    <processedBy></processedBy>
-    <processedDate></processedDate>
-    <assignedUsername></assignedUsername>
+    <processedBy>frank</processedBy>
+    <processedDate>2026-08-28 14:56:21.41</processedDate>
+    <assignedUsername>ssssssss</assignedUsername>
   </record>
 </registrations>

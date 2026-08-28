@@ -2,10 +2,9 @@ package pkg.a.gui.views
 
 import pkg.a.gui.services.DocumentManagementControlService
 import pkg.a.gui.services.DocumentManagementControlService.ManagedDocument
-import pkg.a.gui.structures.{MenuAction, MenuItem}
-import pkg.a.gui.text.UiText.Menu.*
+import pkg.a.gui.structures.MenuAction
 import pkg.a.gui.traits.HomePage
-import pkg.b.logic.{Account, AuthorizationEngine, Classification, DocumentLog, Registration, Role}
+import pkg.b.logic.{Account, Classification, DocumentLog, Registration, Role}
 import scalafx.scene.layout.Pane
 
 object HomePageAdminView extends HomePage:
@@ -14,11 +13,6 @@ object HomePageAdminView extends HomePage:
 
   override protected def dashboardView(currentAccount: Account): Pane =
     AdminDashboardView(currentAccount, pageTitle)
-
-  override protected def menuItems: Seq[MenuItem] =
-    Seq(MenuItem(Dashboard, MenuAction.Dashboard)) ++
-      AuthorizationEngine.permittedActions("admin").map(action => MenuItem(labels(action), action)) ++
-      Seq(MenuItem(Logout, MenuAction.Logout))
 
   override protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit =
     action match
@@ -54,128 +48,41 @@ object HomePageAdminView extends HomePage:
         ()
 
   private def showRegistrationRequests(navigator: Navigator, currentUsername: String): Unit =
-    navigator.show(
-      RegistrationRequestsManagementView(
-        onProcess = selected =>
-          showRegistrationRequestProcess(
-            selected = selected,
-            navigator = navigator,
-            currentUsername = currentUsername
-          ),
-        onExit = () => navigator.dashboard()
-      )
-    )
-
-  private def showRegistrationRequestProcess(selected: Registration, navigator: Navigator, currentUsername: String): Unit =
-    navigator.show(
-      RegistrationRequestProcessView(
-        request = selected,
-        operatorUsername = currentUsername,
-        onProcessed = () =>
-          showRegistrationRequests(
-            navigator = navigator,
-            currentUsername = currentUsername
-          ),
-        onExit = () =>
-          showRegistrationRequests(
-            navigator = navigator,
-            currentUsername = currentUsername
-          )
-      )
+    showSelectionFlow[Registration](
+      navigator,
+      (onProcess, onExit) => RegistrationRequestsManagementView(onProcess, onExit),
+      (selected, back) => RegistrationRequestProcessView(selected, currentUsername, back, back)
     )
 
   private def showAccountManagement(navigator: Navigator): Unit =
-    navigator.show(
-      AccountManagementView(
-        onAdd = () => showAccountAdd(navigator),
-        onEdit = selected => showAccountEdit(selected = selected, navigator = navigator),
-        onExit = () => navigator.dashboard()
-      )
-    )
-
-  private def showAccountAdd(navigator: Navigator): Unit =
-    navigator.show(
-      AccountAddView(
-        onSaved = () => showAccountManagement(navigator),
-        onExit = () => showAccountManagement(navigator)
-      )
-    )
-
-  private def showAccountEdit(selected: Account, navigator: Navigator): Unit =
-    navigator.show(
-      AccountEditView(
-        selectedAccount = selected,
-        onSaved = () => showAccountManagement(navigator),
-        onExit = () => showAccountManagement(navigator)
-      )
+    showCrud[Account](
+      navigator,
+      (onAdd, onEdit, onExit) => AccountManagementView(onAdd, onEdit, onExit),
+      (onSaved, onExit) => AccountAddView(onSaved, onExit),
+      (selected, onSaved, onExit) => AccountEditView(selected, onSaved, onExit)
     )
 
   private def showRoleManagement(navigator: Navigator): Unit =
-    navigator.show(
-      RoleManagementView(
-        onAdd = () => showRoleAdd(navigator),
-        onEdit = selected => showRoleEdit(selected, navigator),
-        onExit = () => navigator.dashboard()
-      )
-    )
-
-  private def showRoleAdd(navigator: Navigator): Unit =
-    navigator.show(
-      RoleAddView(
-        onSaved = () => showRoleManagement(navigator),
-        onExit = () => showRoleManagement(navigator)
-      )
-    )
-
-  private def showRoleEdit(selected: Role, navigator: Navigator): Unit =
-    navigator.show(
-      RoleEditView(
-        selectedRole = selected,
-        onSaved = () => showRoleManagement(navigator),
-        onExit = () => showRoleManagement(navigator)
-      )
+    showCrud[Role](
+      navigator,
+      (onAdd, onEdit, onExit) => RoleManagementView(onAdd, onEdit, onExit),
+      (onSaved, onExit) => RoleAddView(onSaved, onExit),
+      (selected, onSaved, onExit) => RoleEditView(selected, onSaved, onExit)
     )
 
   private def showClassificationManagement(navigator: Navigator): Unit =
-    navigator.show(
-      ClassificationManagementView(
-        onAdd = () => showClassificationAdd(navigator),
-        onEdit = selected => showClassificationEdit(selected, navigator),
-        onExit = () => navigator.dashboard()
-      )
-    )
-
-  private def showClassificationAdd(navigator: Navigator): Unit =
-    navigator.show(
-      ClassificationAddView(
-        onSaved = () => showClassificationManagement(navigator),
-        onExit = () => showClassificationManagement(navigator)
-      )
-    )
-
-  private def showClassificationEdit(selected: Classification, navigator: Navigator): Unit =
-    navigator.show(
-      ClassificationEditView(
-        selectedClassification = selected,
-        onSaved = () => showClassificationManagement(navigator),
-        onExit = () => showClassificationManagement(navigator)
-      )
+    showCrud[Classification](
+      navigator,
+      (onAdd, onEdit, onExit) => ClassificationManagementView(onAdd, onEdit, onExit),
+      (onSaved, onExit) => ClassificationAddView(onSaved, onExit),
+      (selected, onSaved, onExit) => ClassificationEditView(selected, onSaved, onExit)
     )
 
   private def showAuthorizationRulesManagement(navigator: Navigator): Unit =
-    navigator.show(
-      AuthorizationRulesManagementView(
-        onAdd = () => showAuthorizationRuleAdd(navigator),
-        onExit = () => navigator.dashboard()
-      )
-    )
-
-  private def showAuthorizationRuleAdd(navigator: Navigator): Unit =
-    navigator.show(
-      AuthorizationRuleAddView(
-        onSaved = () => showAuthorizationRulesManagement(navigator),
-        onExit = () => showAuthorizationRulesManagement(navigator)
-      )
+    showCreateFlow(
+      navigator,
+      (onAdd, onExit) => AuthorizationRulesManagementView(onAdd, onExit),
+      (onSaved, onExit) => AuthorizationRuleAddView(onSaved, onExit)
     )
 
   private def showProfileEdit(selected: Account, navigator: Navigator): Unit =
@@ -222,17 +129,8 @@ object HomePageAdminView extends HomePage:
     )
 
   private def showDocumentLogManagement(navigator: Navigator): Unit =
-    navigator.show(
-      DocumentLogManagementView(
-        onView = selected => showDocumentLogDetails(selected, navigator),
-        onExit = () => navigator.dashboard()
-      )
-    )
-
-  private def showDocumentLogDetails(selected: DocumentLog, navigator: Navigator): Unit =
-    navigator.show(
-      DocumentLogDetailsView(
-        selectedLog = selected,
-        onExit = () => showDocumentLogManagement(navigator)
-      )
+    showSelectionFlow[DocumentLog](
+      navigator,
+      (onView, onExit) => DocumentLogManagementView(onView, onExit),
+      (selected, onExit) => DocumentLogDetailsView(selected, onExit)
     )

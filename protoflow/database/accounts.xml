@@ -55,4 +55,18 @@
       70ec3e6ee938462a1dc8b70324e27364c3be0928b0c8595f15f09b90a6753e2298ef89b74537c15f2a5263bad5489e8635ff53859f70565b8109ad1b0f0a73ce
     </password>
   </record>
+  <record>
+    <id>29</id>
+    <surname>sssssss</surname>
+    <name>ssssss</name>
+    <email>sssssss@ssssss.com</email>
+    <phone>55555555555555</phone>
+    <role>oper</role>
+    <area>Amministrazione</area>
+    <assignment>sssss</assignment>
+    <username>ssssssss</username>
+    <password>
+      4798d12fb942d5fed2a401c18ebeccaa3a9b81b1726d9935307e271be38a13a0627d5995cb615ad08d098250e8861fa19686b302b35427a4a1db13b004c16046
+    </password>
+  </record>
 </accounts>

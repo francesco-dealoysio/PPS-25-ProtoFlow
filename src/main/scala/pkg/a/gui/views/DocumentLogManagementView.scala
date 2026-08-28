@@ -20,22 +20,11 @@ object DocumentLogManagementView extends Management:
     val result = createResultMessage()
     val table = managementTable(logs, Text.Empty)
 
-    val operationFilter = new ComboBox[String]:
-      items = ObservableBuffer(Text.AllOperations +: Operations.values.map(_._2) *)
-      value = Text.AllOperations
-
-    val fromDateFilter = new DatePicker():
-      promptText = Prompts.FromDate
-
-    val toDateFilter = new DatePicker():
-      promptText = Prompts.ToDate
-
-    val documentIdFilter = new TextField:
-      promptText = Fields.DocumentId
-
-    val operatorFilter = new ComboBox[String]:
-      items = ObservableBuffer(Text.AllOperators)
-      value = Text.AllOperators
+    val operationFilter = comboFilter(Text.AllOperations, Operations.values.map(_._2))
+    val fromDateFilter = dateFilter(Prompts.FromDate)
+    val toDateFilter = dateFilter(Prompts.ToDate)
+    val documentIdFilter = textFilter(Fields.DocumentId)
+    val operatorFilter = comboFilter(Text.AllOperators)
 
     table.columns ++= Seq(
       stringColumn[DocumentLog](Fields.Id, Some(90))(_.getId),
@@ -141,20 +130,11 @@ object DocumentLogManagementView extends Management:
 
     loadLogs()
 
-    operationFilter.value.onChange:
-      searchLogs()
-
-    fromDateFilter.value.onChange:
-      searchLogs()
-
-    toDateFilter.value.onChange:
-      searchLogs()
-
-    documentIdFilter.text.onChange:
-      searchLogs()
-
-    operatorFilter.value.onChange:
-      searchLogs()
+    bindSearch(
+      dateFilters = Seq(fromDateFilter, toDateFilter),
+      textFilters = Seq(documentIdFilter),
+      comboFilters = Seq(operationFilter, operatorFilter)
+    )(searchLogs)
 
     managementPage(
       growNode = Some(table),

@@ -109,7 +109,7 @@ trait Management extends Common:
 
     val currentSelection = filter.value.value
 
-    filter.items = ObservableBuffer((defaultValue +: values) *)
+    filter.items = ObservableBuffer(defaultValue +: values *)
 
     if currentSelection != null &&
       filter.items.value.contains(currentSelection)
@@ -131,6 +131,25 @@ trait Management extends Common:
 
     if sortedItems.isEmpty then
       result.show(NoFilterResults, success = true)
+
+
+  protected def bindSearch(dateFilters: Seq[DatePicker] = Seq.empty, textFilters: Seq[TextField] = Seq.empty, comboFilters: Seq[ComboBox[String]] = Seq.empty)(search: () => Unit): Unit =
+    dateFilters.foreach(_.value.onChange(search()))
+    textFilters.foreach(_.text.onChange(search()))
+    comboFilters.foreach(_.value.onChange(search()))
+
+  protected def dateFilter(prompt: String = ""): DatePicker =
+    new DatePicker:
+      promptText = prompt
+
+  protected def textFilter(prompt: String = ""): TextField =
+    new TextField:
+      promptText = prompt
+
+  protected def comboFilter(defaultValue: String, values: Seq[String] = Seq.empty): ComboBox[String] =
+    new ComboBox[String]:
+      items = ObservableBuffer(defaultValue +: values *)
+      value = defaultValue
 
   private def selectedItem[T](table: TableView[T]): Option[T] =
     Option(table.selectionModel.value.selectedItem.value)
