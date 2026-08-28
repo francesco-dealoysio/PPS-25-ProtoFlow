@@ -34,18 +34,14 @@ object HomePageViewerView extends HomePage:
     )
 
   private def showArchivedDocuments(currentAccount: Account, navigator: Navigator): Unit =
-    navigator.show(
-      ArchivedDocumentManagementView(
-        onView = selected => showArchivedDocumentDetails(selected, currentAccount, navigator),
-        onExit = () => navigator.dashboard(),
-        documentFilter = document => document.getClassification.trim.equalsIgnoreCase(currentAccount.getArea.trim)
-      )
-    )
-
-  private def showArchivedDocumentDetails(selected: ArchivedDocument, currentAccount: Account, navigator: Navigator): Unit =
-    navigator.show(
-      ArchivedDocumentDetailsView(
-        selectedDocument = selected,
-        onExit = () => showArchivedDocuments(currentAccount, navigator)
-      )
+    showSelectionFlow[ArchivedDocument](
+      navigator,
+      (onView, onExit) =>
+        ArchivedDocumentManagementView(onView, onExit,
+          documentFilter =
+            _.getClassification
+              .trim
+              .equalsIgnoreCase(currentAccount.getArea.trim)
+        ),
+      (selected, back) => ArchivedDocumentDetailsView(selected, back)
     )
