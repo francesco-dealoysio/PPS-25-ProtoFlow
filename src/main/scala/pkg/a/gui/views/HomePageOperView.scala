@@ -1,6 +1,6 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.structures.{MenuAction}
+import pkg.a.gui.structures.MenuAction
 import pkg.a.gui.traits.HomePage
 import pkg.b.logic.{Account, ArchivedDocument, LoadedDocument, RegisteredDocument}
 import scalafx.scene.layout.Pane
