@@ -37,48 +37,21 @@ object XmlToPdf:
                  recordIds: Seq[String] = Seq.empty,
                  openAfterCreation: Boolean = true
                ): Boolean =
-    val allRecords = loadRecords(xmlPath)
 
-    val records =
-      if recordIds.nonEmpty then
-        allRecords.filter: record =>
-          recordIds.contains((record \ "id").text.trim)
-      else
-        allRecords
-
+    val records = selectRecords(loadRecords(xmlPath), recordIds)
     if records.isEmpty then
       false
     else
+      val columns = columnsOf(records, fields)
+      val rows = rowsOf(records, columns)
       createPdf(
         pdfFileName = pdfFileName,
         title = title,
         landscape = true,
         openAfterCreation = openAfterCreation
       ): document =>
-        val availableColumns =
-          records
-            .flatMap:
-              _.child.collect:
-                case element: Elem => element.label
-            .distinct
 
-        val columns =
-          if fields.nonEmpty then
-            fields.filter(availableColumns.contains)
-          else
-            availableColumns
-
-        val table = new PdfPTable(columns.size)
-        table.setWidthPercentage(100f)
-
-        columns.foreach: column =>
-          table.addCell(headerCell(column))
-
-        records.foreach: record =>
-          columns.foreach: column =>
-            table.addCell((record \ column).text.trim)
-
-        document.add(table)
+        document.add(tableOf(columns, rows))
 
   def printDetails(
                     xmlPath: String,
@@ -133,17 +106,7 @@ object XmlToPdf:
           if sectionTitle.nonEmpty then
             addTitle(document, sectionTitle)
 
-          val table = new PdfPTable(headers.size)
-          table.setWidthPercentage(100f)
-
-          headers.foreach: header =>
-            table.addCell(headerCell(header))
-
-          rows.foreach: row =>
-            row.foreach: cell =>
-              table.addCell(cell)
-
-          document.add(table)
+          document.add(tableOf(headers, rows))
 
   def printDocumentManagementSummary(pdfFileName: String, data: SummaryPrintData, openAfterCreation: Boolean = true): Boolean =
     if data.phaseHeaders.isEmpty || data.phaseRows.exists(_.size != data.phaseHeaders.size) then
@@ -177,33 +140,18 @@ object XmlToPdf:
         addSectionTitle(document, data.documentDataSectionTitle)
 
         val documentTable = new PdfPTable(2)
-
         documentTable.setWidthPercentage(100f)
         documentTable.setWidths(Array(1.7f, 4f))
-
         documentTable.addCell(headerCell(data.documentCodeLabel))
         documentTable.addCell(data.documentCode)
-
         documentTable.addCell(headerCell(data.classificationLabel))
         documentTable.addCell(data.classification)
-
         document.add(documentTable)
-
         addSectionTitle(document, data.phasesSectionTitle)
 
-        val phasesTable = new PdfPTable(data.phaseHeaders.size)
-
-        phasesTable.setWidthPercentage(100f)
-
+        val phasesTable = tableOf(data.phaseHeaders, data.phaseRows)
         if data.phaseHeaders.size == 4 then
           phasesTable.setWidths(Array(1.6f, 1.7f, 1.3f, 2.4f))
-
-        data.phaseHeaders.foreach: header =>
-          phasesTable.addCell(headerCell(header))
-
-        data.phaseRows.foreach: row =>
-          row.foreach: value =>
-            phasesTable.addCell(value)
 
         document.add(phasesTable)
 
@@ -335,3 +283,40 @@ object XmlToPdf:
     catch
       case exception: Exception =>
         println(s"Impossibile aprire il PDF: ${exception.getMessage}")
+
+  private def selectRecords(records: Seq[Elem], recordIds: Seq[String]): Seq[Elem] =
+    if recordIds.isEmpty then
+      records
+    else
+      records.filter: record =>
+        recordIds.contains((record \ "id").text.trim)
+
+  private def columnsOf(records: Seq[Elem], fields: Seq[String]): Seq[String] =
+    val availableColumns =
+      records
+        .flatMap:
+          _.child.collect:
+            case element: Elem => element.label
+        .distinct
+
+    if fields.nonEmpty then
+      fields.filter(availableColumns.contains)
+    else
+      availableColumns
+
+  private def rowsOf(records: Seq[Elem], columns: Seq[String]): Seq[Seq[String]] =
+    records.map: record =>
+      columns.map: column =>
+        (record \ column).text.trim
+
+  private def tableOf(headers: Seq[String], rows: Seq[Seq[String]]): PdfPTable =
+    val table = new PdfPTable(headers.size)
+    table.setWidthPercentage(100f)
+    headers.foreach: header =>
+      table.addCell(headerCell(header))
+
+    rows.foreach: row =>
+      row.foreach: value =>
+        table.addCell(value)
+
+    table

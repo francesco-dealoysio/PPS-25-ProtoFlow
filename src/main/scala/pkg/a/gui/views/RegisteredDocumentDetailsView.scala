@@ -29,6 +29,7 @@ object RegisteredDocumentDetailsView extends Form:
     val documentForm =
       formGrid(
         Seq(
+          formRow(CommonDocumentFields.Id, id),
           formRow(CommonDocumentFields.ProtocolNumber, protocolNumber),
           formRow(Labels.Classification, classification),
           formRow(RegistrationFields.RegisteredDate, registeredDate),

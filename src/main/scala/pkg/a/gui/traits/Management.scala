@@ -109,7 +109,7 @@ trait Management extends Common:
 
     val currentSelection = filter.value.value
 
-    filter.items = ObservableBuffer((defaultValue +: values) *)
+    filter.items = ObservableBuffer(defaultValue +: values *)
 
     if currentSelection != null &&
       filter.items.value.contains(currentSelection)
@@ -148,7 +148,7 @@ trait Management extends Common:
 
   protected def comboFilter(defaultValue: String, values: Seq[String] = Seq.empty): ComboBox[String] =
     new ComboBox[String]:
-      items = ObservableBuffer((defaultValue +: values) *)
+      items = ObservableBuffer(defaultValue +: values *)
       value = defaultValue
 
   private def selectedItem[T](table: TableView[T]): Option[T] =
