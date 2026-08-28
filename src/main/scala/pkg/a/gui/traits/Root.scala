@@ -9,9 +9,21 @@ import scalafx.scene.layout.*
 import pkg.a.gui.text.UiStyles.App.*
 import pkg.a.gui.text.UiText.Common.*
 
-
+/**
+ * Provides the root application layout and manages the rendering
+ * of views within the main content area.
+ */
 trait Root extends Common:
 
+  /**
+   * Creates the main application layout with header, menu, content area, and footer.
+   * @param currentUser   the name of the current user
+   * @param roleName      the role of the current user
+   * @param contentArea   the area in which application views are displayed
+   * @param menu          the application navigation menu
+   * @param onProfileOpen the action executed when the user profile is opened
+   * @return the configured root layout
+   */
   protected def createRoot(currentUser: String, roleName: String, contentArea: StackPane, menu: VBox, onProfileOpen: () => Unit): BorderPane =
 
     val menuVisible = BooleanProperty(true)
@@ -40,6 +52,11 @@ trait Root extends Common:
           onProfileOpen = onProfileOpen
         )
 
+  /**
+   * Renders a view in the content area if the current view can be left.
+   * @param contentArea the area in which the view is rendered
+   * @param view        the view to display
+   */
   protected def render(contentArea: StackPane, view: => Pane): Unit =
     if canLeaveCurrentView(contentArea) then contentArea.children = Seq(view)
 

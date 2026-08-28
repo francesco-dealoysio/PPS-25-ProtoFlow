@@ -19,9 +19,7 @@ object AppText:
     val DocumentsToArchive = "Documenti da archiviare"
     val ArchivedDocuments = "Documenti archiviati"
     val AuthorizationRules = "Autorizzazioni"
-
-    // Label for each MenuAction whose presence in the menu is decided by
-    // AuthorizationEngine.permittedActions, rather than hardcoded per view.
+    
     val labels: Map[MenuAction, String] = Map(
       MenuAction.Profilo -> Profile,
       MenuAction.Statistiche -> Statistics,

@@ -9,21 +9,58 @@ import scalafx.geometry.Pos
 import scalafx.scene.control.Button
 import scalafx.scene.layout.*
 
+/**
+ * Defines the common structure and navigation behaviour of role-based home pages,
+ * including menu actions, authorization, and view navigation flows.
+ */
 trait HomePage extends Root:
 
+  /**
+   * Returns the title of the home page.
+   */
   protected def pageTitle: String
+
+  /**
+   * Creates the dashboard view for the current account.
+   * @param currentAccount the authenticated account
+   * @return the dashboard pane
+   */
   protected def dashboardView(currentAccount: Account): Pane
 
+  /**
+   * Handles a menu action by navigating to the corresponding view.
+   * @param action         the selected menu action
+   * @param navigator      the navigator used to change the current view
+   * @param currentAccount the authenticated account
+   */
   protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit
 
+  /**
+   * Manages navigation within the home page content area.
+   * @param contentArea      the container in which views are rendered
+   * @param dashboardFactory the function used to create the dashboard view
+   */
   protected final class Navigator(contentArea: StackPane, dashboardFactory: () => Pane):
-
+    /**
+     * Displays the given view in the content area.
+     * @param view the view to display
+     */
     def show(view: => Pane): Unit =
       render(contentArea, view)
 
+    /**
+     * Displays the dashboard view.
+     */
     def dashboard(): Unit =
       show(dashboardFactory())
 
+  /**
+   * Builds the home page for the authenticated account.
+   * @param viewModel      the view model managing the selected menu action
+   * @param currentAccount the authenticated account
+   * @param onLogout       the action executed after logout confirmation
+   * @return the configured home page
+   */
   final def apply(viewModel: HomePageViewModel, currentAccount: Account, onLogout: () => Unit = () => ()): BorderPane =
     val roleLogic = new Role()
     val roleName =
@@ -88,6 +125,14 @@ trait HomePage extends Root:
       onProfileOpen = () => navigate(MenuAction.Profilo)
     )
 
+  /**
+   * Starts a CRUD navigation flow between management, creation, and editing views.
+   * @param navigator      the navigator used to change views
+   * @param managementView the management view factory
+   * @param addView        the creation view factory
+   * @param editView       the editing view factory
+   * @tparam T the type of the managed entity
+   */
   protected final def showCrud[T](
                                    navigator: Navigator,
                                    managementView: (() => Unit, T => Unit, () => Unit) => Pane,
@@ -105,6 +150,13 @@ trait HomePage extends Root:
       )
     management()
 
+  /**
+   * Starts a navigation flow from a management view to a selected item view.
+   * @param navigator      the navigator used to change views
+   * @param managementView the management view factory
+   * @param selectedView   the view factory for the selected item
+   * @tparam T the type of the selectable entity
+   */
   protected final def showSelectionFlow[T](
                                             navigator: Navigator,
                                             managementView: (T => Unit, () => Unit) => Pane,
@@ -120,6 +172,12 @@ trait HomePage extends Root:
       )
     management()
 
+  /**
+   * Starts a navigation flow between a management view and a creation view.
+   * @param navigator      the navigator used to change views
+   * @param managementView the management view factory
+   * @param addView        the creation view factory
+   */
   protected final def showCreateFlow(
                                       navigator: Navigator,
                                       managementView: (() => Unit, () => Unit) => Pane,

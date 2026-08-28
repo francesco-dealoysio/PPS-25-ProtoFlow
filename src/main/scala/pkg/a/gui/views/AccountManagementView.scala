@@ -106,7 +106,7 @@ object AccountManagementView extends Management:
 
     val header = titleBox(Text.Title, Text.Subtitle)
 
-    loadAccounts() // Prima lettura dal file XML.
+    loadAccounts()
 
     managementPage(
       growNode = Some(table),
