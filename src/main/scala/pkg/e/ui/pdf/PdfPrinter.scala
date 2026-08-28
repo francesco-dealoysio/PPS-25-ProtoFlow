@@ -3,8 +3,8 @@ package pkg.e.ui.pdf
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.printing.{Orientation, PDFPageable}
 import pkg.d.util.Util.inPrintsFilePathName
-
 import java.awt.print.PrinterJob
+import java.awt.{Dimension, Toolkit}
 import javax.print.attribute.standard.PrinterName
 import javax.print.{PrintService, PrintServiceLookup}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -30,10 +30,6 @@ object PdfPrinter:
           println("PDF sent to printer successfully.")
         case None =>
           println("Print cancelled.")
-          //job.setPrintService(PrintServiceLookup.lookupDefaultPrintService())
-        case _ =>
-          println("Failure")
-          throw new IllegalArgumentException("Printer not found.")
     }
 
     result match
@@ -50,6 +46,15 @@ object PdfPrinter:
     }
     Try(Await.result(future, timeout)).isSuccess
 
+  private def printWithFuture(pdfPathName: String): Future[Unit] =
+    Future {
+      Using.resource(PDDocument.load(java.io.File(pdfPathName))) { doc =>
+        val job = PrinterJob.getPrinterJob
+        job.setPageable(PDFPageable(doc))
+        job.print()
+      }
+    }
+
   private def choosePrinterServiceUI(): Option[PrintService] =
     import javax.print.attribute.HashPrintRequestAttributeSet
     import javax.print.{DocFlavor, PrintServiceLookup, ServiceUI}
@@ -58,9 +63,15 @@ object PdfPrinter:
     val pras = new HashPrintRequestAttributeSet()
     val services = PrintServiceLookup.lookupPrintServices(flavor, pras)
     val defaultService = PrintServiceLookup.lookupDefaultPrintService()
-    val activeServices = services.filter(service => getAttributeSafe(service, 1.second))
+    val activeServices = services.filter(service => getAttributeSafe(service, 500.millisecond))
 
-    ServiceUI.printDialog(null, 200, 200, activeServices, defaultService, flavor, pras) match
+    val screenSize: Dimension = Toolkit.getDefaultToolkit.getScreenSize
+    val dialogWidth = 500  // approximate
+    val dialogHeight = 400
+    val centerX = (screenSize.width - dialogWidth) / 2
+    val centerY = (screenSize.height - dialogHeight) / 2
+
+    ServiceUI.printDialog(null, centerX, centerY, activeServices, defaultService, flavor, pras) match
       case service if service != null =>
         Some(service)
       case null =>
