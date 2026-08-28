@@ -10,6 +10,8 @@ import java.awt.image.BufferedImage
 import java.awt.*
 import java.io.File
 import javax.swing.*
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object PdfViewer:
 
@@ -22,6 +24,7 @@ object PdfViewer:
     val pdfFile = File(pdfPathName)
 
     try
+
       val document = PDDocument.load(pdfFile)
       val renderer = PDFRenderer(document)
 
@@ -39,6 +42,8 @@ object PdfViewer:
       var firstTime = true
       var minWidth = Int.MaxValue
       var minHeight = Int.MaxValue
+
+      val buttonPanel = JPanel()
 
       var pageCounterLabel = JLabel()
 
@@ -73,70 +78,78 @@ object PdfViewer:
         else
           println("Page index out of range.")
 
-      val firstButton = JButton("|<")
-      firstButton.addActionListener( _ => renderPage(0))
-      firstButton.setToolTipText("First page")
+      def first(): Unit = renderPage(0)
 
-      val prevButton = JButton("<")
-      prevButton.addActionListener( _ => renderPage(currentPage - 1))
-      prevButton.setToolTipText("Previous page")
+      def prev(): Unit = renderPage(currentPage - 1)
 
-      //pageCounterLabel.addActionListener( _ => renderPage(currentPage - 1))
-      pageCounterLabel.setToolTipText("Go to page number")
+      def next(): Unit = renderPage(currentPage + 1)
 
-      val nextButton = JButton(">")
-      nextButton.addActionListener( _ => renderPage(currentPage + 1))
-      nextButton.setToolTipText("Next page")
+      def last(): Unit = renderPage(totalPages - 1)
 
-      val lastButton = JButton(">|")
-      lastButton.addActionListener( _ => renderPage(totalPages - 1))
-      lastButton.setToolTipText("Last page")
+      def print(): Unit = { val printFuture: Future[Unit] = Future(PdfPrinter.printPdf(pdfPathName)) }
 
-      val printButton = JButton("Print")
-      printButton.addActionListener( _ => PdfPrinter.printPdf(pdfPathName))
-      printButton.setToolTipText("Print file")
+      def view(): Unit = PdfDefaultViewer.viewWithDefaultViewer(pdfPathName)
 
-      val viewWithDefaultViewerButton = JButton("View")
-      viewWithDefaultViewerButton.addActionListener( _ => PdfDefaultViewer.viewWithDefaultViewer(pdfPathName))
-      viewWithDefaultViewerButton.setToolTipText("Open file with default application")
-
-      val zoomOutButton = JButton("-")
-      zoomOutButton.addActionListener( _ =>
+      def zoomOut(): Unit =
         if zoomDPI > zoomMin then
           zoomDPI = zoomDPI - zoomInc
           renderPage(currentPage)
-      )
-      zoomOutButton.setToolTipText("Zoom Out")
 
-      val zoomDefaultButton = JButton("100%")
-      zoomDefaultButton.addActionListener( _ =>
+      def zoomNormal(): Unit =
         zoomDPI = zoomDefault
         renderPage(currentPage)
-      )
-      zoomDefaultButton.setToolTipText("Zoom 100%")
 
-      val zoomInButton = JButton("+")
-      zoomInButton.addActionListener( _ =>
+      def zoomIn(): Unit =
         if zoomDPI < zoomMax then
           zoomDPI = zoomDPI + zoomInc
           renderPage(currentPage)
-      )
-      zoomInButton.setToolTipText("Zoom In")
 
-      val buttonPanel = JPanel()
-      buttonPanel.add(firstButton)
-      buttonPanel.add(prevButton)
+      def makeButton(label: String, tip: String, panel: JPanel, action: () => Unit): JButton =
+        val button: JButton = new JButton(label)
+        button.setToolTipText(tip)
+        button.addActionListener( _ =>
+          action()
+          frame.requestFocusInWindow()
+        )
+        panel.add(button)
+        button
+
+      val firstButton = makeButton("|<", "First page", buttonPanel, first)
+
+      val prevButton = makeButton("<", "Previous page", buttonPanel, prev)
+
       buttonPanel.add(pageCounterLabel)
-      buttonPanel.add(nextButton)
-      buttonPanel.add(lastButton)
-      buttonPanel.add(printButton)
-      buttonPanel.add(viewWithDefaultViewerButton)
-      buttonPanel.add(zoomOutButton)
-      buttonPanel.add(zoomDefaultButton)
-      buttonPanel.add(zoomInButton)
+
+      val nextButton = makeButton(">", "Next page", buttonPanel, next)
+
+      val lastButton = makeButton(">|", "Last page", buttonPanel, last)
+
+      val printButton = makeButton("Print", "Print file", buttonPanel, print)
+
+      val viewButton = makeButton("View", "Open file with default application", buttonPanel, view)
+
+      val zoomOutButton = makeButton("-","Zoom Out", buttonPanel, zoomOut)
+
+      val zoomNormalButton = makeButton("100%","Zoom 100%", buttonPanel, zoomNormal)
+
+      val zoomInButton = makeButton("+", "Zoom In", buttonPanel, zoomIn)
 
       frame.getContentPane.add(scrollPane, BorderLayout.CENTER)
       frame.getContentPane.add(buttonPanel, BorderLayout.SOUTH)
+
+      frame.setFocusable(true)
+      frame.requestFocusInWindow()
+      frame.addKeyListener(new KeyListener:
+        override def keyPressed(e: KeyEvent): Unit =
+          println(s"Key Pressed: ${KeyEvent.getKeyText(e.getKeyCode)}")
+          e.getKeyCode match
+            case KeyEvent.VK_PLUS | KeyEvent.VK_ADD => zoomIn()
+            case KeyEvent.VK_MINUS | KeyEvent.VK_SUBTRACT => zoomOut()
+            case _ => ()
+
+        override def keyReleased(e: KeyEvent): Unit = ()
+        override def keyTyped(e: KeyEvent): Unit = ()
+      )
 
       renderPage(currentPage)
 
@@ -159,6 +172,7 @@ object PdfViewer:
 @main def tryPdfViewer: Unit =
   //PdfViewer.viewPdf(inPrintsFilePathName("Intro.pdf"))
   val fileChooser = new JFileChooser()
+  fileChooser.setCurrentDirectory(File(inPrintsFilePathName("")))
   fileChooser.setDialogTitle("Select a PDF file")
   if fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION then
     println("No file selected.")
