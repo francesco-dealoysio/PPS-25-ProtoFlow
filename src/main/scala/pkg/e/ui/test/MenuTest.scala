@@ -1,12 +1,12 @@
-package pkg.e.ui
+package pkg.e.ui.test
 
 import pkg.b.logic.Account
 import pkg.e.ui.traits.GUI
 import scalafx.application.JFXApp3
 import scalafx.geometry.Pos
-import scalafx.scene.{Node, Scene}
-import scalafx.scene.control.{MenuBar, Menu, MenuItem, Control, Label}
+import scalafx.scene.control.*
 import scalafx.scene.layout.{BorderPane, HBox, VBox}
+import scalafx.scene.{Node, Scene}
 
 class MenuTest extends JFXApp3:
 

@@ -1,17 +1,15 @@
-package pkg.e.ui
+package pkg.e.ui.pdf
 
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.PDFRenderer
 import pkg.d.util.Util.inPrintsFilePathName
-import pkg.e.ui.PdfVerifier.isPdf
-
-import java.awt.{BorderLayout, Color, Dimension, Frame}
-import java.awt.{Graphics2D, RenderingHints}
-import java.awt.image.BufferedImage
+import pkg.e.ui.pdf.PdfVerifier.isPdf
+import pkg.e.ui.pdf.{PdfDefaultViewer, PdfPrinter}
 import java.awt.event.*
-import javax.swing.{JFrame, SwingUtilities}
-import javax.swing.*
+import java.awt.image.BufferedImage
+import java.awt.*
 import java.io.File
+import javax.swing.*
 
 object PdfViewer:
 
@@ -159,4 +157,10 @@ object PdfViewer:
         ex.printStackTrace()
 
 @main def tryPdfViewer: Unit =
-  PdfViewer.viewPdf(inPrintsFilePathName("Intro.pdf"))
+  //PdfViewer.viewPdf(inPrintsFilePathName("Intro.pdf"))
+  val fileChooser = new JFileChooser()
+  fileChooser.setDialogTitle("Select a PDF file")
+  if fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION then
+    println("No file selected.")
+  else
+    PdfViewer.viewPdf(fileChooser.getSelectedFile.getAbsolutePath)

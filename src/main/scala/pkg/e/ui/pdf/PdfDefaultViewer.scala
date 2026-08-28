@@ -1,8 +1,8 @@
-package pkg.e.ui
+package pkg.e.ui.pdf
 
+import pkg.d.util.Util.inPrintsFilePathName
 import java.awt.Desktop
 import java.io.File
-import pkg.d.util.Util.inPrintsFilePathName
 
 object PdfDefaultViewer:
 

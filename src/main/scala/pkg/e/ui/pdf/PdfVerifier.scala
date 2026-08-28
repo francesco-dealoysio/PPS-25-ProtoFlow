@@ -1,7 +1,6 @@
-package pkg.e.ui
+package pkg.e.ui.pdf
 
 import pkg.d.util.Util.inPrintsFilePathName
-
 import java.io.{File, FileInputStream, IOException}
 import scala.util.{Try, Using}
 
@@ -24,9 +23,11 @@ object PdfVerifier:
       }
     }.getOrElse(false)
 
-  @main def tryPdfVerifier: Unit =
-    val file = inPrintsFilePathName("falsoPdf.pdf")
-    if isPdf(file) then
-      println(s"'${file}' is a valid PDF file (header check passed).")
-    else
-      println(s"'${file}' is NOT a valid PDF file.")
+@main def tryPdfVerifier: Unit =
+  import pkg.e.ui.pdf.PdfVerifier.isPdf
+
+  val file = inPrintsFilePathName("falsoPdf.pdf")
+  if isPdf(file) then
+    println(s"'${file}' is a valid PDF file (header check passed).")
+  else
+    println(s"'${file}' is NOT a valid PDF file.")

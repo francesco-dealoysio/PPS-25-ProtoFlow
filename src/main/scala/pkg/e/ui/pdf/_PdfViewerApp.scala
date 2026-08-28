@@ -1,13 +1,13 @@
-package pkg.e.ui
+package pkg.e.ui.pdf
 
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.{ImageType, PDFRenderer}
 import pkg.d.util.Util.inPrintsFilePathName
 
-import java.awt.{BorderLayout, Cursor, Dimension, Graphics, Point}
 import java.awt.event.{MouseAdapter, MouseEvent, MouseWheelEvent}
-import javax.swing.*
 import java.awt.image.BufferedImage
+import java.awt.*
+import javax.swing.*
 import scala.util.Using
 
 object _PdfViewerApp:

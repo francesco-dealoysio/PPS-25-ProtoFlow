@@ -1,16 +1,16 @@
-package pkg.e.ui
+package pkg.e.ui.pdf
 
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.printing.{Orientation, PDFPageable}
-import javax.print.{PrintService, PrintServiceLookup}
-import java.awt.print.PrinterJob
-import javax.print.PrintServiceLookup
-import javax.print.attribute.standard.PrinterName
-import scala.concurrent.{Future, Await}
-import scala.concurrent.duration._
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.{Try, Success, Failure, Using}
 import pkg.d.util.Util.inPrintsFilePathName
+
+import java.awt.print.PrinterJob
+import javax.print.attribute.standard.PrinterName
+import javax.print.{PrintService, PrintServiceLookup}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.*
+import scala.concurrent.{Await, Future}
+import scala.util.{Failure, Success, Try, Using}
 
 object PdfPrinter:
 

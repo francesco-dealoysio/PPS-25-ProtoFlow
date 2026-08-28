@@ -1,10 +1,10 @@
-package pkg.e.ui
+package pkg.e.ui.test
 
 import scalafx.application.JFXApp3
+import scalafx.geometry.Insets
 import scalafx.scene.Scene
 import scalafx.scene.control.{MenuButton, MenuItem}
 import scalafx.scene.layout.{BorderPane, VBox}
-import scalafx.geometry.Insets
 
 object VerticalMenu extends JFXApp3 {
 

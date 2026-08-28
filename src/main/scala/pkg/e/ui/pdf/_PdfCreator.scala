@@ -1,13 +1,10 @@
-package pkg.e.ui
+package pkg.e.ui.pdf
 
-import org.apache.pdfbox.pdmodel._
-import org.apache.pdfbox.pdmodel.font.PDType1Font
-import pkg.d.util.Util.inPrintsFilePathName
-
-import org.apache.pdfbox.pdmodel._
-import org.apache.pdfbox.pdmodel.common._
+import org.apache.pdfbox.pdmodel.*
+import org.apache.pdfbox.pdmodel.common.*
 import org.apache.pdfbox.pdmodel.font.PDType1Font
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject
+import pkg.d.util.Util.inPrintsFilePathName
 /*
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts
 import org.apache.pdfbox.pdmodel.PDDocument

@@ -1,19 +1,17 @@
-package pkg.e.ui
+package pkg.e.ui.test
 
-import pkg.b.logic.Account
-import scalafx.application.JFXApp3
-import scalafx.scene.Scene
-import scalafx.scene.control.{TableColumn, TableView, cell}
-import scalafx.collections.ObservableBuffer
-
-import scalafx.scene.control.cell.TextFieldTableCell
-import scalafx.util.converter.IntStringConverter
-import scalafx.util.StringConverter
-
-import scalafx.beans.property.{IntegerProperty, StringProperty}
-import scalafx.scene.layout.VBox
 import pkg.b.logic.Account
 import pkg.d.util.Util.inDatabaseFilePathName
+//import pkg.e.ui.Record
+import scalafx.application.JFXApp3
+import scalafx.beans.property.{IntegerProperty, StringProperty}
+import scalafx.collections.ObservableBuffer
+import scalafx.scene.Scene
+import scalafx.scene.control.cell.TextFieldTableCell
+import scalafx.scene.control.{TableColumn, TableView, cell}
+import scalafx.scene.layout.VBox
+import scalafx.util.StringConverter
+import scalafx.util.converter.IntStringConverter
 
 // Model class with JavaFX properties
 class Record(
