@@ -6,6 +6,7 @@ import pkg.a.gui.text.UiText.LoadedDocuments.Fields as DocumentFields
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegistrationFields
+import pkg.a.gui.text.UiText.DocumentManagementControl.Fields as ManagementFields
 import pkg.a.gui.traits.Form
 import pkg.b.logic.ArchivedDocument
 import scalafx.geometry.Pos
@@ -18,6 +19,9 @@ object ArchivedDocumentDetailsView extends Form:
   def apply(selectedDocument: ArchivedDocument, onExit: () => Unit = () => ()): BorderPane =
     val protocolNumber = readOnlyStringField(selectedDocument.getProtocolNumber)
     val classification = readOnlyStringField(selectedDocument.getClassification)
+    val loadedDate = readOnlyStringField(selectedDocument.getLoadedDate)
+    val loadedTime = readOnlyStringField(selectedDocument.getLoadedTime)
+    val loadedBy = readOnlyStringField(selectedDocument.getLoadedBy)
     val registeredDate = readOnlyStringField(selectedDocument.getRegisteredDate)
     val registeredTime = readOnlyStringField(selectedDocument.getRegisteredTime)
     val registeredBy = readOnlyStringField(selectedDocument.getRegisteredBy)
@@ -36,6 +40,9 @@ object ArchivedDocumentDetailsView extends Form:
         Seq(
           formRow(CommonDocumentFields.ProtocolNumber, protocolNumber),
           formRow(Labels.Classification, classification),
+          formRow(ManagementFields.LoadedDate, loadedDate),
+          formRow(ManagementFields.LoadedTime, loadedTime),
+          formRow(DocumentFields.ProcessedBy, loadedBy),
           formRow(RegistrationFields.RegisteredDate, registeredDate),
           formRow(RegistrationFields.RegisteredTime, registeredTime),
           formRow(RegistrationFields.RegisteredBy, registeredBy),

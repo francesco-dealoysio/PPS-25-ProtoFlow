@@ -112,8 +112,10 @@ trait Form extends Common:
       rows.zipWithIndex.foreach:
         case (row, index) =>
           val fieldRow = index * 2
+          val label = fieldLabel(row.label)
+          label.wrapText = true
 
-          add(fieldLabel(row.label), 0, fieldRow)
+          add(label, 0, fieldRow)
           add(row.field, 1, fieldRow)
           add(row.errorLabel, 1, fieldRow + 1)
 

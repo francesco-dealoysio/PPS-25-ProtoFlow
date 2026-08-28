@@ -8,7 +8,8 @@ import pkg.a.gui.text.UiText.LoadedDocuments.Fields as LoadedFields
 import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegisteredFields
 import pkg.a.gui.text.UiText.ArchivedDocuments.Fields as ArchivedFields
 import pkg.a.gui.traits.Form
-import scalafx.scene.layout.BorderPane
+import scalafx.geometry.Pos
+import scalafx.scene.layout.{BorderPane, HBox, Priority}
 
 object DocumentManagementDetailsView extends Form:
 
@@ -54,7 +55,13 @@ object DocumentManagementDetailsView extends Form:
           formRow(LoadedFields.Remarks, remarks),
           formRow(ManagementFields.LoadedDate, loadedDate),
           formRow(ManagementFields.LoadedTime, loadedTime),
-          formRow(LoadedFields.ProcessedBy, loadedBy),
+          formRow(LoadedFields.ProcessedBy, loadedBy)
+        )
+      )
+
+    val phasesForm =
+      formGrid(
+        Seq(
           formRow(CommonDocumentFields.ProtocolNumber, protocolNumber),
           formRow(RegisteredFields.RegisteredDate, registeredDate),
           formRow(RegisteredFields.RegisteredTime, registeredTime),
@@ -67,6 +74,16 @@ object DocumentManagementDetailsView extends Form:
       )
 
     documentForm.maxWidth = Double.MaxValue
+    phasesForm.maxWidth = Double.MaxValue
+
+    val form =
+      new HBox:
+        spacing = 30
+        alignment = Pos.TopCenter
+        children = Seq(documentForm, phasesForm)
+
+        HBox.setHgrow(documentForm, Priority.Always)
+        HBox.setHgrow(phasesForm, Priority.Always)
 
     val result = createResultMessage()
 
@@ -74,7 +91,7 @@ object DocumentManagementDetailsView extends Form:
 
     formPage(
       header = FormHeader(Text.DetailsTitle, Text.DetailsSubtitle),
-      form = documentForm,
+      form = form,
       resultMessage = result.label,
       actions = actionBar(Seq(exitButton))
     )

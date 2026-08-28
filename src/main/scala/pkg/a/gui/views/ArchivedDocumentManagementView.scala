@@ -29,6 +29,9 @@ object ArchivedDocumentManagementView extends Management:
     val subjectFilter = new TextField:
       promptText = CommonDocumentFields.Subject
 
+    val idFilter = new TextField:
+      promptText = CommonDocumentFields.Id
+
     val operatorFilter = new ComboBox[String]:
       items = ObservableBuffer(Text.AllOperators)
       value = Text.AllOperators
@@ -68,6 +71,7 @@ object ArchivedDocumentManagementView extends Management:
         dateCriterion(fromDateFilter, "getArchivedDate", ">="),
         dateCriterion(toDateFilter, "getArchivedDate", "<="),
         textCriterion(subjectFilter, "getSubject", "contains"),
+        textCriterion(idFilter, "getId", "="),
         comboCriterion(operatorFilter, Text.AllOperators, "getArchivedBy")
       ).flatten
 
@@ -87,6 +91,7 @@ object ArchivedDocumentManagementView extends Management:
       fromDateFilter.value = null
       toDateFilter.value = null
       subjectFilter.clear()
+      idFilter.clear()
       operatorFilter.value = Text.AllOperators
       loadDocuments()
 
@@ -119,7 +124,7 @@ object ArchivedDocumentManagementView extends Management:
 
     val header = titleBox(Text.Title, Text.Subtitle)
 
-    val filters = filterBar(fromDateFilter, toDateFilter, subjectFilter, operatorFilter)
+    val filters = filterBar(fromDateFilter, toDateFilter, subjectFilter, idFilter, operatorFilter)
 
     loadDocuments()
 
@@ -130,6 +135,9 @@ object ArchivedDocumentManagementView extends Management:
       searchDocuments()
 
     subjectFilter.text.onChange:
+      searchDocuments()
+
+    idFilter.text.onChange:
       searchDocuments()
 
     operatorFilter.value.onChange:

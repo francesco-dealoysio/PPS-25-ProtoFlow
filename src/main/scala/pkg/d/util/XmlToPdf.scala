@@ -130,7 +130,8 @@ object XmlToPdf:
         openAfterCreation = openAfterCreation
       ): document =>
         sections.foreach: (sectionTitle, headers, rows) =>
-          addTitle(document, sectionTitle)
+          if sectionTitle.nonEmpty then
+            addTitle(document, sectionTitle)
 
           val table = new PdfPTable(headers.size)
           table.setWidthPercentage(100f)

@@ -1,12 +1,13 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.services.ArchivedDocumentService
-import pkg.a.gui.text.UiText.ArchivedDocuments.{Errors as ArchiveErrors, Fields as ArchiveFields, Process as Text}
+import pkg.a.gui.text.UiText.ArchivedDocuments.{Errors as ArchiveErrors, Fields as ArchiveFields, Prompts as ArchivePrompts, Process as Text}
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields as DocumentFields
 import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegistrationFields
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
+import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.traits.Form
-import pkg.b.logic.RegisteredDocument
+import pkg.b.logic.{Classification, RegisteredDocument}
 import pkg.d.util.DateTime.{localDate, localTime}
 import pkg.a.gui.validation.DocumentArchivingValidator
 import scalafx.scene.Node
@@ -26,12 +27,14 @@ object DocumentArchivingView extends Form:
     val service = new ArchivedDocumentService()
     val result = createResultMessage()
     val validator = new DocumentArchivingValidator()
+    val classificationLogic = new Classification()
 
     val id = readOnlyStringField(selectedDocument.getId)
+    val documentDate = readOnlyStringField(selectedDocument.getDocumentDate)
+    val documentProtocol = readOnlyStringField(selectedDocument.getDocumentProtocol)
     val protocolNumber = readOnlyStringField(selectedDocument.getProtocolNumber)
     val registeredDate = readOnlyStringField(selectedDocument.getRegisteredDate)
     val registeredTime = readOnlyStringField(selectedDocument.getRegisteredTime)
-    val registeredBy = readOnlyStringField(selectedDocument.getRegisteredBy)
     val documentType = readOnlyStringField(selectedDocument.getDocumentType)
     val sender = readOnlyStringField(selectedDocument.getSender)
     val recipient = readOnlyStringField(selectedDocument.getRecipient)
@@ -41,7 +44,7 @@ object DocumentArchivingView extends Form:
     val archivedDate = dateField(localDate)
     val archivedTime = stringField(localTime)
     val archivedBy = readOnlyStringField(operatorUsername)
-    val archiveLocation = stringField()
+    val archiveLocation = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), prompt = ArchivePrompts.ArchiveLocation)
 
     val editableFields: Seq[FormField[? <: Node]] =
       Seq(archivedDate, archivedTime, archiveLocation)
@@ -55,7 +58,7 @@ object DocumentArchivingView extends Form:
 
     def validateForm(): Boolean =
       clearErrors()
-      val errors = validator.validate(archivedDate.value, archivedTime.value, archivedBy.value)
+      val errors = validator.validate(archivedDate.value, archivedTime.value, archivedBy.value, archiveLocation.value)
       errors.foreach:
         case error @ (ArchiveErrors.ArchivedDateRequired | ArchiveErrors.ArchivedDateInvalid) =>
           archivedDate.showError(error)
@@ -63,6 +66,8 @@ object DocumentArchivingView extends Form:
           archivedTime.showError(error)
         case error @ ArchiveErrors.ArchivedByRequired =>
           archivedBy.showError(error)
+        case error @ ArchiveErrors.ArchiveLocationRequired =>
+          archiveLocation.showError(error)
         case _ =>
       errors.isEmpty
 
@@ -115,10 +120,11 @@ object DocumentArchivingView extends Form:
       formGrid(
         Seq(
           formRow(CommonDocumentFields.Id, id),
+          formRow(DocumentFields.DocumentDate, documentDate),
+          formRow(DocumentFields.DocumentProtocol, documentProtocol),
           formRow(CommonDocumentFields.ProtocolNumber, protocolNumber),
           formRow(RegistrationFields.RegisteredDate, registeredDate),
           formRow(RegistrationFields.RegisteredTime, registeredTime),
-          formRow(RegistrationFields.RegisteredBy, registeredBy),
           formRow(DocumentFields.DocumentType, documentType),
           formRow(CommonDocumentFields.Sender, sender),
           formRow(CommonDocumentFields.Recipient, recipient),
@@ -132,7 +138,7 @@ object DocumentArchivingView extends Form:
           formRow(ArchiveFields.ArchivedDate, archivedDate),
           formRow(ArchiveFields.ArchivedTime, archivedTime),
           formRow(ArchiveFields.ArchivedBy, archivedBy),
-          formRow(ArchiveFields.ArchiveLocation, archiveLocation)
+          formRow(Labels.required(ArchiveFields.ArchiveLocation), archiveLocation)
         )
       )
 

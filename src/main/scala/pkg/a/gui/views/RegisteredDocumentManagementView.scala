@@ -40,7 +40,7 @@ object RegisteredDocumentManagementView extends Management:
       stringColumn[RegisteredDocument](CommonDocumentFields.Sender, Some(150))(_.getSender),
       stringColumn[RegisteredDocument](CommonDocumentFields.Subject, Some(220))(_.getSubject),
       stringColumn[RegisteredDocument](Fields.Type, Some(90))(_.getDocumentType),
-      stringColumn[RegisteredDocument](Fields.ProtocolledBy, Some(130))(_.getRegisteredBy)
+      stringColumn[RegisteredDocument](Fields.RegisteredBy, Some(160))(_.getRegisteredBy)
     )
 
     def loadDocuments(): Unit =

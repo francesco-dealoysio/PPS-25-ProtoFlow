@@ -196,14 +196,14 @@ object AccountEditView extends Form:
     val accountRows =
       Seq(
         formRow(Labels.Id, id),
-        formRow(Labels.Surname, surname),
-        formRow(Labels.Name, name),
-        formRow(Labels.Email, email),
+        formRow(Labels.required(Labels.Surname), surname),
+        formRow(Labels.required(Labels.Name), name),
+        formRow(Labels.required(Labels.Email), email),
         formRow(Labels.Phone, phone),
-        formRow(Labels.Role, role),
+        formRow(Labels.required(Labels.Role), role),
         formRow(Labels.Area, area),
         formRow(Labels.Assignment, assignment),
-        formRow(Labels.Username, username),
+        formRow(Labels.required(Labels.Username), username),
         formRow(Labels.Password, password)
       )
 

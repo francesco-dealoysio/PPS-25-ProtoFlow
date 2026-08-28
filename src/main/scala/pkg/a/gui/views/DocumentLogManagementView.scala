@@ -2,7 +2,7 @@ package pkg.a.gui.views
 
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.DocumentLogs
-import pkg.a.gui.text.UiText.DocumentLogs.{Fields, Management as Text, Operations}
+import pkg.a.gui.text.UiText.DocumentLogs.{Fields, Management as Text, Operations, Prompts}
 import pkg.a.gui.traits.Management
 import pkg.b.logic.DocumentLog
 import pkg.d.util.Util.inLogFilePathName
@@ -24,8 +24,11 @@ object DocumentLogManagementView extends Management:
       items = ObservableBuffer(Text.AllOperations +: Operations.values.map(_._2) *)
       value = Text.AllOperations
 
-    val fromDateFilter = new DatePicker()
-    val toDateFilter = new DatePicker()
+    val fromDateFilter = new DatePicker():
+      promptText = Prompts.FromDate
+
+    val toDateFilter = new DatePicker():
+      promptText = Prompts.ToDate
 
     val documentIdFilter = new TextField:
       promptText = Fields.DocumentId

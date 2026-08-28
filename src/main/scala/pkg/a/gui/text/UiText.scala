@@ -337,7 +337,6 @@ object UiText:
 
     object Fields:
       val Type = "Tipo"
-      val ProtocolledBy = "Protocollato da"
       val RegisteredDate = "Data protocollo"
       val RegisteredTime = "Ora protocollo"
       val RegisteredBy = "Operatore protocollatore"
@@ -400,6 +399,7 @@ object UiText:
       val ArchivedByRequired = "L'operatore archiviatore è obbligatorio"
       val ArchivedDateInvalid = "La data di archiviazione non è valida"
       val ArchivedTimeInvalid = "L'ora di archiviazione non è valida"
+      val ArchiveLocationRequired = "La collocazione archivistica è obbligatoria"
 
     object Process:
       val Title = "Archiviazione documento"
@@ -491,6 +491,10 @@ object UiText:
       val ProcessedTime = "Ora operazione"
       val ProcessedBy = "Operatore"
 
+    object Prompts:
+      val FromDate = "Data inizio"
+      val ToDate = "Data fine"
+
     object Operations:
       private val Loading = "loading"
       private val Registering = "registering"
@@ -520,7 +524,7 @@ object UiText:
       val Title = "Gestione Log"
       val Subtitle = "Visualizza le operazioni effettuate sui documenti."
       val Empty = "Non sono presenti log relativi ai documenti."
-      val AllOperations = "Tutte"
+      val AllOperations = "Tutte le operazioni"
       val AllOperators = "Tutti gli operatori"
       val NoFilterResults = "Nessun log corrisponde ai filtri selezionati."
       val View = "Visualizza"

@@ -54,7 +54,7 @@ object DocumentManagementControlView extends Management:
           title = Text.PrintTitle,
           sections = Seq(
             (
-              Text.PrintTitle,
+              "",
               Seq(Text.IdColumn, Text.ClassificationColumn, Text.RegisteredDateColumn, Text.OperatorColumn, Text.StageColumn),
               rows
             )

@@ -7,15 +7,16 @@ import scala.util.Try
 
 class DocumentArchivingValidator:
 
-  def validate(archivedDate: String, archivedTime: String, archivedBy: String): Seq[String] =
+  def validate(archivedDate: String, archivedTime: String, archivedBy: String, archiveLocation: String): Seq[String] =
     Seq(
       validateArchivedDate(archivedDate),
       validateArchivedTime(archivedTime),
-      validateArchivedBy(archivedBy)
+      validateArchivedBy(archivedBy),
+      validateArchiveLocation(archiveLocation)
     ).flatten
 
-  def isValid(archivedDate: String, archivedTime: String, archivedBy: String): Boolean =
-    validate(archivedDate, archivedTime, archivedBy).isEmpty
+  def isValid(archivedDate: String, archivedTime: String, archivedBy: String, archiveLocation: String): Boolean =
+    validate(archivedDate, archivedTime, archivedBy, archiveLocation).isEmpty
 
   private def validateArchivedDate(value: String): Option[String] =
     val trimmedValue = value.trim
@@ -40,5 +41,11 @@ class DocumentArchivingValidator:
   private def validateArchivedBy(value: String): Option[String] =
     if value.trim.isEmpty then
       Some(ArchiveErrors.ArchivedByRequired)
+    else
+      None
+
+  private def validateArchiveLocation(value: String): Option[String] =
+    if value.trim.isEmpty then
+      Some(ArchiveErrors.ArchiveLocationRequired)
     else
       None

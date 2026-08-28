@@ -34,7 +34,8 @@ class ArchivedDocumentService:
       source = source,
       archivedDate = archivedDate,
       archivedTime = archivedTime,
-      operatorUsername = operatorUsername
+      operatorUsername = operatorUsername,
+      archiveLocation = archiveLocation
     ) match
       case Some(error) =>
         Left(error)
@@ -60,7 +61,8 @@ class ArchivedDocumentService:
                                  source: RegisteredDocument,
                                  archivedDate: String,
                                  archivedTime: String,
-                                 operatorUsername: String
+                                 operatorUsername: String,
+                                 archiveLocation: String
                                ): Option[String] =
     if source == null then
       Some("Documento non valido")
@@ -70,7 +72,7 @@ class ArchivedDocumentService:
       Some("Il documento risulta già archiviato")
     else
       documentArchivingValidator
-        .validate(archivedDate, archivedTime, operatorUsername)
+        .validate(archivedDate, archivedTime, operatorUsername, archiveLocation)
         .headOption
 
   private def isAlreadyArchived(source: RegisteredDocument): Boolean =
