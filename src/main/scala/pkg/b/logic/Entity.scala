@@ -115,6 +115,13 @@ trait Entity:
       case e: Exception =>
         logger(e); ""
 
+  /**
+   * Returns search a record with the specified field and value in the specified XML file.
+   * @param fieldName
+   * @param fieldValue
+   * @param xmlFilePathName
+   * @return true on success, false otherwise.
+   */
   protected def fieldExists(fieldName: String, fieldValue: String, xmlFilePathName: String): Boolean =
     try
       searchFieldValue(xmlFilePathName, fieldName, fieldValue)

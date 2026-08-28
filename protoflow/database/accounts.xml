@@ -1,5 +1,19 @@
 <accounts>
   <record>
+    <id>1</id>
+    <surname>de aloysio</surname>
+    <name>francesco</name>
+    <email>francesco.dealoysio@studio.unibo.it</email>
+    <phone>06/11111111</phone>
+    <role>admin</role>
+    <area>presidenza</area>
+    <assignment>presidente</assignment>
+    <username>frank</username>
+    <password>
+      03bb8ba244594956f513d61391d7946867731184ccc679373f66c8b7b80017be004f11c6790c7e7c749668c77e418bb04988923cbf7381b447b2357cc371911b
+    </password>
+  </record>
+  <record>
     <id>2</id>
     <surname>testa</surname>
     <name>thomas</name>
@@ -28,45 +42,17 @@
     </password>
   </record>
   <record>
-    <id>1</id>
-    <surname>de aloysio</surname>
-    <name>francesco</name>
-    <email>ciao@gmail.com</email>
-    <phone/>
+    <id>20</id>
+    <surname>Rossi</surname>
+    <name>Mario</name>
+    <email>mario.rossi@alice.it</email>
+    <phone>756767</phone>
     <role>admin</role>
-    <area>presidenza</area>
-    <assignment>presidente</assignment>
-    <username>frank</username>
+    <area>Segreteria</area>
+    <assignment>Addetto</assignment>
+    <username>mrossi</username>
     <password>
-      03bb8ba244594956f513d61391d7946867731184ccc679373f66c8b7b80017be004f11c6790c7e7c749668c77e418bb04988923cbf7381b447b2357cc371911b
-    </password>
-  </record>
-  <record>
-    <id>19</id>
-    <surname>Magno</surname>
-    <name>Carlo</name>
-    <email>carlo@magno.com</email>
-    <phone/>
-    <role>viewer</role>
-    <area>Infrastrutture</area>
-    <assignment>Astro</assignment>
-    <username>cmagno</username>
-    <password>
-      ca46517383ea0aaa0edcbf7abb3bfbb6d9f54be616c31be2e5794d1ccbc37993a8c0a95bf84f402506d0ecc249146407bf100badeed200835caa03a1aaac6009
-    </password>
-  </record>
-  <record>
-    <id>21</id>
-    <surname>remo</surname>
-    <name>romolo</name>
-    <email>rgd@gmail.com</email>
-    <phone></phone>
-    <role>viewer</role>
-    <area>Addestramento</area>
-    <assignment>fsd</assignment>
-    <username>rremo</username>
-    <password>
-      aa4c9bbd0b724ffe5c4b947dd3509965554955326e95df1a4334b0e3ec85061730b03b2fc8b9216bfdb25803d1b8b479acedc588123fb5e6f9b73e7189693959
+      70ec3e6ee938462a1dc8b70324e27364c3be0928b0c8595f15f09b90a6753e2298ef89b74537c15f2a5263bad5489e8635ff53859f70565b8109ad1b0f0a73ce
     </password>
   </record>
 </accounts>
