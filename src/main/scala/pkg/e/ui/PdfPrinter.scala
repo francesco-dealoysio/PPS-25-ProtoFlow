@@ -53,7 +53,6 @@ object PdfPrinter:
   private def choosePrinterServiceUI(): Option[PrintService] =
     import javax.print.attribute.HashPrintRequestAttributeSet
     import javax.print.{DocFlavor, PrintServiceLookup, ServiceUI}
-    //import javax.print.attribute.standard._
 
     val flavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE
     val pras = new HashPrintRequestAttributeSet()

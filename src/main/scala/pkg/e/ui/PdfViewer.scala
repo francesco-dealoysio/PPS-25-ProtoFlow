@@ -158,27 +158,5 @@ object PdfViewer:
         println(s"Error loading PDF: ${ex.getMessage}")
         ex.printStackTrace()
 
-  // not used
-  private def detectOrientation(width: Float, height: Float, rotation: Int): String = {
-    val rotated = rotation % 180 != 0
-    val w = if (rotated) height else width
-    val h = if (rotated) width else height
-    if (w > h) "Landscape" else "Portrait"
-  }
-
-  // not used
-  private def resizeImage(original: BufferedImage, targetWidth: Int, targetHeight: Int): BufferedImage =
-    val resized = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB)
-    val g2d: Graphics2D = resized.createGraphics()
-    try
-      // Enable high-quality scaling
-      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC)
-      g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY)
-      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
-      g2d.drawImage(original, 0, 0, targetWidth, targetHeight, null)
-    finally
-      g2d.dispose()
-    resized
-
 @main def tryPdfViewer: Unit =
   PdfViewer.viewPdf(inPrintsFilePathName("Intro.pdf"))
