@@ -9828,7 +9828,47 @@
     <documentId>120</documentId>
     <operationType>loading</operationType>
     <processedDate>2026-10-28</processedDate>
-    <processedTime></processedTime>
+    <processedTime/>
     <processedBy>Bianchi</processedBy>
+  </record>
+  <record>
+    <id>1229</id>
+    <documentId>23</documentId>
+    <operationType>loading</operationType>
+    <processedDate>2026-08-28</processedDate>
+    <processedTime>10:38:55.50</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+  <record>
+    <id>1230</id>
+    <documentId>23</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-08-28</processedDate>
+    <processedTime>10:39:11.62</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+  <record>
+    <id>1231</id>
+    <documentId>23</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-08-28</processedDate>
+    <processedTime>10:39:18.45</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+  <record>
+    <id>1232</id>
+    <documentId>24</documentId>
+    <operationType>loading</operationType>
+    <processedDate>2026-08-28</processedDate>
+    <processedTime>10:40:07.76</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+  <record>
+    <id>1233</id>
+    <documentId>24</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-08-28</processedDate>
+    <processedTime>10:40:23.30</processedTime>
+    <processedBy>tommy</processedBy>
   </record>
 </operations>

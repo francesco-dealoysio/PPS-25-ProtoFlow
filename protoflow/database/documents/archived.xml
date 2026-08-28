@@ -1,1 +1,24 @@
-<archivedDocuments></archivedDocuments>
+<archivedDocuments>
+  <record>
+    <id>23</id>
+    <documentDate>2026-08-28</documentDate>
+    <documentProtocol>Protocollo</documentProtocol>
+    <documentType>Lettera</documentType>
+    <sender>Luca</sender>
+    <recipient>Marco</recipient>
+    <subject>Oggetto</subject>
+    <remarks></remarks>
+    <loadedDate>2026-08-28</loadedDate>
+    <loadedTime>10:38:55.50</loadedTime>
+    <loadedBy>tommy</loadedBy>
+    <protocolNumber>2026/23/Materiali</protocolNumber>
+    <registeredDate>2026-08-28</registeredDate>
+    <registeredTime>10:39:11.62</registeredTime>
+    <registeredBy>tommy</registeredBy>
+    <archivedDate>2026-08-28</archivedDate>
+    <archivedTime>10:39:18.45</archivedTime>
+    <archivedBy>tommy</archivedBy>
+    <archiveLocation>Materiali</archiveLocation>
+    <classification>Materiali</classification>
+  </record>
+</archivedDocuments>

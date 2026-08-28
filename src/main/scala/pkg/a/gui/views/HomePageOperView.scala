@@ -1,9 +1,8 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.structures.{MenuAction, MenuItem}
-import pkg.a.gui.text.UiText.Menu.*
+import pkg.a.gui.structures.{MenuAction}
 import pkg.a.gui.traits.HomePage
-import pkg.b.logic.{Account, ArchivedDocument, AuthorizationEngine, LoadedDocument, RegisteredDocument}
+import pkg.b.logic.{Account, ArchivedDocument, LoadedDocument, RegisteredDocument}
 import scalafx.scene.layout.Pane
 
 object HomePageOperView extends HomePage:
@@ -12,11 +11,6 @@ object HomePageOperView extends HomePage:
 
   override protected def dashboardView(currentAccount: Account): Pane =
     OperDashboardView(currentAccount, pageTitle)
-
-  override protected def menuItems: Seq[MenuItem] =
-    Seq(MenuItem(Dashboard, MenuAction.Dashboard)) ++
-      AuthorizationEngine.permittedActions("oper").map(action => MenuItem(labels(action), action)) ++
-      Seq(MenuItem(Logout, MenuAction.Logout))
 
   override protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit =
     action match

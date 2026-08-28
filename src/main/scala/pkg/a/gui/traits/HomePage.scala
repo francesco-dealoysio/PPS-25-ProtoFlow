@@ -1,18 +1,17 @@
 package pkg.a.gui.traits
 
 import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
+import pkg.a.gui.text.UiStyles.HomePage.*
+import pkg.a.gui.text.UiText.Common.Dialogs.{Denied, Logout as LogoutDialog}
+import pkg.a.gui.text.UiText.Menu.{Dashboard, Logout as LogoutLabel, labels}
 import pkg.b.logic.{Account, AuthorizationEngine, Role}
 import scalafx.geometry.Pos
 import scalafx.scene.control.Button
 import scalafx.scene.layout.*
-import pkg.a.gui.text.UiStyles.HomePage.*
-import pkg.a.gui.text.UiText.Common.Dialogs.Logout
-import pkg.a.gui.text.UiText.Common.Dialogs.Denied
 
 trait HomePage extends Root:
 
   protected def pageTitle: String
-  protected def menuItems: Seq[MenuItem]
   protected def dashboardView(currentAccount: Account): Pane
 
   protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit
@@ -54,9 +53,9 @@ trait HomePage extends Root:
         case MenuAction.Logout =>
           val confirmed =
             askConfirmation(
-              titleText = Logout.Title,
-              header = Logout.Header,
-              content = Logout.Content
+              titleText = LogoutDialog.Title,
+              header = LogoutDialog.Header,
+              content = LogoutDialog.Content
             )
 
           if confirmed then
@@ -79,7 +78,7 @@ trait HomePage extends Root:
               content = Denied.Content
             )
 
-    val sidebar = createSidebar(action => navigate(action))
+    val sidebar = createSidebar(currentAccount.getRole, action => navigate(action))
 
     createRoot(
       currentUser = currentAccount.getUsername,
@@ -89,9 +88,63 @@ trait HomePage extends Root:
       onProfileOpen = () => navigate(MenuAction.Profilo)
     )
 
-  private def createSidebar(onNavigate: MenuAction => Unit): VBox =
+  protected final def showCrud[T](
+                                   navigator: Navigator,
+                                   managementView: (() => Unit, T => Unit, () => Unit) => Pane,
+                                   addView: (() => Unit, () => Unit) => Pane,
+                                   editView: (T, () => Unit, () => Unit) => Pane
+                                 ): Unit =
+    def management(): Unit =
+      val back = () => management()
+      navigator.show(
+        managementView(
+          () => navigator.show(addView(back, back)),
+          selected => navigator.show(editView(selected, back, back)),
+          () => navigator.dashboard()
+        )
+      )
+    management()
+
+  protected final def showSelectionFlow[T](
+                                            navigator: Navigator,
+                                            managementView: (T => Unit, () => Unit) => Pane,
+                                            selectedView: (T, () => Unit) => Pane
+                                          ): Unit =
+    def management(): Unit =
+      val back = () => management()
+      navigator.show(
+        managementView(
+          selected => navigator.show(selectedView(selected, back)),
+          () => navigator.dashboard()
+        )
+      )
+    management()
+
+  protected final def showCreateFlow(
+                                      navigator: Navigator,
+                                      managementView: (() => Unit, () => Unit) => Pane,
+                                      addView: (() => Unit, () => Unit) => Pane
+                                    ): Unit =
+    def management(): Unit =
+      val back = () => management()
+      navigator.show(
+        managementView(
+          () => navigator.show(addView(back, back)),
+          () => navigator.dashboard()
+        )
+      )
+    management()
+
+  private def menuItems(role: String): Seq[MenuItem] =
+    Seq(MenuItem(Dashboard, MenuAction.Dashboard)) ++
+      AuthorizationEngine
+        .permittedActions(role)
+        .map(action => MenuItem(labels(action), action)) ++
+      Seq(MenuItem(LogoutLabel, MenuAction.Logout))
+
+  private def createSidebar(role: String, onNavigate: MenuAction => Unit): VBox =
     val buttons =
-      menuItems.map: item =>
+      menuItems(role).map: item =>
         new Button(item.label):
           maxWidth = Double.MaxValue
           alignment = Pos.CenterLeft

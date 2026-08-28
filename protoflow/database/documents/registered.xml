@@ -1,1 +1,20 @@
-<registeredDocuments></registeredDocuments>
+<registeredDocuments>
+  <record>
+    <id>24</id>
+    <documentDate>2026-08-28</documentDate>
+    <documentProtocol>ProtocolloMittente</documentProtocol>
+    <documentType>Email</documentType>
+    <sender>Lucia</sender>
+    <recipient>Chiara</recipient>
+    <subject>Oggetto2</subject>
+    <remarks>Note</remarks>
+    <loadedDate>2026-08-28</loadedDate>
+    <loadedTime>10:40:07.76</loadedTime>
+    <loadedBy>tommy</loadedBy>
+    <protocolNumber>2026/24/Informatica</protocolNumber>
+    <registeredDate>2026-08-28</registeredDate>
+    <registeredTime>10:40:23.30</registeredTime>
+    <registeredBy>tommy</registeredBy>
+    <classification>Informatica</classification>
+  </record>
+</registeredDocuments>
