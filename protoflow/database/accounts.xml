@@ -69,4 +69,18 @@
       4798d12fb942d5fed2a401c18ebeccaa3a9b81b1726d9935307e271be38a13a0627d5995cb615ad08d098250e8861fa19686b302b35427a4a1db13b004c16046
     </password>
   </record>
+  <record>
+    <id>33</id>
+    <surname>Rosati</surname>
+    <name>Giorgio</name>
+    <email>giorgio.rosati@alice.it</email>
+    <phone>563565</phone>
+    <role>oper</role>
+    <area>Amministrazione</area>
+    <assignment>Tesoriere</assignment>
+    <username>grosati</username>
+    <password>
+      85a907b969e06835e74f1e167f178778dc4337b970b2849ee205945aa636d63c66ff7ebf204a829e9865c428127a9447e3dd1b4d84ba303497fa5193e1a02706
+    </password>
+  </record>
 </accounts>

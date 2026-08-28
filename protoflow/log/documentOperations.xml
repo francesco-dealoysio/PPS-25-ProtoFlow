@@ -27332,7 +27332,15 @@
     <documentId>120</documentId>
     <operationType>archiving</operationType>
     <processedDate>2026-10-28</processedDate>
-    <processedTime></processedTime>
+    <processedTime/>
     <processedBy>Bianchi</processedBy>
+  </record>
+  <record>
+    <id>2463</id>
+    <documentId>28</documentId>
+    <operationType>loading</operationType>
+    <processedDate>2026-08-28</processedDate>
+    <processedTime>18:09:35.60</processedTime>
+    <processedBy>thomas testa</processedBy>
   </record>
 </operations>

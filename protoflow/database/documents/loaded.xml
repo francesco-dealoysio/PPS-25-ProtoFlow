@@ -1,1 +1,15 @@
-<loaded></loaded>
+<loaded>
+  <record>
+    <id>28</id>
+    <documentDate>2026-08-28</documentDate>
+    <documentProtocol></documentProtocol>
+    <documentType>Email</documentType>
+    <sender>INPS</sender>
+    <recipient>UNUCI</recipient>
+    <subject>Test</subject>
+    <remarks>commento</remarks>
+    <processedDate>2026-08-28</processedDate>
+    <processedTime>18:09:35.60</processedTime>
+    <processedBy>thomas testa</processedBy>
+  </record>
+</loaded>

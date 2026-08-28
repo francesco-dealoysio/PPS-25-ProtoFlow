@@ -26,7 +26,7 @@ object PdfVerifier:
 @main def tryPdfVerifier: Unit =
   import pkg.e.ui.pdf.PdfVerifier.isPdf
 
-  val file = inPrintsFilePathName("falsoPdf.pdf")
+  val file = inPrintsFilePathName("Appo.txt")
   if isPdf(file) then
     println(s"'${file}' is a valid PDF file (header check passed).")
   else

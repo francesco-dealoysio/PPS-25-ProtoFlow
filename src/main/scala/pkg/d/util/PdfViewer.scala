@@ -1,8 +1,8 @@
 package pkg.d.util
 
-import org.apache.pdfbox.Loader
+//import org.apache.pdfbox.Loader // y commented
+import org.apache.pdfbox.pdmodel.PDDocument // y added
 import org.apache.pdfbox.rendering.PDFRenderer
-
 import scalafx.scene.Scene
 import scalafx.scene.control.ScrollPane
 import scalafx.scene.image.{Image, ImageView}
@@ -15,7 +15,8 @@ import javax.imageio.ImageIO
 object PdfViewer:
 
   def open(file: File): Unit =
-    val document = Loader.loadPDF(file)
+    //val document = Loader.loadPDF(file) // y commented
+    val document = PDDocument.load(file) // y added
 
     try
       val renderer = new PDFRenderer(document)

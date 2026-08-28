@@ -94,7 +94,7 @@ class DocumentLoad(val user: Account, val parentMask: Homepage) extends Operatio
 
     typeFld.setItems(FXCollections.observableArrayList("Lettera", "Email", "Plico"))
     typeFld.getSelectionModel.select(objEntity.asInstanceOf[LoadedDocument].getDocumentType)
-    typeFld.promptText = "Selezionare un tipo"
+    typeFld.promptText = "SStateelezionare un tipo"
     typeFld.value.onChange { (_, _, _) =>
       dirty = true
       execBtn.disable = false
@@ -156,7 +156,7 @@ class DocumentLoad(val user: Account, val parentMask: Homepage) extends Operatio
     objEntity.asInstanceOf[LoadedDocument].setRecipient(recipientFld.text.value.trim)
     objEntity.asInstanceOf[LoadedDocument].setSubject(subjectFld.text.value.trim)
     objEntity.asInstanceOf[LoadedDocument].setRemarks(remarksFld.text.value.trim)
-    objEntity.asInstanceOf[LoadedDocument].setState("Loaded")
+    //objEntity.asInstanceOf[LoadedDocument].setState("Loaded")
     objEntity.asInstanceOf[LoadedDocument].setProcessedDate(localDate)
     objEntity.asInstanceOf[LoadedDocument].setProcessedTime(localTime)
     objEntity.asInstanceOf[LoadedDocument].setProcessedBy(user.getName + " " + user.getSurname)
