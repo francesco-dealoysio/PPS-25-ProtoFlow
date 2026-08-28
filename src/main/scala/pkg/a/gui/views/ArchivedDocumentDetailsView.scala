@@ -9,8 +9,7 @@ import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegistrationFields
 import pkg.a.gui.text.UiText.DocumentManagementControl.Fields as ManagementFields
 import pkg.a.gui.traits.Form
 import pkg.b.logic.ArchivedDocument
-import scalafx.geometry.Pos
-import scalafx.scene.layout.{BorderPane, HBox, Priority}
+import scalafx.scene.layout.BorderPane
 import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.XmlToPdf
 
@@ -64,21 +63,7 @@ object ArchivedDocumentDetailsView extends Form:
         )
       )
 
-    documentForm.maxWidth = Double.MaxValue
-    archiveForm.maxWidth = Double.MaxValue
-
-    val form =
-      new HBox:
-        spacing = 30
-        alignment = Pos.TopCenter
-        maxWidth = Double.MaxValue
-        children = Seq(
-          documentForm,
-          archiveForm
-        )
-
-    HBox.setHgrow(documentForm, Priority.Always)
-    HBox.setHgrow(archiveForm, Priority.Always)
+    val form = twoColumnForm(documentForm, archiveForm)
 
     val result = createResultMessage()
 

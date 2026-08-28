@@ -119,6 +119,20 @@ trait Form extends Common:
           add(row.field, 1, fieldRow)
           add(row.errorLabel, 1, fieldRow + 1)
 
+  protected def twoColumnForm(left: GridPane, right: GridPane): HBox =
+    left.maxWidth = Double.MaxValue
+    right.maxWidth = Double.MaxValue
+
+    val box =
+      new HBox:
+        spacing = 30
+        alignment = Pos.TopCenter
+        children = Seq(left, right)
+
+    HBox.setHgrow(left, Priority.Always)
+    HBox.setHgrow(right, Priority.Always)
+    box
+
   protected def saveButton(onSave: () => Unit, text: String = Save): Button =
     primaryButton(text, onSave)
 

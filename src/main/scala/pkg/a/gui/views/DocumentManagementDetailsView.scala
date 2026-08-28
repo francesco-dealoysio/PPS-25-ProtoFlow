@@ -8,8 +8,7 @@ import pkg.a.gui.text.UiText.LoadedDocuments.Fields as LoadedFields
 import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegisteredFields
 import pkg.a.gui.text.UiText.ArchivedDocuments.Fields as ArchivedFields
 import pkg.a.gui.traits.Form
-import scalafx.geometry.Pos
-import scalafx.scene.layout.{BorderPane, HBox, Priority}
+import scalafx.scene.layout.BorderPane
 
 object DocumentManagementDetailsView extends Form:
 
@@ -73,17 +72,7 @@ object DocumentManagementDetailsView extends Form:
         )
       )
 
-    documentForm.maxWidth = Double.MaxValue
-    phasesForm.maxWidth = Double.MaxValue
-
-    val form =
-      new HBox:
-        spacing = 30
-        alignment = Pos.TopCenter
-        children = Seq(documentForm, phasesForm)
-
-        HBox.setHgrow(documentForm, Priority.Always)
-        HBox.setHgrow(phasesForm, Priority.Always)
+    val form = twoColumnForm(documentForm, phasesForm)
 
     val result = createResultMessage()
 

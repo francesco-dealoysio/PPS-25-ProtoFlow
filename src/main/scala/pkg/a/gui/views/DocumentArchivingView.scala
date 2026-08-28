@@ -11,8 +11,6 @@ import pkg.b.logic.{Classification, RegisteredDocument}
 import pkg.d.util.DateTime.{localDate, localTime}
 import pkg.a.gui.validation.DocumentArchivingValidator
 import scalafx.scene.Node
-import scalafx.geometry.Pos
-import scalafx.scene.layout.{HBox, Priority}
 import scalafx.scene.layout.BorderPane
 
 object DocumentArchivingView extends Form:
@@ -142,16 +140,7 @@ object DocumentArchivingView extends Form:
         )
       )
 
-    archiveForm.maxWidth = Double.MaxValue
-    documentForm.maxWidth = Double.MaxValue
-    val form =
-      new HBox:
-        spacing = 30
-        alignment = Pos.TopCenter
-        children = Seq(documentForm, archiveForm)
-
-        HBox.setHgrow(documentForm, Priority.Always)
-        HBox.setHgrow(archiveForm, Priority.Always)
+    val form = twoColumnForm(documentForm, archiveForm)
 
     formPage(
       header = FormHeader(Text.Title, Text.Subtitle),
