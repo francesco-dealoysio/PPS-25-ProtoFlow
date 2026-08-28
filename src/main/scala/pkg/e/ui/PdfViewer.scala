@@ -3,12 +3,12 @@ package pkg.e.ui
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.PDFRenderer
 import pkg.d.util.Util.inPrintsFilePathName
+import pkg.e.ui.PdfVerifier.isPdf
 
-import java.awt.{BorderLayout, Dimension, Frame, Color}
+import java.awt.{BorderLayout, Color, Dimension, Frame}
 import java.awt.{Graphics2D, RenderingHints}
 import java.awt.image.BufferedImage
-import java.awt.event._
-
+import java.awt.event.*
 import javax.swing.{JFrame, SwingUtilities}
 import javax.swing.*
 import java.io.File
@@ -17,12 +17,11 @@ object PdfViewer:
 
   def viewPdf(pdfPathName: String): Unit =
 
-    // check if file has pdf format
+    if !isPdf(pdfPathName) then
+      println(s"'${pdfPathName}' does not exist or is not a valid PDF file.")
+      System.exit(1)
 
     val pdfFile = File(pdfPathName)
-    if !pdfFile.exists() || !pdfFile.isFile then
-      println(s"Error: File '$pdfPathName' not found.")
-      System.exit(1)
 
     try
       val document = PDDocument.load(pdfFile)

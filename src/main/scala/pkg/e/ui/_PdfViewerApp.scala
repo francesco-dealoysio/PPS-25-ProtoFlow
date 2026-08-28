@@ -12,7 +12,7 @@ import scala.util.Using
 
 object _PdfViewerApp:
 
-  @main def run(): Unit =
+  @main def tryPdfViewerApp(): Unit =
     val filePath = inPrintsFilePathName("Intro.pdf") // Change to your PDF path
 
     Using(PDDocument.load(java.io.File(filePath))) { document =>
