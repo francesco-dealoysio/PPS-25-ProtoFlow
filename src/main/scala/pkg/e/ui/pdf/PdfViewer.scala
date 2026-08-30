@@ -141,10 +141,12 @@ object PdfViewer:
       frame.requestFocusInWindow()
       frame.addKeyListener(new KeyListener:
         override def keyPressed(e: KeyEvent): Unit =
-          println(s"Key Pressed: ${KeyEvent.getKeyText(e.getKeyCode)}")
+          //println(s"Key Pressed: ${KeyEvent.getKeyText(e.getKeyCode)}")
           e.getKeyCode match
             case KeyEvent.VK_PLUS | KeyEvent.VK_ADD => zoomIn()
             case KeyEvent.VK_MINUS | KeyEvent.VK_SUBTRACT => zoomOut()
+            case KeyEvent.VK_UP => next()
+            case KeyEvent.VK_DOWN => prev()
             case _ => ()
 
         override def keyReleased(e: KeyEvent): Unit = ()
