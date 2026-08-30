@@ -35,7 +35,7 @@ object PdfViewer:
 
       val zoomDefault = 100f
       var zoomDPI = zoomDefault
-      val zoomMin = 80f
+      val zoomMin = 60f
       val zoomMax = 200f
       val zoomInc = 10f
 

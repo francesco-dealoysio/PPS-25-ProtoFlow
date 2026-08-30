@@ -65,6 +65,20 @@ object PdfCreator:
     writeBody(fields)
 
     content.close()
+
+    // scritture numero di pagine
+    println("Number of pages: " + document.getPages.getCount)
+    page = document.getPage(0)
+    content = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true)
+    val textWidth = fontFooter.fontType.getStringWidth(pageNumber.toString) / 1000 * fontFooter.fontSize
+    val xOffset = (pageWidth - textWidth) / 2
+    val yOffset = startY - pageHeight + paddingBottom
+    // implementare un ciclo
+    writeToContent(pageNumber.toString + " of " + document.getPages.getCount, xOffset, yOffset, fontFooter)
+    content.stroke()
+    content.close()
+    // fine scrittura
+
     document.save(pdfPathName)
     document.close()
 
@@ -109,7 +123,6 @@ object PdfCreator:
     xOffset = (pageWidth - textWidth) / 2
     writeToContent(pageNumber.toString, xOffset, yOffset, fontFooter)
 
-
   private def writeToContent(text: String, col: Float, row: Float, font: Font): Unit =
     content.beginText()
     content.setFont(font.fontType, font.fontSize)
@@ -151,5 +164,5 @@ object PdfCreator:
   for (i <- 1 to 100) { items += (("Label"+i, "Value"+i)) }
   val seq: Seq[(String, String)] = items.toSeq
 
-  PdfCreator.createPdf(inPrintsFilePathName("SchedaAccount.pdf"), "Scheda Account Utente", fields)
-  //PdfViewer.viewPdf(inPrintsFilePathName("SchedaAccount.pdf"))
+  PdfCreator.createPdf(inPrintsFilePathName("SchedaAccount.pdf"), "Scheda Account Utente", seq)
+  PdfViewer.viewPdf(inPrintsFilePathName("SchedaAccount.pdf"))
