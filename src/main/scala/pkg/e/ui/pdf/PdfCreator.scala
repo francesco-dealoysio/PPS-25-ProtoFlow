@@ -53,15 +53,15 @@ object PdfCreator:
   private val marginRight = 40f
   private val marginBottom = 50f
 
-  private val padding = 5f
+  private val padding = 8f
   private val paddingTop = 15f
   private val paddingLeft = 15f
   private val paddingRight = 15f
   private val paddingBottom = 15f
 
   private val distanceFromTitle = 40f
-
-  private val lineSpacing = 25f
+  private val recordSpacing = 10f //25f
+  private val lineSpacing = 10f //25f
 
   private var pageNumber = 1
 
@@ -99,12 +99,21 @@ object PdfCreator:
     writeToContent(title, xOffset, yOffset, fontTitle)
 
   private def writeBody(fields: Seq[(String, String)]): Unit =
-    val rectHeight = 20f
+
+    val textHeight = fontBody.fontType.getFontDescriptor.getCapHeight / 1000 * fontBody.fontSize
+    var rectHeight = textHeight + padding * 2
     val rectWidth = 150f
     val xRectOffset = marginLeft
     var yRectOffset = startY - fontBody.fontSize - marginTop - distanceFromTitle
 
     fields.foreach(field =>
+
+      val linesColumn1 = wrapText(field._1, rectWidth - padding).size
+      val rectWidth2 = pageWidth - rectWidth - marginLeft - marginRight
+      val linesColumn2 = wrapText(field._2, rectWidth2 - padding).size
+      val maxLines = math.max(linesColumn1, linesColumn2)
+
+      rectHeight = (textHeight + lineSpacing) * maxLines + padding * 2
 
       if yRectOffset < margin then
         content.close()
@@ -115,7 +124,7 @@ object PdfCreator:
         writeHeader()
         writeTitle()
         writeFooter()
-        yRectOffset = yRectOffset - lineSpacing
+        yRectOffset = yRectOffset - (rectHeight - recordSpacing)
 
       var rect = Rect(xRectOffset, yRectOffset, rectWidth, rectHeight, fillColor = Color.DARK_GRAY)
       drawRect(rect)
@@ -127,7 +136,7 @@ object PdfCreator:
       drawRect(rect)
       writeTextInRect(field._2, rect, HorizontalAlignment.LEFT)
 
-      yRectOffset = yRectOffset - lineSpacing
+      yRectOffset = yRectOffset - (rect.height + recordSpacing)
 
     )
 
@@ -142,23 +151,35 @@ object PdfCreator:
     content.stroke()
 
   private def writeTextInRect(text: String, rect: Rect, align: HorizontalAlignment, color: Color = Color.BLACK): Unit =
-    val textWidth = fontBody.fontType.getStringWidth(text) / 1000 * fontBody.fontSize
+
+    val lines = wrapText(text, rect.width - padding)
+
     val textHeight = fontBody.fontType.getFontDescriptor.getCapHeight / 1000 * fontBody.fontSize
-    var xTextOffset: Float = 0
+
     var yTextOffset: Float = rect.yPos - rect.height + (rect.height - textHeight) / 2
 
-    content.setNonStrokingColor(color)
+    if lines.size > 1 then
+      yTextOffset = rect.yPos - rect.height + (rect.height - textHeight) - lineSpacing
 
-    align match
-      case HorizontalAlignment.LEFT =>
-        xTextOffset = rect.xPos + padding
-      case HorizontalAlignment.RIGHT =>
-        xTextOffset = rect.xPos + rect.width - textWidth - padding
-      case HorizontalAlignment.CENTER =>
-        xTextOffset = rect.xPos + (rect.width - textWidth) / 2
-      case _ => ()
+    var xTextOffset: Float = 0
 
-    writeToContent(text, xTextOffset, yTextOffset, fontBody)
+    for line <- lines do
+
+      val textWidth = fontBody.fontType.getStringWidth(line) / 1000 * fontBody.fontSize
+
+      content.setNonStrokingColor(color)
+
+      align match
+        case HorizontalAlignment.LEFT =>
+          xTextOffset = rect.xPos + padding
+        case HorizontalAlignment.RIGHT =>
+          xTextOffset = rect.xPos + rect.width - textWidth - padding
+        case HorizontalAlignment.CENTER =>
+          xTextOffset = rect.xPos + (rect.width - textWidth) / 2
+        case _ => ()
+
+      writeToContent(line, xTextOffset, yTextOffset, fontBody)
+      yTextOffset = yTextOffset - lineSpacing
 
   private def writeFooter(): Unit =
     var xOffset = startX + paddingLeft
@@ -190,33 +211,85 @@ object PdfCreator:
       content.close()
     }
 
+  def wrapText(text: String, maxWidth: Float): Seq[String] =
+    val words = text.split("\\s+")
+    val lines = scala.collection.mutable.ListBuffer[String]()
+    var currentLine = new StringBuilder
+
+    for word <- words do
+      val testLine = if currentLine.isEmpty then word else currentLine.toString + " " + word
+      val textWidth = fontBody.fontType.getStringWidth(testLine) / 1000 * fontBody.fontSize
+      if textWidth <= maxWidth then
+        currentLine.clear()
+        currentLine.append(testLine)
+        else
+        lines += currentLine.toString()
+        currentLine.clear()
+        currentLine.append(word)
+
+    if currentLine.nonEmpty then lines += currentLine.toString()
+    lines.toSeq
+
   private def shape(label: String): String = (" ".repeat(15) + label + ": ").takeRight(15)
 
 @main def tryPdfCreator: Unit =
 
   import pkg.b.logic.Account
-  val account: Account = Account().getRecordById("1")
+  val record: Account = Account().getRecordById("1")
   val fields = Seq(
-    ("Id", account.getId),
-    ("Cognome", account.getSurname),
-    ("Nome", account.getName),
-    ("Email", account.getEmail),
-    ("Telefono", account.getPhone),
-    ("Ruolo", account.getRole),
-    ("Area", account.getArea),
-    ("Incarico", account.getAssignment),
-    ("Username", account.getUsername)
+    ("Id", record.getId),
+    ("Cognome", record.getSurname),
+    ("Nome", record.getName),
+    ("Email", record.getEmail),
+    ("Telefono", record.getPhone),
+    ("Ruolo", record.getRole),
+    ("Area", record.getArea),
+    ("Incarico", record.getAssignment),
+    ("Username", record.getUsername)
   )
-  /*
-    PdfCreator.createPdf(inPrintsFilePathName("SchedaAccount.pdf"), "Scheda Account Utente", fields)
-    PdfViewer.viewPdf(inPrintsFilePathName("SchedaAccount.pdf"))
-  */
 
+  PdfCreator.createPdf(inPrintsFilePathName("SchedaAccount.pdf"), "Scheda Account Utente", fields)
+  PdfViewer.viewPdf(inPrintsFilePathName("SchedaAccount.pdf"))
+/*
+  import pkg.b.logic.Classification
+  val record: Classification = Classification().getRecordById("1")
+  val fields = Seq(
+    ("Id", record.getId),
+    ("Classifica", record.getClassification),
+    ("Descrizione", record.getDescription)
+  )
+
+  PdfCreator.createPdf(inPrintsFilePathName("SchedaClassification.pdf"), "Scheda Classifica", fields)
+  PdfViewer.viewPdf(inPrintsFilePathName("SchedaClassification.pdf"))
+*/
   // test multipagina
   import scala.collection.mutable.ArrayBuffer
   val items: ArrayBuffer[(String, String)] = ArrayBuffer.empty
   for (i <- 1 to 100) { items += (("Label"+i, "Value"+i)) }
   val multiPages: Seq[(String, String)] = items.toSeq
 
+/*
   PdfCreator.createPdf(inPrintsFilePathName("PaginaMultipla.pdf"), "Scheda Pagina Multipla", multiPages)
   PdfViewer.viewPdf(inPrintsFilePathName("PaginaMultipla.pdf"))
+*/
+
+/*
+  val fontType = PDType1Font.COURIER_BOLD
+  val fontSize = 12f
+  val rectWidth = 200f
+  val padding = 5f
+
+  val longText =
+    """This is a long text that will be wrapped inside a rectangle using Apache PDFBox in Scala 3.3.7.
+      |The text should automatically break into multiple lines without overflowing the rectangle width.""".stripMargin
+/*
+  val words = longText.split("\\s+")
+  println(words.getClass.getName)
+
+  for word <- words do
+    println(word)
+*/
+  val lines = PdfCreator.wrapText(longText, fontType, fontSize, rectWidth - padding)
+  println(lines)
+
+*/
