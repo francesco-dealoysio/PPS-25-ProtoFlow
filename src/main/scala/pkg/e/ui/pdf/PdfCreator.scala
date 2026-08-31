@@ -230,7 +230,7 @@ object PdfCreator:
     if currentLine.nonEmpty then lines += currentLine.toString()
     lines.toSeq
 
-  private def shape(label: String): String = (" ".repeat(15) + label + ": ").takeRight(15)
+  //private def shape(label: String): String = (" ".repeat(15) + label + ": ").takeRight(15)
 
 @main def tryPdfCreator: Unit =
 
@@ -250,6 +250,8 @@ object PdfCreator:
 
   PdfCreator.createPdf(inPrintsFilePathName("SchedaAccount.pdf"), "Scheda Account Utente", fields)
   PdfViewer.viewPdf(inPrintsFilePathName("SchedaAccount.pdf"))
+
+
 /*
   import pkg.b.logic.Classification
   val record: Classification = Classification().getRecordById("1")
@@ -271,25 +273,4 @@ object PdfCreator:
 /*
   PdfCreator.createPdf(inPrintsFilePathName("PaginaMultipla.pdf"), "Scheda Pagina Multipla", multiPages)
   PdfViewer.viewPdf(inPrintsFilePathName("PaginaMultipla.pdf"))
-*/
-
-/*
-  val fontType = PDType1Font.COURIER_BOLD
-  val fontSize = 12f
-  val rectWidth = 200f
-  val padding = 5f
-
-  val longText =
-    """This is a long text that will be wrapped inside a rectangle using Apache PDFBox in Scala 3.3.7.
-      |The text should automatically break into multiple lines without overflowing the rectangle width.""".stripMargin
-/*
-  val words = longText.split("\\s+")
-  println(words.getClass.getName)
-
-  for word <- words do
-    println(word)
-*/
-  val lines = PdfCreator.wrapText(longText, fontType, fontSize, rectWidth - padding)
-  println(lines)
-
 */
