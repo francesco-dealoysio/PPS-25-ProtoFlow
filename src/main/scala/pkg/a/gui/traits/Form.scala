@@ -52,7 +52,7 @@ trait Form extends Common:
       value != initialValue.trim
 
     /**
-     * Checks whether the current value differs from the initial one.
+     * Requests focus for the underlying form control.
      */
     def requestFocus(): Unit =
       control.requestFocus()
@@ -367,7 +367,7 @@ trait Form extends Common:
         children = Seq(content)
 
     page.delegate.getProperties.put("has-unsaved-changes", hasUnsavedChanges)
-    initialFocus.foreach(field => focusOnOpen(field.control))
+    initialFocus.foreach(focusOnOpen)
     page
 
   private def makeReadOnly[C <: TextInputControl](field: FormField[C]): FormField[C] =
@@ -376,9 +376,9 @@ trait Form extends Common:
     field.control.styleClass += ReadOnlyFormFieldStyle
     field
 
-  private def focusOnOpen(control: Node): Unit =
+  private def focusOnOpen(field: FormField[? <: Node]): Unit =
     Platform.runLater:
-      control.requestFocus()
+      field.requestFocus()
 
   private def formField[C <: Node](control: C, initialValue: String)(readValue: C => String, writeValue: (C, String) => Unit): FormField[C] =
     FormField(

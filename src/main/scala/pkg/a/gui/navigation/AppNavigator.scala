@@ -1,16 +1,15 @@
-package pkg.a.gui
+package pkg.a.gui.navigation
 
-import pkg.a.gui.structures.HomePageViewModel
+import pkg.a.gui.text.UiText.Common.WindowTitles
 import pkg.a.gui.traits.HomePage
+import pkg.a.gui.validation.RegistrationValidator
 import pkg.a.gui.views.{LoginView, RegistrationView}
 import pkg.b.logic.Account
 import pkg.d.util.Logger.logger
 import scalafx.application.JFXApp3
 import scalafx.scene.Scene
-import pkg.a.gui.text.UiText.Common.WindowTitles
-import pkg.a.gui.validation.RegistrationValidator
 
-class Navigator(stage: JFXApp3.PrimaryStage):
+class AppNavigator(stage: JFXApp3.PrimaryStage):
 
   def showLogin(): Unit =
     stage.title = WindowTitles.Login
@@ -55,14 +54,12 @@ class Navigator(stage: JFXApp3.PrimaryStage):
   private def showHome(account: Account): Unit =
     homePageFor(account) match
       case Some(homePage) =>
-        val viewModel = new HomePageViewModel
 
         stage.title = WindowTitles.Home
         stage.resizable = true
 
         val scene = new Scene(1100, 800):
           root = homePage(
-            viewModel = viewModel,
             currentAccount = account,
             onLogout = () => showLogin()
           )

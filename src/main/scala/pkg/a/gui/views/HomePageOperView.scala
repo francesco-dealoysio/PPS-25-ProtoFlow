@@ -1,5 +1,7 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.navigation.HomeNavigator
+import pkg.a.gui.navigation.NavigationFlows.*
 import pkg.a.gui.structures.MenuAction
 import pkg.a.gui.traits.HomePage
 import pkg.b.logic.{Account, ArchivedDocument, LoadedDocument, RegisteredDocument}
@@ -12,7 +14,7 @@ object HomePageOperView extends HomePage:
   override protected def dashboardView(currentAccount: Account): Pane =
     OperDashboardView(currentAccount, pageTitle)
 
-  override protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit =
+  override protected def handleAction(action: MenuAction, navigator: HomeNavigator, currentAccount: Account): Unit =
     action match
       case MenuAction.NuovaPresaInCarico =>
         showLoadedDocumentAdd(navigator, currentAccount.getUsername)
@@ -27,7 +29,7 @@ object HomePageOperView extends HomePage:
       case _ =>
         ()
 
-  private def showLoadedDocumentAdd(navigator: Navigator, currentUsername: String): Unit =
+  private def showLoadedDocumentAdd(navigator: HomeNavigator, currentUsername: String): Unit =
     navigator.show(
       LoadedDocumentAddView(
         operatorUsername = currentUsername,
@@ -36,14 +38,14 @@ object HomePageOperView extends HomePage:
       )
     )
 
-  private def showLoadedDocumentManagement(navigator: Navigator, currentUsername: String): Unit =
+  private def showLoadedDocumentManagement(navigator: HomeNavigator, currentUsername: String): Unit =
     showSelectionFlow[LoadedDocument](
       navigator,
       (onRegister, onExit) => LoadedDocumentManagementView(onRegister, onExit),
       (selected, back) => DocumentRegistrationView(selected, currentUsername, back, back)
     )
 
-  private def showRegisteredDocumentManagement(navigator: Navigator, currentUsername: String): Unit =
+  private def showRegisteredDocumentManagement(navigator: HomeNavigator, currentUsername: String): Unit =
     navigator.show(
       RegisteredDocumentManagementView(
         onArchive = selected => showDocumentArchive(selected, navigator, currentUsername),
@@ -52,7 +54,7 @@ object HomePageOperView extends HomePage:
       )
     )
 
-  private def showRegisteredDocumentDetails(selected: RegisteredDocument, navigator: Navigator, currentUsername: String): Unit =
+  private def showRegisteredDocumentDetails(selected: RegisteredDocument, navigator: HomeNavigator, currentUsername: String): Unit =
     navigator.show(
       RegisteredDocumentDetailsView(
         selectedDocument = selected,
@@ -60,7 +62,7 @@ object HomePageOperView extends HomePage:
       )
     )
 
-  private def showDocumentArchive(selected: RegisteredDocument, navigator: Navigator, currentUsername: String): Unit =
+  private def showDocumentArchive(selected: RegisteredDocument, navigator: HomeNavigator, currentUsername: String): Unit =
     navigator.show(
       DocumentArchivingView(
         selectedDocument = selected,
@@ -70,14 +72,14 @@ object HomePageOperView extends HomePage:
       )
     )
 
-  private def showArchivedDocumentManagement(navigator: Navigator): Unit =
+  private def showArchivedDocumentManagement(navigator: HomeNavigator): Unit =
     showSelectionFlow[ArchivedDocument](
       navigator,
       (onView, onExit) => ArchivedDocumentManagementView(onView, onExit),
       (selected, back) => ArchivedDocumentDetailsView(selected, back)
     )
 
-  private def showProfileEdit(selected: Account, navigator: Navigator): Unit =
+  private def showProfileEdit(selected: Account, navigator: HomeNavigator): Unit =
     navigator.show(
       AccountEditView.profile(
         selectedAccount = selected,

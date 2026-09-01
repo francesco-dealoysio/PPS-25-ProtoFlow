@@ -1,7 +1,6 @@
 package pkg.a.gui.traits
 
 import pkg.d.util.DateTime
-import scalafx.Includes.jfxNode2sfx
 import scalafx.beans.property.BooleanProperty
 import scalafx.geometry.Pos
 import scalafx.scene.control.Button
@@ -10,8 +9,8 @@ import pkg.a.gui.text.UiStyles.App.*
 import pkg.a.gui.text.UiText.Common.*
 
 /**
- * Provides the root application layout and manages the rendering
- * of views within the main content area.
+ * Provides the common root layout of the application,
+ * including header, navigation menu, content area, and footer.
  */
 trait Root extends Common:
 
@@ -51,32 +50,6 @@ trait Root extends Common:
           roleName = roleName,
           onProfileOpen = onProfileOpen
         )
-
-  /**
-   * Renders a view in the content area if the current view can be left.
-   * @param contentArea the area in which the view is rendered
-   * @param view        the view to display
-   */
-  protected def render(contentArea: StackPane, view: => Pane): Unit =
-    if canLeaveCurrentView(contentArea) then contentArea.children = Seq(view)
-
-  private def canLeaveCurrentView(contentArea: StackPane): Boolean =
-    contentArea.children.headOption
-      .flatMap: node =>
-        Option(
-          node.delegate
-            .getProperties
-            .get("has-unsaved-changes")
-        )
-      .map:
-        _.asInstanceOf[() => Boolean]
-      .forall: check =>
-        !check() ||
-          askConfirmation(
-            titleText = Dialogs.UnsavedChanges.Title,
-            header = Dialogs.UnsavedChanges.Header,
-            content = Dialogs.UnsavedChanges.Content
-          )
 
   private def createHeader(currentUser: String, roleName: String, onMenuToggle: () => Unit): HBox =
     val spacer = new Region
