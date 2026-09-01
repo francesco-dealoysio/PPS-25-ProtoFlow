@@ -2,6 +2,7 @@
 
 ## 2.1 Requisiti di business
 
+<a id="context-anchor"></a>
 ### Contesto
 
 Il progetto nasce dal Project Overview Statement "Gestione Protocollo UNUCI", che inquadra un'organizzazione (l'Unione Nazionale Ufficiali in Congedo d'Italia) priva di uno strumento informatico per la protocollazione della corrispondenza. 
