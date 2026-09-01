@@ -18,13 +18,13 @@ Ogni sprint ha seguito la struttura classica del seguente esempio relativo allo 
 <p style="text-align: justify;">
 All'inizio di ogni sprint è stato tenuto un incontro via Teams/Meet finalizzato alla definizione degli obiettivi ed
 alla selezione dei requisiti, assegnando a questi ultimi le opportune priorità di realizzazione, rispettivamente da
-realizzare ed sviluppare durante lo sprint, nonché alla scomposizione delle User Story in task ed alla individuazione 
+realizzare e sviluppare durante lo sprint, nonché alla scomposizione delle User Story in task ed alla individuazione 
 delle soluzioni di massima da adottare per implementarli. 
 </p>
 
 <p style="text-align: justify;">
 Le suddette attività sono state condotte sulla base della documentazione relativa ai requisiti predisposta nelle 
-precedenti fasi di raccolta, analisi e specifica degli stessi . Nello specifico il Project Overview Statement (POS), 
+precedenti fasi di raccolta, analisi e specifica degli stessi. Nello specifico il Project Overview Statement (POS), 
 la Requirement Breakdown Structure (RBS), il Product Backlog (PB), le User Story (US) e la Work Breakdown Structure
 (WBS), quest'ultima predisposta per accogliere i task individuati durante lo sviluppo.
 Oltre alla predetta documentazione, dal secondo sprint in poi in alcuni casi si è tenuto conto delle user story e
@@ -43,7 +43,7 @@ Successivamente alla selezione dei requisiti, si è proceduto all'analisi di cia
 della stessa in task. Per ogni task si cercato di individuare una soluzione di massima da adottare per la sua 
 realizzazione ed infine è stato redatto un token corrispondente al task.
 Il <b>token</b> associato ad un task è un file, che oltre a contenere la descrizione e le indicazioni utili a comprendere
-cosa deve essere realizzato, costituisce uno strumento condiviso per la coordinazione ed il monitoraggio delle
+cosa deve essere realizzato, costituisce uno strumento condiviso per il coordinamento ed il monitoraggio delle
 attività da espletare. I token, infatti, sono stati collocati in una struttura a directory realizzata su un
 dispositivo di rete (NAS) accessibile da tutti. Ogni componente del team ha potuto prendere in carico un task
 anteponendo al nome del token l'iniziale del proprio nome, spostare il token attraverso specifiche directory
@@ -54,6 +54,8 @@ informazioni relative al tempo di realizzazione.
 <p style="text-align: justify;">
 Nell'ultima fase del meeting sono state effettuate le seguenti attività ed è stata prodotta la documentazione
 relativa allo sprint.
+</p>
+
 - Preparazione del documento Sprint Planning Meeting relativo all'incontro
 - Preparazione del file Sprint_BackLog contenente le descrizioni relative alle US selezionate
 - Preparazione del file User_Story_Task contenente l'elenco dei task invividuati per ogni User Story
@@ -61,14 +63,13 @@ relativa allo sprint.
 - Preparazione del file Sprint_Review da utilizzare al termine dello sprinto per il resoconto delle attività
 - Inserimento dei file pdf relativi alle US selezionate nella directory 'Task_User_Story/User_Story'
 - Inserimento dei token relativi ai task nella directory 'Task_User_Story'
-</p>
 
 <p style="text-align: justify;">
 A titolo di esempio, si riportano di seguito i link relativi alla documentazione prodotta per lo Sprint S1 
 e quelli relativi alle directory nelle quali sono stati inseriti le User Story ed i token dei Task corrispondenti:
 </p>
 
-- **[Sprint Planning Meeting S1](../../process/sprint/Sprint_S1/01_SPRINT_PLANNING_MEETING_S1 "Apertura file pdf")**
+- **[Sprint Planning Meeting S1](../../process/sprint/Sprint_S1/01_SPRINT_PLANNING_MEETING_S1.pdf "Apertura file pdf")**
 - **[Sprint Backlog S1](../../process/sprint/Sprint_S1/02_SPRINT_BACKLOG_S1.pdf  "Apertura file pdf")**
 - **[User Story Task S1](../../process/sprint/Sprint_S1/03_USER_STORY_TASK_S1.pdf  "Apertura file pdf")**
 - **[Daily Scrum S1](../../process/sprint/Sprint_S1/04_DAILY_SCRUM_S1.pdf  "Apertura file pdf")**
