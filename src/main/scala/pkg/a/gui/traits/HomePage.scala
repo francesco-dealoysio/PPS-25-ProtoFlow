@@ -1,8 +1,9 @@
 package pkg.a.gui.traits
 
-import pkg.a.gui.structures.{HomePageViewModel, MenuAction, MenuItem}
+import pkg.a.gui.navigation.HomeNavigator
+import pkg.a.gui.structures.{MenuAction, MenuItem}
 import pkg.a.gui.text.UiStyles.HomePage.*
-import pkg.a.gui.text.UiText.Common.Dialogs.{Denied, Logout as LogoutDialog}
+import pkg.a.gui.text.UiText.Common.Dialogs.{Denied, Logout as LogoutDialog, UnsavedChanges}
 import pkg.a.gui.text.UiText.Menu.{Dashboard, Logout as LogoutLabel, labels}
 import pkg.b.logic.{Account, AuthorizationEngine, Role}
 import scalafx.geometry.Pos
@@ -33,35 +34,15 @@ trait HomePage extends Root:
    * @param navigator      the navigator used to change the current view
    * @param currentAccount the authenticated account
    */
-  protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit
-
-  /**
-   * Manages navigation within the home page content area.
-   * @param contentArea      the container in which views are rendered
-   * @param dashboardFactory the function used to create the dashboard view
-   */
-  protected final class Navigator(contentArea: StackPane, dashboardFactory: () => Pane):
-    /**
-     * Displays the given view in the content area.
-     * @param view the view to display
-     */
-    def show(view: => Pane): Unit =
-      render(contentArea, view)
-
-    /**
-     * Displays the dashboard view.
-     */
-    def dashboard(): Unit =
-      show(dashboardFactory())
+  protected def handleAction(action: MenuAction, navigator: HomeNavigator, currentAccount: Account): Unit
 
   /**
    * Builds the home page for the authenticated account.
-   * @param viewModel      the view model managing the selected menu action
    * @param currentAccount the authenticated account
    * @param onLogout       the action executed after logout confirmation
    * @return the configured home page
    */
-  final def apply(viewModel: HomePageViewModel, currentAccount: Account, onLogout: () => Unit = () => ()): BorderPane =
+  final def apply(currentAccount: Account, onLogout: () => Unit = () => ()): BorderPane =
     val roleLogic = new Role()
     val roleName =
       roleLogic
@@ -76,15 +57,20 @@ trait HomePage extends Root:
         children = Seq(dashboardView(currentAccount))
 
     val navigator =
-      new Navigator(
+      new HomeNavigator(
         contentArea = contentArea,
-        dashboardFactory = () => dashboardView(currentAccount)
+        dashboardFactory = () => dashboardView(currentAccount),
+        confirmUnsavedChanges = () =>
+          askConfirmation(
+            titleText = UnsavedChanges.Title,
+            header = UnsavedChanges.Header,
+            content = UnsavedChanges.Content
+          )
       )
 
     def navigate(action: MenuAction): Unit =
       action match
         case MenuAction.Dashboard =>
-          viewModel.select(MenuAction.Dashboard)
           navigator.dashboard()
 
         case MenuAction.Logout =>
@@ -96,12 +82,10 @@ trait HomePage extends Root:
             )
 
           if confirmed then
-            viewModel.select(MenuAction.Logout)
             onLogout()
 
         case action =>
           if AuthorizationEngine.isAuthorized(currentAccount.getRole, action) then
-            viewModel.select(action)
 
             handleAction(
               action = action,
@@ -124,74 +108,6 @@ trait HomePage extends Root:
       menu = sidebar,
       onProfileOpen = () => navigate(MenuAction.Profilo)
     )
-
-  /**
-   * Starts a CRUD navigation flow between management, creation, and editing views.
-   * @param navigator      the navigator used to change views
-   * @param managementView the management view factory
-   * @param addView        the creation view factory
-   * @param editView       the editing view factory
-   * @tparam T the type of the managed entity
-   */
-  protected final def showCrud[T](
-                                   navigator: Navigator,
-                                   managementView: (() => Unit, T => Unit, () => Unit) => Pane,
-                                   addView: (() => Unit, () => Unit) => Pane,
-                                   editView: (T, () => Unit, () => Unit) => Pane
-                                 ): Unit =
-    def management(): Unit =
-      val back = () => management()
-      navigator.show(
-        managementView(
-          () => navigator.show(addView(back, back)),
-          selected => navigator.show(editView(selected, back, back)),
-          () => navigator.dashboard()
-        )
-      )
-    management()
-
-  /**
-   * Starts a navigation flow from a management view to a selected item view.
-   * @param navigator      the navigator used to change views
-   * @param managementView the management view factory
-   * @param selectedView   the view factory for the selected item
-   * @tparam T the type of the selectable entity
-   */
-  protected final def showSelectionFlow[T](
-                                            navigator: Navigator,
-                                            managementView: (T => Unit, () => Unit) => Pane,
-                                            selectedView: (T, () => Unit) => Pane
-                                          ): Unit =
-    def management(): Unit =
-      val back = () => management()
-      navigator.show(
-        managementView(
-          selected => navigator.show(selectedView(selected, back)),
-          () => navigator.dashboard()
-        )
-      )
-    management()
-
-  /**
-   * Starts a navigation flow between a management view and a creation view.
-   * @param navigator      the navigator used to change views
-   * @param managementView the management view factory
-   * @param addView        the creation view factory
-   */
-  protected final def showCreateFlow(
-                                      navigator: Navigator,
-                                      managementView: (() => Unit, () => Unit) => Pane,
-                                      addView: (() => Unit, () => Unit) => Pane
-                                    ): Unit =
-    def management(): Unit =
-      val back = () => management()
-      navigator.show(
-        managementView(
-          () => navigator.show(addView(back, back)),
-          () => navigator.dashboard()
-        )
-      )
-    management()
 
   private def menuItems(role: String): Seq[MenuItem] =
     Seq(MenuItem(Dashboard, MenuAction.Dashboard)) ++

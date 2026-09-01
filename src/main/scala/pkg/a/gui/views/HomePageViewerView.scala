@@ -1,5 +1,7 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.navigation.HomeNavigator
+import pkg.a.gui.navigation.NavigationFlows.*
 import pkg.a.gui.structures.MenuAction
 import pkg.a.gui.traits.HomePage
 import pkg.b.logic.{Account, ArchivedDocument}
@@ -12,7 +14,7 @@ object HomePageViewerView extends HomePage:
   override protected def dashboardView(currentAccount: Account): Pane =
     ViewerDashboardView(currentAccount, pageTitle)
 
-  override protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit =
+  override protected def handleAction(action: MenuAction, navigator: HomeNavigator, currentAccount: Account): Unit =
     action match
 
       case MenuAction.Profilo =>
@@ -24,7 +26,7 @@ object HomePageViewerView extends HomePage:
       case _ =>
         ()
 
-  private def showProfileEdit(selected: Account, navigator: Navigator): Unit =
+  private def showProfileEdit(selected: Account, navigator: HomeNavigator): Unit =
     navigator.show(
       AccountEditView.profile(
         selectedAccount = selected,
@@ -33,7 +35,7 @@ object HomePageViewerView extends HomePage:
       )
     )
 
-  private def showArchivedDocuments(currentAccount: Account, navigator: Navigator): Unit =
+  private def showArchivedDocuments(currentAccount: Account, navigator: HomeNavigator): Unit =
     showSelectionFlow[ArchivedDocument](
       navigator,
       (onView, onExit) =>

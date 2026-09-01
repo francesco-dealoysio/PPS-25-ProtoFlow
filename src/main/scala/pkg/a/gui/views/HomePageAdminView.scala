@@ -6,6 +6,8 @@ import pkg.a.gui.structures.MenuAction
 import pkg.a.gui.traits.HomePage
 import pkg.b.logic.{Account, Classification, DocumentLog, Registration, Role}
 import scalafx.scene.layout.Pane
+import pkg.a.gui.navigation.HomeNavigator
+import pkg.a.gui.navigation.NavigationFlows.*
 
 object HomePageAdminView extends HomePage:
 
@@ -14,7 +16,7 @@ object HomePageAdminView extends HomePage:
   override protected def dashboardView(currentAccount: Account): Pane =
     AdminDashboardView(currentAccount, pageTitle)
 
-  override protected def handleAction(action: MenuAction, navigator: Navigator, currentAccount: Account): Unit =
+  override protected def handleAction(action: MenuAction, navigator: HomeNavigator, currentAccount: Account): Unit =
     action match
 
       case MenuAction.Profilo =>
@@ -47,14 +49,14 @@ object HomePageAdminView extends HomePage:
       case _ =>
         ()
 
-  private def showRegistrationRequests(navigator: Navigator, currentUsername: String): Unit =
+  private def showRegistrationRequests(navigator: HomeNavigator, currentUsername: String): Unit =
     showSelectionFlow[Registration](
       navigator,
       (onProcess, onExit) => RegistrationRequestsManagementView(onProcess, onExit),
       (selected, back) => RegistrationRequestProcessView(selected, currentUsername, back, back)
     )
 
-  private def showAccountManagement(navigator: Navigator): Unit =
+  private def showAccountManagement(navigator: HomeNavigator): Unit =
     showCrud[Account](
       navigator,
       (onAdd, onEdit, onExit) => AccountManagementView(onAdd, onEdit, onExit),
@@ -62,7 +64,7 @@ object HomePageAdminView extends HomePage:
       (selected, onSaved, onExit) => AccountEditView(selected, onSaved, onExit)
     )
 
-  private def showRoleManagement(navigator: Navigator): Unit =
+  private def showRoleManagement(navigator: HomeNavigator): Unit =
     showCrud[Role](
       navigator,
       (onAdd, onEdit, onExit) => RoleManagementView(onAdd, onEdit, onExit),
@@ -70,7 +72,7 @@ object HomePageAdminView extends HomePage:
       (selected, onSaved, onExit) => RoleEditView(selected, onSaved, onExit)
     )
 
-  private def showClassificationManagement(navigator: Navigator): Unit =
+  private def showClassificationManagement(navigator: HomeNavigator): Unit =
     showCrud[Classification](
       navigator,
       (onAdd, onEdit, onExit) => ClassificationManagementView(onAdd, onEdit, onExit),
@@ -78,14 +80,14 @@ object HomePageAdminView extends HomePage:
       (selected, onSaved, onExit) => ClassificationEditView(selected, onSaved, onExit)
     )
 
-  private def showAuthorizationRulesManagement(navigator: Navigator): Unit =
+  private def showAuthorizationRulesManagement(navigator: HomeNavigator): Unit =
     showCreateFlow(
       navigator,
       (onAdd, onExit) => AuthorizationRulesManagementView(onAdd, onExit),
       (onSaved, onExit) => AuthorizationRuleAddView(onSaved, onExit)
     )
 
-  private def showProfileEdit(selected: Account, navigator: Navigator): Unit =
+  private def showProfileEdit(selected: Account, navigator: HomeNavigator): Unit =
     navigator.show(
       AccountEditView.profile(
         selectedAccount = selected,
@@ -94,14 +96,14 @@ object HomePageAdminView extends HomePage:
       )
     )
 
-  private def showStatistics(navigator: Navigator): Unit =
+  private def showStatistics(navigator: HomeNavigator): Unit =
     navigator.show(
       StatisticsView(
         onExit = () => navigator.dashboard()
       )
     )
 
-  private def showDocumentManagementControl(navigator: Navigator, currentUsername: String): Unit =
+  private def showDocumentManagementControl(navigator: HomeNavigator, currentUsername: String): Unit =
     navigator.show(
       DocumentManagementControlView(
         onViewDetails = selected => showDocumentManagementDetails(selected, navigator, currentUsername),
@@ -110,7 +112,7 @@ object HomePageAdminView extends HomePage:
       )
     )
 
-  private def showDocumentManagementSummary(selected: ManagedDocument, navigator: Navigator, currentUsername: String): Unit =
+  private def showDocumentManagementSummary(selected: ManagedDocument, navigator: HomeNavigator, currentUsername: String): Unit =
     val summary = DocumentManagementControlService.getDocumentManagementSummary(selected)
     navigator.show(
       DocumentManagementSummaryView(
@@ -120,7 +122,7 @@ object HomePageAdminView extends HomePage:
       )
     )
 
-  private def showDocumentManagementDetails(selected: ManagedDocument, navigator: Navigator, currentUsername: String): Unit =
+  private def showDocumentManagementDetails(selected: ManagedDocument, navigator: HomeNavigator, currentUsername: String): Unit =
     navigator.show(
       DocumentManagementDetailsView(
         selectedDocument = selected,
@@ -128,7 +130,7 @@ object HomePageAdminView extends HomePage:
       )
     )
 
-  private def showDocumentLogManagement(navigator: Navigator): Unit =
+  private def showDocumentLogManagement(navigator: HomeNavigator): Unit =
     showSelectionFlow[DocumentLog](
       navigator,
       (onView, onExit) => DocumentLogManagementView(onView, onExit),
