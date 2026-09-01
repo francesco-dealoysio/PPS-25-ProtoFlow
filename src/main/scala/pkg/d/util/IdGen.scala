@@ -16,7 +16,7 @@ object IdGen:
       case None =>
         "Failed to find Id!"
 
-  def saveId(id: String, idFilePath: String): Boolean =
+  private def saveId(id: String, idFilePath: String): Boolean =
     Try {
       Files.writeString(
         Paths.get(idFilePath),
@@ -26,11 +26,8 @@ object IdGen:
       )
     }.isSuccess
 
-  def loadId(idFilePath: String): Option[String] =
+  private def loadId(idFilePath: String): Option[String] =
     if Files.exists(Paths.get(idFilePath)) then
       Try(Files.readString(Paths.get(idFilePath)).trim).toOption.filter(_.nonEmpty)
     else
       None
-
-  @main def tryIdGen: Unit =
-    println("")

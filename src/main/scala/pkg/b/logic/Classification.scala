@@ -46,12 +46,12 @@ case class Classification(
       val classification = record.classification
 
       val  found = countRecordsByFilter[Classification](a => a.id != id && a.classification == classification, xmlFilePathName, classOf[Classification])
-      if (found == 0) then
+      if found == 0 then
         result = updateElemOfXML(xmlFilePathName, obj)
       else
         throw new RuntimeException("Valori duplicati (classifica)!")
     catch
       case e: Exception =>
         logger(e)
-        false
+
     result

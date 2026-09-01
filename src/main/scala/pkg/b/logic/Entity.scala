@@ -9,8 +9,8 @@ trait Entity:
 
   /**
    * Returns a sequence of records extracted from the specified xml file.
-   * @param xmlFilePathName
-   * @tparam T
+   * @param xmlFilePathName 
+   * @tparam T type of sequence returned
    * @return Seq[T]
    */
   def getRecords[T](xmlFilePathName: String = defaultXmlFilePathName): Seq[T] =
@@ -26,7 +26,7 @@ trait Entity:
    * filtered by the predicate passed in the argument.
    * @param predicate
    * @param xmlFilePathName
-   * @tparam T
+   * @tparam T type of sequence returned
    * @return Seq[T]
    */
   def getRecordsByFilter[T](predicate: T => Boolean, xmlFilePathName: String = defaultXmlFilePathName): Seq[T] =
@@ -42,7 +42,7 @@ trait Entity:
    * extracted from the xml file specified in argument.
    * @param id identifies the record to find
    * @param xmlFilePathName
-   * @tparam T
+   * @tparam T 
    * @return T object
    */
   def getRecordById[T](id: String, xmlFilePathName: String = defaultXmlFilePathName): T =
@@ -132,7 +132,7 @@ trait Entity:
   /**
    * Returns the number of occurrences of records in the specified xml file
    * filtered by the predicate passed in the argument.
-   * @param predicate
+   * @param predicate 
    * @param xmlFilePathName
    * @param classType
    * @tparam T

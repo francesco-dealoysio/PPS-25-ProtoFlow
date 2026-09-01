@@ -68,7 +68,7 @@ case class Account(
       val username = record.username
 
       val found = countRecordsByFilter[Account](a => a.id != id && a.username == username, xmlFilePathName, classOf[Account])
-      if (found == 0) then
+      if found == 0 then
         result = updateElemOfXML(xmlFilePathName, obj)
       else
         throw new RuntimeException("Valori duplicati (username)!")

@@ -56,7 +56,7 @@ case class Role(
     catch
       case e: Exception =>
         logger(e)
-        false
+
     result
 
   override def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =

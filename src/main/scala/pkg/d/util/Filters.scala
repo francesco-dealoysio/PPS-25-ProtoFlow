@@ -17,9 +17,10 @@ object Filters:
 
       case FilterCriteria("getDocumentId", "<", v) =>
         val threshold = v.head.trim.toInt
-        (obj: Any) => obj match
+        {
           case r: DocumentLog => r.getDocumentId.trim.toInt < threshold
           case _ => false
+        }
 
       case FilterCriteria("getDocumentId", "<=", v) =>
         val threshold = v.head.trim.toInt

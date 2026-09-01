@@ -27,8 +27,8 @@ Le suddette attività sono state condotte sulla base della documentazione relati
 precedenti fasi di raccolta, analisi e specifica degli stessi. Nello specifico il Project Overview Statement (POS), 
 la Requirement Breakdown Structure (RBS), il Product Backlog (PB), le User Story (US) e la Work Breakdown Structure
 (WBS), quest'ultima predisposta per accogliere i task individuati durante lo sviluppo.
-Oltre alla predetta documentazione, dal secondo sprint in poi in alcuni casi si è tenuto conto delle user story e
-dei task non completati negli sprint precedenti, degli eventuali difetti riscontrati durante le sprint review,
+Oltre alla predetta documentazione, dal secondo sprint in poi in alcuni casi si è tenuto conto anche delle user story
+e dei task non completati negli sprint precedenti, degli eventuali difetti riscontrati durante le sprint review,
 nonché delle eventuali modifiche dei requisiti stabilite in itinere.
 </p>
 
@@ -41,12 +41,12 @@ nonché delle eventuali modifiche dei requisiti stabilite in itinere.
 <p style="text-align: justify;">
 Successivamente alla selezione dei requisiti, si è proceduto all'analisi di ciascuna User story ed alla scomposizione
 della stessa in task. Per ogni task si cercato di individuare una soluzione di massima da adottare per la sua 
-realizzazione ed infine è stato redatto un token corrispondente al task.
+realizzazione ed infine è stato redatto un token corrispondente allo stesso.
 Il <b>token</b> associato ad un task è un file, che oltre a contenere la descrizione e le indicazioni utili a comprendere
 cosa deve essere realizzato, costituisce uno strumento condiviso per il coordinamento ed il monitoraggio delle
-attività da espletare. I token, infatti, sono stati collocati in una struttura a directory realizzata su un
-dispositivo di rete (NAS) accessibile da tutti. Ogni componente del team ha potuto prendere in carico un task
-anteponendo al nome del token l'iniziale del proprio nome, spostare il token attraverso specifiche directory
+attività da espletare. I token, infatti, sono stati collocati in una struttura a directory opportunamente realizzata
+su un dispositivo di rete (NAS) accessibile a tutti. Ogni componente del team ha potuto prendere in carico un task
+anteponendo al nome del token l'iniziale del proprio nome, spostare il token attraverso le specifiche directory
 in funzione dello stato di avanzamento della attività (todo, in progress o done) e compilare il token con le
 informazioni relative al tempo di realizzazione.
 </p>
@@ -66,7 +66,7 @@ relativa allo sprint.
 
 <p style="text-align: justify;">
 A titolo di esempio, si riportano di seguito i link relativi alla documentazione prodotta per lo Sprint S1 
-e quelli relativi alle directory nelle quali sono stati inseriti le User Story ed i token dei Task corrispondenti:
+e quelli relativi alle directory nelle quali sono state inserite le User Story ed i token dei Task corrispondenti:
 </p>
 
 - **[Sprint Planning Meeting S1](../../process/sprint/Sprint_S1/01_SPRINT_PLANNING_MEETING_S1.pdf "Apertura file pdf")**
@@ -144,7 +144,8 @@ della documentazione di progetto. Le sei attività pianificate risultano tutte c
 Obiettivo: gestione dell'accesso al sistema e preparazione delle homepage per i diversi profili utente. Sono state
 realizzate le sei User Story pianificate (Portale, Login, Richiesta di Registrazione, e le tre Homepage per i ruoli
 Amministratore/Operatore/Viewer), tutte segnate come completate nella Sprint Review. Una nota di Daily Scrum (03/07)
-segnala una decisione tecnica: le maschere di inserimento dati devono essere generali e i dati persistenti devono risiedere in file XML — scelta di persistenza confermata e mantenuta per l'intero progetto.
+segnala una decisione tecnica: le maschere di inserimento dati devono essere generali e i dati persistenti devono
+risiedere in file XML — scelta di persistenza confermata e mantenuta per l'intero progetto.
 </p>
 
 ### Sprint 2 (10/07/2026 – 17/07/2026)

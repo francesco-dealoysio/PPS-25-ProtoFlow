@@ -105,14 +105,14 @@ object Xml:
       insertElemIntoXML(xmlFilePathName, obj)
       result = true
     else
-      println(s"Record with id: ${id} not found.")
+      println(s"Record with id: $id not found.")
     result
 
   def removeElemFromXML(xmlFilePathName: String, id: String): Boolean =
     var result = false
     val xmlTry = Try(XML.loadFile(xmlFilePathName))
 
-    if (searchFieldValue(xmlFilePathName, "id", id)) then
+    if searchFieldValue(xmlFilePathName, "id", id) then
       xmlTry match
         case Success(root) =>
           val updatedXml = root match
@@ -128,7 +128,7 @@ object Xml:
           logger(ex match { case e: Exception => e })
           println(s"Error loading XML: ${ex.getMessage}")
     else
-      println(s"Record with id: ${id} not found.")
+      println(s"Record with id: $id not found.")
     result
 
   def searchFieldValue(xmlFilePathName: String, fieldName: String, fieldValue: String): Boolean =

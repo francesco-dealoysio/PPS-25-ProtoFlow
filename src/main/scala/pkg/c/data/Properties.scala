@@ -7,7 +7,6 @@ import scala.jdk.CollectionConverters.*
 
 object Properties:
 
-  /* Crea un file di Properties vuoto */
   def createPropsFile(filePath: String, comment: String): Unit =
     val props = new Properties()
     try
@@ -18,7 +17,6 @@ object Properties:
       case e: IOException =>
         println(s"Error in createPropsFile: ${e.getMessage}")
   
-  /* Inserisce la coppia (key, value) nel file di properties */
   def setPropsFileProperty(filePath: String, key: String, value: String): Unit =
     val props = new Properties()
     try
@@ -27,10 +25,8 @@ object Properties:
       props.store(new FileOutputStream(filePath),"")
     catch
       case e: IOException =>
-        //println(s"Error in setPropsFileProperty: ${e.getMessage}")
-        println(s"Error in setPropsFileProperty: ${filePath}")
+        println(s"Error in setPropsFileProperty: $filePath")
 
-  /* Restituisce il valore corrispondente alla chiave key o "<not set>"S se la chiave non esiste */
   def getPropsFileProperty(filePath: String, key: String): String =
     val props = new Properties()
     try
@@ -40,7 +36,6 @@ object Properties:
       case e: IOException =>
         s"Error in getPropsFileProperty: ${e.getMessage}"
   
-  /* Rimuove il valore corrispondente alla chiave key o "<not set>"S se la chiave non esiste */
   def removePropsFileProperty(filePath: String, key: String): Unit =
     if (File(filePath).exists())
       val props = getPropsFileProperties(filePath)
@@ -53,7 +48,6 @@ object Properties:
           case e: IOException =>
             s"Error in removePropsFileProperty: ${e.getMessage}"
   
-  /* Elimina tutte le proprietà dal file di properties */
   def clearPropsFileProperties(filePath: String): Unit =
     try
       if (File(filePath).exists())
@@ -65,7 +59,6 @@ object Properties:
       case e: IOException =>
         println(s"Error in clearPropsFileProperties: ${e.getMessage}")
   
-  /* Restituisce un oggetto Properties contenente le coppia (key, value) lette dal file di properties */
   def getPropsFileProperties(filePath: String): Properties =
     val props = new Properties()
     val source = Source.fromFile(filePath)
@@ -75,7 +68,6 @@ object Properties:
       source.close()
     props
   
-  /* Imposta le proprietà del file di properties in base alle properties passate come argomento */
   def setPropsFileProperties(filePath: String, props: Properties): Unit =
     try
       if (File(filePath).exists())
@@ -85,8 +77,7 @@ object Properties:
       case e: IOException =>
         println(s"Error in setPropsFileProperties: ${e.getMessage}")
   
-  /* Display di tutte le proprietà contenute nel file di properties */
-  def displayPropsFileProperties(filePath: String): Unit =
+  private def displayPropsFileProperties(filePath: String): Unit =
     try
       if (File(filePath).exists())
         val props = getPropsFileProperties(filePath)
@@ -95,7 +86,3 @@ object Properties:
     catch
       case e: IOException =>
         println(s"Error in displayPropsFileProperties: ${e.getMessage}")
-  
-  @main def tryHandleProperties(): Unit =
-    println("Tested in PropertiesTest.scala")
-    displayPropsFileProperties("src/main/resources/protoflow.properties")

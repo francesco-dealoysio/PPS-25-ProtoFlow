@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage
 
 object Util:
 
-  def loadImage(imagePath: String): BufferedImage =
+  private def loadImage(imagePath: String): BufferedImage =
     import java.io.IOException
     import javax.imageio.ImageIO
 
@@ -46,30 +46,29 @@ object Util:
   def inDatabaseFilePathName(fileName: String): String =
     inFolderFilePathName("database", fileName)
 
-  def inDocumentsFilePathName(fileName: String) =
+  def inDocumentsFilePathName(fileName: String): String =
     inFolderFilePathName("documents", fileName)
 
-  def inLogFilePathName(fileName: String) =
+  def inLogFilePathName(fileName: String): String =
     inFolderFilePathName("log", fileName)
 
-  def inIdsFilePathName(fileName: String) =
+  def inIdsFilePathName(fileName: String): String =
     inFolderFilePathName("ids", fileName)
     
-  def inTestFilePathName(fileName: String) =
+  def inTestFilePathName(fileName: String): String =
     inFolderFilePathName("test", fileName)
     
-  def inPrintsFilePathName(fileName: String) =
+  def inPrintsFilePathName(fileName: String): String =
     inFolderFilePathName("prints", fileName)
 
-  def inFolderFilePathName(folder: String, fileName: String): String =
+  private def inFolderFilePathName(folder: String, fileName: String): String =
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
     val folderPath =
       if folder == "documents" then baseFolder + fs + "database" + fs + "documents"
       else baseFolder + fs + folder
     folderPath + fs + fileName
-
-
+  
   @main def tryUtil(): Unit =
     import pkg.d.util.Logger.*
     

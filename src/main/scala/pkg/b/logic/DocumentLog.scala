@@ -46,8 +46,7 @@ case class DocumentLog(
                          operator: String
                        ): Boolean = {
     import pkg.d.util.IdGen
-    import pkg.d.util.Util.{inIdsFilePathName, inLogFilePathName}
-    import pkg.d.util.DateTime._
+    import pkg.d.util.Util.inIdsFilePathName
 
     val logDocumentOperation = DocumentLog(
       IdGen(inIdsFilePathName("documentOperationlogId")),

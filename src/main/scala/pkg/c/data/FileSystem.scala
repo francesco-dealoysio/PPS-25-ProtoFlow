@@ -29,15 +29,8 @@ object FileSystem:
     catch
       case e: IOException =>
         println(s"Errore in createFile: ${e.getMessage}")
-
-  def getCurrentDirectory: Path =
-    try
-      Paths.get(System.getProperty("user.dir")).toAbsolutePath.normalize()
-    catch
-      case ex: SecurityException =>
-        throw new RuntimeException("Permesso negato per ottenere la directory corrente", ex)
   
-  def createDirectoryStructure: Unit =
+  def createDirectoryStructure(): Unit =
     val baseDir = getCurrentDirectory
     val structure = Seq(
       baseDir.resolve("protoflow/database"),
@@ -47,16 +40,23 @@ object FileSystem:
       baseDir.resolve("protoflow/test"),
       baseDir.resolve("protoflow/prints")
     )
-  
+
     structure.foreach { dir =>
       try
-        if (!Files.exists(dir)) {
+        if !Files.exists(dir) then
           Files.createDirectories(dir)
           println(s"Creata directory: $dir")
-        } else {
+        else
           println(s"Directory già esistente: $dir")
-        }
+
       catch
         case ex: IOException =>
           System.err.println(s"Errore nella creazione di $dir: ${ex.getMessage}")
     }
+
+  private def getCurrentDirectory: Path =
+    try
+      Paths.get(System.getProperty("user.dir")).toAbsolutePath.normalize()
+    catch
+      case ex: SecurityException =>
+        throw new RuntimeException("Permesso negato per ottenere la directory corrente", ex)
