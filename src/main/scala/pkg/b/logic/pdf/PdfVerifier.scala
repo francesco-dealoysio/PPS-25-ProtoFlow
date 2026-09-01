@@ -1,7 +1,6 @@
 package pkg.b.logic.pdf
 
-import pkg.d.util.Util.inPrintsFilePathName
-import java.io.{File, FileInputStream, IOException}
+import java.io.{File, FileInputStream}
 import scala.util.{Try, Using}
 
 object PdfVerifier:
@@ -22,12 +21,3 @@ object PdfVerifier:
         bytesRead == expectedHeader.length && buffer.sameElements(expectedHeader)
       }
     }.getOrElse(false)
-
-@main def tryPdfVerifier: Unit =
-  import pkg.e.ui.pdf.PdfVerifier.isPdf
-
-  val file = inPrintsFilePathName("Appo.txt")
-  if isPdf(file) then
-    println(s"'${file}' is a valid PDF file (header check passed).")
-  else
-    println(s"'${file}' is NOT a valid PDF file.")

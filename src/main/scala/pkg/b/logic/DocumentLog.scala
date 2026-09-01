@@ -3,6 +3,8 @@ package pkg.b.logic
 import pkg.b.logic.Entity
 import pkg.d.util.Logger.*
 import pkg.d.util.Util.inLogFilePathName
+import pkg.d.util.IdGen
+import pkg.d.util.Util.inIdsFilePathName
 
 case class DocumentLog(
                      private var id: String = "",
@@ -44,9 +46,7 @@ case class DocumentLog(
                          operationDate: String,
                          operationTime: String,
                          operator: String
-                       ): Boolean = {
-    import pkg.d.util.IdGen
-    import pkg.d.util.Util.inIdsFilePathName
+                       ): Boolean =
 
     val logDocumentOperation = DocumentLog(
       IdGen(inIdsFilePathName("documentOperationlogId")),
@@ -56,6 +56,4 @@ case class DocumentLog(
       operationTime,
       operator
     )
-
     logDocumentOperation.recordInsert(logDocumentOperation,DocumentLog().defaultXmlFilePathName)
-  }

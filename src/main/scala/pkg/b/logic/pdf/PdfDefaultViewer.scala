@@ -1,6 +1,5 @@
 package pkg.b.logic.pdf
 
-import pkg.d.util.Util.inPrintsFilePathName
 import java.awt.Desktop
 import java.io.File
 
@@ -23,6 +22,3 @@ object PdfDefaultViewer:
     catch
       case e: Exception =>
         println(s"Failed to open PDF: ${e.getMessage}")
-
-@main def tryPdfDefaultViewer(): Unit =
-  PdfDefaultViewer.viewWithDefaultViewer(inPrintsFilePathName("AccountList.pdf"))

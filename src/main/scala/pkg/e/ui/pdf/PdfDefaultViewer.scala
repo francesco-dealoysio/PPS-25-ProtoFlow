@@ -7,6 +7,7 @@ import java.io.File
 object PdfDefaultViewer:
 
   def viewWithDefaultViewer(pdfPathName: String): Unit =
+    
     val file = File(pdfPathName)
 
     if !file.exists() then

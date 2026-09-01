@@ -11,7 +11,7 @@ case class Role(
                 private var description: String = ""
                 ) extends Entity:
   def this() =
-    this("","","", "")
+    this("", "", "", "")
 
   def setId(value: String): Unit = id = value
   def setRole(value: String): Unit = role = value

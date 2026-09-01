@@ -1,6 +1,5 @@
 package pkg.b.logic
 
-
 case class Registration(
                     private var id: String = "",
                     private var surname: String = "",

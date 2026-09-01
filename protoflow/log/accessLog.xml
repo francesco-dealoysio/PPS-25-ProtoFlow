@@ -251,4 +251,46 @@
     <processedDate>2026-09-01</processedDate>
     <processedTime>19:12:29.08</processedTime>
   </record>
+  <record>
+    <id>62</id>
+    <username>mrossi</username>
+    <role>admin</role>
+    <processedDate>2026-08-18</processedDate>
+    <processedTime>10:00:00.00</processedTime>
+  </record>
+  <record>
+    <id>63</id>
+    <username>mrossi</username>
+    <role>admin</role>
+    <processedDate>2026-08-18</processedDate>
+    <processedTime>10:00:00.00</processedTime>
+  </record>
+  <record>
+    <id>64</id>
+    <username>mrossi</username>
+    <role>admin</role>
+    <processedDate>2026-08-18</processedDate>
+    <processedTime>10:00:00.00</processedTime>
+  </record>
+  <record>
+    <id>66</id>
+    <username>frank</username>
+    <role>admin</role>
+    <processedDate>2026-09-02</processedDate>
+    <processedTime>00:37:52.41</processedTime>
+  </record>
+  <record>
+    <id>67</id>
+    <username>tommy</username>
+    <role>oper</role>
+    <processedDate>2026-09-02</processedDate>
+    <processedTime>00:38:28.91</processedTime>
+  </record>
+  <record>
+    <id>68</id>
+    <username>robby</username>
+    <role>viewer</role>
+    <processedDate>2026-09-02</processedDate>
+    <processedTime>00:38:49.85</processedTime>
+  </record>
 </accessLog>

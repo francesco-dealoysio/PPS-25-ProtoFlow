@@ -2,11 +2,11 @@ package pkg.b.logic.pdf
 
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.printing.{Orientation, PDFPageable}
-import pkg.d.util.Util.inPrintsFilePathName
 import java.awt.print.PrinterJob
 import java.awt.{Dimension, Toolkit}
-import javax.print.attribute.standard.PrinterName
-import javax.print.{PrintService, PrintServiceLookup}
+import javax.print.PrintService
+import javax.print.attribute.HashPrintRequestAttributeSet
+import javax.print.{DocFlavor, PrintServiceLookup, ServiceUI}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.*
 import scala.concurrent.{Await, Future}
@@ -20,7 +20,7 @@ object PdfPrinter:
 
       val job = PrinterJob.getPrinterJob
 
-      val printerService = choosePrinterServiceUI() match
+      val printerService: Unit = choosePrinterServiceUI() match
         case Some(service) =>
           println(service)
           job.setPrintService(service)
@@ -56,8 +56,6 @@ object PdfPrinter:
     }
 
   private def choosePrinterServiceUI(): Option[PrintService] =
-    import javax.print.attribute.HashPrintRequestAttributeSet
-    import javax.print.{DocFlavor, PrintServiceLookup, ServiceUI}
 
     val flavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE
     val pras = new HashPrintRequestAttributeSet()
@@ -66,7 +64,7 @@ object PdfPrinter:
     val activeServices = services.filter(service => getAttributeSafe(service, 500.millisecond))
 
     val screenSize: Dimension = Toolkit.getDefaultToolkit.getScreenSize
-    val dialogWidth = 500  // approximate
+    val dialogWidth = 500
     val dialogHeight = 400
     val centerX = (screenSize.width - dialogWidth) / 2
     val centerY = (screenSize.height - dialogHeight) / 2
@@ -76,6 +74,3 @@ object PdfPrinter:
         Some(service)
       case null =>
         None
-
-@main def tryPdfPrinter: Unit =
-  PdfPrinter.printPdf(inPrintsFilePathName("AccountList.pdf"))

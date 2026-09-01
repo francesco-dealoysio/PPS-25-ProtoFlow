@@ -2,7 +2,6 @@ package pkg.b.logic.pdf
 
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.PDFRenderer
-import pkg.d.util.Util.inPrintsFilePathName
 import pkg.e.ui.pdf.PdfVerifier.isPdf
 import pkg.e.ui.pdf.{PdfDefaultViewer, PdfPrinter}
 import java.awt.event.*
@@ -18,7 +17,7 @@ object PdfViewer:
   def viewPdf(pdfPathName: String): Unit =
 
     if !isPdf(pdfPathName) then
-      println(s"'${pdfPathName}' does not exist or is not a valid PDF file.")
+      println(s"'$pdfPathName' does not exist or is not a valid PDF file.")
       System.exit(1)
 
     val pdfFile = File(pdfPathName)
@@ -30,8 +29,8 @@ object PdfViewer:
 
       val totalPages = document.getNumberOfPages
       var currentPage = 0
-      var pageWidth = 1150f
-      var pageHeight = 750f
+      val pageWidth = 1150f
+      val pageHeight = 750f
 
       val zoomDefault = 100f
       var zoomDPI = zoomDefault
@@ -45,7 +44,7 @@ object PdfViewer:
 
       val buttonPanel = JPanel()
 
-      var pageCounterLabel = JLabel()
+      val pageCounterLabel = JLabel()
 
       val frame = JFrame(s"PDF Viewer - $pdfPathName")
       frame.setTitle(pdfPathName)
@@ -141,7 +140,6 @@ object PdfViewer:
       frame.requestFocusInWindow()
       frame.addKeyListener(new KeyListener:
         override def keyPressed(e: KeyEvent): Unit =
-          //println(s"Key Pressed: ${KeyEvent.getKeyText(e.getKeyCode)}")
           e.getKeyCode match
             case KeyEvent.VK_PLUS | KeyEvent.VK_ADD => zoomIn()
             case KeyEvent.VK_MINUS | KeyEvent.VK_SUBTRACT => zoomOut()
@@ -170,13 +168,3 @@ object PdfViewer:
       case ex: Exception =>
         println(s"Error loading PDF: ${ex.getMessage}")
         ex.printStackTrace()
-
-@main def tryPdfViewer: Unit =
-  //PdfViewer.viewPdf(inPrintsFilePathName("Intro.pdf"))
-  val fileChooser = new JFileChooser()
-  fileChooser.setCurrentDirectory(File(inPrintsFilePathName("")))
-  fileChooser.setDialogTitle("Select a PDF file")
-  if fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION then
-    println("No file selected.")
-  else
-    PdfViewer.viewPdf(fileChooser.getSelectedFile.getAbsolutePath)

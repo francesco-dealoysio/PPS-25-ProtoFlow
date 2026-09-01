@@ -1,8 +1,9 @@
 package pkg.b.logic
 
 import pkg.c.data.Xml.createEmptyXmlFile
-import pkg.d.util.Logger.*
 import pkg.d.util.Util.inLogFilePathName
+import pkg.d.util.IdGen
+import pkg.d.util.Util.inIdsFilePathName
 
 import java.nio.file.{Files, Paths}
 
@@ -36,10 +37,7 @@ case class AccessLog(
       createEmptyXmlFile(path, "accessLog")
     path
 
-  def writeAccessLog(username: String, role: String, date: String, time: String): Boolean = {
-    import pkg.d.util.IdGen
-    import pkg.d.util.Util.inIdsFilePathName
-
+  def writeAccessLog(username: String, role: String, date: String, time: String): Boolean =
     val log = AccessLog(
       IdGen(inIdsFilePathName("accessLogId")),
       username,
@@ -47,6 +45,4 @@ case class AccessLog(
       date,
       time
     )
-
     log.recordInsert(log, log.defaultXmlFilePathName)
-  }

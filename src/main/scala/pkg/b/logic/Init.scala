@@ -30,7 +30,6 @@ object Init:
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "ids.folder", idFolder)
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "test.folder", testFolder)
 
-
     if (Files.notExists(Paths.get(inDatabaseFilePathName("accounts.xml"))))
       saveXML(inDatabaseFilePathName("accounts.xml"), accounts)
 
@@ -51,15 +50,7 @@ object Init:
 
     if (Files.notExists(Paths.get(inLogFilePathName("documentOperations.xml"))))
       createEmptyXmlFile(inLogFilePathName("documentOperations.xml"), "operations")
-/*
-    // ????
-    val documentOperationsPath = inLogFilePathName("documentOperations.xml")
-    val documentOperationsFile = Paths.get(documentOperationsPath)
-    
-    if Files.notExists(documentOperationsFile) || Files.size(documentOperationsFile) == 0 then
-      createEmptyXmlFile(documentOperationsPath, "operations")
-    // ????
-*/
+
     if (Files.notExists(Paths.get(inLogFilePathName("accessLog.xml"))))
       createEmptyXmlFile(inLogFilePathName("accessLog.xml"), "accessLog")
 
@@ -70,6 +61,3 @@ object Init:
     IdGen(inIdsFilePathName("classificationId"), 8)
     IdGen(inIdsFilePathName("registrationId"))
     IdGen(inIdsFilePathName("loadedDocumentId"))
-
-  @main def tryInit(): Unit =
-    init()  
