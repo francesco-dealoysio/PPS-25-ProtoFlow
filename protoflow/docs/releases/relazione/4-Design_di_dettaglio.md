@@ -199,3 +199,31 @@ rimangono indipendenti dalla tecnologia grafica.
 Questa separazione riduce la quantità di logica applicativa contenuta
 nelle view e rende le regole di validazione verificabili
 indipendentemente dall'interfaccia.
+
+## 4.2 Controllo di gestione, autorizzazione Prolog e registrazioni — Thomas Testa
+
+Questa sezione approfondisce tre punti del sistema che, a differenza delle astrazioni condivise descritte in 4.1, non riguardano l'infrastruttura comune ma la logica applicativa di specifici sottosistemi: l'aggregazione dei documenti nel Controllo di Gestione, il ciclo di vita delle regole di autorizzazione personalizzate, e il flusso di approvazione di una richiesta di registrazione.
+
+### 4.2.1 Aggregazione dei documenti nel Controllo di Gestione
+
+Il ciclo di vita di un documento attraversa tre entità indipendenti — `LoadedDocument`, `RegisteredDocument`, `ArchivedDocument` — ciascuna persistita nel proprio file XML e non collegata alle altre da ereditarietà (si veda anche 2.2). `DocumentManagementControlService` costruisce da queste tre collezioni, più `DocumentLog` per lo storico delle fasi, un'unica vista di dominio, `ManagedDocument`, usata dalla GUI per mostrare lo stato di lavorazione indipendentemente dallo stadio raggiunto.
+
+![Aggregazione delle entità documento nel Controllo di Gestione](img/cap4-controllo-gestione.png)
+
+L'aggregazione non è un vero join: ogni record delle tre collezioni viene mappato indipendentemente in un `ManagedDocument` (tramite tre overload di `toManagedDocument`, uno per tipo sorgente) e i risultati vengono concatenati e ordinati per id. Questo è corretto, e non richiede una logica di deduplica, perché è garantito un invariante a monte: quando un documento avanza di stadio, il record dello stadio precedente viene eliminato (`LoadedDocumentService`/`ArchivedDocumentService`), quindi un dato id esiste sempre in una sola delle tre collezioni alla volta.
+
+### 4.2.2 Ciclo di vita delle regole di autorizzazione personalizzate
+
+Il requisito opzionale di personalizzazione delle regole organizzative estende il motore di autorizzazione Prolog descritto in 3.3 con la possibilità, per un amministratore, di aggiungere o rimuovere regole `can(ruolo, azione)` a runtime dalla GUI (`AuthorizationRuleAddView`, `AuthorizationRulesManagementView`).
+
+![Ciclo di vita di una regola custom, da assert/retract al file persistito](img/cap4-custom-rules.png)
+
+`AuthorizationEngine.addCustomRule` verifica prima `isAuthorized(role, action)` sull'engine live (teoria base più regole già personalizzate): se il permesso esiste già, non viene asserito nulla. Questo controllo evita che una regola "personalizzata" duplichi un fatto `can/2` già presente nella teoria base — nel qual caso `permitted_actions/2`, essendo implementato con `findall`, restituirebbe la stessa azione due volte nella lista usata per costruire il menu. Solo se il ruolo non è già autorizzato la regola viene asserita nel motore (`assert`) e la nuova coppia viene aggiunta a un insieme in memoria (`mutable.LinkedHashSet`, che garantisce sia l'unicità sia l'ordine di inserimento), che viene poi interamente riscritto su `customRules.pl`. `removeCustomRule` segue lo schema simmetrico con `retract`, verificando però l'appartenenza della regola a `customRules` prima di procedere: una regola della teoria base non può quindi mai essere rimossa passando per questo percorso, perché semplicemente non vi è mai stata tracciata.
+
+### 4.2.3 Approvazione di una richiesta di registrazione
+
+`RegistrationRequestService.approveRequest` coordina la trasformazione di una richiesta di registrazione pendente in un account applicativo: genera uno username univoco (con suffisso numerico incrementale in caso di collisione) e una password temporanea, crea l'`Account` con la password cifrata (SHA3-512), e solo in caso di inserimento riuscito aggiorna lo stato della richiesta a `Approved`.
+
+![Flusso di approvazione di una richiesta, con rollback in caso di fallimento parziale](img/cap4-approvazione-richiesta.png)
+
+Poiché l'account e la richiesta sono persistiti in due file XML indipendenti, non esiste una transazione atomica che copra entrambe le scritture. Se l'inserimento dell'account riesce ma l'aggiornamento della richiesta fallisce, il servizio esegue un rollback esplicito cancellando l'account appena creato, in modo da non lasciare nel sistema un account "orfano" non riconducibile ad alcuna richiesta approvata. La password in chiaro non viene mai persistita: esiste solo nel valore di ritorno (`RegistrationApproval`), usato per mostrarla una tantum all'operatore che dovrà comunicarla al nuovo utente.
