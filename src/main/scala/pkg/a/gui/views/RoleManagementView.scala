@@ -1,7 +1,7 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.traits.Management
-import pkg.b.logic.{Account, Role, Registration}
+import pkg.b.logic.{Account, AuthorizationEngine, Registration, Role}
 import pkg.d.util.Util.inDatabaseFilePathName
 import pkg.d.util.XmlToPdf
 import scalafx.collections.ObservableBuffer
@@ -63,7 +63,9 @@ object RoleManagementView extends Management:
 
           val roleInUse = roleAssignedToAccount || roleRequestedByPendingRegistration
 
-          if selected.getRole.equalsIgnoreCase("admin") then
+          // The "admin role" rule lives in AuthorizationEngine (Prolog), not duplicated here:
+          // this only asks the single source of truth which error to show before attempting.
+          if !AuthorizationEngine.canDeleteRole(selected.getRole) then
             result.show(Text.AdminRoleDeleteError, success = false)
           else if roleInUse then
             result.show(Text.RoleInUseDeleteError, success = false)

@@ -1,9 +1,9 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.services.AccountService
 import pkg.a.gui.traits.Form
 import pkg.b.logic.{Account, Classification, Role}
-import pkg.d.util.IdGen
-import pkg.d.util.Util.{inIdsFilePathName, cipher}
+import pkg.d.util.Util.cipher
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Accounts.Add as Text
@@ -16,6 +16,7 @@ object AccountAddView extends Form:
   def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val accountLogic = new Account()
+    val service = new AccountService()
     val roleLogic = new Role()
     val roles = roleLogic.getRecords[Role]()
     val classificationLogic = new Classification()
@@ -79,16 +80,25 @@ object AccountAddView extends Form:
     val save =
       saveButton: () =>
         if validateForm() then
-          val newAccount = currentAccount(IdGen(inIdsFilePathName("accountId")))
-          val saved = accountLogic.recordInsert(newAccount)
-          result.show(
-            message = if saved then Text.Success else Text.Error,
-            success = saved
-          )
+          val draft = currentAccount()
+          service.addAccount(
+            surname = draft.getSurname,
+            name = draft.getName,
+            email = draft.getEmail,
+            phone = draft.getPhone,
+            role = draft.getRole,
+            area = draft.getArea,
+            assignment = draft.getAssignment,
+            username = draft.getUsername,
+            cipheredPassword = draft.getPassword
+          ) match
+            case Right(_) =>
+              formSaved = true
+              result.show(Text.Success, success = true)
+              onSaved()
 
-          if saved then
-            formSaved = true
-            onSaved()
+            case Left(error) =>
+              result.show(error, success = false)
 
     val reset = resetButton(resetForm)
     val exit = closeButton(onExit)

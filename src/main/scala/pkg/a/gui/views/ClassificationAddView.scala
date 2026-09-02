@@ -1,9 +1,8 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.services.ClassificationService
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Classification
-import pkg.d.util.IdGen
-import pkg.d.util.Util.inIdsFilePathName
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Classifications.Add as Text
 import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
@@ -15,6 +14,7 @@ object ClassificationAddView extends Form:
   def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val classificationLogic = new Classification()
+    val service = new ClassificationService()
     val validator = new ClassificationValidator()
 
     val classification = stringField(prompt = Prompts.Classification)
@@ -54,17 +54,14 @@ object ClassificationAddView extends Form:
     val save =
       saveButton: () =>
         if validateForm() then
-          val newClassification = currentClassification(IdGen(inIdsFilePathName("classificationId")))
-          val saved = classificationLogic.recordInsert(newClassification)
+          service.addClassification(classification.value, description.value) match
+            case Right(_) =>
+              formSaved = true
+              result.show(Text.Success, success = true)
+              onSaved()
 
-          result.show(
-            message = if saved then Text.Success else Text.Error,
-            success = saved
-          )
-
-          if saved then
-            formSaved = true
-            onSaved()
+            case Left(error) =>
+              result.show(error, success = false)
 
     val reset = resetButton(resetForm)
     val exit = closeButton(onExit)

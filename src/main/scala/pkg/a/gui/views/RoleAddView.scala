@@ -1,9 +1,8 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.services.RoleService
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Role
-import pkg.d.util.IdGen
-import pkg.d.util.Util.inIdsFilePathName
 import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Roles.Add as Text
@@ -15,6 +14,7 @@ object RoleAddView extends Form:
   def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val roleLogic = new Role()
+    val service = new RoleService()
     val validator = new RoleValidator()
     val role = stringField(prompt = Prompts.Role)
     val name = stringField(prompt = Prompts.RoleName)
@@ -56,16 +56,14 @@ object RoleAddView extends Form:
     val save =
       saveButton: () =>
         if validateForm() then
-          val newRole = currentRole(IdGen(inIdsFilePathName("roleId")))
-          val saved = roleLogic.recordInsert(newRole)
+          service.addRole(role.value.toLowerCase, name.value, description.value) match
+            case Right(_) =>
+              formSaved = true
+              result.show(Text.Success, success = true)
+              onSaved()
 
-          result.show(
-            message = if saved then Text.Success else Text.Error,
-            success = saved
-          )
-          if saved then
-            formSaved = true
-            onSaved()
+            case Left(error) =>
+              result.show(error, success = false)
 
     val reset = resetButton(resetForm)
     val exit = closeButton(onExit)

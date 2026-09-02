@@ -1,7 +1,7 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.traits.Management
-import pkg.b.logic.Account
+import pkg.b.logic.{Account, AuthorizationEngine}
 import pkg.a.gui.text.UiText.Accounts.Management as Text
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Common.Fields.Labels
@@ -57,11 +57,11 @@ object AccountManagementView extends Management:
           )
 
         if confirmed then
-          val isLastAdmin =
-            selected.getRole.equalsIgnoreCase("admin") &&
-              accounts.count(_.getRole.equalsIgnoreCase("admin")) <= 1
+          // The "last admin" rule lives in AuthorizationEngine (Prolog), not duplicated here:
+          // this only asks the single source of truth which error to show before attempting.
+          val adminCount = accounts.count(_.getRole.equalsIgnoreCase("admin"))
 
-          if isLastAdmin then
+          if !AuthorizationEngine.canDeleteAccount(selected.getRole, adminCount) then
             result.show(Text.LastAdminDeleteError, success = false)
           else
             val deleted = accountLogic.recordDelete(selected.getId)

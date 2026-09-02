@@ -2,11 +2,45 @@ package pkg.a.gui.services
 
 import pkg.b.logic.{LoadedDocument, RegisteredDocument}
 import pkg.d.util.DateTime.{localDate, localTime}
+import pkg.d.util.IdGen
+import pkg.d.util.Util.inIdsFilePathName
 
 class LoadedDocumentService:
 
   private val loadedDocumentLogic = new LoadedDocument()
   private val registeredDocumentLogic = new RegisteredDocument()
+
+  /**
+   * Genera l'id, marca data/ora/operatore della presa in carico e salva il documento.
+   */
+  def addLoadedDocument(
+                          documentDate: String,
+                          documentProtocol: String,
+                          documentType: String,
+                          sender: String,
+                          recipient: String,
+                          subject: String,
+                          remarks: String,
+                          operatorUsername: String
+                        ): Either[String, LoadedDocument] =
+
+    val newDocument =
+      LoadedDocument(
+        id = IdGen(inIdsFilePathName("loadedDocumentId")),
+        documentDate = documentDate,
+        documentProtocol = documentProtocol,
+        documentType = documentType,
+        sender = sender,
+        recipient = recipient,
+        subject = subject,
+        remarks = remarks,
+        processedDate = localDate,
+        processedTime = localTime,
+        processedBy = operatorUsername
+      )
+
+    if loadedDocumentLogic.recordInsert(newDocument) then Right(newDocument)
+    else Left("Errore durante la presa in carico del documento")
 
   def getLoadedDocuments: List[LoadedDocument] =
     loadedDocumentLogic.getRecords[LoadedDocument]().toList
