@@ -1,4 +1,6 @@
-
+[Back to index](0-Indice.md) |
+[Previous Chapter](6-Testing.md)
+# 7. Retrospettiva
 
 Il gruppo non ha tenuto, per la maggior parte degli sprint, una sessione di **Sprint Retrospective** documentata in modo discorsivo (raccolta di lezioni apprese, azioni di miglioramento): le sole eccezioni sono poche note isolate riportate nei Daily Scrum (es. decisioni tecniche o rallentamenti puntuali, discusse più avanti).
 Questo limite del processo viene ripreso e discusso onestamente nella sezione 7 (Retrospettiva).
@@ -10,3 +12,7 @@ Ai fini di una relazione onesta sul processo seguito, vanno segnalati alcuni lim
 - le sessioni di Sprint Review si sono limitate, nella maggior parte dei casi, a una tabella di stato delle User Story pianificate, senza una sezione di retrospettiva discorsiva.
 
 Questi punti sono ripresi in modo più approfondito nella sezione 7 (Retrospettiva).
+
+
+[Back to index](0-Indice.md) |
+[Previous Chapter](6-Testing.md)

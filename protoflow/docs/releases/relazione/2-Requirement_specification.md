@@ -1,3 +1,6 @@
+[Back to index](0-Indice.md) |
+[Previous Chapter](1-Processo_di_sviluppo.md) |
+[Next Chapter](3-Design_architetturale.md)
 # 2. Requirement specification
 <a id="business"></a>
 ## 2.1 Requisiti di business
@@ -109,3 +112,8 @@ Dai vincoli tecnologici individuati in fase di analisi (RBS, ramo Constraint) e 
 - **Ambiente di sviluppo**: IntelliJ IDEA;
 - **Documentazione**: Markdown per la relazione, versionata nello stesso repository del codice;
 - **Vincolo temporale**: consegna entro la scadenza d'esame, che ha condizionato le scelte di scope discusse nelle sezioni successive (in particolare gli opzionali non completati, si veda la Retrospettiva).
+
+
+[Back to index](0-Indice.md) |
+[Previous Chapter](1-Processo_di_sviluppo.md) |
+[Next Chapter](3-Design_architetturale.md)

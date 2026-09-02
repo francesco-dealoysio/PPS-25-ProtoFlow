@@ -1,3 +1,6 @@
+[Back to index](0-Indice.md) |
+[Previous Chapter](3-Design_architetturale.md) |
+[Next Chapter](5-Implementazione.md)
 # 4. Design di dettaglio
 
 Questa sezione descrive le principali scelte di design adottate 
@@ -54,3 +57,8 @@ che la precede o quella che verrà visualizzata successivamente.
 Le homepage dei diversi ruoli costituiscono il punto di coordinamento
 dei principali flussi dell'interfaccia e associano le azioni disponibili
 alle corrispondenti schermate.
+
+
+[Back to index](0-Indice.md) |
+[Previous Chapter](3-Design_architetturale.md) |
+[Next Chapter](5-Implementazione.md)
