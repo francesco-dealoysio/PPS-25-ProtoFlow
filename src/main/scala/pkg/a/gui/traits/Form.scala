@@ -2,7 +2,7 @@ package pkg.a.gui.traits
 
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Node
-import scalafx.scene.control.{Button, ComboBox, DatePicker, Label, PasswordField, TextArea, TextField, TextInputControl}
+import scalafx.scene.control.{Button, ComboBox, DatePicker, Label, PasswordField, ScrollPane, TextArea, TextField, TextInputControl}
 import scalafx.scene.layout.*
 import pkg.d.util.DateTime
 import pkg.a.gui.text.UiStyles.Common.*
@@ -352,7 +352,7 @@ trait Form extends Common:
       else
         Seq(titleBoxNode, form, resultMessage, actions)
 
-    val content = new VBox:
+    val formContent = new VBox:
       spacing = 20
       padding = Insets(25)
       maxWidth = 800
@@ -360,11 +360,24 @@ trait Form extends Common:
       config.contentStyle.foreach(styleClass += _)
       children = pageChildren
 
+    val stack = new StackPane:
+      alignment = Pos.TopCenter
+      children = Seq(formContent)
+
+    // Content taller than the window would otherwise be clipped (no scrollbar), hiding
+    // fields and, worse, the action buttons: wrap in a ScrollPane instead of using the
+    // stack directly. fitToWidth/fitToHeight keep the short-content behavior unchanged
+    // (centered, actions pushed to the bottom via the spacer) while letting tall content
+    // scroll instead of overflow.
+    val scrollPane = new ScrollPane:
+      content = stack
+      fitToWidth = true
+      fitToHeight = true
+      styleClass += FormScrollStyle
+
     val page = new BorderPane:
       styleClass += config.rootStyle
-      center = new StackPane:
-        alignment = Pos.TopCenter
-        children = Seq(content)
+      center = scrollPane
 
     page.delegate.getProperties.put("has-unsaved-changes", hasUnsavedChanges)
     initialFocus.foreach(focusOnOpen)
