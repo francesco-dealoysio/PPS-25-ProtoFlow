@@ -9,6 +9,9 @@ a una settimana, in conformità a quanto consigliato nel punto P8 delle regole d
 </p>
 
 ### <p style="color: red;">(tbd) Meeting iniziale (tbd)</p>
+<p style="text-align: justify;">
+Primo incontro durante il quale ....
+</p>
 
 Ogni sprint ha seguito la struttura classica del seguente esempio relativo allo Sprint S1:
 
@@ -19,9 +22,9 @@ Ogni sprint ha seguito la struttura classica del seguente esempio relativo allo 
 ### **Sprint Planning Meeting**
 <p style="text-align: justify;">
 All'inizio di ogni sprint è stato tenuto un incontro via Teams/Meet finalizzato alla definizione degli obiettivi ed
-alla selezione dei requisiti, assegnando a questi ultimi le opportune priorità di realizzazione, rispettivamente da
-realizzare e sviluppare durante lo sprint, nonché alla scomposizione delle User Story in task ed alla individuazione 
-delle soluzioni di massima da adottare per implementarli. 
+alla selezione dei requisiti, assegnando a questi ultimi le opportune priorità di realizzazione, obiettivi e requisiti
+rispettivamente da realizzare e sviluppare durante lo sprint, nonché alla scomposizione delle User Story in task ed 
+alla individuazione delle soluzioni di massima da adottare per implementarli. 
 </p>
 
 <p style="text-align: justify;">
@@ -38,7 +41,7 @@ nonché delle eventuali modifiche dei requisiti stabilite in itinere.
 - **[User Story](../../requisiti_e_analisi/UserStories/ "Apertura directory")**
 - **[Requirement Breakdown Structure](../../requisiti_e_analisi/RBS.pdf "Apertura file pdf")**
 - **[Product Backlog](../../process/Product_Backlog.pdf "Apertura file pdf")**
-- **[Work Breakdown Structure](../../process/wBS.pdf "Apertura file pdf")**
+- **[Work Breakdown Structure](../../process/WBS.pdf "Apertura file pdf")**
 
 <p style="text-align: justify;">
 Successivamente alla selezione dei requisiti, si è proceduto all'analisi di ciascuna User story ed alla scomposizione
@@ -76,17 +79,43 @@ e quelli relativi alle directory nelle quali sono state inserite le User Story e
 - **[User Story Task S1](../../process/sprint/Sprint_S1/03_USER_STORY_TASK_S1.pdf  "Apertura file pdf")**
 - **[Daily Scrum S1](../../process/sprint/Sprint_S1/04_DAILY_SCRUM_S1.pdf  "Apertura file pdf")**
 - **[Sprint Review S1](../../process/sprint/Sprint_S1/05_SPRINT_REVIEW_S1.pdf  "Apertura file pdf")**
-- **[User Story S1](../../process/sprint/Sprint_S1/TASK_USER_STORY_S1/USER_STORY/  "Apertura directory")**
+- **[User Story S1](../../process/sprint/Sprint_S1/TASK_USER_STORY_S1/User_Story/  "Apertura directory")**
 - **[Task S1](../../process/sprint/Sprint_S1/TASK_USER_STORY_S1/Task_Done/  "Apertura directory")**
 
 ### **Daily Scrum**
-Aggiornamento giornaliero per persona (attività svolta, attività da svolgere, problemi/esigenze);
+<p style="text-align: justify;">
+La metodologia prevede un incontro giornaliero (circa 15 minuti) durante il quale ogni componente del team 
+riepiloga in merito allo stato di avanzamento delle attività di propria competenza. In particolare vengono 
+dichiarate quali attività sono state completate e se si sono riscontrate difficoltà e quali sono i nuovi
+task presi in carico da affrontare nella giornata odierna.
+Normalmente in tale frangente vengono evidenziate eventuali esigenze e/o problematiche connesse con le attività
+di sviluppo, che, se complesse, in genere vengono affrontate al di fuori del daily scrum.
+
+In realtà, a causa dei vari impegni dei componenti del gruppo e delle propensioni e delle abitudini individuali,
+i nostri incontri via Teams/Meet non sono avvenuti con cadenza giornaliera ed i resoconti non sono stati
+particolarmente circostanziati ed analitici, tuttavia, sono stati almeno sufficienti a tenere sotto controllo
+l'andamento delle attività di sviluppo del progetto.
+</p>
 
 ### **Sprint Review**
 <p style="text-align: justify;">
-A fine sprint, con verifica dello stato di completamento degli elementi pianificati, della conformità
-a quanto previsto dalle sezioni Done Definition delle User Story contenute nello Sprint Backlog tramite
-test di accettazione (Use Case Test).
+Al termine di ogni sprint è stata effettuata una verifica dello stato di completamento delle funzionalità previste
+per lo sprint e descritte dalle User Story contenute nello Sprint Backlog e, per quelle realizzate, è stata accertata
+la correttezza di esecuzione e la conformità a quanto previsto dai requisiti.
+
+In sostanza, è stata eseguita l'applicazione seguendo i percorsi dettati dai casi d'uso specificati nelle sezioni
+Done Definition delle User Story, sezioni da considerare quali surrogato di test di accettazione realizzati ad hoc.
+In questa fase, essendo in realta previsto un incontro, in genere di circa 4 ore, tra Scrum Team e Stakeholder, i
+componenti del team hanno indossato sia il cappello di sviluppatore, che dimostra quanto realizzato, che quello di
+Product Owner e di End User, che esaminano in modo critico il comportamento e la correttezza di quanto prodotto.
+
+Dalla attività di revisione sono emersi di volta in volta per i diversi sprint i seguenti elementi:
+- requisiti da inserire nello sprint successivo, in quanto non realizzati nello sprint corrente;
+- difetti derivanti dai comportamenti anomali riscontrati da correggere nello sprint successivo;
+- richieste di modifica dei requisiti sorte osservando l'applicativo in esecuzione.
+
+Le richieste di varianti a volte, dopo l'analisi d'impatto sul progetto, hanno comportato la revisione e 
+l'adeguamento sia dei requisiti (User Story) che del Product Backlog.
 </p>
 
 ## 1.2 Team
@@ -202,7 +231,6 @@ sezioni 3, 4 e 6.
 
 [Back to index](0-Indice.md) |
 [Next Chapter](2-Requirement_specification.md)
-
 
 
 

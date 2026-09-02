@@ -95,7 +95,7 @@
     <sender>INPS</sender>
     <recipient>UNUCI</recipient>
     <subject>Pensioni</subject>
-    <remarks></remarks>
+    <remarks/>
     <loadedDate>2026-09-02</loadedDate>
     <loadedTime>00:57:41.75</loadedTime>
     <loadedBy>tommy</loadedBy>
@@ -108,5 +108,27 @@
     <archivedBy>tommy</archivedBy>
     <archiveLocation>Personale</archiveLocation>
     <classification>Personale</classification>
+  </record>
+  <record>
+    <id>50</id>
+    <documentDate>2026-09-02</documentDate>
+    <documentProtocol>123/2026/Acea</documentProtocol>
+    <documentType>Lettera</documentType>
+    <sender>ACEA</sender>
+    <recipient>UNUCI</recipient>
+    <subject>Bollette 2025</subject>
+    <remarks></remarks>
+    <loadedDate>2026-09-02</loadedDate>
+    <loadedTime>15:24:50.56</loadedTime>
+    <loadedBy>tommy</loadedBy>
+    <protocolNumber>2026/50/Amministrazione</protocolNumber>
+    <registeredDate>2026-09-02</registeredDate>
+    <registeredTime>15:25:20.64</registeredTime>
+    <registeredBy>tommy</registeredBy>
+    <archivedDate>2026-09-02</archivedDate>
+    <archivedTime>15:26:00.47</archivedTime>
+    <archivedBy>tommy</archivedBy>
+    <archiveLocation>Amministrazione</archiveLocation>
+    <classification>Amministrazione</classification>
   </record>
 </archivedDocuments>

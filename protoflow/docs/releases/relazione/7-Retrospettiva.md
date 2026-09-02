@@ -14,5 +14,12 @@ Ai fini di una relazione onesta sul processo seguito, vanno segnalati alcuni lim
 Questi punti sono ripresi in modo più approfondito nella sezione 7 (Retrospettiva).
 
 
+Sprint Retrospective:
+Incontro (Scrum Team) alla fine dello Sprint avente i seguenti scopi:
+Esaminare l’andamento dello Sprint appena terminato in relazione a comportamenti delle persone, relazioni, processi e strumenti;
+Elencare i principali elementi che sono andati bene;
+individuare eventuali miglioramenti alle modalità di lavoro da implementare per lo Sprint successivo;
+redigere un piano per l’attuazione dei suddetti miglioramenti;
+
 [Back to index](0-Indice.md) |
 [Previous Chapter](6-Testing.md)
