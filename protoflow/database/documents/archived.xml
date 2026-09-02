@@ -73,7 +73,7 @@
     <sender>acea roma</sender>
     <recipient>unuci</recipient>
     <subject>bollete 2024</subject>
-    <remarks></remarks>
+    <remarks/>
     <loadedDate>2026-09-01</loadedDate>
     <loadedTime>19:10:10.81</loadedTime>
     <loadedBy>tommy</loadedBy>
@@ -86,5 +86,27 @@
     <archivedBy>tommy</archivedBy>
     <archiveLocation>Segreteria</archiveLocation>
     <classification>Segreteria</classification>
+  </record>
+  <record>
+    <id>47</id>
+    <documentDate>2026-09-02</documentDate>
+    <documentProtocol>123</documentProtocol>
+    <documentType>Lettera</documentType>
+    <sender>INPS</sender>
+    <recipient>UNUCI</recipient>
+    <subject>Pensioni</subject>
+    <remarks></remarks>
+    <loadedDate>2026-09-02</loadedDate>
+    <loadedTime>00:57:41.75</loadedTime>
+    <loadedBy>tommy</loadedBy>
+    <protocolNumber>2026/47/Personale</protocolNumber>
+    <registeredDate>2026-09-02</registeredDate>
+    <registeredTime>00:58:47.73</registeredTime>
+    <registeredBy>tommy</registeredBy>
+    <archivedDate>2026-09-02</archivedDate>
+    <archivedTime>00:59:03.03</archivedTime>
+    <archivedBy>tommy</archivedBy>
+    <archiveLocation>Personale</archiveLocation>
+    <classification>Personale</classification>
   </record>
 </archivedDocuments>

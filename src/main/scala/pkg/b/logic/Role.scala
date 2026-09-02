@@ -48,7 +48,7 @@ case class Role(
       val id = record.id
       val role = record.role
 
-      val  found = countRecordsByFilter[Role](a => a.id != id && a.role == role, xmlFilePathName, classOf[Role])
+      val  found = countRecordsByFilter[Role](record => record.id != id && record.role == role, xmlFilePathName, classOf[Role])
       if found == 0 then
         result = updateElemOfXML(xmlFilePathName, obj)
       else

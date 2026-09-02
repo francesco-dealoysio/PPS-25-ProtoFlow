@@ -127,11 +127,11 @@ class AccountAdd(val user: Account, val parentMask: Management) extends Operatio
     emailFld.text = objEntity.asInstanceOf[Account].getEmail
     phoneFld.text = objEntity.asInstanceOf[Account].getPhone
 
-    roleFld.getItems.addAll(Role().getRecords[Role]().map(r => r.getRole).sorted *)
+    roleFld.getItems.addAll(Role().getRecords[Role]().map(record=> record.getRole).sorted *)
     roleFld.getSelectionModel.select(objEntity.asInstanceOf[Account].getRole) // qui non serve
     roleFld.promptText = "Selezionare un ruolo"
 
-    areaFld.getItems.addAll(Classification().getRecords[Classification]().map(r => r.getClassification).sorted *)
+    areaFld.getItems.addAll(Classification().getRecords[Classification]().map(record => record.getClassification).sorted *)
     areaFld.getSelectionModel.select(objEntity.asInstanceOf[Account].getArea) // qui non serve
     areaFld.promptText = "Selezionare un'area"
 

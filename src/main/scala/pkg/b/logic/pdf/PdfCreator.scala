@@ -1,14 +1,14 @@
 package pkg.b.logic.pdf
 
+import pkg.d.util.Util.inPrintsFilePathName
+import pkg.d.util.DateTime.currentDateTime
 import org.apache.pdfbox.pdmodel.common.*
 import org.apache.pdfbox.pdmodel.font.PDType1Font
-import pkg.d.util.DateTime.currentDateTime
-import pkg.d.util.Util.inPrintsFilePathName
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.PDPageContentStream
-
 import java.awt.Color
+import java.nio.file.{Files, Paths}
 
 object PdfCreator:
   
@@ -63,9 +63,13 @@ object PdfCreator:
   private val recordSpacing = 5f
   private val lineSpacing = 10f
 
-  private var pageNumber = 1
+  private val pageNumber = 1
 
   def createPdf(pdfPathName: String, title: String, fields: Seq[(String, String)]): Unit =
+
+    if pdfPathName == "" || Files.isDirectory(Paths.get(pdfPathName)) then
+      println("Filename paramenter cannot be empty, pdf not created!")
+      return
 
     this.pdfPathName = pdfPathName
     this.title = title
@@ -124,7 +128,7 @@ object PdfCreator:
         writeFooter()
         yRectOffset = yRectOffset - (rectHeight - recordSpacing)
 
-      var rect = Rect(xRectOffset, yRectOffset, rectWidth, rectHeight, fillColor = Color.DARK_GRAY)
+      val rect = Rect(xRectOffset, yRectOffset, rectWidth, rectHeight, fillColor = Color.DARK_GRAY)
       drawRect(rect)
       writeTextInRect(field._1, rect, HorizontalAlignment.RIGHT, Color.WHITE)
 
@@ -171,7 +175,7 @@ object PdfCreator:
           xTextOffset = rect.xPos + rect.width - textWidth - padding
         case HorizontalAlignment.CENTER =>
           xTextOffset = rect.xPos + (rect.width - textWidth) / 2
-        case _ => ()
+        case null => ()
 
       writeToContent(line, xTextOffset, yTextOffset, fontBody)
       yTextOffset = yTextOffset - lineSpacing
@@ -209,7 +213,7 @@ object PdfCreator:
   def wrapText(text: String, maxWidth: Float): Seq[String] =
     val words = text.split("\\s+")
     val lines = scala.collection.mutable.ListBuffer[String]()
-    var currentLine = new StringBuilder
+    val currentLine = new StringBuilder
 
     for word <- words do
       val testLine = if currentLine.isEmpty then word else currentLine.toString + " " + word
@@ -225,7 +229,7 @@ object PdfCreator:
     if currentLine.nonEmpty then lines += currentLine.toString()
     lines.toSeq
 
-@main def tryPdfCreator: Unit =
+@main def tryPdfCreator(): Unit =
 /*
   import pkg.b.logic.Account
   val record: Account = Account().getRecordById("1")

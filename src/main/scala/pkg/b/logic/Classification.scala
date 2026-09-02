@@ -45,7 +45,7 @@ case class Classification(
       val id = record.id
       val classification = record.classification
 
-      val  found = countRecordsByFilter[Classification](a => a.id != id && a.classification == classification, xmlFilePathName, classOf[Classification])
+      val  found = countRecordsByFilter[Classification](record => record.id != id && record.classification == classification, xmlFilePathName, classOf[Classification])
       if found == 0 then
         result = updateElemOfXML(xmlFilePathName, obj)
       else

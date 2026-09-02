@@ -67,7 +67,7 @@ case class Account(
       val id = record.id
       val username = record.username
 
-      val found = countRecordsByFilter[Account](a => a.id != id && a.username == username, xmlFilePathName, classOf[Account])
+      val found = countRecordsByFilter[Account](record => record.id != id && record.username == username, xmlFilePathName, classOf[Account])
       if found == 0 then
         result = updateElemOfXML(xmlFilePathName, obj)
       else

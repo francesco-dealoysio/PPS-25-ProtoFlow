@@ -49,10 +49,9 @@ class Login(val user: Account, val parentMask: GUI) extends Operation:
           val password = passwordFld.getText
           //val password = cipher(passwordFld.getText)
 
-          val found = Account().getRecordsByFilter[Account](a =>
-            a.getUsername == username &&
-            a.getPassword == cipher(password)
-            //a.getPassword == password
+          val found = Account().getRecordsByFilter[Account](record =>
+            record.getUsername == username &&
+            record.getPassword == cipher(password)
           )
 
           if (found.size > 0) then
@@ -178,6 +177,3 @@ class Login(val user: Account, val parentMask: GUI) extends Operation:
     esito
 
   override def objUpdate: Unit = {}
-
-@main def tryLogin: Unit =
-  println("")
