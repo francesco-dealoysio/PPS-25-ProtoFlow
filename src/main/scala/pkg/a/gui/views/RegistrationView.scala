@@ -93,7 +93,6 @@ object RegistrationView extends Form:
             )
 
     val submit = primaryButton(Buttons.RequestRegistration, submitRequest)
-    val reset = resetButton(resetForm)
 
     def exitRegistration(): Unit =
       val canExit =
@@ -107,8 +106,6 @@ object RegistrationView extends Form:
           true
 
       if canExit then onExit()
-
-    val exit = closeButton(exitRegistration, Buttons.Close)
 
     val formGrid = new GridPane:
       hgap = 18
@@ -136,7 +133,7 @@ object RegistrationView extends Form:
       add(fieldLabel(Labels.required(Labels.Assignment)), 0, 6)
       add(assignment.control, 0, 7)
 
-    val buttonsBox = actionBar(Seq(exit, reset, submit))
+    val buttonsBox = actionBar(Seq(closeButton(exitRegistration), resetButton(resetForm), submit))
 
     formPage(
       header = FormHeader(Text.Title, Text.Subtitle),

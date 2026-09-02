@@ -73,14 +73,11 @@ object DocumentManagementDetailsView extends Form:
       )
 
     val form = twoColumnForm(documentForm, phasesForm)
-
     val result = createResultMessage()
-
-    val exitButton = closeButton(onExit)
 
     formPage(
       header = FormHeader(Text.DetailsTitle, Text.DetailsSubtitle),
       form = form,
       resultMessage = result.label,
-      actions = actionBar(Seq(exitButton))
+      actions = actionBar(Seq(closeButton(onExit)))
     )

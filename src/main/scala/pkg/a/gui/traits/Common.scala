@@ -1,5 +1,6 @@
 package pkg.a.gui.traits
 
+import pkg.a.gui.text.CommonText.Common.Buttons.Print
 import scalafx.geometry.Pos
 import scalafx.scene.control.{Alert, Button, ButtonType, Label}
 import scalafx.scene.layout.{HBox, VBox}
@@ -131,7 +132,7 @@ trait Common:
    */
   protected def dangerButton(text: String, action: () => Unit): Button =
     styledButton(text, DangerButtonStyle, action)
-
+  
   /**
    * Creates a close button executing the given exit action.
    * @param onExit the action executed when the button is pressed
@@ -140,6 +141,16 @@ trait Common:
   protected def closeButton(onExit: () => Unit, text: String = Close): Button =
     secondaryButton(text, onExit)
 
+
+  /**
+   * Creates a button used to trigger a print action.
+   * @param action the action executed when the button is pressed
+   * @param text   the button text
+   * @return the configured print button
+   */
+  protected def printButton(action: () => Unit, text: String = Print): Button =
+    secondaryButton(text = text, action = action)
+  
   /**
    * Creates a title section containing a title and a subtitle.
    * @param titleText     the title text

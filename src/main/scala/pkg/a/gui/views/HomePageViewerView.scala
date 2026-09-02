@@ -12,7 +12,7 @@ object HomePageViewerView extends HomePage:
   override protected val pageTitle: String = "Homepage Viewer"
 
   override protected def dashboardView(currentAccount: Account): Pane =
-    ViewerDashboardView(currentAccount, pageTitle)
+    DashboardViewerView(currentAccount, pageTitle)
 
   override protected def handleAction(action: MenuAction, navigator: HomeNavigator, currentAccount: Account): Unit =
     action match

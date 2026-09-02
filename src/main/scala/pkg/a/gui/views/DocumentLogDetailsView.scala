@@ -1,6 +1,5 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.DocumentLogs.{Details as Text, Fields, Operations}
 import pkg.a.gui.traits.Form
 import pkg.b.logic.DocumentLog
@@ -47,12 +46,9 @@ object DocumentLogDetailsView extends Form:
         success = printed
       )
 
-    val exitButton = closeButton(onExit)
-    val printButton = secondaryButton(Buttons.Print, printLogDetails)
-
     formPage(
       header = FormHeader(Text.Title, Text.Subtitle),
       form = form,
       resultMessage = result.label,
-      actions = actionBar(Seq(exitButton, printButton))
+      actions = actionBar(Seq(closeButton(onExit), printButton(printLogDetails)))
     )

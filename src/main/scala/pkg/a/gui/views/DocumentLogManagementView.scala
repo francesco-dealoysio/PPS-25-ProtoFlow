@@ -113,20 +113,16 @@ object DocumentLogManagementView extends Management:
       operatorFilter.value = Text.AllOperators
       loadLogs()
 
-    val exitButton = closeButton(onExit)
     val refreshButton = secondaryButton(Buttons.Refresh, loadLogs)
-    val print = printButton(printLogs)
     val resetFilterButton = secondaryButton(Buttons.ResetFilter, resetFilters)
-
     val viewButton = primaryButton(DocumentLogs.Management.View, () => withSelectedItem(table, result, Text.SelectToView)(onView))
-
     val filters = filterBar(operationFilter, fromDateFilter, toDateFilter, documentIdFilter, operatorFilter)
 
     disableWithoutSelection(table, viewButton)
 
     val header = titleBox(Text.Title, Text.Subtitle)
 
-    val actions = actionBar(Seq(resetFilterButton, exitButton, refreshButton, print, viewButton))
+    val actions = actionBar(Seq(resetFilterButton, closeButton(onExit), refreshButton, printButton(printLogs), viewButton))
 
     loadLogs()
 

@@ -111,9 +111,6 @@ object DocumentArchivingView extends Form:
                   success = false
                 )
 
-    val reset = resetButton(resetForm)
-    val exit = closeButton(onExit)
-
     val documentForm =
       formGrid(
         Seq(
@@ -146,7 +143,7 @@ object DocumentArchivingView extends Form:
       header = FormHeader(Text.Title, Text.Subtitle),
       form = form,
       resultMessage = result.label,
-      actions = actionBar(Seq(exit, reset, save)),
+      actions = actionBar(Seq(closeButton(onExit), resetButton(resetForm), save)),
       initialFocus = Some(archiveLocation),
       hasUnsavedChanges = () => hasFormChanges(formSaved, editableFields)
     )

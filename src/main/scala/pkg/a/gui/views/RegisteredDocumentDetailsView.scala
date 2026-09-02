@@ -3,7 +3,6 @@ package pkg.a.gui.views
 import pkg.a.gui.text.UiText.RegisteredDocuments.{Details as Text, Fields as RegistrationFields}
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.Common.Fields.Labels
-import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields as DocumentFields
 import pkg.a.gui.traits.Form
 import pkg.b.logic.RegisteredDocument
@@ -48,8 +47,7 @@ object RegisteredDocumentDetailsView extends Form:
     val result = createResultMessage()
 
     def printDocumentDetails(): Unit =
-      val safeProtocolNumber =
-        selectedDocument.getProtocolNumber.replaceAll("[^a-zA-Z0-9_-]", "_")
+      val safeProtocolNumber = selectedDocument.getProtocolNumber.replaceAll("[^a-zA-Z0-9_-]", "_")
 
       val printed =
         XmlToPdf.printDetails(
@@ -64,12 +62,9 @@ object RegisteredDocumentDetailsView extends Form:
         success = printed
       )
 
-    val exitButton = closeButton(onExit)
-    val printButton = secondaryButton(Buttons.Print, () => printDocumentDetails())
-
     formPage(
       header = FormHeader(Text.Title, Text.Subtitle),
       form = documentForm,
       resultMessage = result.label,
-      actions = actionBar(Seq(exitButton, printButton))
+      actions = actionBar(Seq(closeButton(onExit), printButton(printDocumentDetails)))
     )

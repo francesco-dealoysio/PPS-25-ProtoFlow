@@ -104,19 +104,11 @@ object ArchivedDocumentManagementView extends Management:
       )
 
     val refreshButton = secondaryButton(Buttons.Refresh, loadDocuments)
-
-    val print = printButton(printDocumentsList)
-
     val resetFilterButton = secondaryButton(Buttons.ResetFilter, () => resetFilters())
-
     val viewButton = primaryButton(Text.View, () => withSelectedItem(table, result, Text.SelectToView)(onView))
-
     disableWithoutSelection(table, viewButton)
-    val exitButton = closeButton(onExit)
-    val bottomActions = actionBar(Seq(resetFilterButton, exitButton, refreshButton, print, viewButton))
-
+    val bottomActions = actionBar(Seq(resetFilterButton, closeButton(onExit), refreshButton, printButton(printDocumentsList), viewButton))
     val header = titleBox(Text.Title, Text.Subtitle)
-
     val filters = filterBar(fromDateFilter, toDateFilter, subjectFilter, idFilter, operatorFilter)
 
     loadDocuments()

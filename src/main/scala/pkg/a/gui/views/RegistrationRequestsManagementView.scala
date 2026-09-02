@@ -58,12 +58,10 @@ object RegistrationRequestsManagementView extends Management:
       )
 
     val refreshButton = secondaryButton(Buttons.Refresh, loadPendingRequests)
-    val printButton = secondaryButton(Buttons.Print, printPendingList)
     val processButton = primaryButton(Buttons.Process, () => withSelectedItem(table, result, Text.SelectToProcess)(onProcess))
 
     disableWithoutSelection(table, processButton)
-    val exitButton = closeButton(onExit)
-    val bottomActions = actionBar(Seq(exitButton, refreshButton, printButton, processButton))
+    val bottomActions = actionBar(Seq(closeButton(onExit), refreshButton, printButton(printPendingList), processButton))
 
     val header = titleBox(Text.Title, Text.Subtitle)
 

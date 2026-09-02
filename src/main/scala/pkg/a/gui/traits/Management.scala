@@ -1,6 +1,5 @@
 package pkg.a.gui.traits
 
-import pkg.a.gui.text.UiText.Common.Buttons.Print
 import pkg.a.gui.text.UiStyles.Common.*
 import pkg.d.util.Logger.logger
 import scalafx.Includes.*
@@ -72,15 +71,6 @@ trait Management extends Common:
         (_, _, selected) =>
           if selected != null then
             result.clear()
-
-  /**
-   * Creates a button used to trigger a print action.
-   * @param action the action executed when the button is pressed
-   * @param text   the button text
-   * @return the configured print button
-   */
-  protected def printButton(action: () => Unit, text: String = Print): Button =
-    secondaryButton(text = text, action = action)
 
   /**
    * Executes an action on the currently selected table item.

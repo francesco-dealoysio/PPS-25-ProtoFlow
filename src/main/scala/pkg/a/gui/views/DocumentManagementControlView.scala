@@ -67,13 +67,10 @@ object DocumentManagementControlView extends Management:
       )
 
     val refreshButton = secondaryButton(Buttons.Refresh, loadDocuments)
-    val printListButton = printButton(printDocumentsList)
     val viewButton = primaryButton(Text.ViewDetails, () => withSelectedItem(table, result, Text.SelectToView)(onViewDetails))
     val summaryButton = primaryButton(Text.Summary, () => withSelectedItem(table, result, Text.SelectToSummary)(onSummary))
     disableWithoutSelection(table, viewButton, summaryButton)
-
-    val exitButton = closeButton(onExit)
-    val bottomActions = actionBar(Seq(exitButton, refreshButton, printListButton, viewButton, summaryButton))
+    val bottomActions = actionBar(Seq(closeButton(onExit), refreshButton, printButton(printDocumentsList), viewButton, summaryButton))
 
     val header = titleBox(Text.Title, Text.Subtitle)
 

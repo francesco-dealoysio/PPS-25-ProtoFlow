@@ -119,19 +119,15 @@ object RegisteredDocumentManagementView extends Management:
 
     val refreshButton = secondaryButton(Buttons.Refresh, loadDocuments)
     val printListButton = printButton(printDocumentsList)
-
     val resetFilterButton = secondaryButton(Buttons.ResetFilter, () => resetFilters())
-
     val archiveButton = primaryButton(Buttons.Archive, () => withSelectedItem(table, result, Text.SelectToArchive)(onArchive))
     val deleteButton = dangerButton(Buttons.Delete, deleteSelectedDocument)
 
     val viewButton = primaryButton(Text.View, () => withSelectedItem(table, result, Text.SelectToView)(onView))
 
-
     disableWithoutSelection(table, archiveButton, viewButton, deleteButton)
 
-    val exitButton = closeButton(onExit)
-    val bottomActions = actionBar(Seq(resetFilterButton, exitButton, refreshButton, printListButton, deleteButton, viewButton, archiveButton))
+    val bottomActions = actionBar(Seq(resetFilterButton, closeButton(onExit), refreshButton, printListButton, deleteButton, viewButton, archiveButton))
     val header = titleBox(Text.Title, Text.Subtitle)
 
     val filters = filterBar(fromDateFilter, toDateFilter, subjectFilter, operatorFilter)

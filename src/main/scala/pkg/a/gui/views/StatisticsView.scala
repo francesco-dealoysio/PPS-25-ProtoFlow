@@ -4,7 +4,6 @@ import pkg.a.gui.services.StatisticsService
 import pkg.a.gui.services.StatisticsService.{MonthlyCount, RoleCount, UserCount}
 import pkg.a.gui.traits.Management
 import pkg.a.gui.text.UiText.Statistics as Text
-import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiStyles.Common.RootStyle
 import pkg.a.gui.text.UiStyles.HomePage.{CardsContainerStyle, StatCardStyle, StatCardTitleStyle, StatCardValueStyle}
 import pkg.d.util.XmlToPdf
@@ -99,9 +98,7 @@ object StatisticsView extends Management:
         success = printed
       )
 
-    val exitButton = closeButton(onExit)
-    val printButton = secondaryButton(Buttons.Print, printStatistics)
-    val actions = actionBar(Seq(exitButton, printButton))
+    val actions = actionBar(Seq(closeButton(onExit), printButton(printStatistics)))
 
     val contentBox =
       new VBox:

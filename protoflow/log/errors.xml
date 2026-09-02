@@ -10,7 +10,7 @@
       C:\Dati\_Laurea Magistrale ISI\Esami\07-Paradigmi di Programmazione e Sviluppo (6)\PPS-25-ProtoFlow\protoflow\database\registrations.xml (Impossibile trovare il file specificato)
     </message>
     <stack>
-      at java.base/java.io.FileInputStream.open0(Native Method)
+        at java.base/java.io.FileInputStream.open0(Native Method)
         at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
         at java.base/java.io.FileInputStream.&lt;init&gt;(FileInputStream.java:152)
         at java.base/java.io.FileInputStream.&lt;init&gt;(FileInputStream.java:106)
@@ -42,7 +42,7 @@
         at pkg.b.logic.Entity.getRecordsByFilter$(Entity.scala:7)
         at pkg.b.logic.Registration.getRecordsByFilter(Registration.scala:4)
         at pkg.a.gui.services.RegistrationRequestService.getPendingRequests(RegistrationRequestService.scala:63)
-        at pkg.a.gui.views.AdminDashboardView$.apply(AdminDashboardView.scala:14)
+        at pkg.a.gui.views.DashboardAdminView$.apply(AdminDashboardView.scala:14)
         at pkg.a.gui.views.HomePageAdminView$.dashboardView(HomePageAdminView.scala:16)
         at pkg.a.gui.traits.HomePage$$anon$1.&lt;init&gt;(HomePage.scala:40)
         at pkg.a.gui.traits.HomePage.apply(HomePage.scala:40)

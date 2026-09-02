@@ -115,17 +115,12 @@ object LoadedDocumentManagementView extends Management:
       )
 
     val refreshButton = secondaryButton(Buttons.Refresh, loadDocuments)
-    val printListButton = printButton(printDocumentsList)
     val resetFilterButton = secondaryButton(Buttons.ResetFilter, resetFilters)
-
     val registerButton = primaryButton(Buttons.Register, () => withSelectedItem(table, result, Text.SelectToRegister)(onRegister))
     val deleteButton = dangerButton(Buttons.Delete, deleteSelectedDocument)
 
     disableWithoutSelection(table, registerButton, deleteButton)
-
-    val exitButton = closeButton(onExit)
-
-    val bottomActions = actionBar(Seq(resetFilterButton, exitButton, refreshButton, printListButton, deleteButton, registerButton))
+    val bottomActions = actionBar(Seq(resetFilterButton, closeButton(onExit), refreshButton, printButton(printDocumentsList), deleteButton, registerButton))
 
     val header = titleBox(Text.Title, Text.Subtitle)
 

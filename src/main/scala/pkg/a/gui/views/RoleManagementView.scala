@@ -97,10 +97,8 @@ object RoleManagementView extends Management:
     val editButton = secondaryButton(Buttons.Edit, () => withSelectedItem(table, result, Text.SelectToEdit)(onEdit))
 
     val deleteButton = dangerButton(Buttons.Delete, deleteSelectedRole)
-    val exitButton = closeButton(onExit)
-    val print = printButton(printRoles)
     disableWithoutSelection(table, editButton, deleteButton)
-    val bottomActions = actionBar(Seq(exitButton, print, editButton, deleteButton, addButton))
+    val bottomActions = actionBar(Seq(closeButton(onExit), printButton(printRoles), editButton, deleteButton, addButton))
 
     val header = titleBox(Text.Title, Text.Subtitle)
 

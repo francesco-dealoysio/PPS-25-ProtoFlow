@@ -7,7 +7,7 @@ import pkg.b.logic.Account
 import pkg.d.util.DateTime
 import scalafx.scene.layout.VBox
 
-object ViewerDashboardView:
+object DashboardViewerView:
 
   def apply(currentAccount: Account, title: String): VBox =
 

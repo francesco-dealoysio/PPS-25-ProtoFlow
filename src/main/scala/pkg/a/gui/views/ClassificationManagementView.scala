@@ -76,12 +76,9 @@ object ClassificationManagementView extends Management:
       onAdd())
 
     val editButton = secondaryButton(Buttons.Edit, () => withSelectedItem(table, result, Text.SelectToEdit)(onEdit))
-
     val deleteButton = dangerButton(Buttons.Delete, deleteSelectedClassification)
-    val exitButton = closeButton(onExit)
-    val print = printButton(printClassifications)
     disableWithoutSelection(table, editButton, deleteButton)
-    val bottomActions = actionBar(Seq(exitButton, print, editButton, deleteButton, addButton))
+    val bottomActions = actionBar(Seq(closeButton(onExit), printButton(printClassifications), editButton, deleteButton, addButton))
 
     val header = titleBox(Text.Title, Text.Subtitle)
 

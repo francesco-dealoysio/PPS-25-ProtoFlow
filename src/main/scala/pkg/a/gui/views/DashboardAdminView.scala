@@ -6,7 +6,7 @@ import pkg.a.gui.views.DashboardView.DashboardCard
 import pkg.b.logic.Account
 import scalafx.scene.layout.VBox
 
-object AdminDashboardView:
+object DashboardAdminView:
 
   def apply(currentAccount: Account, title: String): VBox =
 

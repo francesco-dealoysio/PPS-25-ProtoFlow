@@ -7,7 +7,7 @@ import pkg.b.logic.{Account, DocumentLog}
 import pkg.d.util.DateTime
 import scalafx.scene.layout.VBox
 
-object OperDashboardView:
+object DashboardOperView:
 
   def apply(currentAccount: Account, title: String): VBox =
 

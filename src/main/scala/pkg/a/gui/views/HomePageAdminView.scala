@@ -14,7 +14,7 @@ object HomePageAdminView extends HomePage:
   override protected val pageTitle: String = "Homepage Amministratore"
 
   override protected def dashboardView(currentAccount: Account): Pane =
-    AdminDashboardView(currentAccount, pageTitle)
+    DashboardAdminView(currentAccount, pageTitle)
 
   override protected def handleAction(action: MenuAction, navigator: HomeNavigator, currentAccount: Account): Unit =
     action match

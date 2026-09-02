@@ -99,10 +99,7 @@ object AccountManagementView extends Management:
     val deleteButton = dangerButton(Buttons.Delete, deleteSelectedAccount)
     disableWithoutSelection(table, editButton, deleteButton)
 
-    val exitButton = closeButton(onExit)
-    val printButton = secondaryButton(Buttons.Print, printAccounts)
-
-    val bottomActions = actionBar(Seq(exitButton, printButton, editButton, deleteButton, addButton))
+    val bottomActions = actionBar(Seq(closeButton(onExit), printButton(printAccounts), editButton, deleteButton, addButton))
 
     val header = titleBox(Text.Title, Text.Subtitle)
 

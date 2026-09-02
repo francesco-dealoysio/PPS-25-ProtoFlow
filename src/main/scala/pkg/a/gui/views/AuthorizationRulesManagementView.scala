@@ -54,9 +54,8 @@ object AuthorizationRulesManagementView extends Management:
       onAdd())
 
     val deleteButton = dangerButton(Buttons.Delete, deleteSelectedRule)
-    val exitButton = closeButton(onExit)
     disableWithoutSelection(table, deleteButton)
-    val bottomActions = actionBar(Seq(exitButton, deleteButton, addButton))
+    val bottomActions = actionBar(Seq(closeButton(onExit), deleteButton, addButton))
 
     val header = titleBox(Text.Title, Text.Subtitle)
 

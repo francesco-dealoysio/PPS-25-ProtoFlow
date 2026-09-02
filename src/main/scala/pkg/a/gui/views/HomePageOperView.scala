@@ -12,7 +12,7 @@ object HomePageOperView extends HomePage:
   override protected val pageTitle: String = "Homepage Operatore"
 
   override protected def dashboardView(currentAccount: Account): Pane =
-    OperDashboardView(currentAccount, pageTitle)
+    DashboardOperView(currentAccount, pageTitle)
 
   override protected def handleAction(action: MenuAction, navigator: HomeNavigator, currentAccount: Account): Unit =
     action match

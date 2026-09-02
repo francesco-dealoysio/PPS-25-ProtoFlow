@@ -1,7 +1,6 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.text.UiText.ArchivedDocuments.{Details as Text, Fields as ArchiveFields}
-import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields as DocumentFields
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.Common.Fields.Labels
@@ -84,12 +83,9 @@ object ArchivedDocumentDetailsView extends Form:
         success = printed
       )
 
-    val exitButton = closeButton(onExit)
-    val printButton = secondaryButton(Buttons.Print, printDocumentDetails)
-
     formPage(
       header = FormHeader(Text.Title, Text.Subtitle),
       form = form,
       resultMessage = result.label,
-      actions = actionBar(Seq(exitButton, printButton))
+      actions = actionBar(Seq(closeButton(onExit), printButton(printDocumentDetails)))
     )

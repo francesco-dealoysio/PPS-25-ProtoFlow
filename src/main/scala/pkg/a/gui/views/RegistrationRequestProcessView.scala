@@ -157,13 +157,11 @@ object RegistrationRequestProcessView extends Management:
 
             case Left(error) =>
               result.show(error, success = false)
-
-    val printButton = secondaryButton(Buttons.Print, printPendingRequest)
+    
     val rejectButton = dangerButton(Buttons.Reject, reject)
     val approveButton = primaryButton(Buttons.Approve, approve)
-    val exitButton = closeButton(onExit)
 
-    val actionsBox = actionBar(Seq(exitButton, printButton, rejectButton, approveButton))
+    val actionsBox = actionBar(Seq(closeButton(onExit), printButton(printPendingRequest), rejectButton, approveButton))
 
     val header = titleBox(Text.Title, Text.Subtitle)
 

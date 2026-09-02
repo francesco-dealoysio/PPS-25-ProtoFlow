@@ -82,9 +82,6 @@ object DocumentManagementSummaryView extends Form with Management:
         success = printed
       )
 
-    val exitButton = closeButton(onExit)
-    val summaryPrintButton = printButton(printSummary)
-
     managementPage(
       growNode = Some(phasesTable),
       pageChildren = Seq(
@@ -94,6 +91,6 @@ object DocumentManagementSummaryView extends Form with Management:
         fieldLabel(Text.PhasesSection),
         phasesTable,
         result.label,
-        actionBar(Seq(exitButton, summaryPrintButton))
+        actionBar(Seq(closeButton(onExit), printButton(printSummary)))
       )
     )

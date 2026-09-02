@@ -66,9 +66,6 @@ object ClassificationAddView extends Form:
             formSaved = true
             onSaved()
 
-    val reset = resetButton(resetForm)
-    val exit = closeButton(onExit)
-
     val form =
       formGrid(
         Seq(
@@ -81,7 +78,7 @@ object ClassificationAddView extends Form:
       header = FormHeader(Text.Title, Text.Subtitle),
       form = form,
       resultMessage = result.label,
-      actions = actionBar(Seq(exit, reset, save)),
+      actions = actionBar(Seq(closeButton(onExit), resetButton(resetForm), save)),
       initialFocus = Some(classification),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

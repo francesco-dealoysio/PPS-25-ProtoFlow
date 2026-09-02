@@ -105,8 +105,6 @@ object LoadedDocumentAddView extends Form:
               formSaved = false
               onSaved()
 
-    val reset = resetButton(resetForm)
-    val exit = closeButton(onExit)
     val form =
       formGrid(
         Seq(
@@ -124,7 +122,7 @@ object LoadedDocumentAddView extends Form:
       header = FormHeader(Text.Title, Text.Subtitle),
       form = form,
       resultMessage = result.label,
-      actions = actionBar(Seq(exit, reset, save)),
+      actions = actionBar(Seq(closeButton(onExit), resetButton(resetForm), save)),
       initialFocus = Some(documentProtocol),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )

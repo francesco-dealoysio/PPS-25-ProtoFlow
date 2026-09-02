@@ -64,10 +64,7 @@ object ClassificationEditView extends Form:
             onSaved()
           else
             result.show(Text.Error, success = false)
-
-    val reset = resetButton(resetForm)
-    val exit = closeButton(onExit)
-
+    
     val form =
       formGrid(
         Seq(
@@ -81,7 +78,7 @@ object ClassificationEditView extends Form:
       header = FormHeader(Text.Title, Text.Subtitle),
       form = form,
       resultMessage = result.label,
-      actions = actionBar(Seq(exit, reset, save)),
+      actions = actionBar(Seq(closeButton(onExit), resetButton(resetForm), save)),
       initialFocus = Some(classification),
       hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
     )
