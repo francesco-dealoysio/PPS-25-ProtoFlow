@@ -7,7 +7,7 @@ import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.services.LoadedDocumentService
 import pkg.a.gui.traits.Form
-import pkg.a.gui.validation.LoadedDocumentValidator
+import pkg.a.gui.validators.LoadedDocumentValidator
 import pkg.b.logic.LoadedDocument
 import pkg.d.util.DateTime.{localDate, localTime}
 import scalafx.scene.Node
@@ -17,7 +17,7 @@ import scalafx.scene.layout.BorderPane
 object LoadedDocumentAddView extends Form:
 
   def apply(operatorUsername: String, onSaved: () => Unit = () => (), onExit: () => Unit = () => ()): BorderPane =
-    
+
     val validator = new LoadedDocumentValidator()
     val documentDate = dateField(localDate)
     val documentProtocol = stringField(prompt = Prompts.DocumentProtocol)

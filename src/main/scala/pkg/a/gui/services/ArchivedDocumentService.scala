@@ -2,7 +2,8 @@ package pkg.a.gui.services
 
 import pkg.b.logic.{ArchivedDocument, RegisteredDocument}
 import pkg.d.util.Logger.logger
-import pkg.a.gui.validation.DocumentArchivingValidator
+import pkg.d.util.Util.inDocumentsFilePathName
+import pkg.a.gui.validators.DocumentArchivingValidator
 
 object ArchivedDocumentService:
 
@@ -27,7 +28,9 @@ object ArchivedDocumentService:
                        archivedDate: String,
                        archivedTime: String,
                        operatorUsername: String,
-                       archiveLocation: String
+                       archiveLocation: String,
+                       registeredFilePathName: String = inDocumentsFilePathName("registered.xml"),
+                       archivedFilePathName: String = inDocumentsFilePathName("archived.xml")
                      ): Either[String, ArchivedDocument] =
 
     validateArchiving(
@@ -35,7 +38,8 @@ object ArchivedDocumentService:
       archivedDate = archivedDate,
       archivedTime = archivedTime,
       operatorUsername = operatorUsername,
-      archiveLocation = archiveLocation
+      archiveLocation = archiveLocation,
+      archivedFilePathName = archivedFilePathName
     ) match
       case Some(error) =>
         Left(error)
@@ -50,7 +54,7 @@ object ArchivedDocumentService:
               operatorUsername = operatorUsername,
               archiveLocation = archiveLocation
             )
-          saveArchivedDocument(source, archived)
+          saveArchivedDocument(source, archived, registeredFilePathName, archivedFilePathName)
 
         catch
           case exception: Exception =>
@@ -62,22 +66,23 @@ object ArchivedDocumentService:
                                  archivedDate: String,
                                  archivedTime: String,
                                  operatorUsername: String,
-                                 archiveLocation: String
+                                 archiveLocation: String,
+                                 archivedFilePathName: String
                                ): Option[String] =
     if source == null then
       Some("Documento non valido")
     else if source.getId.trim.isEmpty then
       Some("Id documento non valido")
-    else if isAlreadyArchived(source) then
+    else if isAlreadyArchived(source, archivedFilePathName) then
       Some("Il documento risulta già archiviato")
     else
       documentArchivingValidator
         .validate(archivedDate, archivedTime, operatorUsername, archiveLocation)
         .headOption
 
-  private def isAlreadyArchived(source: RegisteredDocument): Boolean =
+  private def isAlreadyArchived(source: RegisteredDocument, archivedFilePathName: String): Boolean =
     archivedDocumentLogic
-      .getRecords[ArchivedDocument]()
+      .getRecords[ArchivedDocument](archivedFilePathName)
       .exists: archived =>
         archived.getProtocolNumber.trim.nonEmpty &&
           archived.getProtocolNumber.equalsIgnoreCase(source.getProtocolNumber)
@@ -113,17 +118,17 @@ object ArchivedDocumentService:
       classification = source.getClassification
     )
 
-  private def saveArchivedDocument(source: RegisteredDocument, archived: ArchivedDocument): Either[String, ArchivedDocument] =
-    val inserted = archivedDocumentLogic.recordInsert(archived)
+  private def saveArchivedDocument(source: RegisteredDocument, archived: ArchivedDocument, registeredFilePathName: String, archivedFilePathName: String): Either[String, ArchivedDocument] =
+    val inserted = archivedDocumentLogic.recordInsert(archived, archivedFilePathName)
     if !inserted then
       Left("Errore durante il salvataggio del documento archiviato")
     else
-      val removed = registeredDocumentLogic.recordDelete(source.getId)
+      val removed = registeredDocumentLogic.recordDelete(source.getId, registeredFilePathName)
       if removed then
         Right(archived)
       else
-        rollbackArchivedDocument(archived)
+        rollbackArchivedDocument(archived, archivedFilePathName)
         Left("Errore durante la rimozione del documento dai protocollati")
 
-  private def rollbackArchivedDocument(archived: ArchivedDocument): Unit =
-    archivedDocumentLogic.recordDelete(archived.getId)
+  private def rollbackArchivedDocument(archived: ArchivedDocument, archivedFilePathName: String): Unit =
+    archivedDocumentLogic.recordDelete(archived.getId, archivedFilePathName)

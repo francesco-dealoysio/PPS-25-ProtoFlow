@@ -1,4 +1,4 @@
-package pkg.a.gui.validation
+package pkg.a.gui.validators
 
 import pkg.a.gui.text.UiText.Validation.Registration.*
 import pkg.b.logic.Registration

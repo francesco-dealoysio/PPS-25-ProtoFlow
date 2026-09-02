@@ -1,10 +1,10 @@
-package pkg.a.gui
+package pkg.a.gui.validators
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.b.logic.Account
 import pkg.a.gui.text.UiText.Validation.Account.*
-import pkg.a.gui.validation.AccountValidator
+import pkg.a.gui.validators.AccountValidator
+import pkg.b.logic.Account
 
 class AccountValidatorTest:
 

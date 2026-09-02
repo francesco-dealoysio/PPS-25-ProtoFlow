@@ -1,8 +1,8 @@
-package pkg.a.gui
+package pkg.a.gui.validators
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.a.gui.validation.RegistrationValidator
+import pkg.a.gui.validators.RegistrationValidator
 import pkg.b.logic.Registration
 
 class RegistrationValidatorTest:

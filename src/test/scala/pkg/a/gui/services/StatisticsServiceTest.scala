@@ -1,9 +1,9 @@
-package pkg.a.gui
+package pkg.a.gui.services
 
 import org.junit.*
 import org.junit.Assert.*
 import pkg.a.gui.services.StatisticsService
-import pkg.b.logic.{AccessLog, ArchivedDocument, RegisteredDocument, Registration, Role}
+import pkg.b.logic.*
 import pkg.c.data.Xml.createEmptyXmlFile
 import pkg.d.util.Util.inTestFilePathName
 

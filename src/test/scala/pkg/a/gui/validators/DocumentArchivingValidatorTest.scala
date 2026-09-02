@@ -1,9 +1,9 @@
-package pkg.a.gui
+package pkg.a.gui.validators
 
 import org.junit.Assert.*
 import org.junit.Test
 import pkg.a.gui.text.UiText.ArchivedDocuments.Errors as ArchiveErrors
-import pkg.a.gui.validation.DocumentArchivingValidator
+import pkg.a.gui.validators.DocumentArchivingValidator
 
 class DocumentArchivingValidatorTest:
 

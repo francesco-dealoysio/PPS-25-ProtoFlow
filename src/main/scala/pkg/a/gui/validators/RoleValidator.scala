@@ -1,4 +1,4 @@
-package pkg.a.gui.validation
+package pkg.a.gui.validators
 
 import pkg.a.gui.text.UiText.Validation.Role.*
 import pkg.b.logic.Role
@@ -9,7 +9,7 @@ class RoleValidator:
     Seq(
       validateRequired(RoleRequired, role.getRole),
       validateRequired(DescriptionRequired, role.getDescription),
-      validateRequired(RoleRequired, role.getName),
+      validateRequired(NameRequired, role.getName),
       validateUniqueRole(role.getRole, existingRoles, currentRoleId),
       validateUniqueName(role.getName, existingRoles, currentRoleId)
     ).flatten

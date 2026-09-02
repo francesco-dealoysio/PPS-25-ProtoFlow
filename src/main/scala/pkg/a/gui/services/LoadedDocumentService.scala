@@ -3,13 +3,13 @@ package pkg.a.gui.services
 import pkg.b.logic.{LoadedDocument, RegisteredDocument}
 import pkg.d.util.DateTime.{localDate, localTime}
 import pkg.d.util.IdGen
-import pkg.d.util.Util.inIdsFilePathName
+import pkg.d.util.Util.{inIdsFilePathName, inDocumentsFilePathName}
 
 object  LoadedDocumentService:
 
   private val loadedDocumentLogic = new LoadedDocument()
   private val registeredDocumentLogic = new RegisteredDocument()
-  
+
   def addLoadedDocument(
                           documentDate: String,
                           documentProtocol: String,
@@ -18,12 +18,14 @@ object  LoadedDocumentService:
                           recipient: String,
                           subject: String,
                           remarks: String,
-                          operatorUsername: String
+                          operatorUsername: String,
+                          loadedFilePathName: String = inDocumentsFilePathName("loaded.xml"),
+                          loadedDocumentIdFilePathName: String = inIdsFilePathName("loadedDocumentId")
                         ): Either[String, LoadedDocument] =
 
     val newDocument =
       LoadedDocument(
-        id = IdGen(inIdsFilePathName("loadedDocumentId")),
+        id = IdGen(loadedDocumentIdFilePathName),
         documentDate = documentDate,
         documentProtocol = documentProtocol,
         documentType = documentType,
@@ -36,7 +38,7 @@ object  LoadedDocumentService:
         processedBy = operatorUsername
       )
 
-    if loadedDocumentLogic.recordInsert(newDocument) then Right(newDocument)
+    if loadedDocumentLogic.recordInsert(newDocument, loadedFilePathName) then Right(newDocument)
     else Left("Errore durante la presa in carico del documento")
 
   def getLoadedDocuments: List[LoadedDocument] =
@@ -56,8 +58,13 @@ object  LoadedDocumentService:
 
   def deleteRegisteredDocument(id: String): Boolean =
     registeredDocumentLogic.recordDelete(id)
-  
-  def registerDocument(source: LoadedDocument, operatorUsername: String, classification: String): Either[String, RegisteredDocument] =
+
+  def registerDocument(source: LoadedDocument,
+                       operatorUsername: String,
+                       classification: String,
+                       loadedFilePathName: String = inDocumentsFilePathName("loaded.xml"),
+                       registeredFilePathName: String = inDocumentsFilePathName("registered.xml")
+                      ): Either[String, RegisteredDocument] =
 
     val protocolNumber = s"${localDate.take(4)}/${source.getId}/${classification.trim}"
 
@@ -84,23 +91,27 @@ object  LoadedDocumentService:
     if classification.trim.isEmpty then
       Left("Seleziona una classifica")
     else
-      saveRegisteredDocument(source, registered)
+      saveRegisteredDocument(source, registered, loadedFilePathName, registeredFilePathName)
 
 
-  private def saveRegisteredDocument(source: LoadedDocument, registered: RegisteredDocument): Either[String, RegisteredDocument] =
+  private def saveRegisteredDocument(source: LoadedDocument,
+                                     registered: RegisteredDocument,
+                                     loadedFilePathName: String,
+                                     registeredFilePathName: String
+                                    ): Either[String, RegisteredDocument] =
 
-    val inserted = registeredDocumentLogic.recordInsert(registered)
+    val inserted = registeredDocumentLogic.recordInsert(registered, registeredFilePathName)
 
     if !inserted then
       Left("Errore durante la protocollazione del documento")
     else
-      val removed = loadedDocumentLogic.recordDelete(source.getId)
+      val removed = loadedDocumentLogic.recordDelete(source.getId, loadedFilePathName)
 
       if removed then
         Right(registered)
       else
-        rollbackRegisteredDocument(registered)
+        rollbackRegisteredDocument(registered, registeredFilePathName)
         Left("Errore durante la rimozione del documento dai presi in carico")
 
-  private def rollbackRegisteredDocument(registered: RegisteredDocument): Unit =
-    registeredDocumentLogic.recordDelete(registered.getId)
+  private def rollbackRegisteredDocument(registered: RegisteredDocument, registeredFilePathName: String): Unit =
+    registeredDocumentLogic.recordDelete(registered.getId, registeredFilePathName)

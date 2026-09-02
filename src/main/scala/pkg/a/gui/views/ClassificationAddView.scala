@@ -7,7 +7,7 @@ import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Classifications.Add as Text
 import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Validation.Classification as Validation
-import pkg.a.gui.validation.ClassificationValidator
+import pkg.a.gui.validators.ClassificationValidator
 
 object ClassificationAddView extends Form:
 

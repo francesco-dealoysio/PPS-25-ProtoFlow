@@ -2,7 +2,7 @@ package pkg.a.gui.services
 
 import pkg.b.logic.Account
 import pkg.d.util.IdGen
-import pkg.d.util.Util.inIdsFilePathName
+import pkg.d.util.Util.{inIdsFilePathName,inDatabaseFilePathName}
 
 object AccountService:
 
@@ -17,12 +17,14 @@ object AccountService:
                   area: String,
                   assignment: String,
                   username: String,
-                  cipheredPassword: String
+                  cipheredPassword: String,
+                  accountsFilePathName: String = inDatabaseFilePathName("accounts.xml"),
+                  accountIdFilePathName: String = inIdsFilePathName("accountId")
                 ): Either[String, Account] =
 
     val newAccount =
       Account(
-        id = IdGen(inIdsFilePathName("accountId")),
+        id = IdGen(accountIdFilePathName),
         surname = surname,
         name = name,
         email = email,
@@ -34,5 +36,5 @@ object AccountService:
         password = cipheredPassword
       )
 
-    if accountLogic.recordInsert(newAccount) then Right(newAccount)
+    if accountLogic.recordInsert(newAccount, accountsFilePathName) then Right(newAccount)
     else Left("Errore durante l'inserimento dell'account")

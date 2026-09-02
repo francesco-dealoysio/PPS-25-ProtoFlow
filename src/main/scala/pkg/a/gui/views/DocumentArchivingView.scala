@@ -9,7 +9,7 @@ import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.traits.Form
 import pkg.b.logic.{Classification, RegisteredDocument}
 import pkg.d.util.DateTime.{localDate, localTime}
-import pkg.a.gui.validation.DocumentArchivingValidator
+import pkg.a.gui.validators.DocumentArchivingValidator
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
 
@@ -21,7 +21,7 @@ object DocumentArchivingView extends Form:
              onArchived: () => Unit = () => (),
              onExit: () => Unit = () => ()
            ): BorderPane =
-    
+
     val result = createResultMessage()
     val validator = new DocumentArchivingValidator()
     val classificationLogic = new Classification()

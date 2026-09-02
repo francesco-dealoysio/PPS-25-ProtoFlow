@@ -7,7 +7,7 @@ import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Roles.Add as Text
 import pkg.a.gui.text.UiText.Validation.Role as Validation
-import pkg.a.gui.validation.RoleValidator
+import pkg.a.gui.validators.RoleValidator
 
 object RoleAddView extends Form:
 

@@ -37,12 +37,13 @@ case class AccessLog(
       createEmptyXmlFile(path, "accessLog")
     path
 
-  def writeAccessLog(username: String, role: String, date: String, time: String): Boolean =
-    val log = AccessLog(
-      IdGen(inIdsFilePathName("accessLogId")),
-      username,
-      role,
-      date,
-      time
-    )
-    log.recordInsert(log, log.defaultXmlFilePathName)
+  def writeAccessLog(
+                      username: String,
+                      role: String,
+                      date: String,
+                      time: String,
+                      xmlFilePathName: String = defaultXmlFilePathName,
+                      idFilePathName: String = inIdsFilePathName("accessLogId")
+                    ): Boolean =
+    val log = AccessLog(IdGen(idFilePathName), username, role, date, time)
+    log.recordInsert(log, xmlFilePathName)

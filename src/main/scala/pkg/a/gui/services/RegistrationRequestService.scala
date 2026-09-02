@@ -3,7 +3,7 @@ package pkg.a.gui.services
 import pkg.b.logic.{Account, Registration}
 import pkg.d.util.Util.{cipher, inDatabaseFilePathName, inIdsFilePathName}
 import pkg.d.util.{DateTime, IdGen}
-import pkg.a.gui.validation.RegistrationValidator
+import pkg.a.gui.validators.RegistrationValidator
 
 import scala.util.Random
 
@@ -104,7 +104,7 @@ final class RegistrationRequestService(
             case Left(error) =>
               rollbackAccount(account)
               Left(error)
-  
+
   def rejectRequest(id: String, operatorUsername: String, motivation: String): Either[String, Registration] =
     if motivation.trim.isEmpty then
       Left("La motivazione del rifiuto è obbligatoria")

@@ -6,7 +6,7 @@ import pkg.a.gui.text.UiText.Accounts.{Edit as EditText, Profile as ProfileText}
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Validation.Account as Validation
-import pkg.a.gui.validation.AccountValidator
+import pkg.a.gui.validators.AccountValidator
 import pkg.b.logic.{Account, Classification, Role}
 import pkg.d.util.Util.{cipher, inDatabaseFilePathName}
 import pkg.d.util.XmlToPdf

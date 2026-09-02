@@ -1,10 +1,10 @@
-package pkg.a.gui
+package pkg.a.gui.validators
 
 import org.junit.*
 import org.junit.Assert.*
-import pkg.b.logic.Classification
 import pkg.a.gui.text.UiText.Validation.Classification.*
-import pkg.a.gui.validation.ClassificationValidator
+import pkg.a.gui.validators.ClassificationValidator
+import pkg.b.logic.Classification
 
 class ClassificationValidatorTest:
 

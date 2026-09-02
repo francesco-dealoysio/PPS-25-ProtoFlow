@@ -1,4 +1,4 @@
-package pkg.a.gui
+package pkg.a.gui.services
 
 import org.junit.*
 import org.junit.Assert.*

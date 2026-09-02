@@ -17,4 +17,22 @@
     <registeredBy>tommy</registeredBy>
     <classification>Informatica</classification>
   </record>
+  <record>
+    <id>1</id>
+    <documentDate>2026-09-02</documentDate>
+    <documentProtocol>PROT-001</documentProtocol>
+    <documentType>Email</documentType>
+    <sender>ACEA</sender>
+    <recipient>Tesoreria</recipient>
+    <subject>Bollette energia elettrica</subject>
+    <remarks></remarks>
+    <loadedDate>2026-09-02</loadedDate>
+    <loadedTime>10:30:00</loadedTime>
+    <loadedBy>bianchi</loadedBy>
+    <protocolNumber>2026/1/Amministrazione</protocolNumber>
+    <registeredDate>2026-09-02</registeredDate>
+    <registeredTime>15:15:51.45</registeredTime>
+    <registeredBy>rossi</registeredBy>
+    <classification>Amministrazione</classification>
+  </record>
 </registeredDocuments>

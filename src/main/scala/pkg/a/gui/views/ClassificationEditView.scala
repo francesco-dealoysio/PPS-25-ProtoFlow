@@ -6,7 +6,7 @@ import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Classifications.Edit as Text
 import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.Validation.Classification as Validation
-import pkg.a.gui.validation.ClassificationValidator
+import pkg.a.gui.validators.ClassificationValidator
 
 object ClassificationEditView extends Form:
 
@@ -64,7 +64,7 @@ object ClassificationEditView extends Form:
             onSaved()
           else
             result.show(Text.Error, success = false)
-    
+
     val form =
       formGrid(
         Seq(

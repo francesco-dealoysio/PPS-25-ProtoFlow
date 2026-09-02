@@ -2,7 +2,7 @@ package pkg.a.gui.navigation
 
 import pkg.a.gui.text.UiText.Common.WindowTitles
 import pkg.a.gui.traits.HomePage
-import pkg.a.gui.validation.RegistrationValidator
+import pkg.a.gui.validators.RegistrationValidator
 import pkg.a.gui.views.{LoginView, RegistrationView}
 import pkg.b.logic.Account
 import pkg.d.util.Logger.logger

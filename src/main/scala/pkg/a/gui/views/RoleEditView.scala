@@ -7,7 +7,7 @@ import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.Roles.Edit as Text
 import pkg.a.gui.text.UiText.Validation.Role as Validation
-import pkg.a.gui.validation.RoleValidator
+import pkg.a.gui.validators.RoleValidator
 
 object RoleEditView extends Form:
 
