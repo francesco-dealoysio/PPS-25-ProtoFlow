@@ -4,13 +4,10 @@ import pkg.b.logic.Classification
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
 
-class ClassificationService:
+object ClassificationService:
 
   private val classificationLogic = new Classification()
 
-  /**
-   * Genera l'id e salva una nuova classifica.
-   */
   def addClassification(classification: String, description: String): Either[String, Classification] =
 
     val newClassification =

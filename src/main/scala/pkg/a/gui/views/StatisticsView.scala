@@ -20,7 +20,7 @@ object StatisticsView extends Management:
   private val CardHeight = 300.0
 
   def apply(onExit: () => Unit = () => ()): BorderPane =
-
+    
     val result = createResultMessage()
 
     val header = titleBox(Text.Title, Text.Subtitle)

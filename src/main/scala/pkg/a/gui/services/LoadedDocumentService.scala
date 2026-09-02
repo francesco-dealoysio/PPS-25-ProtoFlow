@@ -5,14 +5,11 @@ import pkg.d.util.DateTime.{localDate, localTime}
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
 
-class LoadedDocumentService:
+object  LoadedDocumentService:
 
   private val loadedDocumentLogic = new LoadedDocument()
   private val registeredDocumentLogic = new RegisteredDocument()
-
-  /**
-   * Genera l'id, marca data/ora/operatore della presa in carico e salva il documento.
-   */
+  
   def addLoadedDocument(
                           documentDate: String,
                           documentProtocol: String,
@@ -59,11 +56,7 @@ class LoadedDocumentService:
 
   def deleteRegisteredDocument(id: String): Boolean =
     registeredDocumentLogic.recordDelete(id)
-
-  /**
-   * Genera un numero di protocollo, crea il RegisteredDocument
-   * e sposta il documento da "presi in carico" a "protocollati".
-   */
+  
   def registerDocument(source: LoadedDocument, operatorUsername: String, classification: String): Either[String, RegisteredDocument] =
 
     val protocolNumber = s"${localDate.take(4)}/${source.getId}/${classification.trim}"

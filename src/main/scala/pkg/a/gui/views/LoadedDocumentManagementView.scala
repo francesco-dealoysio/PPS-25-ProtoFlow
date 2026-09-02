@@ -16,8 +16,7 @@ import scalafx.scene.layout.BorderPane
 object LoadedDocumentManagementView extends Management:
 
   def apply(onRegister: LoadedDocument => Unit = _ => (), onExit: () => Unit = () => ()): BorderPane =
-
-    val service = new LoadedDocumentService()
+    
     val documents = ObservableBuffer.empty[LoadedDocument]
 
     val result = createResultMessage()
@@ -42,7 +41,7 @@ object LoadedDocumentManagementView extends Management:
       result.clear()
 
       val loadedDocuments =
-        service
+        LoadedDocumentService
           .getLoadedDocuments
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
@@ -69,9 +68,9 @@ object LoadedDocumentManagementView extends Management:
       val criteria = buildFilterCriteria()
       val filteredDocuments =
         if criteria.isEmpty then
-          service.getLoadedDocuments
+          LoadedDocumentService.getLoadedDocuments
         else
-          service.getLoadedDocuments(getLoadedDocumentPredicate(criteria))
+          LoadedDocumentService.getLoadedDocuments(getLoadedDocumentPredicate(criteria))
 
       showFilteredItems(documents, table, filteredDocuments, result)(_.getId)
 
@@ -93,7 +92,7 @@ object LoadedDocumentManagementView extends Management:
                  |Oggetto: ${selected.getSubject}""".stripMargin
           )
         if confirmed then
-          if service.deleteLoadedDocument(selected.getId) then
+          if LoadedDocumentService.deleteLoadedDocument(selected.getId) then
             loadDocuments()
             result.show(Text.Deleted, success = true)
           else

@@ -4,13 +4,10 @@ import pkg.b.logic.Role
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
 
-class RoleService:
+object  RoleService:
 
   private val roleLogic = new Role()
-
-  /**
-   * Genera l'id e salva un nuovo ruolo.
-   */
+  
   def addRole(role: String, name: String, description: String): Either[String, Role] =
 
     val newRole =

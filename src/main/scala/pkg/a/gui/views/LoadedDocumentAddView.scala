@@ -17,8 +17,7 @@ import scalafx.scene.layout.BorderPane
 object LoadedDocumentAddView extends Form:
 
   def apply(operatorUsername: String, onSaved: () => Unit = () => (), onExit: () => Unit = () => ()): BorderPane =
-
-    val service = new LoadedDocumentService()
+    
     val validator = new LoadedDocumentValidator()
     val documentDate = dateField(localDate)
     val documentProtocol = stringField(prompt = Prompts.DocumentProtocol)
@@ -77,7 +76,7 @@ object LoadedDocumentAddView extends Form:
             )
 
           if confirmed then
-            service.addLoadedDocument(
+            LoadedDocumentService.addLoadedDocument(
               documentDate = documentDate.value,
               documentProtocol = documentProtocol.value,
               documentType = documentType.value,

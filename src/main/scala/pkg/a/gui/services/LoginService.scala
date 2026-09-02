@@ -15,31 +15,33 @@ object LoginService:
     val cleanUsername = username.trim
     val cleanPassword = password.trim
 
-    if cleanUsername.isEmpty || cleanPassword.isEmpty then
+    if credentialsAreEmpty(cleanUsername, cleanPassword) then
       Left(LoginError.EmptyCredentials)
     else
-      checkCredentials(cleanUsername, cleanPassword) match
-        case Some(account) if !roleExists(account.getRole) =>
-          Left(LoginError.UnknownRole(account.getRole))
+      authenticate(cleanUsername, cleanPassword)
+        .toRight(LoginError.InvalidCredentials)
+        .flatMap(validateRole)
+        .map(registerAccess)
 
-        case Some(account) =>
-          
-          AccessLog().writeAccessLog(
-            account.getUsername,
-            account.getRole,
-            DateTime.localDate,
-            DateTime.localTime
-          )
-          
-          Right(account)
+  private def credentialsAreEmpty(username: String, password: String): Boolean =
+    username.isEmpty || password.isEmpty
 
-        case None =>
-          Left(LoginError.InvalidCredentials)
+  private def authenticate(username: String, password: String): Option[Account] =
+    Account()
+      .getRecords[Account]()
+      .find(account => account.getUsername == username && account.getPassword == cipher(password))
 
-  private def checkCredentials(username: String, password: String): Option[Account] =
-    Account().getRecords[Account]().find(account => account.getUsername == username && account.getPassword == cipher(password))
+  private def validateRole(account: Account): Either[LoginError, Account] =
+    if roleExists(account.getRole) then
+      Right(account)
+    else
+      Left(LoginError.UnknownRole(account.getRole))
 
   private def roleExists(role: String): Boolean =
-    new Role()
+    Role()
       .getRecords[Role]()
       .exists(_.getRole.trim.equalsIgnoreCase(role.trim))
+
+  private def registerAccess(account: Account): Account =
+    AccessLog().writeAccessLog(account.getUsername, account.getRole, DateTime.localDate, DateTime.localTime)
+    account

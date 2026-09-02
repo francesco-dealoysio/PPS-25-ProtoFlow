@@ -16,7 +16,6 @@ object AccountAddView extends Form:
   def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val accountLogic = new Account()
-    val service = new AccountService()
     val roleLogic = new Role()
     val roles = roleLogic.getRecords[Role]()
     val classificationLogic = new Classification()
@@ -81,7 +80,7 @@ object AccountAddView extends Form:
       saveButton: () =>
         if validateForm() then
           val draft = currentAccount()
-          service.addAccount(
+          AccountService.addAccount(
             surname = draft.getSurname,
             name = draft.getName,
             email = draft.getEmail,
@@ -114,7 +113,6 @@ object AccountAddView extends Form:
           formRow(Labels.required(Labels.Password), password)
         )
       )
-
 
     formPage(
       header = FormHeader(Text.Title, Text.Subtitle),

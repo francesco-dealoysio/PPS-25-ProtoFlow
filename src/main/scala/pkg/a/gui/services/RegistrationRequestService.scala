@@ -7,14 +7,13 @@ import pkg.a.gui.validation.RegistrationValidator
 
 import scala.util.Random
 
-/** Esito dell'approvazione: la richiesta aggiornata, l'account creato e la password generata (in chiaro, solo per il report). */
 case class RegistrationApproval(
                                   request: Registration,
                                   account: Account,
                                   generatedPassword: String
                                 )
 
-class RegistrationRequestService(
+final class RegistrationRequestService(
                                    private val registrationsFilePath: String = inDatabaseFilePathName("registrations.xml"),
                                    private val accountsFilePathName: String = inDatabaseFilePathName("accounts.xml")
                                  ):
@@ -63,10 +62,6 @@ class RegistrationRequestService(
       .getRecordsByFilter[Registration](_.getState == "Pending", registrationsFilePath)
       .toList
 
-  /**
-   * Genera un account dai dati della richiesta, lo inserisce in accounts.xml e aggiorna
-   * lo stato della richiesta ad "Approved", tracciando operatore e data di esecuzione.
-   */
   def approveRequest(id: String, operatorUsername: String): Either[String, RegistrationApproval] =
     findPending(id) match
       case None =>
@@ -109,8 +104,7 @@ class RegistrationRequestService(
             case Left(error) =>
               rollbackAccount(account)
               Left(error)
-
-  /** Rifiuta la richiesta, richiedendo una motivazione, e ne aggiorna lo stato a "Rejected". */
+  
   def rejectRequest(id: String, operatorUsername: String, motivation: String): Either[String, Registration] =
     if motivation.trim.isEmpty then
       Left("La motivazione del rifiuto è obbligatoria")

@@ -4,14 +4,10 @@ import pkg.b.logic.Account
 import pkg.d.util.IdGen
 import pkg.d.util.Util.inIdsFilePathName
 
-class AccountService:
+object AccountService:
 
   private val accountLogic = new Account()
 
-  /**
-   * Genera l'id e salva un nuovo account. I campi (incluso il ruolo risolto e la
-   * password già cifrata) sono responsabilità del chiamante.
-   */
   def addAccount(
                   surname: String,
                   name: String,

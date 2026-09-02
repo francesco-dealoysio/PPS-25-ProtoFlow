@@ -18,8 +18,6 @@ object DocumentRegistrationView extends Form:
              onExit: () => Unit = () => ()
            ): BorderPane =
 
-    val service = new LoadedDocumentService()
-
     val classificationLogic = new Classification()
     val id = readOnlyStringField(selectedDocument.getId)
     val documentDate = readOnlyStringField(selectedDocument.getDocumentDate)
@@ -65,7 +63,7 @@ object DocumentRegistrationView extends Form:
             )
 
           if confirmed then
-            service.registerDocument(
+            LoadedDocumentService.registerDocument(
               selectedDocument,
               operatorUsername,
               classification.value

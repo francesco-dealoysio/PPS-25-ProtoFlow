@@ -21,8 +21,7 @@ object DocumentArchivingView extends Form:
              onArchived: () => Unit = () => (),
              onExit: () => Unit = () => ()
            ): BorderPane =
-
-    val service = new ArchivedDocumentService()
+    
     val result = createResultMessage()
     val validator = new DocumentArchivingValidator()
     val classificationLogic = new Classification()
@@ -90,7 +89,7 @@ object DocumentArchivingView extends Form:
             )
 
           if confirmed then
-            service.archiveDocument(
+            ArchivedDocumentService.archiveDocument(
               source = selectedDocument,
               archivedDate = archivedDate.value,
               archivedTime = archivedTime.value,

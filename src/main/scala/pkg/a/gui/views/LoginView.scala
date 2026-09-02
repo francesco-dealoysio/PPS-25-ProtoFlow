@@ -16,7 +16,7 @@ import scalafx.scene.layout.{BorderPane, Region, StackPane, VBox}
 object LoginView extends Form:
 
   def apply(onLoginSuccess: Account => Unit, onRegistrationRequest: () => Unit): BorderPane =
-
+    
     val username = stringField(prompt = Prompts.Username)
     val password = passwordFormField(Prompts.Password)
 
@@ -32,25 +32,21 @@ object LoginView extends Form:
       username.requestFocus()
 
     def access(): Unit =
-      if username.value.isEmpty || password.value.isEmpty then
-        result.show(Login.EmptyCredentials, false)
-        username.requestFocus()
-      else
-        LoginService.login(username.value, password.value) match
-          case Right(user) =>
-            onLoginSuccess(user)
+      LoginService.login(username.value, password.value) match
+        case Right(user) =>
+          onLoginSuccess(user)
 
-          case Left(LoginError.EmptyCredentials) =>
-            result.show(Login.EmptyCredentials, false)
-            username.requestFocus()
+        case Left(LoginError.EmptyCredentials) =>
+          result.show(Login.EmptyCredentials, false)
+          username.requestFocus()
 
-          case Left(LoginError.InvalidCredentials) =>
-            result.show(Login.InvalidCredentials, false)
-            password.reset()
-            password.requestFocus()
+        case Left(LoginError.InvalidCredentials) =>
+          result.show(Login.InvalidCredentials, false)
+          password.reset()
+          password.requestFocus()
 
-          case Left(LoginError.UnknownRole(role)) =>
-            result.show(Login.unknownRole(role), false)
+        case Left(LoginError.UnknownRole(role)) =>
+          result.show(Login.unknownRole(role), false)
 
     username.control.onAction = _ =>
       password.requestFocus()

@@ -4,7 +4,7 @@ import pkg.b.logic.{ArchivedDocument, RegisteredDocument}
 import pkg.d.util.Logger.logger
 import pkg.a.gui.validation.DocumentArchivingValidator
 
-class ArchivedDocumentService:
+object ArchivedDocumentService:
 
   private val registeredDocumentLogic = new RegisteredDocument()
   private val archivedDocumentLogic = new ArchivedDocument()

@@ -14,7 +14,6 @@ object ClassificationAddView extends Form:
   def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val classificationLogic = new Classification()
-    val service = new ClassificationService()
     val validator = new ClassificationValidator()
 
     val classification = stringField(prompt = Prompts.Classification)
@@ -54,7 +53,7 @@ object ClassificationAddView extends Form:
     val save =
       saveButton: () =>
         if validateForm() then
-          service.addClassification(classification.value, description.value) match
+          ClassificationService.addClassification(classification.value, description.value) match
             case Right(_) =>
               formSaved = true
               result.show(Text.Success, success = true)

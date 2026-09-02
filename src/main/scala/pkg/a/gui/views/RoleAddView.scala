@@ -14,7 +14,6 @@ object RoleAddView extends Form:
   def apply(onSaved: () => Unit, onExit: () => Unit): BorderPane =
 
     val roleLogic = new Role()
-    val service = new RoleService()
     val validator = new RoleValidator()
     val role = stringField(prompt = Prompts.Role)
     val name = stringField(prompt = Prompts.RoleName)
@@ -56,7 +55,7 @@ object RoleAddView extends Form:
     val save =
       saveButton: () =>
         if validateForm() then
-          service.addRole(role.value.toLowerCase, name.value, description.value) match
+          RoleService.addRole(role.value.toLowerCase, name.value, description.value) match
             case Right(_) =>
               formSaved = true
               result.show(Text.Success, success = true)

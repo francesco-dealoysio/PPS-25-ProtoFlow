@@ -16,8 +16,6 @@ import pkg.a.gui.text.UiText.Common.Buttons
 object ArchivedDocumentManagementView extends Management:
 
   def apply(onView: ArchivedDocument => Unit = _ => (), onExit: () => Unit = () => (), documentFilter: ArchivedDocument => Boolean = _ => true): BorderPane =
-
-    val service = new ArchivedDocumentService()
     val documents = ObservableBuffer.empty[ArchivedDocument]
 
     val result = createResultMessage()
@@ -40,7 +38,7 @@ object ArchivedDocumentManagementView extends Management:
     )
 
     def availableDocuments(): List[ArchivedDocument] =
-      service.getArchivedDocuments.filter(documentFilter)
+      ArchivedDocumentService.getArchivedDocuments.filter(documentFilter)
 
     def loadDocuments(): Unit =
       result.clear()
