@@ -12,7 +12,7 @@ principali astrazioni introdotte durante lo sviluppo.
 La sezione è suddivisa in base alle principali aree sviluppate dai
 membri del gruppo.
 
-## 4.1 Interfaccia grafica e navigazione
+## 4.1 Interfaccia grafica e navigazione — Roberto Pisu
 Questa sezione descrive la struttura dell'interfaccia grafica di ProtoFlow, concentrandosi in particolare sulla gestione della navigazione e sull'organizzazione delle schermate.
 
 Molte viste dell'applicazione condividono elementi e comportamenti simili, come la struttura dei moduli d'inserimento dati (form), le schermate di gestione e le home page dedicate ai vari ruoli utente.
