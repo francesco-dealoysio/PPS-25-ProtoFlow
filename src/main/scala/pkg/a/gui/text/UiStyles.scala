@@ -12,6 +12,7 @@ object UiStyles:
     val MessageErrorStyle = "content-message-error"
 
     val TableStyle = "content-table"
+    val FormScrollStyle = "content-scroll-pane"
 
     val FormFieldStyle = "form-field"
     val ReadOnlyFormFieldStyle = "read-only-form-field"

@@ -98,6 +98,7 @@ class ArchivedDocumentService:
       sender = source.getSender,
       recipient = source.getRecipient,
       subject = source.getSubject,
+      remarks = source.getRemarks,
       loadedDate = source.getLoadedDate,
       loadedTime = source.getLoadedTime,
       loadedBy = source.getLoadedBy,

@@ -5,11 +5,10 @@ import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Prompts, DocumentTypes}
 import pkg.a.gui.text.UiText.LoadedDocuments.Add as Text
 import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
+import pkg.a.gui.services.LoadedDocumentService
 import pkg.a.gui.traits.Form
 import pkg.a.gui.validation.LoadedDocumentValidator
 import pkg.b.logic.LoadedDocument
-import pkg.d.util.IdGen
-import pkg.d.util.Util.inIdsFilePathName
 import pkg.d.util.DateTime.{localDate, localTime}
 import scalafx.scene.Node
 import scalafx.scene.control.Alert
@@ -19,7 +18,7 @@ object LoadedDocumentAddView extends Form:
 
   def apply(operatorUsername: String, onSaved: () => Unit = () => (), onExit: () => Unit = () => ()): BorderPane =
 
-    val documentLogic = new LoadedDocument()
+    val service = new LoadedDocumentService()
     val validator = new LoadedDocumentValidator()
     val documentDate = dateField(localDate)
     val documentProtocol = stringField(prompt = Prompts.DocumentProtocol)
@@ -78,32 +77,30 @@ object LoadedDocumentAddView extends Form:
             )
 
           if confirmed then
-            val newDocument =
-              currentDocument(IdGen(inIdsFilePathName("loadedDocumentId")))
-                .copy(
-                processedDate = localDate,
-                processedTime = localTime,
-                processedBy = operatorUsername
-              )
+            service.addLoadedDocument(
+              documentDate = documentDate.value,
+              documentProtocol = documentProtocol.value,
+              documentType = documentType.value,
+              sender = sender.value,
+              recipient = recipient.value,
+              subject = subject.value,
+              remarks = remarks.value,
+              operatorUsername = operatorUsername
+            ) match
+              case Right(_) =>
+                formSaved = true
+                val alert = new Alert(Alert.AlertType.Information):
+                  title = Text.Title
+                  headerText = None
+                  contentText = Text.Success
+                alert.showAndWait()
 
-            val saved = documentLogic.recordInsert(newDocument)
+                resetForm()
+                formSaved = false
+                onSaved()
 
-            result.show(
-              message = if saved then Text.Success else Text.Error,
-              success = saved
-            )
-
-            if saved then
-              formSaved = true
-              val alert = new Alert(Alert.AlertType.Information):
-                title = Text.Title
-                headerText = None
-                contentText = Text.Success
-              alert.showAndWait()
-
-              resetForm()
-              formSaved = false
-              onSaved()
+              case Left(error) =>
+                result.show(message = error, success = false)
 
     val form =
       formGrid(

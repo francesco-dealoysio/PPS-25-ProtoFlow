@@ -214,7 +214,7 @@ object DocumentText:
     val Subtitle = "Visualizza lo stato di lavorazione di tutti i documenti nel sistema."
     val Empty = "Non sono presenti documenti nel sistema."
     val LoadError = "Errore durante il caricamento dei documenti."
-    val IdColumn = "Id/Protocollo"
+    val IdColumn = "Protocollo"
     val ClassificationColumn = "Classifica"
     val RegisteredDateColumn = "Data di protocollazione"
     val OperatorColumn = "Operatore incaricato"
