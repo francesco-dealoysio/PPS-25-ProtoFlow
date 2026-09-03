@@ -52,7 +52,6 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
         onExit = () =>
           showLogin()
       )
-    addPageStylesheets(scene, "/registration.css")
 
     stage.scene = scene
     stage.sizeToScene()

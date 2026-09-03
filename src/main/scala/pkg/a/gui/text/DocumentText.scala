@@ -4,10 +4,7 @@ object DocumentText:
 
   object LoadedDocuments:
     object DocumentTypes:
-      val Package = "Plico"
-      val Email = "Email"
-      val Letter = "Lettera"
-      val All = Seq(Package, Email, Letter)
+      val All = Seq("Plico", "Email", "Lettera")
 
     object Fields:
       val DocumentDate = "Data documento"
@@ -69,9 +66,9 @@ object DocumentText:
       val RegisteredBy = "Operatore protocollatore"
 
     object Process:
+      private val Success = "Documento protocollato correttamente."
       val Title = "Protocollazione documento"
       val Subtitle = "Visualizza i dati del documento, seleziona la classifica e conferma la protocollazione."
-      val Success = "Documento protocollato correttamente."
       val Error = "Errore durante la protocollazione del documento."
       val ClassificationRequired = "Seleziona una classifica."
       val SaveTitle = "Conferma protocollazione"
@@ -118,9 +115,6 @@ object DocumentText:
       val ArchiveLocation = "Collocazione archivistica"
 
     object Prompts:
-      val ArchivedTime = "Inserisci l'ora di archiviazione"
-      val ArchivedDate = "Inserisci la data di archiviazione"
-      val ArchivedBy = "Operatore archiviatore"
       val ArchiveLocation = "Inserisci la collocazione archivistica"
 
     object Errors:

@@ -74,7 +74,7 @@ object ArchivedDocumentManagementView extends Management:
       val filteredDocuments =
         if criteria.isEmpty then available
         else available.filter(getDocumentPredicate(criteria))
-      showFilteredItems(documents, table, filteredDocuments, result)(_.getId)
+      showFilteredItems(documents, table, filteredDocuments, result, Text.NoFilterResults)(_.getId)
 
     def resetFilters(): Unit =
       fromDateFilter.value = null

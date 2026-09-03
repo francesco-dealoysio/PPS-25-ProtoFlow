@@ -7,7 +7,6 @@ import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Insets
 import scalafx.scene.Node
-import pkg.a.gui.text.UiText.ArchivedDocuments.Management.NoFilterResults
 import scalafx.scene.control.{Button, ComboBox, DatePicker, Label, TableColumn, TableView, TextField}
 import scalafx.scene.layout.{BorderPane, HBox, Priority, VBox}
 
@@ -225,14 +224,14 @@ trait Management extends Common:
    * @param idOf          the function used to extract the item identifier for sorting
    * @tparam T the type of the table items
    */
-  protected def showFilteredItems[T](items: ObservableBuffer[T], table: TableView[T], filteredItems: Seq[T], result: ResultMessage)(idOf: T => String): Unit =
+  protected def showFilteredItems[T](items: ObservableBuffer[T], table: TableView[T], filteredItems: Seq[T], result: ResultMessage, noResultsMessage: String)(idOf: T => String): Unit =
     val sortedItems = filteredItems.sortBy(item => idOf(item).toIntOption.getOrElse(Int.MaxValue))
 
     items.setAll(sortedItems*)
     table.selectionModel.value.clearSelection()
 
     if sortedItems.isEmpty then
-      result.show(NoFilterResults, success = true)
+      result.show(noResultsMessage, success = true)
 
   /**
    * Executes the search action whenever one of the given filters changes.

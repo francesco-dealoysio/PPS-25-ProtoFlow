@@ -72,11 +72,5 @@ object UiStyles:
     val SubtitleStyle = "registration-subtitle"
 
   object Registration:
-    val RootStyle = "registration-root"
     val CardStyle = "registration-card"
     val GridStyle = "registration-grid"
-    val TitleStyle = "registration-title"
-    val SubtitleStyle = "registration-subtitle"
-    val MessageStyle = "form-message"
-    val MessageSuccessStyle = "form-message-success"
-    val MessageErrorStyle = "form-message-error"
