@@ -151,10 +151,10 @@ concentrazione, in alcuni sprint, su determinati task in base al carico di lavor
 ## 1.3 Strumenti a supporto del processo
 
 - **GitHub**: versionamento del codice, gestione di branch per feature/refactoring, pull request;
-- **GitHub Actions**: integrazione continua, con esecuzione automatica della suite di test ad ogni push sul branch `develop`;
+- **GitHub Actions**: integrazione continua, con esecuzione automatica della suite di test ad ogni push sul branch <b>develop</b>;
 - **IntelliJ IDEA**: ambiente di sviluppo per Scala/JUnit;
 - **Microsoft PowerPoint**: presentazioni di Sprint Planning e Sprint Review;
-- **Microsoft Excel**: Sprint Backlog e Product Backlog;
+- **Microsoft Excel**: Product Backlog e Sprint Backlog;
 - **Microsoft Word**: Daily Scrum, User Story e relativa scomposizione in task;
 - una condivisione su rete/cloud (NAS/Drive del gruppo) per la distribuzione di questi documenti tra i membri, separata dal repository Git.
 
@@ -210,7 +210,7 @@ rimaste non completate a fine sprint, pur essendo completata la logica di filtro
 del profilo utente, riportata da Sprint 3, è stata completata in questo sprint.
 </p>
 
-### Sprint 5 (12/08/2026 – ?/08/2026)
+### Sprint 5 (12/08/2026 – 20/08/2026)
 <p style="text-align: justify;">
 Ultimo sprint del piano originale. Obiettivo duplice: da un lato il completamento delle ultime funzionalità
 applicative (controllo di gestione documentale, riepilogo di un singolo documento, statistiche, dashboard per
@@ -226,14 +226,9 @@ completati — a indicare che il lavoro è stato concluso a ridosso della chiusu
 Dopo la chiusura dello sprint pianificato, il gruppo ha dedicato un'ulteriore fase di lavoro all'implementazione
 del requisito obbligatorio "utilizzo di regole logiche per la verifica delle autorizzazioni" e dell'opzionale
 "personalizzazione delle regole organizzative tramite Prolog", non ancora completati a fine Sprint 5. Il lavoro
-è stato svolto su un branch dedicato (`feature/autorizzazione-prolog`), con verifica tramite la suite di test
+è stato svolto su un branch dedicato (<b>feature/autorizzazione-prolog</b>), con verifica tramite la suite di test
 esistente ad ogni passaggio, e successivamente integrato in `develop`. I dettagli tecnici sono discussi nelle
 sezioni 3, 4 e 6.
-</p>
-
-## 1.6 Osservazioni sul processo
-<p style="text-align: justify;">
-
 </p>
 
 [Back to index](0-Indice.md) |
