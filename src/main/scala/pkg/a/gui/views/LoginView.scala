@@ -16,6 +16,10 @@ import scalafx.scene.layout.{BorderPane, HBox, Region, StackPane, VBox}
 
 object LoginView extends Form:
 
+  private val ResultMessageWidth = 320
+  private val LogoSize = 58
+  private val FormControlWidth = 220
+
   def apply(onLoginSuccess: Account => Unit, onRegistrationRequest: () => Unit): BorderPane =
 
     val username = stringField(prompt = Prompts.Username)
@@ -27,7 +31,7 @@ object LoginView extends Form:
     configureFieldActions(username, password, loginAction)
     val actions = loginActions(resetAction, loginAction)
     val registrationButton = secondaryButton(Buttons.RequestRegistration, onRegistrationRequest)
-    registrationButton.maxWidth = 220
+    registrationButton.maxWidth = FormControlWidth
     val card =
       loginCard(
         header = loginHeader(),
@@ -44,9 +48,9 @@ object LoginView extends Form:
 
   private def loginResult(): ResultMessage =
     val result = createResultMessage(MessageStyle, MessageErrorStyle)
-    result.label.minWidth = 320
-    result.label.prefWidth = 320
-    result.label.maxWidth = 320
+    result.label.minWidth = ResultMessageWidth
+    result.label.prefWidth = ResultMessageWidth
+    result.label.maxWidth = ResultMessageWidth
     result
 
   private def resetLoginForm(username: FormField[TextField], password: FormField[PasswordField], result: ResultMessage): Unit =
@@ -98,10 +102,10 @@ object LoginView extends Form:
 
   private def loginLogo(): StackPane =
     new StackPane:
-      minWidth = 58
-      minHeight = 58
-      maxWidth = 58
-      maxHeight = 58
+      minWidth = LogoSize
+      minHeight = LogoSize
+      maxWidth = LogoSize
+      maxHeight = LogoSize
       styleClass += LogoStyle
       children = new Label("PF"):
         styleClass += LogoTextStyle
@@ -119,7 +123,7 @@ object LoginView extends Form:
     new VBox:
       spacing = 6
       alignment = Pos.CenterLeft
-      maxWidth = 220
+      maxWidth = FormControlWidth
       children = Seq(fieldLabel(label), control)
 
   private def loginCard(header: VBox, form: VBox, resultLabel: Label, actions: HBox, registrationButton: Button): VBox =

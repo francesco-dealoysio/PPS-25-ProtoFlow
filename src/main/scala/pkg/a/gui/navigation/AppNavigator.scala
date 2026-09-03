@@ -11,13 +11,20 @@ import scalafx.scene.Scene
 
 class AppNavigator(stage: JFXApp3.PrimaryStage):
 
+  private val LoginWindowWidth = 460
+  private val LoginWindowHeight = 560
+  private val RegistrationWindowWidth = 900
+  private val RegistrationWindowHeight = 650
+  private val HomeWindowWidth = 1100
+  private val HomeWindowHeight = 800
+
   def showLogin(): Unit =
     stage.title = WindowTitles.Login
     stage.minWidth = 0
     stage.minHeight = 0
     stage.resizable = false
 
-    val scene = new Scene(460, 560):
+    val scene = new Scene(LoginWindowWidth, LoginWindowHeight):
       root = LoginView(
         onLoginSuccess = user =>
           showHome(user),
@@ -38,7 +45,7 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
     stage.minHeight = 0
     stage.resizable = false
 
-    val scene = new Scene(900, 650):
+    val scene = new Scene(RegistrationWindowWidth, RegistrationWindowHeight):
       root = RegistrationView(
         validator = RegistrationValidator(),
 
@@ -58,7 +65,7 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
         stage.title = WindowTitles.Home
         stage.resizable = true
 
-        val scene = new Scene(1100, 800):
+        val scene = new Scene(HomeWindowWidth, HomeWindowHeight):
           root = homePage(
             currentAccount = account,
             onLogout = () => showLogin()
@@ -72,8 +79,8 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
 
         stage.scene = scene
         stage.sizeToScene()
-        stage.minWidth = 1100
-        stage.minHeight = 800
+        stage.minWidth = HomeWindowWidth
+        stage.minHeight = HomeWindowHeight
         stage.centerOnScreen()
 
       case None =>

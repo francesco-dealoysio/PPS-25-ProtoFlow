@@ -9,6 +9,14 @@ import scala.xml.{Elem, XML}
 object XmlToPdf:
 
   private val printsFolder = new File(System.getProperty("user.dir"), "protoflow/prints")
+  private val FullWidthPercentage = 100f
+  private val DefaultMargin = 36f
+  private val SummaryBottomMargin = 55f
+  private val DetailsColumnWidths = Seq(1.5f, 4f)
+  private val SummaryDocumentColumnWidths = Seq(1.7f, 4f)
+  private val SummaryPhaseColumnWidths = Seq(1.6f, 1.7f, 1.3f, 2.4f)
+  private val SummaryHeaderColumnWidths = Seq(1f, 5f)
+  private val SummaryLogoSize = 50f
 
   case class SummaryPrintData(
                                applicationTitle: String,
@@ -78,8 +86,8 @@ object XmlToPdf:
         ): document =>
           val table = new PdfPTable(2)
 
-          table.setWidthPercentage(100f)
-          table.setWidths(Array(1.5f, 4f))
+          table.setWidthPercentage(FullWidthPercentage)
+          table.setWidths(DetailsColumnWidths.toArray)
 
           val xmlFields =
             selected.child.collect:
@@ -124,7 +132,7 @@ object XmlToPdf:
             pageLabel = data.pageLabel
           )
         ),
-        bottomMargin = 55f,
+        bottomMargin = SummaryBottomMargin,
         openAfterCreation = openAfterCreation
       ): document =>
 
@@ -140,8 +148,8 @@ object XmlToPdf:
         addSectionTitle(document, data.documentDataSectionTitle)
 
         val documentTable = new PdfPTable(2)
-        documentTable.setWidthPercentage(100f)
-        documentTable.setWidths(Array(1.7f, 4f))
+        documentTable.setWidthPercentage(FullWidthPercentage)
+        documentTable.setWidths(SummaryDocumentColumnWidths.toArray)
         documentTable.addCell(headerCell(data.documentCodeLabel))
         documentTable.addCell(data.documentCode)
         documentTable.addCell(headerCell(data.classificationLabel))
@@ -150,8 +158,8 @@ object XmlToPdf:
         addSectionTitle(document, data.phasesSectionTitle)
 
         val phasesTable = tableOf(data.phaseHeaders, data.phaseRows)
-        if data.phaseHeaders.size == 4 then
-          phasesTable.setWidths(Array(1.6f, 1.7f, 1.3f, 2.4f))
+        if data.phaseHeaders.size == SummaryPhaseColumnWidths.size then
+          phasesTable.setWidths(SummaryPhaseColumnWidths.toArray)
 
         document.add(phasesTable)
 
@@ -161,7 +169,7 @@ object XmlToPdf:
                          landscape: Boolean,
                          addDefaultTitle: Boolean = true,
                          pageEvent: Option[PdfPageEventHelper] = None,
-                         bottomMargin: Float = 36f,
+                         bottomMargin: Float = DefaultMargin,
                          openAfterCreation: Boolean = true
                        )(content: Document => Unit): Boolean =
 
@@ -171,7 +179,7 @@ object XmlToPdf:
       val fileName = if pdfFileName.toLowerCase.endsWith(".pdf") then pdfFileName else s"$pdfFileName.pdf"
       val pdfFile = new File(printsFolder, fileName)
       val pageSize = if landscape then PageSize.A4.rotate() else PageSize.A4
-      val document = new Document(pageSize, 36f, 36f, 36f, bottomMargin)
+      val document = new Document(pageSize, DefaultMargin, DefaultMargin, DefaultMargin, bottomMargin)
       Using.resource(new FileOutputStream(pdfFile)): os =>
         val writer = PdfWriter.getInstance(document, os)
 
@@ -208,7 +216,7 @@ object XmlToPdf:
                               ): Unit =
 
     val header = new PdfPTable(2)
-    header.setWidthPercentage(100f)
+    header.setWidthPercentage(FullWidthPercentage)
     header.setWidths(Array(1f, 5f))
     header.setSpacingAfter(18f)
     val logoCell = new PdfPCell()
@@ -216,7 +224,7 @@ object XmlToPdf:
     logoCell.setVerticalAlignment(Element.ALIGN_MIDDLE)
     Option(getClass.getResource(logoResourcePath)).foreach: logoUrl =>
       val logo = Image.getInstance(logoUrl)
-      logo.scaleToFit(50f, 50f)
+      logo.scaleToFit(SummaryLogoSize, SummaryLogoSize)
       logoCell.addElement(logo)
 
     header.addCell(logoCell)
@@ -309,7 +317,7 @@ object XmlToPdf:
 
   private def tableOf(headers: Seq[String], rows: Seq[Seq[String]]): PdfPTable =
     val table = new PdfPTable(headers.size)
-    table.setWidthPercentage(100f)
+    table.setWidthPercentage(FullWidthPercentage)
     headers.foreach: header =>
       table.addCell(headerCell(header))
 

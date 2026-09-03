@@ -6,6 +6,8 @@ import pkg.b.logic.Account
 class AccountValidator:
 
   private val emailPattern = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$".r
+  private val MinimumAdminAccounts = 1
+
   def validate(account: Account, rawPassword: String, existingAccounts: Seq[Account], currentAccountId: Option[String] = None, requirePassword: Boolean = true): Seq[String] =
     Seq(
       validateRequired(SurnameRequired, account.getSurname),
@@ -19,13 +21,7 @@ class AccountValidator:
     ).flatten
 
   def isValid(account: Account, rawPassword: String, existingAccounts: Seq[Account], currentAccountId: Option[String] = None, requirePassword: Boolean = true): Boolean =
-    validate(
-      account,
-      rawPassword,
-      existingAccounts,
-      currentAccountId,
-      requirePassword
-    ).isEmpty
+    validate(account, rawPassword, existingAccounts, currentAccountId, requirePassword).isEmpty
 
   def validateProfile(email: String): Seq[String] =
     Seq(validateEmail(email)).flatten
@@ -61,7 +57,7 @@ class AccountValidator:
           existingAccounts.find(_.getId == id)
         .exists: existing =>
           existing.getRole.equalsIgnoreCase("admin") &&
-            existingAccounts.count(_.getRole.equalsIgnoreCase("admin")) == 1
+            existingAccounts.count(_.getRole.equalsIgnoreCase("admin")) == MinimumAdminAccounts
 
     if editingLastAdmin &&
       !account.getRole.equalsIgnoreCase("admin")
