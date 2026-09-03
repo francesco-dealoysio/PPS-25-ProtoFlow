@@ -8,9 +8,9 @@ trait Entity:
   def xmlFile: String
 
   /**
-   * Returns a sequence of records extracted from the specified xml file.
-   * @param xmlFilePathName 
-   * @tparam T type of sequence returned
+   * Returns a sequence of records extracted from the specified XML file.
+   * @param xmlFilePathName name of the file to which the operation refers
+   * @tparam T type of class sequence returned
    * @return Seq[T]
    */
   def getRecords[T](xmlFilePathName: String = defaultXmlFilePathName): Seq[T] =
@@ -22,11 +22,11 @@ trait Entity:
         logger(e); Seq.empty[T]
 
   /**
-   * Returns a sequence of records extracted from the xml file specified in the argument
+   * Returns a sequence of records extracted from the XML file specified in the argument
    * filtered by the predicate passed in the argument.
-   * @param predicate
-   * @param xmlFilePathName
-   * @tparam T type of sequence returned
+   * @param predicate predicate to filter records
+   * @param xmlFilePathName name of the file to which the operation refers
+   * @tparam T type of class sequence returned
    * @return Seq[T]
    */
   def getRecordsByFilter[T](predicate: T => Boolean, xmlFilePathName: String = defaultXmlFilePathName): Seq[T] =
@@ -39,10 +39,10 @@ trait Entity:
 
   /**
    * Returns, if exists, the record of type T having the id in argument
-   * extracted from the xml file specified in argument.
+   * extracted from the XML file specified in argument.
    * @param id identifies the record to find
-   * @param xmlFilePathName
-   * @tparam T 
+   * @param xmlFilePathName name of the file to which the operation refers
+   * @tparam T type of class
    * @return T object
    */
   def getRecordById[T](id: String, xmlFilePathName: String = defaultXmlFilePathName): T =
@@ -61,9 +61,9 @@ trait Entity:
 
   /**
    * Inserts the obj object of type T into the XML file specified in the argument.
-   * @param obj
-   * @param xmlFilePathName
-   * @tparam T
+   * @param obj object to insert into the file
+   * @param xmlFilePathName name of the file to which the operation refers
+   * @tparam T type of class
    * @return true on success, false otherwise.
    */
   def recordInsert[T](obj: T, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
@@ -82,9 +82,9 @@ trait Entity:
 
   /**
    * Updates the obj object of type T contained in the XML file specified in the argument.
-   * @param obj
-   * @param xmlFilePathName
-   * @tparam T
+   * @param obj object to update
+   * @param xmlFilePathName name of the file to which the operation refers
+   * @tparam T type of class
    * @return true on success, false otherwise.
    */
   def recordUpdate[T](obj: T, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
@@ -96,8 +96,8 @@ trait Entity:
 
   /**
    * Remove, if exists, the obj object having the id passed in argument from the XML file specified.
-   * @param id identifies the record to delete
-   * @param xmlFilePathName
+   * @param id identify the object to be removed
+   * @param xmlFilePathName name of the file to which the operation refers
    * @return true on success, false otherwise.
    */
   def recordDelete(id: String, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
@@ -107,7 +107,7 @@ trait Entity:
       case e: Exception =>
         logger(e); false
 
-  /** Returns the default pathname where the entity-managed xml file is located. */
+  /** Returns the default pathname where the entity-managed  file is located. */
   protected def defaultXmlFilePathName: String =
     try
       inDatabaseFilePathName(xmlFile)
@@ -117,9 +117,9 @@ trait Entity:
 
   /**
    * Returns search a record with the specified field and value in the specified XML file.
-   * @param fieldName
-   * @param fieldValue
-   * @param xmlFilePathName
+   * @param fieldName name of the field to search for
+   * @param fieldValue value to search for
+   * @param xmlFilePathName name of the file to which the operation refers
    * @return true on success, false otherwise.
    */
   protected def fieldExists(fieldName: String, fieldValue: String, xmlFilePathName: String): Boolean =
@@ -130,13 +130,13 @@ trait Entity:
         logger(e); false
 
   /**
-   * Returns the number of occurrences of records in the specified xml file
+   * Returns the number of occurrences of records in the specified XML file
    * filtered by the predicate passed in the argument.
-   * @param predicate 
-   * @param xmlFilePathName
-   * @param classType
-   * @tparam T
-   * @return
+   * @param predicate predicate to filter records
+   * @param xmlFilePathName name of the file to which the operation refers
+   * @param classType type of class
+   * @tparam T type of class
+   * @return number of occurrences found
    */
   protected def countRecordsByFilter[T](predicate: T => Boolean, xmlFilePathName: String, classType: Class[T]): Int =
     try

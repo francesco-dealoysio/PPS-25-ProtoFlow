@@ -1,3 +1,5 @@
+[Back to index](0-Indice.md) |
+[Next Chapter](2-Requirement_specification.md)
 # 1. Processo di sviluppo
 
 ## 1.1 Metodologia
@@ -6,7 +8,13 @@ Il gruppo ha adottato il processo di sviluppo Agile <b>Scrum</b>, articolato in 
 a una settimana, in conformità a quanto consigliato nel punto P8 delle regole d'esame del corso.
 </p>
 
-### <p style="color: red;">(tbd) Meeting iniziale (tbd)</p>
+### Meeting iniziale
+<p style="text-align: justify;">
+Il Meeting iniziale, che ha coinciso anche con lo Sprint Planning Meeting dello Sprint organizzativo S0, ha costituito
+il momento di avvio del progetto ed ha avuto l'obiettivo di stabilire l'ambiente di sviluppo, gli strumenti da utilizzare, 
+individuare i requisiti, definire il Product Backlog, le User Story, i template della documentazione e soprattutto le
+modalità di lavoro da seguire ed il processo di sviluppo summenzionato descritto di seguito.
+</p>
 
 Ogni sprint ha seguito la struttura classica del seguente esempio relativo allo Sprint S1:
 
@@ -17,9 +25,9 @@ Ogni sprint ha seguito la struttura classica del seguente esempio relativo allo 
 ### **Sprint Planning Meeting**
 <p style="text-align: justify;">
 All'inizio di ogni sprint è stato tenuto un incontro via Teams/Meet finalizzato alla definizione degli obiettivi ed
-alla selezione dei requisiti, assegnando a questi ultimi le opportune priorità di realizzazione, rispettivamente da
-realizzare e sviluppare durante lo sprint, nonché alla scomposizione delle User Story in task ed alla individuazione 
-delle soluzioni di massima da adottare per implementarli. 
+alla selezione dei requisiti, assegnando a questi ultimi le opportune priorità di realizzazione, obiettivi e requisiti
+rispettivamente da realizzare e sviluppare durante lo sprint, nonché alla scomposizione delle User Story in task ed 
+alla individuazione delle soluzioni di massima da adottare per implementarli. 
 </p>
 
 <p style="text-align: justify;">
@@ -36,7 +44,7 @@ nonché delle eventuali modifiche dei requisiti stabilite in itinere.
 - **[User Story](../../requisiti_e_analisi/UserStories/ "Apertura directory")**
 - **[Requirement Breakdown Structure](../../requisiti_e_analisi/RBS.pdf "Apertura file pdf")**
 - **[Product Backlog](../../process/Product_Backlog.pdf "Apertura file pdf")**
-- **[Work Breakdown Structure](../../process/wBS.pdf "Apertura file pdf")**
+- **[Work Breakdown Structure](../../process/WBS.pdf "Apertura file pdf")**
 
 <p style="text-align: justify;">
 Successivamente alla selezione dei requisiti, si è proceduto all'analisi di ciascuna User story ed alla scomposizione
@@ -74,17 +82,47 @@ e quelli relativi alle directory nelle quali sono state inserite le User Story e
 - **[User Story Task S1](../../process/sprint/Sprint_S1/03_USER_STORY_TASK_S1.pdf  "Apertura file pdf")**
 - **[Daily Scrum S1](../../process/sprint/Sprint_S1/04_DAILY_SCRUM_S1.pdf  "Apertura file pdf")**
 - **[Sprint Review S1](../../process/sprint/Sprint_S1/05_SPRINT_REVIEW_S1.pdf  "Apertura file pdf")**
-- **[User Story S1](../../process/sprint/Sprint_S1/TASK_USER_STORY_S1/USER_STORY/  "Apertura directory")**
+- **[User Story S1](../../process/sprint/Sprint_S1/TASK_USER_STORY_S1/User_Story/  "Apertura directory")**
 - **[Task S1](../../process/sprint/Sprint_S1/TASK_USER_STORY_S1/Task_Done/  "Apertura directory")**
 
 ### **Daily Scrum**
-Aggiornamento giornaliero per persona (attività svolta, attività da svolgere, problemi/esigenze);
+<p style="text-align: justify;">
+La metodologia prevede un incontro giornaliero (circa 15 minuti) durante il quale ogni componente del team 
+riepiloga in merito allo stato di avanzamento delle attività di propria competenza. In particolare vengono 
+dichiarate quali attività sono state completate e se si sono riscontrate difficoltà e quali sono i nuovi
+task presi in carico da affrontare nella giornata odierna.
+Normalmente in tale frangente vengono evidenziate eventuali esigenze e/o problematiche connesse con le attività
+di sviluppo, che, se complesse, in genere vengono affrontate al di fuori del daily scrum.
+
+In realtà, a causa dei vari impegni dei componenti del gruppo e delle propensioni e delle abitudini individuali,
+i nostri incontri via Teams/Meet non sono avvenuti con cadenza giornaliera ed i resoconti non sono stati
+particolarmente circostanziati ed analitici, tuttavia, sono stati almeno sufficienti a tenere sotto controllo
+l'andamento delle attività di sviluppo del progetto.
+</p>
 
 ### **Sprint Review**
 <p style="text-align: justify;">
-A fine sprint, con verifica dello stato di completamento degli elementi pianificati, della conformità
-a quanto previsto dalle sezioni Done Definition delle User Story contenute nello Sprint Backlog tramite
-test di accettazione (Use Case Test).
+Al termine di ogni sprint è stata effettuata una verifica dello stato di completamento delle funzionalità previste
+per lo sprint e descritte dalle User Story contenute nello Sprint Backlog e, per quelle realizzate, è stata accertata
+la correttezza di esecuzione e la conformità a quanto previsto dai requisiti.
+</p>
+
+<p style="text-align: justify;">
+In sostanza, è stata eseguita l'applicazione seguendo i percorsi dettati dai casi d'uso specificati nelle sezioni
+Done Definition delle User Story, sezioni da considerare quali surrogato di test di accettazione realizzati ad hoc.
+In questa fase, essendo in realta previsto un incontro, in genere di circa 4 ore, tra Scrum Team e Stakeholder, i
+componenti del team hanno indossato sia il cappello di sviluppatore, che dimostra quanto realizzato, che quello di
+Product Owner e di End User, che esaminano in modo critico il comportamento e la correttezza di quanto prodotto.
+
+Dalla attività di revisione sono emersi di volta in volta per i diversi sprint i seguenti elementi:
+- requisiti da inserire nello sprint successivo, in quanto non realizzati nello sprint corrente;
+- difetti derivanti dai comportamenti anomali riscontrati durante la revisione e da correggere nello sprint successivo;
+- richieste di modifica dei requisiti sorte osservando l'applicativo in esecuzione.
+</p>
+
+<p style="text-align: justify;">
+Le richieste di varianti a volte, dopo l'analisi d'impatto sul progetto, hanno comportato la revisione e 
+l'adeguamento sia dei requisiti (User Story) che del Product Backlog.
 </p>
 
 ## 1.2 Team
@@ -113,10 +151,10 @@ concentrazione, in alcuni sprint, su determinati task in base al carico di lavor
 ## 1.3 Strumenti a supporto del processo
 
 - **GitHub**: versionamento del codice, gestione di branch per feature/refactoring, pull request;
-- **GitHub Actions**: integrazione continua, con esecuzione automatica della suite di test ad ogni push sul branch `develop`;
+- **GitHub Actions**: integrazione continua, con esecuzione automatica della suite di test ad ogni push sul branch <b>develop</b>;
 - **IntelliJ IDEA**: ambiente di sviluppo per Scala/JUnit;
 - **Microsoft PowerPoint**: presentazioni di Sprint Planning e Sprint Review;
-- **Microsoft Excel**: Sprint Backlog e Product Backlog;
+- **Microsoft Excel**: Product Backlog e Sprint Backlog;
 - **Microsoft Word**: Daily Scrum, User Story e relativa scomposizione in task;
 - una condivisione su rete/cloud (NAS/Drive del gruppo) per la distribuzione di questi documenti tra i membri, separata dal repository Git.
 
@@ -172,7 +210,7 @@ rimaste non completate a fine sprint, pur essendo completata la logica di filtro
 del profilo utente, riportata da Sprint 3, è stata completata in questo sprint.
 </p>
 
-### Sprint 5 (12/08/2026 – ?/08/2026)
+### Sprint 5 (12/08/2026 – 20/08/2026)
 <p style="text-align: justify;">
 Ultimo sprint del piano originale. Obiettivo duplice: da un lato il completamento delle ultime funzionalità
 applicative (controllo di gestione documentale, riepilogo di un singolo documento, statistiche, dashboard per
@@ -188,15 +226,13 @@ completati — a indicare che il lavoro è stato concluso a ridosso della chiusu
 Dopo la chiusura dello sprint pianificato, il gruppo ha dedicato un'ulteriore fase di lavoro all'implementazione
 del requisito obbligatorio "utilizzo di regole logiche per la verifica delle autorizzazioni" e dell'opzionale
 "personalizzazione delle regole organizzative tramite Prolog", non ancora completati a fine Sprint 5. Il lavoro
-è stato svolto su un branch dedicato (`feature/autorizzazione-prolog`), con verifica tramite la suite di test
+è stato svolto su un branch dedicato (<b>feature/autorizzazione-prolog</b>), con verifica tramite la suite di test
 esistente ad ogni passaggio, e successivamente integrato in `develop`. I dettagli tecnici sono discussi nelle
 sezioni 3, 4 e 6.
 </p>
 
-## 1.6 Osservazioni sul processo
-<p style="text-align: justify;">
-
-</p>
+[Back to index](0-Indice.md) |
+[Next Chapter](2-Requirement_specification.md)
 
 
 
