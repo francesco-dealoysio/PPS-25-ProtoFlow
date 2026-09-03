@@ -6,10 +6,11 @@ import pkg.a.gui.structures.MenuAction
 import pkg.a.gui.traits.HomePage
 import pkg.b.logic.{Account, ArchivedDocument}
 import scalafx.scene.layout.Pane
+import pkg.a.gui.text.UiText.HomePages
 
 object HomePageViewerView extends HomePage:
 
-  override protected val pageTitle: String = "Homepage Viewer"
+  override protected val pageTitle: String = HomePages.ViewerTitle
 
   override protected def dashboardView(currentAccount: Account): Pane =
     DashboardViewerView(currentAccount, pageTitle)

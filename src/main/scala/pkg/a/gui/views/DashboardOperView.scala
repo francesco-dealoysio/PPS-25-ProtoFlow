@@ -6,6 +6,7 @@ import pkg.a.gui.views.DashboardView.DashboardCard
 import pkg.b.logic.{Account, DocumentLog}
 import pkg.d.util.DateTime
 import scalafx.scene.layout.VBox
+import pkg.a.gui.text.UiText.Dashboards.Operator as Text
 
 object DashboardOperView:
 
@@ -25,10 +26,10 @@ object DashboardOperView:
     val pendingDocuments = documents.filter(_.stage != Stages.Archiving)
 
     val cards = Seq(
-      DashboardCard("Da protocollare", documentsToRegister.toString, "Documenti in attesa"),
-      DashboardCard("Da archiviare", documentsToArchive.toString, "Documenti protocollati"),
-      DashboardCard("Archiviati", archivedDocuments.toString, "Documenti completati"),
-      DashboardCard("Operazioni oggi", operationsToday.toString, "Le tue attività")
+      DashboardCard(Text.ToRegisterTitle, documentsToRegister.toString, Text.ToRegisterSubtitle),
+      DashboardCard(Text.ToArchiveTitle, documentsToArchive.toString, Text.ToArchiveSubtitle),
+      DashboardCard(Text.ArchivedTitle, archivedDocuments.toString, Text.ArchivedSubtitle),
+      DashboardCard(Text.TodayOperationsTitle, operationsToday.toString, Text.TodayOperationsSubtitle)
     )
 
     DashboardView(title, cards, pendingDocuments)

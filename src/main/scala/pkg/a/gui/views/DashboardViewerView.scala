@@ -6,6 +6,7 @@ import pkg.a.gui.views.DashboardView.DashboardCard
 import pkg.b.logic.Account
 import pkg.d.util.DateTime
 import scalafx.scene.layout.VBox
+import pkg.a.gui.text.UiText.Dashboards.Viewer as Text
 
 object DashboardViewerView:
 
@@ -23,10 +24,10 @@ object DashboardViewerView:
     val archivedToday = documents.count(_.archivedDate == today)
     val archivedThisMonth = documents.count(_.archivedDate.startsWith(currentMonth))
     val cards = Seq(
-      DashboardCard("Documenti disponibili", documents.size.toString, "Documenti della tua area"),
-      DashboardCard("Archiviati oggi", archivedToday.toString, "Nuovi documenti"),
-      DashboardCard("Archiviati questo mese", archivedThisMonth.toString, "Documenti del mese"),
-      DashboardCard("Area", currentAccount.getArea, "Area di appartenenza")
+      DashboardCard(Text.AvailableDocumentsTitle, documents.size.toString, Text.AvailableDocumentsSubtitle),
+      DashboardCard(Text.ArchivedTodayTitle, archivedToday.toString, Text.ArchivedTodaySubtitle),
+      DashboardCard(Text.ArchivedThisMonthTitle, archivedThisMonth.toString, Text.ArchivedThisMonthSubtitle),
+      DashboardCard(Text.AreaTitle, currentAccount.getArea, Text.AreaSubtitle)
     )
 
     DashboardView(title, cards, documents)

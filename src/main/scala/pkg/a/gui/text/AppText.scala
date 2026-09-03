@@ -38,6 +38,43 @@ object AppText:
     )
     val Logout = "Logout"
 
+  object HomePages:
+    val AdminTitle = "Homepage Amministratore"
+    val OperatorTitle = "Homepage Operatore"
+    val ViewerTitle = "Homepage Viewer"
+
+  object Dashboards:
+
+    object Admin:
+      val TotalDocumentsTitle = "Documenti totali"
+      val TotalDocumentsSubtitle = "Documenti nel sistema"
+      val PendingRequestsTitle = "Richieste pendenti"
+      val PendingRequestsSubtitle = "Richieste da elaborare"
+      val RegisteredAccountsTitle = "Account registrati"
+      val RegisteredAccountsSubtitle = "Utenti presenti"
+      val ArchivedDocumentsTitle = "Documenti archiviati"
+      val ArchivedDocumentsSubtitle = "Documenti completati"
+
+    object Operator:
+      val ToRegisterTitle = "Da protocollare"
+      val ToRegisterSubtitle = "Documenti in attesa"
+      val ToArchiveTitle = "Da archiviare"
+      val ToArchiveSubtitle = "Documenti protocollati"
+      val ArchivedTitle = "Archiviati"
+      val ArchivedSubtitle = "Documenti completati"
+      val TodayOperationsTitle = "Operazioni oggi"
+      val TodayOperationsSubtitle = "Le tue attività"
+
+    object Viewer:
+      val AvailableDocumentsTitle = "Documenti disponibili"
+      val AvailableDocumentsSubtitle = "Documenti della tua area"
+      val ArchivedTodayTitle = "Archiviati oggi"
+      val ArchivedTodaySubtitle = "Nuovi documenti"
+      val ArchivedThisMonthTitle = "Archiviati questo mese"
+      val ArchivedThisMonthSubtitle = "Documenti del mese"
+      val AreaTitle = "Area"
+      val AreaSubtitle = "Area di appartenenza"
+
   object Statistics:
     val Title = "Statistiche"
     val Subtitle = "Visualizza gli indicatori relativi all'utilizzo del sistema."

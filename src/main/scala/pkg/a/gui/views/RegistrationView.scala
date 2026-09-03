@@ -31,7 +31,7 @@ object RegistrationView extends Form:
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(name, surname, email, phone, role, area, assignment)
     val result = createResultMessage()
 
-    def currentRequest(): RegistrationModel =
+    def currentRequest: RegistrationModel =
       RegistrationModel(
         name = name.value,
         surname = surname.value,
@@ -57,7 +57,7 @@ object RegistrationView extends Form:
       result.clear()
 
     def submitRequest(): Unit =
-      val request = currentRequest()
+      val request = currentRequest
       val errors = validator.validate(request)
 
       if errors.nonEmpty then

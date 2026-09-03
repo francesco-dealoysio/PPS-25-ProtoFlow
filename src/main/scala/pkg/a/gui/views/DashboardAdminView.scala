@@ -5,6 +5,7 @@ import pkg.a.gui.services.DocumentManagementControlService.Stages
 import pkg.a.gui.views.DashboardView.DashboardCard
 import pkg.b.logic.Account
 import scalafx.scene.layout.VBox
+import pkg.a.gui.text.UiText.Dashboards.Admin as Text
 
 object DashboardAdminView:
 
@@ -16,10 +17,10 @@ object DashboardAdminView:
     val archivedDocuments = documents.count(_.stage == Stages.Archiving)
 
     val cards = Seq(
-      DashboardCard("Documenti totali", documents.size.toString, "Documenti nel sistema"),
-      DashboardCard("Richieste pendenti", pendingRequests.toString, "Richieste da elaborare"),
-      DashboardCard("Account registrati", accounts.toString, "Utenti presenti"),
-      DashboardCard("Documenti archiviati", archivedDocuments.toString, "Documenti completati")
+      DashboardCard(Text.TotalDocumentsTitle, documents.size.toString, Text.TotalDocumentsSubtitle),
+      DashboardCard(Text.PendingRequestsTitle, pendingRequests.toString, Text.PendingRequestsSubtitle),
+      DashboardCard(Text.RegisteredAccountsTitle, accounts.toString, Text.RegisteredAccountsSubtitle),
+      DashboardCard(Text.ArchivedDocumentsTitle, archivedDocuments.toString, Text.ArchivedDocumentsSubtitle)
     )
 
     DashboardView(title, cards, documents)

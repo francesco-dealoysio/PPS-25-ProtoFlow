@@ -38,7 +38,7 @@ object DocumentRegistrationView extends Form:
     def validateForm(): Boolean =
       clearErrors()
       if classification.value.isEmpty then
-        classification.showError("Seleziona una classifica.")
+        classification.showError(Text.ClassificationRequired)
         false
       else
         true
@@ -70,12 +70,7 @@ object DocumentRegistrationView extends Form:
             ) match
               case Right(registered) =>
                 formSaved = true
-
-                showSuccess(
-                  Text.Title,
-                  s"${Text.Success} Numero di protocollo: ${registered.getProtocolNumber}."
-                )
-
+                showSuccess(Text.Title, Text.success(registered.getProtocolNumber))
                 onRegistered()
 
               case Left(error) =>

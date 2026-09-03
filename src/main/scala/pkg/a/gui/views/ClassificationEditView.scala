@@ -22,7 +22,7 @@ object ClassificationEditView extends Form:
     val monitoredFields = Seq(classification, description)
     val result = createResultMessage()
 
-    def currentClassification(): Classification =
+    def currentClassification: Classification =
       Classification(
         id = selectedClassification.getId,
         classification = classification.value,
@@ -43,7 +43,7 @@ object ClassificationEditView extends Form:
 
       val errors =
         validator.validate(
-          classification = currentClassification(),
+          classification = currentClassification,
           existingClassifications = classificationLogic.getRecords(),
           currentClassificationId = Some(selectedClassification.getId)
         )
@@ -57,7 +57,7 @@ object ClassificationEditView extends Form:
     val save =
       saveButton: () =>
         if validateForm() then
-          val updated = classificationLogic.recordUpdate[Classification](currentClassification())
+          val updated = classificationLogic.recordUpdate[Classification](currentClassification)
           if updated then
             formSaved = true
             showSuccess(Text.Title, Text.Success)

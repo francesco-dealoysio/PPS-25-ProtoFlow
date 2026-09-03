@@ -73,9 +73,12 @@ object DocumentText:
       val Subtitle = "Visualizza i dati del documento, seleziona la classifica e conferma la protocollazione."
       val Success = "Documento protocollato correttamente."
       val Error = "Errore durante la protocollazione del documento."
-
+      val ClassificationRequired = "Seleziona una classifica."
       val SaveTitle = "Conferma protocollazione"
       val SaveHeader = "Confermi la protocollazione del documento selezionato?"
+
+      def success(protocolNumber: String): String =
+        s"$Success Numero di protocollo: $protocolNumber."
 
     object Management:
       val Title = "Gestione documenti protocollati"
