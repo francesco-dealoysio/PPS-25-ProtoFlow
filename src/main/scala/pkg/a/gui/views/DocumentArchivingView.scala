@@ -56,17 +56,11 @@ object DocumentArchivingView extends Form:
     def validateForm(): Boolean =
       clearErrors()
       val errors = validator.validate(archivedDate.value, archivedTime.value, archivedBy.value, archiveLocation.value)
-      errors.foreach:
-        case error @ (ArchiveErrors.ArchivedDateRequired | ArchiveErrors.ArchivedDateInvalid) =>
-          archivedDate.showError(error)
-        case error @ (ArchiveErrors.ArchivedTimeRequired | ArchiveErrors.ArchivedTimeInvalid) =>
-          archivedTime.showError(error)
-        case error @ ArchiveErrors.ArchivedByRequired =>
-          archivedBy.showError(error)
-        case error @ ArchiveErrors.ArchiveLocationRequired =>
-          archiveLocation.showError(error)
-        case _ =>
-      errors.isEmpty
+      showFormFieldErrors(errors):
+        case ArchiveErrors.ArchivedDateRequired | ArchiveErrors.ArchivedDateInvalid => archivedDate
+        case ArchiveErrors.ArchivedTimeRequired | ArchiveErrors.ArchivedTimeInvalid => archivedTime
+        case ArchiveErrors.ArchivedByRequired => archivedBy
+        case ArchiveErrors.ArchiveLocationRequired => archiveLocation
 
     def resetForm(): Unit =
       resetFields(editableFields*)

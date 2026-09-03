@@ -102,8 +102,7 @@ trait Management extends Common:
   protected def loadTableItemsSafely[T](items: ObservableBuffer[T], result: ResultMessage, emptyMessage: String, loadErrorMessage: String)(load: => Seq[T]): Unit =
     try
       val loadedItems = load
-      items.clear()
-      items ++= loadedItems
+      items.setAll(loadedItems*)
       if items.isEmpty then
         result.show(emptyMessage, success = false)
       else

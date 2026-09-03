@@ -23,9 +23,9 @@ class RoleValidator:
     else
       None
 
-  private def validateUniqueRole(roleName: String, existingRoles: Seq[Role], currentRoleId: Option[String]): Option[String] =
+  private def validateUniqueRole(role: String, existingRoles: Seq[Role], currentRoleId: Option[String]): Option[String] =
 
-    val normalizedName = roleName.trim
+    val normalizedName = role.trim
 
     if normalizedName.isEmpty then
       None

@@ -1,5 +1,6 @@
 package pkg.a.gui.traits
 
+import pkg.a.gui.navigation.HomeNavigator.ViewNavigationState
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Node
 import scalafx.scene.control.{Button, ComboBox, DatePicker, Label, PasswordField, ScrollPane, TextArea, TextField, TextInputControl}
@@ -379,7 +380,7 @@ trait Form extends Common:
       styleClass += config.rootStyle
       center = scrollPane
 
-    page.delegate.getProperties.put("has-unsaved-changes", hasUnsavedChanges)
+    page.delegate.setUserData(ViewNavigationState(hasUnsavedChanges))
     initialFocus.foreach(focusOnOpen)
     page
 

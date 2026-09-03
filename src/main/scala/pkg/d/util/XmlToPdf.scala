@@ -3,12 +3,12 @@ package pkg.d.util
 import org.openpdf.text.*
 import org.openpdf.text.pdf.*
 import java.io.{File, FileOutputStream}
+import scala.util.Using
 import scala.xml.{Elem, XML}
 
 object XmlToPdf:
 
-  private val printsFolder =
-    new File(System.getProperty("user.dir"), "protoflow/prints")
+  private val printsFolder = new File(System.getProperty("user.dir"), "protoflow/prints")
 
   case class SummaryPrintData(
                                applicationTitle: String,
@@ -165,27 +165,29 @@ object XmlToPdf:
                          openAfterCreation: Boolean = true
                        )(content: Document => Unit): Boolean =
 
-    var document: Document = null
-
     try
       printsFolder.mkdirs()
 
       val fileName = if pdfFileName.toLowerCase.endsWith(".pdf") then pdfFileName else s"$pdfFileName.pdf"
       val pdfFile = new File(printsFolder, fileName)
       val pageSize = if landscape then PageSize.A4.rotate() else PageSize.A4
-      document = new Document(pageSize, 36f, 36f, 36f, bottomMargin)
-      val writer = PdfWriter.getInstance(document, new FileOutputStream(pdfFile))
+      val document = new Document(pageSize, 36f, 36f, 36f, bottomMargin)
+      Using.resource(new FileOutputStream(pdfFile)): os =>
+        val writer = PdfWriter.getInstance(document, os)
 
-      pageEvent.foreach: event =>
-        writer.setPageEvent(event)
+        pageEvent.foreach: event =>
+          writer.setPageEvent(event)
 
-      document.open()
+        document.open()
 
-      if addDefaultTitle then
-        addTitle(document, title)
+        try
+          if addDefaultTitle then
+            addTitle(document, title)
 
-      content(document)
-      document.close()
+          content(document)
+        finally
+          document.close()
+
       if openAfterCreation then
         openPdf(pdfFile)
 
@@ -195,10 +197,6 @@ object XmlToPdf:
       case exception: Exception =>
         println(s"Errore durante la creazione del PDF: ${exception.getMessage}")
         false
-
-    finally
-      if document != null && document.isOpen then
-        document.close()
 
   private def addSummaryHeader(
                                 document: Document,

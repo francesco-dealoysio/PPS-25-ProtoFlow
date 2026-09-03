@@ -9,36 +9,36 @@ import java.time.format.DateTimeFormatter
 
 object DateTime:
 
-  private val RomeZone: ZoneId = ZoneId.of("Europe/Rome")
-  private val StorageDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS")
-  private val StorageDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-  private val StorageTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss.SS")
-  private val DisplayDateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+  private val romeZone: ZoneId = ZoneId.of("Europe/Rome")
+  private val storageDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS")
+  private val storageDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+  private val storageTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss.SS")
+  private val displayDateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
 
-  def currentDateTime: String =
-    LocalDateTime.now(RomeZone).format(DisplayDateTimeFormatter)
+  def currentDisplayDateTime: String =
+    LocalDateTime.now(romeZone).format(displayDateTimeFormatter)
 
-  def localDateTime: String =
-    LocalDateTime.now(RomeZone).format(StorageDateTimeFormatter)
+  def currentStorageDateTime: String =
+    LocalDateTime.now(romeZone).format(storageDateTimeFormatter)
 
   def localDate: String =
-    LocalDate.now(RomeZone).format(StorageDateFormatter)
+    LocalDate.now(romeZone).format(storageDateFormatter)
 
   def localTime: String =
-    LocalTime.now(RomeZone).format(StorageTimeFormatter)
+    LocalTime.now(romeZone).format(storageTimeFormatter)
 
   def parseDateTime(value: String): LocalDateTime =
-    LocalDateTime.parse(value, StorageDateTimeFormatter)
+    LocalDateTime.parse(value, storageDateTimeFormatter)
 
   def parseDate(value: String): LocalDate =
-    LocalDate.parse(value, StorageDateFormatter)
+    LocalDate.parse(value, storageDateFormatter)
 
   def displayDateTime(value: String): String =
-    parseDateTime(value).format(DisplayDateTimeFormatter)
+    parseDateTime(value).format(displayDateTimeFormatter)
 
   def dynamicDateTimeProperty(): StringProperty =
     val dateTimeProperty =
-      StringProperty(currentDateTime)
+      StringProperty(currentDisplayDateTime)
 
     val timeline =
       new Timeline:
@@ -47,7 +47,7 @@ object DateTime:
           KeyFrame(
             time = Duration(1000),
             onFinished = _ =>
-              dateTimeProperty.value = currentDateTime
+              dateTimeProperty.value = currentDisplayDateTime
           )
         )
 

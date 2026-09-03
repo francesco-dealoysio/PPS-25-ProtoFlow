@@ -132,7 +132,7 @@ trait Common:
    */
   protected def dangerButton(text: String, action: () => Unit): Button =
     styledButton(text, DangerButtonStyle, action)
-  
+
   /**
    * Creates a close button executing the given exit action.
    * @param onExit the action executed when the button is pressed
@@ -150,7 +150,7 @@ trait Common:
    */
   protected def printButton(action: () => Unit, text: String = Print): Button =
     secondaryButton(text = text, action = action)
-  
+
   /**
    * Creates a title section containing a title and a subtitle.
    * @param titleText     the title text

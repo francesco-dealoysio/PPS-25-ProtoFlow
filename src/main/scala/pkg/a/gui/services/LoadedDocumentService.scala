@@ -44,7 +44,7 @@ object  LoadedDocumentService:
   def getLoadedDocuments: List[LoadedDocument] =
     loadedDocumentLogic.getRecords[LoadedDocument]().toList
 
-  def getLoadedDocuments(predicate: Any => Boolean): List[LoadedDocument] =
+  def getLoadedDocuments(predicate: LoadedDocument => Boolean): List[LoadedDocument] =
     loadedDocumentLogic.getRecordsByFilter[LoadedDocument](predicate).toList
 
   def deleteLoadedDocument(id: String): Boolean =
@@ -53,7 +53,7 @@ object  LoadedDocumentService:
   def getRegisteredDocuments: List[RegisteredDocument] =
     registeredDocumentLogic.getRecords[RegisteredDocument]().toList
 
-  def getRegisteredDocuments(predicate: Any => Boolean): List[RegisteredDocument] =
+  def getRegisteredDocuments(predicate: RegisteredDocument => Boolean): List[RegisteredDocument] =
     registeredDocumentLogic.getRecordsByFilter[RegisteredDocument](predicate).toList
 
   def deleteRegisteredDocument(id: String): Boolean =

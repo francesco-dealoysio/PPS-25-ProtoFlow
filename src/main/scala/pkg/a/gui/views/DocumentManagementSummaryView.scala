@@ -53,7 +53,7 @@ object DocumentManagementSummaryView extends Form with Management:
           applicationTitle = ApplicationName,
           reportTitle = Text.SummaryTitle,
           generatedAtLabel = Text.SummaryGeneratedAt,
-          generatedAt = DateTime.currentDateTime,
+          generatedAt = DateTime.currentDisplayDateTime,
           documentDataSectionTitle = Text.DocumentDataSection,
           documentCodeLabel = Text.DocumentCodeField,
           documentCode = summary.documentCode,

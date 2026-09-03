@@ -44,7 +44,7 @@ final class RegistrationRequestService(
         role = requestedRole.trim,
         area = requestedArea.trim,
         assignment = assignment.trim,
-        date = DateTime.localDateTime,
+        date = DateTime.currentStorageDateTime,
         state = "Pending"
       )
 
@@ -93,7 +93,7 @@ final class RegistrationRequestService(
             request.copy(
               state = "Approved",
               processedBy = operatorUsername,
-              processedDate = DateTime.localDateTime,
+              processedDate = DateTime.currentStorageDateTime,
               assignedUsername = username
             )
 
@@ -118,7 +118,7 @@ final class RegistrationRequestService(
             request.copy(
               state = "Rejected",
               processedBy = operatorUsername,
-              processedDate = DateTime.localDateTime,
+              processedDate = DateTime.currentStorageDateTime,
               motivation = motivation.trim
             )
 

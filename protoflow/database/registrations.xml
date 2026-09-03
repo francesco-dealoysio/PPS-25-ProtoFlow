@@ -45,6 +45,22 @@
     <motivation>Requisiti inagìdeguati</motivation>
     <processedBy>frank</processedBy>
     <processedDate>2026-08-28 18:04:57.50</processedDate>
-    <assignedUsername></assignedUsername>
+    <assignedUsername/>
+  </record>
+  <record>
+    <id>128</id>
+    <surname>Boneva</surname>
+    <name>Ruslana</name>
+    <email>ruslana@hotmail.com</email>
+    <phone></phone>
+    <role>admin</role>
+    <area>Amministrazione</area>
+    <assignment>Capo</assignment>
+    <date>2026-09-02 23:24:39.80</date>
+    <state>Approved</state>
+    <motivation></motivation>
+    <processedBy>frank</processedBy>
+    <processedDate>2026-09-02 23:27:18.38</processedDate>
+    <assignedUsername>rboneva</assignedUsername>
   </record>
 </registrations>

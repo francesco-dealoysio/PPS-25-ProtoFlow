@@ -14,11 +14,11 @@ case class Classification(
 
   def setId(value: String): Unit = id = value
   def setClassification(value: String): Unit = classification = value
-  def setDescription(value: String): Unit = description = value // ??
+  def setDescription(value: String): Unit = description = value
 
   def getId: String = id
   def getClassification: String = classification
-  def getDescription: String = description // ??
+  def getDescription: String = description
 
   override def xmlFile = "classifications.xml"
 

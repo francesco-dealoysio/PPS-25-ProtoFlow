@@ -17,7 +17,7 @@ object ArchivedDocumentService:
   def getArchivedDocuments: List[ArchivedDocument] =
     archivedDocumentLogic.getRecords[ArchivedDocument]().toList
 
-  def getArchivedDocuments(predicate: Any => Boolean): List[ArchivedDocument] =
+  def getArchivedDocuments(predicate: ArchivedDocument => Boolean): List[ArchivedDocument] =
     archivedDocumentLogic.getRecordsByFilter[ArchivedDocument](predicate).toList
 
   def deleteArchivedDocument(id: String): Boolean =

@@ -16,38 +16,38 @@ class DateTimeTest:
 
   @Test
   def testCurrentDateTimeFormat(): Unit =
-    val result = DateTime.currentDateTime
+    val result = DateTime.currentDisplayDateTime
     assertTrue(result.matches("""\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2}"""))
 
   @Test
   def testCurrentDateTimeValid(): Unit =
-    val result = DateTime.currentDateTime
+    val result = DateTime.currentDisplayDateTime
     val parsedResult = Try(LocalDateTime.parse(result, displayDateTimeFormatter))
     assertTrue(parsedResult.isSuccess)
 
   @Test
   def testCurrentDateTimeCloseToRomeTime(): Unit =
     val before = LocalDateTime.now(romeZone)
-    val result = LocalDateTime.parse(DateTime.currentDateTime, displayDateTimeFormatter)
+    val result = LocalDateTime.parse(DateTime.currentDisplayDateTime, displayDateTimeFormatter)
     val after = LocalDateTime.now(romeZone)
     assertFalse(result.isBefore(before.minusSeconds(1)))
     assertFalse(result.isAfter(after.plusSeconds(1)))
 
   @Test
   def testLocalDateTimeFormat(): Unit =
-    val result = DateTime.localDateTime
+    val result = DateTime.currentStorageDateTime
     assertTrue(result.matches("""\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{2}"""))
 
   @Test
   def testLocalDateTimeValid(): Unit =
-    val result = DateTime.localDateTime
+    val result = DateTime.currentStorageDateTime
     val parsedResult = Try(LocalDateTime.parse(result, storageDateTimeFormatter))
     assertTrue(parsedResult.isSuccess)
 
   @Test
   def testLocalDateTimeCloseToRomeTime(): Unit =
     val before = LocalDateTime.now(romeZone)
-    val result = LocalDateTime.parse(DateTime.localDateTime, storageDateTimeFormatter)
+    val result = LocalDateTime.parse(DateTime.currentStorageDateTime, storageDateTimeFormatter)
     val after = LocalDateTime.now(romeZone)
     assertFalse(result.isBefore(before.minusSeconds(1)))
     assertFalse(result.isAfter(after.plusSeconds(1)))

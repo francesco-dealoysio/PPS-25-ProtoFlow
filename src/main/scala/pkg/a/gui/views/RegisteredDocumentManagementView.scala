@@ -18,7 +18,7 @@ object RegisteredDocumentManagementView extends Management:
   def apply(onArchive: RegisteredDocument => Unit = _ => (), onView: RegisteredDocument => Unit = _ => (), onExit: () => Unit = () => ()): BorderPane =
     
     val documents = ObservableBuffer.empty[RegisteredDocument]
-
+    var allDocuments = List.empty[RegisteredDocument]
     val result = createResultMessage()
 
     val table = managementTable(documents, Text.Empty)
@@ -39,18 +39,16 @@ object RegisteredDocumentManagementView extends Management:
 
     def loadDocuments(): Unit =
       result.clear()
-
-      val loadedDocuments =
+      allDocuments =
         LoadedDocumentService
           .getRegisteredDocuments
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
-      updateComboFilter(operatorFilter, Text.AllOperators, loadedDocuments)(_.getRegisteredBy)
-
-      documents.setAll(loadedDocuments*)
+      updateComboFilter(operatorFilter, Text.AllOperators, allDocuments)(_.getRegisteredBy)
+      documents.setAll(allDocuments*)
       table.selectionModel.value.clearSelection()
 
-      if loadedDocuments.isEmpty then
+      if allDocuments.isEmpty then
         result.show(Text.Empty, success = true)
 
     clearResultOnSelection(table, result)
@@ -65,15 +63,10 @@ object RegisteredDocumentManagementView extends Management:
 
     def searchDocuments(): Unit =
       result.clear()
-
       val criteria = buildFilterCriteria()
-
       val filteredDocuments =
-        if criteria.isEmpty then
-          LoadedDocumentService.getRegisteredDocuments
-        else
-          LoadedDocumentService.getRegisteredDocuments(getRegisteredDocumentPredicate(criteria))
-
+        if criteria.isEmpty then allDocuments
+        else allDocuments.filter(getRegisteredDocumentPredicate(criteria))
       showFilteredItems(documents, table, filteredDocuments, result)(_.getId)
 
     def resetFilters(): Unit =
@@ -81,7 +74,7 @@ object RegisteredDocumentManagementView extends Management:
       toDateFilter.value = null
       subjectFilter.clear()
       operatorFilter.value = Text.AllOperators
-      loadDocuments()
+      searchDocuments()
 
     def deleteSelectedDocument(): Unit =
       withSelectedItem(table, result, Text.SelectToDelete): selected =>

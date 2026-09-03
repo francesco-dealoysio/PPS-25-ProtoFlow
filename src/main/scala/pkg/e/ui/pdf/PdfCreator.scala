@@ -2,7 +2,7 @@ package pkg.e.ui.pdf
 
 import org.apache.pdfbox.pdmodel.common.*
 import org.apache.pdfbox.pdmodel.font.PDType1Font
-import pkg.d.util.DateTime.currentDateTime
+import pkg.d.util.DateTime.currentDisplayDateTime
 import pkg.d.util.Util.inPrintsFilePathName
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
@@ -189,7 +189,7 @@ object PdfCreator:
   private def writeFooter(): Unit =
     var xOffset = startX + paddingLeft
     val yOffset = startY - pageHeight + paddingBottom
-    writeToContent(currentDateTime, xOffset, yOffset, fontFooter)
+    writeToContent(currentDisplayDateTime, xOffset, yOffset, fontFooter)
 
     val textWidth = fontFooter.fontType.getStringWidth(pageNumber.toString) / 1000 * fontFooter.fontSize
     xOffset = (pageWidth - textWidth) / 2

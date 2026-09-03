@@ -73,41 +73,41 @@ object StartData:
     <record>
       <id>1</id>
       <classification>Presidenza</classification>
-      <description>Presidenza</description>
+      <description>Direzione e organi istituzionali</description>
     </record>
     <record>
       <id>2</id>
       <classification>Segreteria</classification>
-      <description>Segreteria</description>
+      <description>Protocollo e supporto operativo</description>
     </record>
     <record>
       <id>3</id>
       <classification>Amministrazione</classification>
-      <description>Amministrazione</description>
+      <description>Contabilità, bilancio e finanza</description>
     </record>
     <record>
       <id>4</id>
       <classification>Personale</classification>
-      <description>Personale</description>
+      <description>Gestione risorse umane e paghe</description>
     </record>
     <record>
       <id>5</id>
       <classification>Materiali</classification>
-      <description>Materiali</description>
+      <description>Acquisti, magazzino e forniture</description>
     </record>
     <record>
       <id>6</id>
       <classification>Infrastrutture</classification>
-      <description>Infrastrutture</description>
+      <description>Manutenzione sedi e logistica</description>
     </record>
     <record>
       <id>7</id>
       <classification>Addestramento</classification>
-      <description>Addestramento</description>
+      <description>Formazione e corsi aggiornamento</description>
     </record>
     <record>
       <id>8</id>
       <classification>Informatica</classification>
-      <description>Informatica</description>
+      <description>Sistemi IT, reti e assistenza</description>
     </record>
   </classifications>

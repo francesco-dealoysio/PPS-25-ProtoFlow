@@ -7,8 +7,7 @@ import java.nio.file.{Files, Paths}
 
 case class ArchivedDocument(
                              private var id: String = "",
-
-                             // Dati originali del documento
+                           
                              private var documentDate: String = "",
                              private var documentProtocol: String = "",
                              private var documentType: String = "",
@@ -16,19 +15,16 @@ case class ArchivedDocument(
                              private var recipient: String = "",
                              private var subject: String = "",
                              private var remarks: String = "",
-
-                             // Dati della presa in carico
+                           
                              private var loadedDate: String = "",
                              private var loadedTime: String = "",
                              private var loadedBy: String = "",
-
-                             // Dati della protocollazione
+                           
                              private var protocolNumber: String = "",
                              private var registeredDate: String = "",
                              private var registeredTime: String = "",
                              private var registeredBy: String = "",
 
-                             // Dati dell'archiviazione
                              private var archivedDate: String = "",
                              private var archivedTime: String = "",
                              private var archivedBy: String = "",

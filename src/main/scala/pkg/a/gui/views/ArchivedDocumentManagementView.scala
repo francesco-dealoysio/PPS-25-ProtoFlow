@@ -17,7 +17,7 @@ object ArchivedDocumentManagementView extends Management:
 
   def apply(onView: ArchivedDocument => Unit = _ => (), onExit: () => Unit = () => (), documentFilter: ArchivedDocument => Boolean = _ => true): BorderPane =
     val documents = ObservableBuffer.empty[ArchivedDocument]
-
+    var allDocuments = List.empty[ArchivedDocument]
     val result = createResultMessage()
 
     val table = managementTable(documents, Text.Empty)
@@ -38,17 +38,18 @@ object ArchivedDocumentManagementView extends Management:
     )
 
     def availableDocuments(): List[ArchivedDocument] =
-      ArchivedDocumentService.getArchivedDocuments.filter(documentFilter)
+      allDocuments.filter(documentFilter)
 
     def loadDocuments(): Unit =
       result.clear()
 
-      val loadedDocuments =
-        availableDocuments()
+      allDocuments =
+        ArchivedDocumentService
+          .getArchivedDocuments
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
+      val loadedDocuments = availableDocuments()
       updateComboFilter(operatorFilter, Text.AllOperators, loadedDocuments)(_.getArchivedBy)
-
       documents.setAll(loadedDocuments*)
       table.selectionModel.value.clearSelection()
 
@@ -69,13 +70,10 @@ object ArchivedDocumentManagementView extends Management:
     def searchDocuments(): Unit =
       result.clear()
       val criteria = buildFilterCriteria()
+      val available = availableDocuments()
       val filteredDocuments =
-        if criteria.isEmpty then
-          availableDocuments()
-        else
-          val predicate = getDocumentPredicate(criteria)
-          availableDocuments().filter(document => predicate(document))
-
+        if criteria.isEmpty then available
+        else available.filter(getDocumentPredicate(criteria))
       showFilteredItems(documents, table, filteredDocuments, result)(_.getId)
 
     def resetFilters(): Unit =
@@ -84,7 +82,7 @@ object ArchivedDocumentManagementView extends Management:
       subjectFilter.clear()
       idFilter.clear()
       operatorFilter.value = Text.AllOperators
-      loadDocuments()
+      searchDocuments()
 
     def printDocumentsList(): Unit =
       val printed =
