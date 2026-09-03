@@ -1,3 +1,6 @@
+[Back to index](0-Indice.md) |
+[Previous Chapter](3-Design_architetturale.md) |
+[Next Chapter](5-Implementazione.md)
 # 4. Design di dettaglio
 
 Questa sezione descrive le principali scelte di design adottate 
@@ -227,3 +230,6 @@ Il requisito opzionale di personalizzazione delle regole organizzative estende i
 ![Flusso di approvazione di una richiesta, con rollback in caso di fallimento parziale](img/cap4-approvazione-richiesta.png)
 
 Poiché l'account e la richiesta sono persistiti in due file XML indipendenti, non esiste una transazione atomica che copra entrambe le scritture. Se l'inserimento dell'account riesce ma l'aggiornamento della richiesta fallisce, il servizio esegue un rollback esplicito cancellando l'account appena creato, in modo da non lasciare nel sistema un account "orfano" non riconducibile ad alcuna richiesta approvata. La password in chiaro non viene mai persistita: esiste solo nel valore di ritorno (`RegistrationApproval`), usato per mostrarla una tantum all'operatore che dovrà comunicarla al nuovo utente.
+[Back to index](0-Indice.md) |
+[Previous Chapter](3-Design_architetturale.md) |
+[Next Chapter](5-Implementazione.md)

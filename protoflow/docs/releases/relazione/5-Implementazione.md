@@ -1,3 +1,6 @@
+[Back to index](0-Indice.md) |
+[Previous Chapter](4-Design_di_dettaglio.md) |
+[Next Chapter](6-Testing.md)
 # 5. Implementazione
 
 Questa sezione raccoglie, per ciascun membro del gruppo, una descrizione delle parti di sistema di cui si è occupato in prima persona: le scelte implementative adottate, le motivazioni dietro tali scelte e le eventuali difficoltà incontrate durante lo sviluppo.
@@ -104,10 +107,6 @@ Ho scelto di mantenere nel documento archiviato anche le informazioni accumulate
 La parte più delicata dell'implementazione è stata il passaggio da documento protocollato a documento archiviato. L'operazione modifica due file XML indipendenti: viene prima creato il record nell'archivio e poi eliminato quello presente tra i documenti protocollati.
 
 Non essendoci transazioni atomiche, ho gestito esplicitamente il caso di fallimento: se l'inserimento nell'archivio riesce ma la cancellazione del documento protocollato fallisce, il nuovo record viene eliminato nuovamente dall'archivio. Questo rollback evita che lo stesso documento possa risultare contemporaneamente presente in due stadi differenti del ciclo di vita.
-[Back to index](0-Indice.md) |
-[Previous Chapter](4-Design_di_dettaglio.md) |
-[Next Chapter](6-Testing.md)
-# 5. Implementazione
 
 ## 5.1 Sezione descrittiva studente DE ALOYSIO Francesco
 <p style="text-align: justify;">
@@ -191,13 +190,8 @@ Elenco dei moduli sviluppati:
 
 ## 5.2 Sezione descrittiva studente PISU Roberto
 
-
 ## 5.3 Sezione descrittiva studente TESTA Thomas
 
-
-[Back to index](0-Indice.md) |
-[Previous Chapter](4-Design_di_dettaglio.md) |
-[Next Chapter](6-Testing.md)
 In una successiva fase di consolidamento ho inoltre uniformato l'identificativo del documento lungo tutti gli stadi, mantenendo lo stesso `id` dalla presa in carico fino all'archiviazione. Questa scelta ha semplificato sia la ricerca dei documenti sia la ricostruzione del loro storico.
 
 La consultazione dei documenti archiviati è stata inoltre adattata al profilo Viewer. In questo caso non era sufficiente riutilizzare direttamente la schermata amministrativa: i documenti mostrati devono rispettare il cono di visibilità dell'utente. Ho quindi applicato il filtro sulla classificazione associata al Viewer prima di fornire gli elementi alla schermata di gestione, in modo che la view riceva solamente i documenti effettivamente consultabili dall'utente autenticato.
@@ -238,3 +232,7 @@ Infine ho aggiunto una GitHub Action per l'esecuzione automatica dei test sul br
 ## 5.3 Sezione descrittiva studente 3
 
 *[da completare]*
+
+[Back to index](0-Indice.md) |
+[Previous Chapter](4-Design_di_dettaglio.md) |
+[Next Chapter](6-Testing.md)
