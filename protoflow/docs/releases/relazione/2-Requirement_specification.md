@@ -1,20 +1,30 @@
+[Back to index](0-Indice.md) |
+[Previous Chapter](1-Processo_di_sviluppo.md) |
+[Next Chapter](3-Design_architetturale.md)
 # 2. Requirement specification
-<a id="business"></a>
+
 ## 2.1 Requisiti di business
 
-Il progetto nasce dal Project Overview Statement "Gestione Protocollo UNUCI", che inquadra un'organizzazione (l'Unione Nazionale Ufficiali in Congedo d'Italia) priva di uno strumento informatico per la protocollazione della corrispondenza. 
+<p style="text-align: justify;">
+Il progetto nasce dal Project Overview Statement "Gestione Protocollo", relativo ad un'organizzazione committente priva di uno strumento informatico per la protocollazione della corrispondenza. 
 La gestione attuale è interamente manuale: la corrispondenza che transita per la Segreteria viene catalogata secondo una classificazione per settore, protocollata su registro cartaceo, poi spedita/smistata o archiviata fisicamente. 
 Parte della corrispondenza, inoltre, bypassa la Segreteria arrivando o partendo direttamente dalle singole unità organizzative, sfuggendo così a qualunque tracciamento.
+</p>
 
 ### Problemi individuati
 
+<p style="text-align: justify;">
 Dalla situazione descritta derivano sei problemi espliciti: mancanza di controllo centralizzato sulla posta, ridotta condivisione delle informazioni tra chi ne avrebbe necessità, protocollazione omessa per parte della corrispondenza, archiviazione solo parziale, difficoltà di ricerca e recupero delle informazioni, lentezza delle operazioni di protocollazione.
+</p>
 
 ### Obiettivo e opportunità
 
+<p style="text-align: justify;">
 L'obiettivo dichiarato è disporre di *"un sistema applicativo efficiente ed user-friendly che informatizzi e potenzi le attività normalmente svolte dagli operatori per gestire la protocollazione della corrispondenza"*, con attenzione all'interoperabilità con altri sistemi. Da questo derivano gli obiettivi operativi: un'applicazione i cui operatori accedano a funzionalità differenziate in base al proprio profilo; gestione centralizzata e storicizzata delle informazioni con tracciamento delle transazioni; meccanismi di ricerca, estrazione e reportistica sui dati.
-
+</p>
+<p style="text-align: justify;">
 Il documento di partenza fissa anche criteri di successo quantitativi (es. velocizzare del 50% l'acquisizione e gestione delle informazioni, rendere completamente tracciabili le comunicazioni). Si tratta di target dichiarati nella fase di analisi iniziale: il progetto, per la sua natura di esercitazione universitaria con un singolo gruppo utente di prova, non prevede una misurazione empirica di questi indicatori — non c'è una base storica ("come si lavorava prima") con cui confrontare i tempi del nuovo sistema. Vengono riportati per completezza rispetto al documento di analisi, non come requisiti verificati.
+</p>
 
 ### Vincoli e rischi individuati in fase di analisi
 
@@ -23,8 +33,11 @@ Il documento di partenza fissa anche criteri di successo quantitativi (es. veloc
 - l'adozione del sistema comporterebbe, in un contesto reale, una modifica dei processi operativi correnti.
 
 ## 2.2 Modello di dominio
-
-Il dominio del sistema ruota attorno al **ciclo di vita di un documento**, dalla presa in carico all'archiviazione, e agli **attori** che lo attraversano. Il modello implementato riflette direttamente questa struttura: dieci entità, tutte persistite come record XML tramite un contratto comune (`Entity`: `getRecords`, `getRecordsByFilter`, `getRecordById`, `recordInsert`, `recordUpdate`, `recordDelete`).
+<p style="text-align: justify;">
+Il dominio del sistema ruota attorno al <b>ciclo di vita di un documento</b>, dalla presa in carico all'archiviazione, e agli <b>attori</b> che lo attraversano.
+Il modello implementato riflette direttamente questa struttura: dieci entità, tutte persistite come record XML tramite un contratto comune 
+(<b>Entity</b>: <b>getRecords</b>, <b>getRecordsByFilter</b>, <b>getRecordById</b>, <b>recordInsert</b>, <b>recordUpdate</b>, <b>recordDelete</b>).
+</p>
 
 **Entità anagrafiche**
 - `Account` — un utente del sistema (dati anagrafici, ruolo, area, username, password cifrata);
@@ -44,13 +57,16 @@ Il dominio del sistema ruota attorno al **ciclo di vita di un documento**, dalla
 - `AccessLog` — traccia gli accessi al sistema (utente, ruolo, data/ora);
 - `ErrorLog` — traccia le eccezioni applicative, per diagnostica.
 
+<p style="text-align: justify;">
 Uno schema completo delle entità e delle loro relazioni, insieme all'architettura degli altri livelli del sistema (interfaccia, servizi, motore di autorizzazione), è disponibile come materiale di supporto separato alla sezione 4 (Design di dettaglio).
+</p>
 
 ## 2.3 Requisiti funzionali
 
 ### 2.3.1 Requisiti utente
-
+<p style="text-align: justify;">
 I requisiti funzionali sono organizzati per attore, secondo la Requirement Breakdown Structure (RBS) prodotta in fase di analisi. Il sistema prevede tre ruoli:
+</p>
 
 | Ruolo | Descrizione | Attività principali |
 |---|---|---|
@@ -59,8 +75,9 @@ I requisiti funzionali sono organizzati per attore, secondo la Requirement Break
 | **Viewer** | Utente in sola consultazione | Ricerca e consultazione dei documenti archiviati, con visibilità limitata alla propria area di appartenenza; stampa dei risultati |
 
 *Nota sulla nomenclatura*: i documenti di analisi prodotti dal gruppo non sono coerenti tra loro sul nome del terzo ruolo — la RBS e il documento "Ruoli" lo chiamano **Viewer**, mentre il documento di specifica funzionale e il Product Backlog usano in alcuni punti **Reader**. Nell'implementazione il codice ruolo usato è `viewer`; questa relazione adotta quindi **Viewer** come nome definitivo, segnalando l'incoerenza nei documenti di partenza come un piccolo limite del processo di analisi (ripreso in sezione 7).
-
+<p style="text-align: justify;">
 I 47 requisiti funzionali individuati in fase di analisi si raggruppano nelle seguenti aree:
+</p>
 
 - **Accesso e accreditamento** — portale, login, richiesta di registrazione (requisiti 1–3);
 - **Homepage per ruolo** — una vista iniziale differenziata per Admin, Oper e Viewer (requisiti 4, 22, 26);
@@ -72,12 +89,14 @@ I 47 requisiti funzionali individuati in fase di analisi si raggruppano nelle se
 - **Ricerca** — per protocollo, data, intervallo temporale, classificazione, e loro combinazione, sia sui documenti sia sui log (requisiti 30–37);
 - **Report e stampe** — elenco/scheda per documenti protocollati, log, utenti, ruoli, classifiche (requisiti 38–39, 45–46);
 - **Controllo di gestione e sintesi** *(Admin)* — vista aggregata sui documenti nei tre stadi, riepilogo di un singolo documento, statistiche di utilizzo (requisiti 13, 44, 47).
-
+<p style="text-align: justify;">
 Ogni requisito è ulteriormente dettagliato in una User Story dedicata, prodotta durante lo sprint di competenza e non riportata per esteso in questa sezione per brevità.
+</p>
 
 ### 2.3.2 Requisiti di sistema
-
+<p style="text-align: justify;">
 Oltre alle funzionalità direttamente azionate da un utente, il sistema deve garantire un insieme di comportamenti trasversali, non legati a una singola schermata:
+</p>
 
 - **verifica delle autorizzazioni tramite regole logiche**: ogni azione richiesta da un utente viene verificata contro un insieme di regole scritte in Prolog, non tramite condizionali sparsi nel codice applicativo — requisito obbligatorio della proposta di progetto, discusso in dettaglio nelle sezioni 3, 4 e 6;
 - **persistenza e storicizzazione**: ogni entità del dominio viene salvata su file XML e non viene mai sovrascritta silenziosamente — le transizioni di stato (es. approvazione di una richiesta, avanzamento di un documento tra stadi) aggiornano il record esistente, mentre le operazioni sui documenti generano automaticamente una voce di log, indipendentemente dall'azione specifica richiesta dall'utente;
@@ -86,19 +105,25 @@ Oltre alle funzionalità direttamente azionate da un utente, il sistema deve gar
 - **validazione dei dati in ingresso**: ogni form di inserimento/modifica valida i campi obbligatori e i vincoli di unicità (es. username, codice ruolo) prima di consentire il salvataggio.
 
 ## 2.4 Requisiti non funzionali
-
+<p style="text-align: justify;">
 Dalla RBS, i requisiti non funzionali individuati in fase di analisi si raggruppano in quattro categorie:
+</p>
 
 - **Sicurezza** — autenticazione e profilazione dell'utente (l'accesso al sistema richiede credenziali valide, e ogni utente vede solo le funzionalità del proprio ruolo), un "cono di visibilità" limitato ai dati di propria competenza (es. il Viewer vede solo i documenti della propria area), cifratura delle credenziali, tracciamento degli accessi tramite log;
 - **Scalabilità**;
 - **Interoperabilità**;
 - **Affidabilità**.
-
-Le ultime tre categorie sono dichiarate nel documento di analisi originale ma non sono state tradotte in criteri di accettazione misurabili né verificate nel corso del progetto — è onesto segnalarlo come limite, coerente con la natura di esercitazione didattica del progetto piuttosto che di sistema in produzione. Il requisito di **Sicurezza**, al contrario, è verificabile direttamente nel codice: è il requisito non funzionale meglio coperto dal progetto, sia a livello di autenticazione/autorizzazione (si veda 2.3.2) sia di cifratura delle credenziali.
+<p style="text-align: justify;">
+Le ultime tre categorie sono dichiarate nel documento di analisi originale ma non sono state tradotte in criteri di accettazione misurabili né verificate nel corso del
+progetto — è onesto segnalarlo come limite, coerente con la natura di esercitazione didattica del progetto piuttosto che di sistema in produzione. Il requisito
+di <b>Sicurezza</b>, al contrario, è verificabile direttamente nel codice: è il requisito non funzionale meglio coperto dal progetto, sia a livello di
+autenticazione/autorizzazione (si veda 2.3.2) sia di cifratura delle credenziali.
+</p>
 
 ## 2.5 Requisiti di implementazione
-
+<p style="text-align: justify;">
 Dai vincoli tecnologici individuati in fase di analisi (RBS, ramo Constraint) e dagli strumenti indicati nella proposta di progetto:
+</p>
 
 - **Linguaggio**: Scala 3, con build gestita tramite SBT;
 - **Interfaccia grafica**: ScalaFX;
@@ -109,3 +134,7 @@ Dai vincoli tecnologici individuati in fase di analisi (RBS, ramo Constraint) e 
 - **Ambiente di sviluppo**: IntelliJ IDEA;
 - **Documentazione**: Markdown per la relazione, versionata nello stesso repository del codice;
 - **Vincolo temporale**: consegna entro la scadenza d'esame, che ha condizionato le scelte di scope discusse nelle sezioni successive (in particolare gli opzionali non completati, si veda la Retrospettiva).
+
+[Back to index](0-Indice.md) |
+[Previous Chapter](1-Processo_di_sviluppo.md) |
+[Next Chapter](3-Design_architetturale.md)

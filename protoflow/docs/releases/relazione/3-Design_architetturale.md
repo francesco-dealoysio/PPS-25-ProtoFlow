@@ -1,3 +1,7 @@
+[Back to index](0-Indice.md) |
+[Previous Chapter](2-Requirement_specification.md) |
+[Next Chapter](4-Design_di_dettaglio.md)
+
 # 3. Design architetturale
 
 ## 3.1 Stile architetturale
@@ -41,3 +45,7 @@ Il motore di autorizzazione resta l'unico punto del progetto in cui la programma
 | Regole di autorizzazione | Prolog (tuProlog), incapsulato da `PrologEngine`/`AuthorizationEngine` | Requisito obbligatorio della proposta di progetto |
 | Persistenza | File XML, uno per entità | Vincolo/indicazione della proposta di progetto; scostamento dal POS originale (si veda 2.5) |
 | Regole di business (unicità, invarianti) | Nei `validator`/`service`, non nell'entità | Compensa l'assenza di vincoli di un DBMS relazionale |
+
+[Back to index](0-Indice.md) |
+[Previous Chapter](2-Requirement_specification.md) |
+[Next Chapter](4-Design_di_dettaglio.md)

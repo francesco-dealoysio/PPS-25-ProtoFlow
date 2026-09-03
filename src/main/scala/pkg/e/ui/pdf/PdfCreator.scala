@@ -238,7 +238,7 @@ object PdfCreator:
   //private def shape(label: String): String = (" ".repeat(15) + label + ": ").takeRight(15)
 
 @main def tryPdfCreator(): Unit =
-/*
+
   import pkg.b.logic.Account
   val record: Account = Account().getRecordById("1")
   val fields = Seq(
@@ -255,8 +255,8 @@ object PdfCreator:
 
   PdfCreator.createPdf(inPrintsFilePathName("SchedaAccount.pdf"), "Scheda Account Utente", fields)
   PdfViewer.viewPdf(inPrintsFilePathName("SchedaAccount.pdf"))
-*/
 
+/*
   import pkg.b.logic.Classification
   val record: Classification = Classification().getRecordById("1")
   val fields = Seq(
@@ -267,13 +267,12 @@ object PdfCreator:
 
   PdfCreator.createPdf(inPrintsFilePathName("SchedaClassification.pdf"), "Scheda Classifica", fields)
   PdfViewer.viewPdf(inPrintsFilePathName("SchedaClassification.pdf"))
-
+*/
   // test multipagina
   import scala.collection.mutable.ArrayBuffer
   val items: ArrayBuffer[(String, String)] = ArrayBuffer.empty
   for (i <- 1 to 100) { items += (("Label"+i, "Value"+i)) }
   val multiPages: Seq[(String, String)] = items.toSeq
-
 /*
   PdfCreator.createPdf(inPrintsFilePathName("PaginaMultipla.pdf"), "Scheda Pagina Multipla", multiPages)
   PdfViewer.viewPdf(inPrintsFilePathName("PaginaMultipla.pdf"))
