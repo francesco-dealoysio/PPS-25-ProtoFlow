@@ -8,9 +8,12 @@ Il gruppo ha adottato il processo di sviluppo Agile <b>Scrum</b>, articolato in 
 a una settimana, in conformità a quanto consigliato nel punto P8 delle regole d'esame del corso.
 </p>
 
-### <p style="color: red;">(tbd) Meeting iniziale (tbd)</p>
+### Meeting iniziale
 <p style="text-align: justify;">
-Primo incontro durante il quale ....
+Il Meeting iniziale, che ha coinciso anche con lo Sprint Planning Meeting dello Sprint organizzativo S0, ha costituito
+il momento di avvio del progetto ed ha avuto l'obiettivo di stabilire l'ambiente di sviluppo, gli strumenti da utilizzare, 
+individuare i requisiti, definire il Product Backlog, le User Story, i template della documentazione e soprattutto le
+modalità di lavoro da seguire ed il processo di sviluppo summenzionato descritto di seguito.
 </p>
 
 Ogni sprint ha seguito la struttura classica del seguente esempio relativo allo Sprint S1:
