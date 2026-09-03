@@ -17,13 +17,14 @@ object StatisticsService:
   private val registrationLogic = Registration()
   private val roleLogic = Role()
   private val accessLogLogic = AccessLog()
+  private val DefaultMonthsRange = 12
 
-  def registeredDocumentsByMonth(lastNMonths: Int = 12, xmlFilePathName: String = ""): Seq[MonthlyCount] =
+  def registeredDocumentsByMonth(lastNMonths: Int = DefaultMonthsRange, xmlFilePathName: String = ""): Seq[MonthlyCount] =
     val docs = fetch(xmlFilePathName)(registeredDocumentLogic.getRecords[RegisteredDocument](), registeredDocumentLogic.getRecords[RegisteredDocument])
     val dates = docs.map(_.getRegisteredDate)
     countByMonth(dates, lastNMonths)
 
-  def archivedDocumentsByMonth(lastNMonths: Int = 12, xmlFilePathName: String = ""): Seq[MonthlyCount] =
+  def archivedDocumentsByMonth(lastNMonths: Int = DefaultMonthsRange, xmlFilePathName: String = ""): Seq[MonthlyCount] =
     val docs = fetch(xmlFilePathName)(archivedDocumentLogic.getRecords[ArchivedDocument](), archivedDocumentLogic.getRecords[ArchivedDocument])
     val dates = docs.map(_.getArchivedDate)
     countByMonth(dates, lastNMonths)

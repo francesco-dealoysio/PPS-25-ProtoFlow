@@ -13,6 +13,9 @@ import scalafx.scene.layout.{HBox, VBox}
 
 object DashboardView extends Management:
 
+  private val RecentDocumentsLimit = 10
+  private val CardWidth = 190
+
   case class DashboardCard(title: String, value: String, subtitle: String)
 
   def apply(title: String, cards: Seq[DashboardCard], documents: Seq[ManagedDocument]): VBox =
@@ -33,7 +36,7 @@ object DashboardView extends Management:
   private def statCard(card: DashboardCard): VBox =
 
     new VBox:
-      prefWidth = 190
+      prefWidth = CardWidth
       styleClass += StatCardStyle
 
       children = Seq(
@@ -44,7 +47,7 @@ object DashboardView extends Management:
 
   private def createDocumentsTable(documents: Seq[ManagedDocument]): TableView[ManagedDocument] =
 
-    val recentDocuments = ObservableBuffer(documents.reverse.take(10)*)
+    val recentDocuments = ObservableBuffer(documents.reverse.take(RecentDocumentsLimit)*)
     val table = managementTable(recentDocuments, NoDocuments)
     table.styleClass += DocumentsTableStyle
     table.placeholder = fieldLabel(NoDocuments, TablePlaceholderStyle)

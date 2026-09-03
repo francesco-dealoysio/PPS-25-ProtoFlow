@@ -8,10 +8,11 @@ import pkg.b.logic.{Account, Classification, DocumentLog, Registration, Role}
 import scalafx.scene.layout.Pane
 import pkg.a.gui.navigation.HomeNavigator
 import pkg.a.gui.navigation.NavigationFlows.*
+import pkg.a.gui.text.UiText.HomePages
 
 object HomePageAdminView extends HomePage:
 
-  override protected val pageTitle: String = "Homepage Amministratore"
+  override protected val pageTitle: String = HomePages.AdminTitle
 
   override protected def dashboardView(currentAccount: Account): Pane =
     DashboardAdminView(currentAccount, pageTitle)

@@ -6,37 +6,61 @@ object AppText:
 
   object Menu:
     val Dashboard = "Dashboard"
-    val Profile = "Profilo"
-    val Statistics = "Statistiche"
-    val Log = "Log"
-    val ManagementControl = "Controllo Gestione"
-    val Registrations = "Registrazioni"
-    val UserAccounts = "Account Utenti"
-    val Roles = "Ruoli"
-    val Classifications = "Classifiche"
-    val NewAssignment = "Presa in carico"
-    val DocumentsToRegister = "Documenti da protocollare"
-    val DocumentsToArchive = "Documenti da archiviare"
-    val ArchivedDocuments = "Documenti archiviati"
-    val AuthorizationRules = "Autorizzazioni"
+    val Logout = "Logout"
     
     val labels: Map[MenuAction, String] = Map(
-      MenuAction.Profilo -> Profile,
-      MenuAction.Statistiche -> Statistics,
-      MenuAction.Log -> Log,
-      MenuAction.ControlloGestione -> ManagementControl,
-      MenuAction.Registrazioni -> Registrations,
-      MenuAction.AccountUtenti -> UserAccounts,
-      MenuAction.Ruoli -> Roles,
-      MenuAction.Classifiche -> Classifications,
-      MenuAction.NuovaPresaInCarico -> NewAssignment,
-      MenuAction.DocumentiDaProtocollare -> DocumentsToRegister,
-      MenuAction.DocumentiDaArchiviare -> DocumentsToArchive,
-      MenuAction.DocumentiArchiviati -> ArchivedDocuments,
-      MenuAction.GestioneAutorizzazioni -> AuthorizationRules,
-      MenuAction.VisualizzazioneArchiviazioni -> ArchivedDocuments
+      MenuAction.Profilo -> "Profilo",
+      MenuAction.Statistiche -> "Statistiche",
+      MenuAction.Log -> "Log",
+      MenuAction.ControlloGestione -> "Controllo Gestione",
+      MenuAction.Registrazioni -> "Registrazioni",
+      MenuAction.AccountUtenti -> "Account Utenti",
+      MenuAction.Ruoli -> "Ruoli",
+      MenuAction.Classifiche -> "Classifiche",
+      MenuAction.NuovaPresaInCarico -> "Presa in carico",
+      MenuAction.DocumentiDaProtocollare -> "Documenti da protocollare",
+      MenuAction.DocumentiDaArchiviare -> "Documenti da archiviare",
+      MenuAction.DocumentiArchiviati -> "Documenti archiviati",
+      MenuAction.GestioneAutorizzazioni -> "Autorizzazioni",
+      MenuAction.VisualizzazioneArchiviazioni -> "Documenti archiviati"
     )
-    val Logout = "Logout"
+
+  object HomePages:
+    val AdminTitle = "Homepage Amministratore"
+    val OperatorTitle = "Homepage Operatore"
+    val ViewerTitle = "Homepage Viewer"
+
+  object Dashboards:
+
+    object Admin:
+      val TotalDocumentsTitle = "Documenti totali"
+      val TotalDocumentsSubtitle = "Documenti nel sistema"
+      val PendingRequestsTitle = "Richieste pendenti"
+      val PendingRequestsSubtitle = "Richieste da elaborare"
+      val RegisteredAccountsTitle = "Account registrati"
+      val RegisteredAccountsSubtitle = "Utenti presenti"
+      val ArchivedDocumentsTitle = "Documenti archiviati"
+      val ArchivedDocumentsSubtitle = "Documenti completati"
+
+    object Operator:
+      val ToRegisterTitle = "Da protocollare"
+      val ToRegisterSubtitle = "Documenti in attesa"
+      val ToArchiveTitle = "Da archiviare"
+      val ToArchiveSubtitle = "Documenti protocollati"
+      val ArchivedTitle = "Archiviati"
+      val ArchivedSubtitle = "Documenti completati"
+      val TodayOperationsTitle = "Operazioni oggi"
+      val TodayOperationsSubtitle = "Le tue attività"
+
+    object Viewer:
+      val AvailableDocumentsTitle = "Documenti disponibili"
+      val AvailableDocumentsSubtitle = "Documenti della tua area"
+      val ArchivedTodayTitle = "Archiviati oggi"
+      val ArchivedTodaySubtitle = "Nuovi documenti"
+      val ArchivedThisMonthTitle = "Archiviati questo mese"
+      val ArchivedThisMonthSubtitle = "Documenti del mese"
+      val AreaTitle = "Area"
+      val AreaSubtitle = "Area di appartenenza"
 
   object Statistics:
     val Title = "Statistiche"

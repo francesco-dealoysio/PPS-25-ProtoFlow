@@ -37,7 +37,7 @@ object ArchivedDocumentManagementView extends Management:
       stringColumn[ArchivedDocument](Fields.ArchiveLocation, Some(180))(_.getArchiveLocation)
     )
 
-    def availableDocuments(): List[ArchivedDocument] =
+    def availableDocuments: List[ArchivedDocument] =
       allDocuments.filter(documentFilter)
 
     def loadDocuments(): Unit =
@@ -48,7 +48,7 @@ object ArchivedDocumentManagementView extends Management:
           .getArchivedDocuments
           .sortBy(_.getId.toIntOption.getOrElse(Int.MaxValue))
 
-      val loadedDocuments = availableDocuments()
+      val loadedDocuments = availableDocuments
       updateComboFilter(operatorFilter, Text.AllOperators, loadedDocuments)(_.getArchivedBy)
       documents.setAll(loadedDocuments*)
       table.selectionModel.value.clearSelection()
@@ -70,11 +70,11 @@ object ArchivedDocumentManagementView extends Management:
     def searchDocuments(): Unit =
       result.clear()
       val criteria = buildFilterCriteria()
-      val available = availableDocuments()
+      val available = availableDocuments
       val filteredDocuments =
         if criteria.isEmpty then available
         else available.filter(getDocumentPredicate(criteria))
-      showFilteredItems(documents, table, filteredDocuments, result)(_.getId)
+      showFilteredItems(documents, table, filteredDocuments, result, Text.NoFilterResults)(_.getId)
 
     def resetFilters(): Unit =
       fromDateFilter.value = null

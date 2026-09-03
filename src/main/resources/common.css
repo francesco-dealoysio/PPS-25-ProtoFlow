@@ -25,6 +25,10 @@
     -fx-text-fill: #6b7280;
 }
 
+.registration-grid {
+    -fx-padding: 10 0 5 0;
+}
+
 /* Form e schermate di gestione */
 
 .content-root {

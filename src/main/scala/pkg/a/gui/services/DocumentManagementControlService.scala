@@ -67,11 +67,12 @@ object DocumentManagementControlService:
       else
         DocumentLog().getRecordsByFilter[DocumentLog](_.getDocumentId == document.id, documentLogFilePathName)
 
-    val phaseOrder = Map(
-      Stages.Loading -> 0,
-      Stages.Registering -> 1,
-      Stages.Archiving -> 2
-    )
+    val phaseOrder =
+      Seq(
+        Stages.Loading,
+        Stages.Registering,
+        Stages.Archiving
+      ).zipWithIndex.toMap
 
     val phases =
       logs

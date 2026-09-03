@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter
 
 object DateTime:
 
+  private val ClockRefreshInterval = Duration(1000)
   private val romeZone: ZoneId = ZoneId.of("Europe/Rome")
   private val storageDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS")
   private val storageDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -45,7 +46,7 @@ object DateTime:
         cycleCount = Timeline.Indefinite
         keyFrames = Seq(
           KeyFrame(
-            time = Duration(1000),
+            time = ClockRefreshInterval,
             onFinished = _ =>
               dateTimeProperty.value = currentDisplayDateTime
           )

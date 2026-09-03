@@ -1,7 +1,7 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.services.RegistrationRequestService
-import pkg.a.gui.text.UiStyles.Registration.*
+import pkg.a.gui.text.UiStyles.Registration.{CardStyle, GridStyle}
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.Common.Fields.Prompts
@@ -24,14 +24,14 @@ object RegistrationView extends Form:
     val surname = stringField(prompt = Prompts.Surname)
     val email = stringField(prompt = Text.EmailPrompt)
     val phone = stringField(prompt = Prompts.Phone)
-    val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), prompt =Text.RolePrompt)
+    val role = stringComboField(roleLogic.getRecords[Role]().map(_.getRole.trim), prompt = Text.RolePrompt)
     val area = stringComboField(classificationLogic.getRecords[Classification]().map(_.getClassification.trim), prompt = Text.AreaPrompt)
     val assignment = stringField(prompt = Text.AssignmentPrompt)
 
     val monitoredFields: Seq[FormField[? <: Node]] = Seq(name, surname, email, phone, role, area, assignment)
     val result = createResultMessage()
 
-    def currentRequest(): RegistrationModel =
+    def currentRequest: RegistrationModel =
       RegistrationModel(
         name = name.value,
         surname = surname.value,
@@ -57,7 +57,7 @@ object RegistrationView extends Form:
       result.clear()
 
     def submitRequest(): Unit =
-      val request = currentRequest()
+      val request = currentRequest
       val errors = validator.validate(request)
 
       if errors.nonEmpty then

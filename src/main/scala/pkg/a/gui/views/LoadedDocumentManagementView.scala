@@ -69,7 +69,7 @@ object LoadedDocumentManagementView extends Management:
       val filteredDocuments =
         if criteria.isEmpty then allDocuments
         else allDocuments.filter(getLoadedDocumentPredicate(criteria))
-      showFilteredItems(documents, table, filteredDocuments, result)(_.getId)
+      showFilteredItems(documents, table, filteredDocuments, result, Text.NoFilterResults)(_.getId)
 
     def resetFilters(): Unit =
       fromDateFilter.value = null

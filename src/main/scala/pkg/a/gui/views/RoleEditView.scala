@@ -26,7 +26,7 @@ object RoleEditView extends Form:
       clearFormFieldErrors(monitoredFields*)
       result.clear()
 
-    def currentRole(): Role =
+    def currentRole: Role =
       Role(
         id = selectedRole.getId,
         role = selectedRole.getRole,
@@ -43,7 +43,7 @@ object RoleEditView extends Form:
       clearErrors()
       val errors =
         validator.validate(
-          role = currentRole(),
+          role = currentRole,
           existingRoles = roleLogic.getRecords(),
           currentRoleId = Some(selectedRole.getId)
         )
@@ -57,7 +57,7 @@ object RoleEditView extends Form:
     val save =
       saveButton: () =>
         if validateForm() then
-          val updated = roleLogic.recordUpdate(currentRole())
+          val updated = roleLogic.recordUpdate(currentRole)
           if updated then
             formSaved = true
             showSuccess(Text.Title, Text.Success)

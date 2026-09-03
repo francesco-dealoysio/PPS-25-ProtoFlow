@@ -79,7 +79,7 @@ object DocumentLogManagementView extends Management:
 
           DocumentLog().getRecordsByFilter[DocumentLog](predicate)
 
-      showFilteredItems(logs, table, filteredLogs, result)(_.getId)
+      showFilteredItems(logs, table, filteredLogs, result, Text.NoFilterResults)(_.getId)
 
     clearResultOnSelection(table, result)
 
