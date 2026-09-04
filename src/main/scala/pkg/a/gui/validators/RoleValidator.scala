@@ -5,10 +5,13 @@ import pkg.b.logic.Role
 
 class RoleValidator:
 
+  private val rolePattern = "^[a-z][a-z0-9_]*$".r
+
   def validate(role: Role, existingRoles: Seq[Role], currentRoleId: Option[String] = None): Seq[String] =
     Seq(
       validateRequired(RoleRequired, role.getRole),
       validateRequired(DescriptionRequired, role.getDescription),
+      validateRoleFormat(role.getRole),
       validateRequired(NameRequired, role.getName),
       validateUniqueRole(role.getRole, existingRoles, currentRoleId),
       validateUniqueName(role.getName, existingRoles, currentRoleId)
@@ -57,3 +60,12 @@ class RoleValidator:
         Some(DuplicateRoleName)
       else
         None
+
+  private def validateRoleFormat(role: String): Option[String] =
+    val normalizedRole = role.trim.toLowerCase
+    if normalizedRole.isEmpty then
+      None
+    else if rolePattern.matches(normalizedRole) then
+      None
+    else
+      Some(RoleInvalid)

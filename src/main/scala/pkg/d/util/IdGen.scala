@@ -6,8 +6,7 @@ import scala.util.Try
 object IdGen:
 
   def apply(idFilePath: String, startValue: Int = 0): String  =
-    if Files.notExists(Paths.get(idFilePath)) then
-      saveId(startValue.toString, idFilePath)
+    initialize(idFilePath, startValue)
 
     loadId(idFilePath) match
       case Some(foundId) =>
@@ -15,6 +14,12 @@ object IdGen:
         foundId
       case None =>
         "Failed to find Id!"
+
+  def initialize(idFilePath: String, startValue: Int = 0): Boolean =
+    if Files.notExists(Paths.get(idFilePath)) then
+      saveId(startValue.toString, idFilePath)
+    else
+      true
 
   private def saveId(id: String, idFilePath: String): Boolean =
     Try {

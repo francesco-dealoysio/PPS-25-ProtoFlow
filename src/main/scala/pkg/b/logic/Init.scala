@@ -57,13 +57,13 @@ object Init:
     if (Files.notExists(Paths.get(inLogFilePathName("accessLog.xml"))))
       createEmptyXmlFile(inLogFilePathName("accessLog.xml"), "accessLog")
 
-    IdGen(inIdsFilePathName("accessLogId"))
-    IdGen(inIdsFilePathName("errorlogId"))
-    IdGen(inIdsFilePathName("accountId"), 3)
-    IdGen(inIdsFilePathName("roleId"), 3)
-    IdGen(inIdsFilePathName("classificationId"), 8)
-    IdGen(inIdsFilePathName("registrationId"))
-    IdGen(inIdsFilePathName("loadedDocumentId"))
+    IdGen.initialize(inIdsFilePathName("accessLogId"))
+    IdGen.initialize(inIdsFilePathName("errorlogId"))
+    IdGen.initialize(inIdsFilePathName("accountId"), 3)
+    IdGen.initialize(inIdsFilePathName("roleId"), 3)
+    IdGen.initialize(inIdsFilePathName("classificationId"), 8)
+    IdGen.initialize(inIdsFilePathName("registrationId"))
+    IdGen.initialize(inIdsFilePathName("loadedDocumentId"))
 
   @main def tryInit(): Unit =
     init()

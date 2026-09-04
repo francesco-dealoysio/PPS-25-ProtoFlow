@@ -106,6 +106,7 @@ object AppText:
       val DescriptionRequired = "Il campo Descrizione è obbligatorio."
       val DuplicateRole = "Esiste già questo ruolo."
       val DuplicateRoleName = "Esiste già un ruolo con questo nome."
+      val RoleInvalid = "Il ruolo deve iniziare con una lettera e può contenere solo lettere, numeri e underscore."
 
     object LoadedDocument:
       val DocumentDateRequired = "Il campo Data documento è obbligatorio."

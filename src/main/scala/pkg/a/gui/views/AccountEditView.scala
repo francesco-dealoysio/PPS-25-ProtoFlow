@@ -171,8 +171,14 @@ object AccountEditView extends Form:
           Labels.Username -> selectedAccount.getUsername
         )
 
-      PdfDetailsCreator.createDetailsPdf(pdfPath, EditText.PrintTitle, fields)
-      PdfViewer.viewPdf(pdfPath)
+      val printed = PdfDetailsCreator.createDetailsPdf(pdfPath, EditText.PrintTitle, fields)
+      if printed then
+        PdfViewer.viewPdf(pdfPath)
+
+      result.show(
+        if printed then EditText.PrintSuccess else EditText.PrintError,
+        success = printed
+      )
 
     val profileInfoRows =
       Seq(
