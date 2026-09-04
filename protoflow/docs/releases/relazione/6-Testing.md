@@ -3,20 +3,17 @@
 [Next Chapter](7-Retrospettiva.md)
 # 6. Testing
 
-<!-- DESCRIZIONE DELL'USO DELLE CLASSI DI TEST --> 
-Unit Test: effettuati tramite Junit4
-Test di regressione: effettuati tramite la classe di test AllTestSuite
+Unit Test: effettuati tramite JUnit4, a copertura delle entità di dominio (package `pkg.b.logic`), dei servizi applicativi (`pkg.a.gui.services`), dei validator (`pkg.a.gui.validators`) e delle utility di supporto (`pkg.c.data`, `pkg.d.util`), per un totale di 39 classi di test.
 
-<!-- DESCRIZIONE DEI TEST FUNZIONALI/ACCETTAZIONE RELATIVI ALL'INCREMENTO/SPRINT EFFETTUATI IN FASE DI SPRINT REVIEW --> 
+Test di regressione: tutte le classi di test sono raccolte nella suite `AllTestsSuite`, eseguita automaticamente ad ogni push sul branch `develop` tramite una GitHub Action dedicata, che inizializza l'ambiente ProtoFlow e lancia l'intera suite con `sbt test`.
+
 Test Funzionali / Accettazione
 I test funzionali eseguiti al termine di ogni sprint allo scopo di verificare la correttezza delle implementazioni effettuate sono stati condotti secondo quanto specificato nelle sezioni “Done definition” contenute nelle User Story.
 
-<!-- DESCRIZIONE DEI TEST /ACCETTAZIONE RELATIVI AL PRODOTTO FINITO --> 
 Redazione di Casi d’Uso relativi alle attività che l’utente finale deve essere in grado di 
 svolgere attraverso l’applicazione. I Casi d’uso sono utilizzati dagli sviluppatori e dagli utenti finali
 per verificare l’esistenza e correttezza delle funzionalità previste.
 
-<!-- COPIATA DALLA SEZIONE SPRINT REVIEW CONTIENE DELLE INFORMAZIONI UTILI DA INSERIRE NEL DOCUMENTO -->
 <p style="text-align: justify;">
 Al termine di ogni sprint è stata effettuata una verifica dello stato di completamento delle funzionalità previste
 per lo sprint e descritte dalle User Story contenute nello Sprint Backlog e, per quelle realizzate, è stata accertata
@@ -40,7 +37,6 @@ Dalla attività di revisione sono emersi di volta in volta per i diversi sprint 
 Le richieste di varianti a volte, dopo l'analisi d'impatto sul progetto, hanno comportato la revisione e 
 l'adeguamento sia dei requisiti (User Story) che del Product Backlog.
 </p>
-
 
 [Back to index](0-Indice.md) |
 [Previous Chapter](5-Implementazione.md) |
