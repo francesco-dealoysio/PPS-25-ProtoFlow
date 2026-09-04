@@ -10,16 +10,17 @@ Nell'ambito del progetto sono state adottate quattro tipologie di test:
 - Test funzionali / di accettazione condotti a fine sprint
 - Test di accettazione sul prodotto finito, tramite casi d'uso
 
-Unit Test: effettuati tramite JUnit4, a copertura delle entità di dominio (package `pkg.b.logic`), dei servizi applicativi (`pkg.a.gui.services`), dei validator (`pkg.a.gui.validators`) e delle utility di supporto (`pkg.c.data`, `pkg.d.util`), per un totale di 39 classi di test.
+## 6.1 Unit Test
 
-Test di regressione: tutte le classi di test sono raccolte nella suite `AllTestsSuite`, eseguita automaticamente ad ogni push sul branch `develop` tramite una GitHub Action dedicata, che inizializza l'ambiente ProtoFlow e lancia l'intera suite con `sbt test`.
+Effettuati tramite JUnit4 durante il coding, contestualmente all'implementazione di ciascun modulo: a copertura delle entità di dominio (package `pkg.b.logic`), dei servizi applicativi (`pkg.a.gui.services`), dei validator (`pkg.a.gui.validators`) e delle utility di supporto (`pkg.c.data`, `pkg.d.util`), per un totale di 39 classi di test.
 
-Test Funzionali / Accettazione
+## 6.2 Test di regressione
+
+Tutte le classi di test sono raccolte nella suite `AllTestsSuite`, il cui scopo è verificare che le funzionalità già implementate continuino a funzionare correttamente dopo ogni nuova modifica al codice. La suite viene eseguita automaticamente ad ogni push sul branch `develop` tramite una GitHub Action dedicata, che inizializza l'ambiente ProtoFlow e lancia l'intera suite con `sbt test`.
+
+## 6.3 Test Funzionali / Accettazione
+
 La verifica del lavoro svolto non è stata riservata solo al termine dello sprint: via via che una funzionalità veniva implementata, veniva anche testata manualmente per controllarne la correttezza, prima ancora di arrivare alla Sprint Review. I test funzionali veri e propri, eseguiti al termine di ogni sprint allo scopo di verificare la correttezza delle implementazioni effettuate, sono stati invece condotti secondo quanto specificato nelle sezioni “Done definition” contenute nelle User Story.
-
-Redazione di Casi d’Uso relativi alle attività che l’utente finale deve essere in grado di 
-svolgere attraverso l’applicazione. I Casi d’uso sono utilizzati dagli sviluppatori e dagli utenti finali
-per verificare l’esistenza e correttezza delle funzionalità previste.
 
 <p style="text-align: justify;">
 Al termine di ogni sprint è stata effettuata una verifica dello stato di completamento delle funzionalità previste
@@ -44,6 +45,12 @@ Dalla attività di revisione sono emersi di volta in volta per i diversi sprint 
 Le richieste di varianti a volte, dopo l'analisi d'impatto sul progetto, hanno comportato la revisione e 
 l'adeguamento sia dei requisiti (User Story) che del Product Backlog.
 </p>
+
+## 6.4 Test di accettazione sul prodotto finito
+
+Redazione di Casi d’Uso relativi alle attività che l’utente finale deve essere in grado di 
+svolgere attraverso l’applicazione. I Casi d’uso sono utilizzati dagli sviluppatori e dagli utenti finali
+per verificare l’esistenza e correttezza delle funzionalità previste.
 
 [Back to index](0-Indice.md) |
 [Previous Chapter](5-Implementazione.md) |
