@@ -37,54 +37,101 @@ Nel dettaglio di seguito il riepilogo delle attività effettuate:
 Elenco dei moduli sviluppati:
 
 <table>
-  <tr style="font-weight: normal; font-size: 22px;"><th colspan="3">Moduli sviluppati in src.main</th></tr>
+  <tr style="font-weight: normal; font-size: 20px;"><th colspan="3">Moduli sviluppati in src.main</th></tr>
   <tr style="text-align: center;"><td>Package</td><td>Modulo</td><td>Descrizione</td></tr>
-  <tr><td rowspan="10">pck.b.logic</td><td>Entity.scala</td><td>Trait ... inserire la descrizione relativa al modulo .......................................</td></tr>
-  <tr><td>Account.scala</td><td></td></tr>
-  <tr><td>Role.scala</td><td></td></tr>
-  <tr><td>Classification.scala</td><td></td></tr>
-  <tr><td>Registration.scala</td><td></td></tr>
-  <tr><td>DocumentLog.scala</td><td></td></tr>
-  <tr><td>ErrorLog.scala</td><td></td></tr>
-  <tr><td>LoadedDocument.scala</td><td></td></tr>
-  <tr><td>Init.scala</td><td></td></tr>
-  <tr><td>StartData.scala</td><td></td></tr>
-  <tr><td rowspan="5">pck.b.logic.pdf</td><td>PdfCreator.scala</td><td></td></tr>
-  <tr><td>PdfVerifier.scala</td><td></td></tr>
-  <tr><td>PdfDefaultViewer.scala</td><td></td></tr>
-  <tr><td>PdfPrinter.scala</td><td></td></tr>
-  <tr><td>PdfViewer.scala</td><td></td></tr>
-  <tr><td rowspan="3">pck.c.data</td><td>FileSystem.scala</td><td></td></tr>
-  <tr><td>Properties.scala</td><td></td></tr>
-  <tr><td>Xml.scala</td><td></td></tr>
-  <tr><td rowspan="4">pck.d.util</td><td>Logger.scala</td><td></td></tr>
-  <tr><td>IdGen.scala</td><td></td></tr>
-  <tr><td>Util.scala</td><td></td></tr>
-  <tr><td>Filters.scala</td><td></td></tr>
-  <tr><td rowspan="4">pck.e.ui.traits</td><td>GUI.scala</td><td></td></tr>
-  <tr><td>Homepage.scala</td><td></td></tr>
-  <tr><td>Management.scala</td><td></td></tr>
-  <tr><td>Operation.scala</td><td></td></tr>
-  <tr><td rowspan="3">pck.e.ui.homepages</td><td>AdminHomepage.scala</td><td></td></tr>
-  <tr><td>OperatorHomepage.scala</td><td></td></tr>
-  <tr><td>ViewerHomepage.scala</td><td></td></tr>
-  <tr><td rowspan="1">pck.e.ui.management</td><td>Account.management.scala</td><td></td></tr>
-  <tr><td rowspan="3">pck.e.ui.operations</td><td>Login.scala</td><td></td></tr>
-  <tr><td>AccountAdd.scala</td><td></td></tr>
-  <tr><td>DocumentLoad.scala</td><td></td></tr>
-  <tr><th colspan="3">Moduli sviluppati in src.test</th></tr>
+  <tr><td rowspan="10">pck.b.logic</td><td>Entity.scala</td><td>Trait per la modellazione delle entità del dominio, le sue 
+    funzionalità vengono utilizzate, per il tramite delle entità concrete, dai moduli del front end, prevalentemente
+    dalle gui.</td></tr>
+  <tr><td>Account.scala</td><td>Entità di modellazione degli account degli utenti del sistema.</td></tr>
+  <tr><td>Role.scala</td><td>Entità di modellazione dei ruoli associati agli utenti: Amministratore, Operatore o 
+    Utente in sola consultazione.</td></tr>
+  <tr><td>Classification.scala</td><td>Entità di modellazione delle aree/settori dell'organizzazione, utilizzate per 
+    descrivere l'area di assegnazione di un utente, per generare i protocolli e per definire le posizioni di archivio.</td></tr>
+  <tr><td>Registration.scala</td><td>Entità di modellazione delle richieste di registazione per l'accreditamento al sistema
+    presentate attraverso la pagina di login dagli utenti non accreditati al sistema.</td></tr>
+  <tr><td>DocumentLog.scala</td><td>Entità di modellazione dei log relativi alle operazioni effettuate sulla corrispondenza: 
+    prese in carico, protocollazioni ed archiviazioni.</td></tr>
+  <tr><td>ErrorLog.scala</td><td>Entità di modellazione dei log relativi agli errori intercettati dall'applicazione.</td></tr>
+  <tr><td>LoadedDocument.scala</td><td>Entità di modellazione dei documenti presi in carico dall'operatore.</td></tr>
+  <tr><td>Init.scala</td><td>Funzione chiamata all'avvio dell'applicazione che, se non già esistenti, crea ed inizializza 
+    nel filesystem la struttura ed i file necessari per il funzionamento del programma, ovvero file di configurazione,
+    directory, file xml, e file preposti a contenere gli id delle diverse entità.</td></tr>
+  <tr><td>StartData.scala</td><td>Contiene le strutture di tipo Elem utilizzate dalla funzione init per inizializzare i
+    file accounts.xml, roles.xml e classifications.xml con le infomnazioni minimali necessarie al funzionamento dell' 
+    applicazione.</td></tr>
+  <tr><td rowspan="5">pck.b.logic.pdf</td><td>PdfCreator.scala</td><td>Genera, siulla base dell'input, un file pdf
+    corrispondente alla scheda relativa al record di una entità (es. Scheda Account).</td></tr>
+  <tr><td>PdfVerifier.scala</td><td>Preposto alla verifica il formato di un presunto file pdf, viene utilizzato dai
+    moduli che manipolano i file pdf.</td></tr>
+  <tr><td>PdfDefaultViewer.scala</td><td>Cerca ed apre il visualizzatore di default presente sul sistema operativo
+    ospite per visualizzare un file pdf. Può essere utilizzato dalla gui di PdfViewer su comando dell'utente.</td></tr>
+  <tr><td>PdfPrinter.scala</td><td>Permette di selezionare una delle stampanti (print services) presenti e disponibili
+    sul sistema operativo ospite e di avviare la stampa di un file pdf. Può essere utilizzato dalla gui di PdfViewer su comando 
+    dell'utente.</td></tr>
+  <tr><td>PdfViewer.scala</td><td>Consente di selezionare e visualizzare un file in formato pdf.</td></tr>
+  <tr><td rowspan="3">pck.c.data</td><td>FileSystem.scala</td><td>Contiene le funzionalità necessarie alla creazione
+    dei file e delle directory nel filesystem.</td></tr>
+  <tr><td>Properties.scala</td><td>Contiene le funzionalità per la gestione di un file di proprietà, in particolare
+    viene utilizzato per creare e manipolare il file protoflow.properties contenente la configurazione del sistema.</td></tr>
+  <tr><td>Xml.scala</td><td>Contiene tutte le funzionalità necessarie a gestire dei file xml utilizzati per la
+    memorizzazione persistente dei dati in sostituzione di un database. In particolare il modulo le funzioni
+    per la creazione dei file xml, per inserimento, modifica e rimozione dei record dai file e per le interrogazioni.
+    Le sue funzioni vengono utilizzate dai moduli del livello di logica applicativa, ovvero dalle entità.</td></tr>
+  <tr><td rowspan="4">pck.d.util</td><td>Logger.scala</td><td>Contiene le funzioni per estrarre le informazioni
+    dall'oggetto eccezione ricevuto in argomento e per generare un record di log ed inserirlo in error.xml.
+    Viene utilizzato in maniera massiva da tutti i moduli che intercettano le eccezioni.</td></tr>
+  <tr><td>IdGen.scala</td><td>Consente di creare ed inizializzare i file contenenti gli id relativi alle varie
+    entità e di generare gli id in fese di creazione dei record.</td></tr>
+  <tr><td>Util.scala</td><td>Contiene la funzione di cifratura cipher, utilizzata per criptare le password, ed una
+    serie di funzioni, apparentemente ridondanti, ma utili, che consentono di indirizzare i file ubicati nelle varie
+    directory utilizzate dall'applicazione.</td></tr>
+  <tr><td>Filters.scala</td><td>Contiene le funzionalità idonee a generare predicati in base ai criteri passati
+    in argomento, tali predicati sono utilizzati dai moduli che chiamano le funzioni deputate a filtrare un insieme 
+    di record (es. getRecordsByFilter[DocumentLog](predicate, xmlFilePathName). In particolare tali funzionalità
+    sono impiegare nelle sezioni di ricerca delle maschere di gestione.</td></tr>
+  <tr><td rowspan="4">pck.e.ui.traits</td><td>GUI.scala</td><td>Trait contenente gli elementi basici utilizzati da tutte le
+    gui del sistema, gli elementi grafici ed i comportamenti. In particolare l'intestazione ed il piè di pagina.
+    </td></tr>
+  <tr><td>Homepage.scala</td><td>Trait contenente gli elementi utilizzati da tutte le maschere homepage, gli elementi
+    grafici ed i comportamenti. Questo trait estende GUI ed aggiunge alle maschere la gestione del menù.</td></tr>
+  <tr><td>Management.scala</td><td>Trait contenente gli elementi utilizzati da tutte le maschere di gestione, gli elementi
+    grafici ed i comportamenti. Questo trait estende GUI ed aggiunge alle maschere la gestione di una griglia (datagrid)
+    per mostrare i record e la barra degli strumenti utilizzati da questo tipo di maschera.</td></tr>
+  <tr><td>Operation.scala</td><td>Trait contenente gli elementi utilizzati da tutte le maschere relative alle operazioni
+    sulle entità (aggiunta, modifica, eliminazione, ecc...), sia gli elementi grafici che i comportamenti. Questo trait
+    estende GUI ed aggiunge alle maschere un'area per i dati del record e la barra degli strumenti utilizzati da questo
+    tipo di maschera.</td></tr>
+  <tr><td rowspan="3">pck.e.ui.homepages</td><td>AdminHomepage.scala</td><td>Homepage associata agli utenti aventi il
+    ruolo Amministratore.</td></tr>
+  <tr><td>OperatorHomepage.scala</td><td>Homepage associata agli utenti aventi il ruolo Operatore, ovvero gli operatori
+    di protocollo  deputati a gestire la procollazione (presa in carico, protocollazione, archiviazione e consultazione)
+    .</td></tr>
+  <tr><td>ViewerHomepage.scala</td><td>Homepage associata agli utenti aventi il ruolo Viewer, ovvero gli utenti che
+    possono soltanto consultare.</td></tr>
+  <tr><td rowspan="1">pck.e.ui.management</td><td>Account.management.scala</td><td>Maschera di gestione degli Account.</td></tr>
+  <tr><td rowspan="3">pck.e.ui.operations</td><td>Login.scala</td><td>Maschera di login, per accedere al sistema o per
+    effettuare una richiesta di registrazione.</td></tr>
+  <tr><td>AccountAdd.scala</td><td>Maschera per effettuare l'aggiunta di un Account, attivabile dalla masche di gestione
+    Account.</td></tr>
+  <tr><td>DocumentLoad.scala</td><td>Maschera che consente all'operatore di protocollo di acquisire nel sistema le 
+    informazioni di un documento e di prenderlo in carico.</td></tr>
+  <tr style="font-weight: normal; font-size: 20px;"><th colspan="3">Moduli sviluppati in src.test</th></tr>
   <tr style="text-align: center;"><td>Package</td><td>Modulo</td><td>Descrizione</td></tr>
-  <tr><td rowspan="7">pck.b.logic</td><td>AccountTest.scala</td><td></td></tr>
-  <tr><td>RoleTest.scala</td><td></td></tr>
-  <tr><td>ClassificationTest.scala</td><td></td></tr>
-  <tr><td>RegistrationTest.scala</td><td></td></tr>
-  <tr><td>DocumentLogTest.scala</td><td></td></tr>
-  <tr><td>ErrorLogTest.scala</td><td></td></tr>
-  <tr><td>LoadedDocumentTest.scala</td><td></td></tr>
-  <tr><td rowspan="2">pck.c.data</td><td>PropertiesTest.scala</td><td></td></tr>
-  <tr><td>XmlTest.scala</td><td></td></tr>
-  <tr><td rowspan="1">pck.d.util</td><td>FiltersTest.scala</td><td></td></tr>
-  <tr><td rowspan="1">pck</td><td>AllTestsSuite.scala</td><td></td></tr>
+  <tr><td rowspan="7">pck.b.logic</td><td>AccountTest.scala</td><td>Classe di test utilizzata per testare il modulo
+    Account.scala.</td></tr>
+  <tr><td>RoleTest.scala</td><td>Classe di test utilizzata per testare il modulo Role.scala.</td></tr>
+  <tr><td>ClassificationTest.scala</td><td>Classe di test utilizzata per testare il modulo Classification.scala.</td></tr>
+  <tr><td>RegistrationTest.scala</td><td>Classe di test utilizzata per testare il modulo Registration.scala.</td></tr>
+  <tr><td>DocumentLogTest.scala</td><td>Classe di test utilizzata per testare il modulo DocumentLog.scala.</td></tr>
+  <tr><td>ErrorLogTest.scala</td><td>Classe di test utilizzata per testare il modulo ErrorLog.scala.</td></tr>
+  <tr><td>LoadedDocumentTest.scala</td><td>Classe di test utilizzata per testare il modulo LoadDocument.scala.</td></tr>
+  <tr><td rowspan="2">pck.c.data</td><td>PropertiesTest.scala</td><td>Classe di test utilizzata per testare il modulo 
+    Properties.scala.</td></tr>
+  <tr><td>XmlTest.scala</td><td>Classe di test utilizzata per testare il modulo Xml.scala.</td></tr>
+  <tr><td rowspan="1">pck.d.util</td><td>FiltersTest.scala</td><td>Classe di test utilizzata per testare il modulo 
+    Filters.scala.</td></tr>
+  <tr><td rowspan="1">pck</td><td>AllTestsSuite.scala</td><td>Suite di test che esegue tutti i test definiti nelle 
+    classi di test. Utilizzata per il test di regressione.</td></tr>
 </table>
 
 ## 5.2 Interfaccia grafica, gestione documentale e moduli di supporto — Roberto Pisu
