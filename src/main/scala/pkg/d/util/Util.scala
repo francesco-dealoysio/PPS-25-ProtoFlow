@@ -1,5 +1,7 @@
 package pkg.d.util
 
+import pkg.c.data.Properties.getPropsFileProperty
+
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 
@@ -36,7 +38,5 @@ object Util:
   private def inFolderFilePathName(folder: String, fileName: String): String =
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-    val folderPath =
-      if folder == "documents" then baseFolder + fs + "database" + fs + "documents"
-      else baseFolder + fs + folder
-    folderPath + fs + fileName
+    
+    getPropsFileProperty(baseFolder + fs + "protoflow.properties", folder + ".folder") + fs + fileName

@@ -226,11 +226,14 @@ Elenco dei moduli sviluppati:
   <tr><td>DocumentLogTest.scala</td><td>Classe di test utilizzata per testare il modulo DocumentLog.scala.</td></tr>
   <tr><td>ErrorLogTest.scala</td><td>Classe di test utilizzata per testare il modulo ErrorLog.scala.</td></tr>
   <tr><td>LoadedDocumentTest.scala</td><td>Classe di test utilizzata per testare il modulo LoadDocument.scala.</td></tr>
-  <tr><td rowspan="2">pck.c.data</td><td>PropertiesTest.scala</td><td>Classe di test utilizzata per testare il modulo 
-    Properties.scala.</td></tr>
+  <tr><td rowspan="3">pck.c.data</td><td>FileSystemTest.scala</td><td>Classe di test utilizzata per testare il modulo 
+    FileSystem.scala.</td></tr>
+  <tr><td>PropertiesTest.scala</td><td>Classe di test utilizzata per testare il modulo Properties.scala.</td></tr>
   <tr><td>XmlTest.scala</td><td>Classe di test utilizzata per testare il modulo Xml.scala.</td></tr>
-  <tr><td rowspan="1">pck.d.util</td><td>FiltersTest.scala</td><td>Classe di test utilizzata per testare il modulo 
+  <tr><td rowspan="3">pck.d.util</td><td>FiltersTest.scala</td><td>Classe di test utilizzata per testare il modulo 
     Filters.scala.</td></tr>
+  <tr><td>IdGenTest.scala</td><td>Classe di test utilizzata per testare il modulo IdGen.scala.</td></tr>
+  <tr><td>UtilTest.scala</td><td>Classe di test utilizzata per testare il modulo Util.scala.</td></tr>
   <tr><td rowspan="1">pck</td><td>AllTestsSuite.scala</td><td>Suite di test che esegue tutti i test definiti nelle 
     classi di test. Utilizzata per il test di regressione.</td></tr>
 </table>

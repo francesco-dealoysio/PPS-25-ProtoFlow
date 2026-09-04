@@ -5,8 +5,8 @@ import org.junit.runners.Suite
 import pkg.a.gui.services.{AccountServiceTest, ArchivedDocumentServiceTest, ClassificationServiceTest, DocumentManagementControlServiceTest, LoadedDocumentServiceTest, LoginServiceTest, RegistrationRequestServiceTest, RoleServiceTest, StatisticsServiceTest}
 import pkg.a.gui.validators.{AccountValidatorTest, ClassificationValidatorTest, DocumentArchivingValidatorTest, LoadedDocumentValidatorTest, RegistrationValidatorTest, RoleValidatorTest}
 import pkg.b.logic.{AccessLogTest, AccountTest, ArchivedDocumentTest, AuthorizationEngineTest, ClassificationTest, DocumentLogTest, ErrorLogTest, LoadedDocumentTest, RegisteredDocumentTest, RegistrationTest, RoleTest}
-import pkg.c.data.{PropertiesTest, XmlTest}
-import pkg.d.util.{DateTimeTest, FiltersTest, XmlToPdfTest}
+import pkg.c.data.{FileSystemTest, PropertiesTest, XmlTest}
+import pkg.d.util.{DateTimeTest, FiltersTest, IdGenTest, XmlToPdfTest}
 
 @RunWith(classOf[Suite])
 @Suite.SuiteClasses(
@@ -39,11 +39,13 @@ import pkg.d.util.{DateTimeTest, FiltersTest, XmlToPdfTest}
     classOf[LoadedDocumentValidatorTest],
     classOf[RoleValidatorTest],
 
+    classOf[FileSystemTest],
     classOf[PropertiesTest],
     classOf[XmlTest],
 
     classOf[DateTimeTest],
     classOf[FiltersTest],
+    classOf[IdGenTest],
     classOf[XmlToPdfTest]
   )
 )

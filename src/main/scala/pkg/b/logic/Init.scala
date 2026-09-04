@@ -22,6 +22,7 @@ object Init:
     val logFolder = baseFolder + fs + "log"
     val idFolder = baseFolder + fs + "ids"
     val testFolder = baseFolder + fs + "test"
+    val printFolder = baseFolder + fs + "prints"
     createPropsFile(baseFolder + fs + "protoflow.properties", " ProtoFlow Configuration")
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "base.folder", baseFolder)
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "database.folder", databaseFolder)
@@ -29,6 +30,7 @@ object Init:
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "log.folder", logFolder)
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "ids.folder", idFolder)
     setPropsFileProperty(baseFolder + fs + "protoflow.properties", "test.folder", testFolder)
+    setPropsFileProperty(baseFolder + fs + "protoflow.properties", "prints.folder", printFolder)
 
     if (Files.notExists(Paths.get(inDatabaseFilePathName("accounts.xml"))))
       saveXML(inDatabaseFilePathName("accounts.xml"), accounts)

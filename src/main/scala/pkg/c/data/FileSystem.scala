@@ -1,5 +1,7 @@
 package pkg.c.data
 
+import pkg.d.util.Logger.logger
+
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path, Paths}
@@ -16,20 +18,28 @@ object FileSystem:
         println(s"Directory già esistente: ${path.toAbsolutePath}")
     catch
       case e: IOException =>
-        System.err.println(s"Errore in createDirectory: ${e.getMessage}")
+        println(s"Errore in FileSystem.createDirectory")
+        logger(e)
 
   def createFile(filePathName: String, content: String): Unit =
     val path = Paths.get(filePathName)
-    try
+    try {
+      
+      if (Files.notExists(path.getParent))
+        println(s"Pathname inesistente: ${path.getParent}")
+        return
+
       if (Files.notExists(path))
         Files.write(path, content.getBytes(StandardCharsets.UTF_8))
         println(s"File creato: ${path.toAbsolutePath}")
       else
         println(s"File già esistente: ${path.toAbsolutePath}")
-    catch
+        
+    } catch
       case e: IOException =>
-        println(s"Errore in createFile: ${e.getMessage}")
-  
+        println(s"Errore in FileSystem.createFile")
+        logger(e)
+
   def createDirectoryStructure(): Unit =
     val baseDir = getCurrentDirectory
     val structure = Seq(
