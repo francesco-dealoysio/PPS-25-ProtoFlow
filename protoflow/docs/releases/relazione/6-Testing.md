@@ -15,7 +15,7 @@ Unit Test: effettuati tramite JUnit4, a copertura delle entità di dominio (pack
 Test di regressione: tutte le classi di test sono raccolte nella suite `AllTestsSuite`, eseguita automaticamente ad ogni push sul branch `develop` tramite una GitHub Action dedicata, che inizializza l'ambiente ProtoFlow e lancia l'intera suite con `sbt test`.
 
 Test Funzionali / Accettazione
-I test funzionali eseguiti al termine di ogni sprint allo scopo di verificare la correttezza delle implementazioni effettuate sono stati condotti secondo quanto specificato nelle sezioni “Done definition” contenute nelle User Story.
+La verifica del lavoro svolto non è stata riservata solo al termine dello sprint: via via che una funzionalità veniva implementata, veniva anche testata manualmente per controllarne la correttezza, prima ancora di arrivare alla Sprint Review. I test funzionali veri e propri, eseguiti al termine di ogni sprint allo scopo di verificare la correttezza delle implementazioni effettuate, sono stati invece condotti secondo quanto specificato nelle sezioni “Done definition” contenute nelle User Story.
 
 Redazione di Casi d’Uso relativi alle attività che l’utente finale deve essere in grado di 
 svolgere attraverso l’applicazione. I Casi d’uso sono utilizzati dagli sviluppatori e dagli utenti finali
