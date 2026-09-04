@@ -1,10 +1,10 @@
 package pkg
 
 import pkg.a.gui.navigation.AppNavigator
+import pkg.a.gui.text.UiText.Common.ApplicationName
 import pkg.b.logic.Init
 import scalafx.application.JFXApp3
 import scalafx.scene.image.Image
-import pkg.a.gui.text.UiText.Common.ApplicationName
 
 object RunApp extends JFXApp3:
 
