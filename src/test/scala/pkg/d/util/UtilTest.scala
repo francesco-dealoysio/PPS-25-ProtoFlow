@@ -4,9 +4,8 @@ import org.junit.*
 import org.junit.Assert.*
 import pkg.c.data.FileSystem
 import pkg.c.data.Properties.getPropsFileProperty
-import pkg.d.util.Util.{inDatabaseFilePathName, inTestFilePathName}
-
-import java.nio.file.{Files, Path, Paths}
+import pkg.d.util.Util.*
+import java.nio.file.{Files, Paths}
 
 class UtilTest:
 
@@ -39,10 +38,32 @@ class UtilTest:
     }
 
   @Test
-  def testInDatabaseFilePathName(): Unit = {
-    // TERMINARE
-    properties.foreach { property =>
+  def testInDatabaseFilePathName(): Unit =
       val readFile = Paths.get(inDatabaseFilePathName(testFile)).getFileName.toString
       assertEquals(readFile, testFile)
-    }
-  }
+      
+  @Test
+  def testInDocumentsFilePathName(): Unit =
+      val readFile = Paths.get(inDocumentsFilePathName(testFile)).getFileName.toString
+      assertEquals(readFile, testFile)
+      
+  @Test
+  def testInLogFilePathName(): Unit =
+      val readFile = Paths.get(inLogFilePathName(testFile)).getFileName.toString
+      assertEquals(readFile, testFile)
+      
+  @Test
+  def testInIdsFilePathName(): Unit =
+      val readFile = Paths.get(inIdsFilePathName(testFile)).getFileName.toString
+      assertEquals(readFile, testFile)
+      
+  @Test
+  def testInTestFilePathName(): Unit =
+      val readFile = Paths.get(inTestFilePathName(testFile)).getFileName.toString
+      assertEquals(readFile, testFile)
+      
+  @Test
+  def testInPrintsFilePathName(): Unit =
+      val readFile = Paths.get(inPrintsFilePathName(testFile)).getFileName.toString
+      assertEquals(readFile, testFile)
+      

@@ -7,7 +7,7 @@ import pkg.a.gui.validators.*
 import pkg.b.logic.pdf.*
 import pkg.b.logic.*
 import pkg.c.data.{FileSystemTest, PropertiesTest, XmlTest}
-import pkg.d.util.{DateTimeTest, FiltersTest, IdGenTest}
+import pkg.d.util.{DateTimeTest, FiltersTest, IdGenTest, UtilTest}
 
 @RunWith(classOf[Suite])
 @Suite.SuiteClasses(
@@ -47,6 +47,7 @@ import pkg.d.util.{DateTimeTest, FiltersTest, IdGenTest}
     classOf[DateTimeTest],
     classOf[FiltersTest],
     classOf[IdGenTest],
+    classOf[UtilTest],
 
     classOf[PdfDetailsCreatorTest],
     classOf[PdfTableCreatorTest],
