@@ -36,10 +36,7 @@ class ClassificationServiceTest:
     assertTrue(result.isRight)
     val classification = result.toOption.get
     assertEquals("Riservato", classification.getClassification)
-    assertEquals(
-      "Documento ad accesso riservato",
-      classification.getDescription
-    )
+    assertEquals("Documento ad accesso riservato", classification.getDescription)
     assertEquals(classification, Classification().getRecordById[Classification](classification.getId, xmlFilePathName))
 
   @Test

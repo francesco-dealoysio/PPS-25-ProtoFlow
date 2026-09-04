@@ -6,6 +6,9 @@ import scalafx.scene.control.{Alert, Button, ButtonType, Label}
 import scalafx.scene.layout.{HBox, VBox}
 import pkg.a.gui.text.UiText.Common.Buttons.Close
 import pkg.a.gui.text.UiStyles.Common.*
+import pkg.b.logic.pdf.{PdfDetailsCreator, PdfViewer}
+import pkg.d.util.Logger.logger
+import pkg.d.util.Util.inPrintsFilePathName
 
 /**
  * Provides reusable UI components and common interaction utilities

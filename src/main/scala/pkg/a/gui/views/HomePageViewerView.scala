@@ -3,10 +3,10 @@ package pkg.a.gui.views
 import pkg.a.gui.navigation.HomeNavigator
 import pkg.a.gui.navigation.NavigationFlows.*
 import pkg.a.gui.structures.MenuAction
+import pkg.a.gui.text.UiText.HomePages
 import pkg.a.gui.traits.HomePage
 import pkg.b.logic.{Account, ArchivedDocument}
 import scalafx.scene.layout.Pane
-import pkg.a.gui.text.UiText.HomePages
 
 object HomePageViewerView extends HomePage:
 

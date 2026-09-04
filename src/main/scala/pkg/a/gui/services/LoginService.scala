@@ -1,9 +1,8 @@
 package pkg.a.gui.services
 
-import pkg.b.logic.{Account, AccessLog, Role}
+import pkg.b.logic.{AccessLog, Account, Role}
 import pkg.d.util.DateTime
 import pkg.d.util.Util.*
-import pkg.d.util.Util.cipher
 
 object LoginService:
 

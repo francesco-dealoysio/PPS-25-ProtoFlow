@@ -78,7 +78,6 @@ class LoginServiceTest:
       surname = "Rossi",
       name = "Mario",
       email = "mario.rossi@email.it",
-      phone = "",
       role = role,
       area = "Segreteria",
       assignment = "Impiegato",

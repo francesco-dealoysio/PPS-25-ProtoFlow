@@ -1,9 +1,9 @@
 package pkg.a.gui.services
 
+import pkg.a.gui.validators.DocumentArchivingValidator
 import pkg.b.logic.{ArchivedDocument, RegisteredDocument}
 import pkg.d.util.Logger.logger
 import pkg.d.util.Util.inDocumentsFilePathName
-import pkg.a.gui.validators.DocumentArchivingValidator
 
 object ArchivedDocumentService:
 

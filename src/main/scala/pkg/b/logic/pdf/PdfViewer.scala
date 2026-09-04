@@ -2,8 +2,7 @@ package pkg.b.logic.pdf
 
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.PDFRenderer
-import pkg.e.ui.pdf.PdfVerifier.isPdf
-import pkg.e.ui.pdf.{PdfDefaultViewer, PdfPrinter}
+import pkg.b.logic.pdf.PdfVerifier.isPdf
 import java.awt.event.*
 import java.awt.image.BufferedImage
 import java.awt.*
@@ -18,7 +17,7 @@ object PdfViewer:
 
     if !isPdf(pdfPathName) then
       println(s"'$pdfPathName' does not exist or is not a valid PDF file.")
-      System.exit(1)
+      return
 
     val pdfFile = File(pdfPathName)
 
@@ -48,7 +47,7 @@ object PdfViewer:
 
       val frame = JFrame(s"PDF Viewer - $pdfPathName")
       frame.setTitle(pdfPathName)
-      frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+      frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE)
 
       val imageLabel = JLabel()
       imageLabel.setHorizontalAlignment(SwingConstants.CENTER)
@@ -114,23 +113,14 @@ object PdfViewer:
         button
 
       val firstButton = makeButton("|<", "First page", buttonPanel, first)
-
       val prevButton = makeButton("<", "Previous page", buttonPanel, prev)
-
       buttonPanel.add(pageCounterLabel)
-
       val nextButton = makeButton(">", "Next page", buttonPanel, next)
-
       val lastButton = makeButton(">|", "Last page", buttonPanel, last)
-
       val printButton = makeButton("Print", "Print file", buttonPanel, print)
-
       val viewButton = makeButton("View", "Open file with default application", buttonPanel, view)
-
       val zoomOutButton = makeButton("-","Zoom Out", buttonPanel, zoomOut)
-
       val zoomNormalButton = makeButton("100%","Zoom 100%", buttonPanel, zoomNormal)
-
       val zoomInButton = makeButton("+", "Zoom In", buttonPanel, zoomIn)
 
       frame.getContentPane.add(scrollPane, BorderLayout.CENTER)

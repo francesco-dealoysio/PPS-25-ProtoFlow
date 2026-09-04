@@ -1,15 +1,17 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.services.RegistrationRequestService
-import pkg.a.gui.traits.Management
-import pkg.b.logic.Registration
-import pkg.d.util.{DateTime, XmlToPdf}
-import scalafx.collections.ObservableBuffer
-import scalafx.scene.control.*
-import scalafx.scene.layout.*
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.RegistrationRequests.Management as Text
+import pkg.a.gui.traits.Management
+import pkg.b.logic.Registration
+import pkg.d.util.DateTime
+import pkg.d.util.Util.inPrintsFilePathName
+import pkg.b.logic.pdf.{PdfTableCreator, PdfViewer}
+import scalafx.collections.ObservableBuffer
+import scalafx.scene.control.*
+import scalafx.scene.layout.*
 
 object RegistrationRequestsManagementView extends Management:
 
@@ -20,9 +22,7 @@ object RegistrationRequestsManagementView extends Management:
 
     val service = new RegistrationRequestService()
     val requests = ObservableBuffer.empty[Registration]
-
     val result = createResultMessage()
-
     val table = managementTable(requests, Text.Empty)
 
     table.columns ++= Seq(
@@ -43,14 +43,38 @@ object RegistrationRequestsManagementView extends Management:
     
     clearResultOnSelection(table, result)
 
+    def requestRow(request: Registration): Seq[String] =
+      Seq(
+        request.getName,
+        request.getSurname,
+        request.getEmail,
+        request.getRole,
+        request.getArea,
+        request.getAssignment,
+        DateTime.displayDateTime(request.getDate)
+      )
+
     def printPendingList(): Unit =
+      val pdfPath = inPrintsFilePathName(s"${Text.PrintFileName}.pdf")
       val printed =
-        XmlToPdf.printList(
-          xmlPath = service.requestsFilePath,
-          pdfFileName = Text.PrintFileName,
+        PdfTableCreator.createTablePdf(
+          pdfPathName = pdfPath,
           title = Text.PrintTitle,
-          recordIds = requests.map(_.getId).toSeq
+          headers = Seq(
+            Labels.Name,
+            Labels.Surname,
+            Labels.Email,
+            Labels.Role,
+            Labels.Area,
+            Labels.Assignment,
+            Labels.Date
+          ),
+          rows = requests.toSeq.map(requestRow),
+          columnWeights = Seq(1.1f, 1.2f, 2f, 1.2f, 1.2f, 1.4f, 1.5f)
         )
+
+      if printed then
+        PdfViewer.viewPdf(pdfPath)
 
       result.show(
         if printed then Text.PrintSuccess else Text.PrintError,
@@ -59,10 +83,8 @@ object RegistrationRequestsManagementView extends Management:
 
     val refreshButton = secondaryButton(Buttons.Refresh, loadPendingRequests)
     val processButton = primaryButton(Buttons.Process, () => withSelectedItem(table, result, Text.SelectToProcess)(onProcess))
-
     disableWithoutSelection(table, processButton)
     val bottomActions = actionBar(Seq(closeButton(onExit), refreshButton, printButton(printPendingList), processButton))
-
     val header = titleBox(Text.Title, Text.Subtitle)
 
     loadPendingRequests()

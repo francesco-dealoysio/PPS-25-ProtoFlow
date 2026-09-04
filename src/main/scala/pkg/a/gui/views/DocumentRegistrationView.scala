@@ -1,9 +1,9 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.services.LoadedDocumentService
+import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields
-import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.RegisteredDocuments.Process as Text
 import pkg.a.gui.traits.Form
 import pkg.b.logic.{Classification, LoadedDocument}

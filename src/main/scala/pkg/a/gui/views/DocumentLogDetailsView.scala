@@ -1,10 +1,10 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.text.UiText.DocumentLogs.{Details as Text, Fields, Operations}
+import pkg.a.gui.text.UiText.DocumentLogs.{Fields, Operations, Details as Text}
 import pkg.a.gui.traits.Form
 import pkg.b.logic.DocumentLog
-import pkg.d.util.Util.inLogFilePathName
-import pkg.d.util.XmlToPdf
+import pkg.b.logic.pdf.{PdfDetailsCreator, PdfViewer}
+import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.scene.layout.BorderPane
 
 object DocumentLogDetailsView extends Form:
@@ -33,16 +33,23 @@ object DocumentLogDetailsView extends Form:
     val result = createResultMessage()
 
     def printLogDetails(): Unit =
-      val printed =
-        XmlToPdf.printDetails(
-          xmlPath = inLogFilePathName("documentOperations.xml"),
-          recordId = selectedLog.getId,
-          pdfFileName = s"log_documento_${selectedLog.getId}",
-          title = Text.PrintTitle
+      val pdfPath = inPrintsFilePathName(s"log_documento_${selectedLog.getId}.pdf")
+      val fields =
+        Seq(
+          Fields.Id -> selectedLog.getId,
+          Fields.DocumentId -> selectedLog.getDocumentId,
+          Fields.OperationType -> Operations.labelOf(selectedLog.getOperationType),
+          Fields.ProcessedDate -> selectedLog.getProcessedDate,
+          Fields.ProcessedTime -> selectedLog.getProcessedTime,
+          Fields.ProcessedBy -> selectedLog.getProcessedBy
         )
+      val printed = PdfDetailsCreator.createDetailsPdf(pdfPath, Text.PrintTitle, fields)
+      if printed then
+        PdfViewer.viewPdf(pdfPath)
 
       result.show(
-        if printed then Text.PrintSuccess else Text.PrintError,
+        if printed then Text.PrintSuccess
+        else Text.PrintError,
         success = printed
       )
 

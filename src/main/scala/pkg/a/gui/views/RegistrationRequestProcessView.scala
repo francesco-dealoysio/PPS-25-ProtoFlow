@@ -1,17 +1,19 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.services.RegistrationRequestService
-import pkg.a.gui.traits.Management
-import pkg.b.logic.Registration
-import pkg.d.util.{DateTime, XmlToPdf}
-import scalafx.geometry.Insets
-import scalafx.scene.control.*
-import scalafx.scene.layout.*
+import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
+import pkg.a.gui.text.UiStyles.Requests.*
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.RegistrationRequests.Process as Text
-import pkg.a.gui.text.UiStyles.Requests.*
-import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
+import pkg.a.gui.traits.Management
+import pkg.b.logic.Registration
+import pkg.d.util.DateTime
+import pkg.d.util.Util.inPrintsFilePathName
+import pkg.b.logic.pdf.{PdfDetailsCreator, PdfViewer}
+import scalafx.geometry.Insets
+import scalafx.scene.control.*
+import scalafx.scene.layout.*
 
 object RegistrationRequestProcessView extends Management:
 
@@ -77,14 +79,25 @@ object RegistrationRequestProcessView extends Management:
         motivationField
       )
 
+    def requestFields(currentRequest: Registration): Seq[(String, String)] =
+      Seq(
+        Labels.Id -> currentRequest.getId,
+        Labels.Surname -> currentRequest.getSurname,
+        Labels.Name -> currentRequest.getName,
+        Labels.Email -> currentRequest.getEmail,
+        Labels.Phone -> currentRequest.getPhone,
+        Labels.Role -> currentRequest.getRole,
+        Labels.Area -> currentRequest.getArea,
+        Labels.Assignment -> currentRequest.getAssignment,
+        Labels.Date -> DateTime.displayDateTime(currentRequest.getDate)
+      )
+
     def printPendingRequest(): Unit =
-      val printed =
-        XmlToPdf.printDetails(
-          xmlPath = service.requestsFilePath,
-          recordId = request.getId,
-          pdfFileName = s"richiesta_${request.getId}",
-          title = Text.PrintPendingTitle
-        )
+      val pdfPath = inPrintsFilePathName(s"${Text.PrintFileNamePrefix}_${request.getId}.pdf")
+      val printed = PdfDetailsCreator.createDetailsPdf(pdfPath, Text.PrintPendingTitle, requestFields(request))
+
+      if printed then
+        PdfViewer.viewPdf(pdfPath)
 
       result.show(
         if printed then Text.PrintSuccess else Text.PrintError,
@@ -105,20 +118,22 @@ object RegistrationRequestProcessView extends Management:
       if confirmed then
         service.approveRequest(request.getId, operatorUsername) match
           case Right(approval) =>
-            XmlToPdf.printDetails(
-              xmlPath = service.requestsFilePath,
-              recordId = approval.request.getId,
-              pdfFileName = s"richiesta_${approval.request.getId}_approvata",
-              title = Text.PrintApprovedTitle,
-              additionalFields = Seq(Text.TemporaryPasswordLabel -> approval.generatedPassword)
-            )
+            val pdfPath = inPrintsFilePathName(s"${Text.PrintFileNamePrefix}_${approval.request.getId}_approvata.pdf")
+            val fields =
+              requestFields(approval.request) ++
+                Seq(
+                  Labels.Username -> approval.request.getAssignedUsername,
+                  Text.TemporaryPasswordLabel -> approval.generatedPassword
+                )
+
+            val printed = PdfDetailsCreator.createDetailsPdf(pdfPath, Text.PrintApprovedTitle, fields)
+
+            if printed then
+              PdfViewer.viewPdf(pdfPath)
 
             showSuccess(
               Text.ApproveTitle,
-              Text.approved(
-                approval.account.getUsername,
-                approval.generatedPassword
-              )
+              Text.approved(approval.account.getUsername, approval.generatedPassword)
             )
 
             onProcessed()
@@ -145,12 +160,12 @@ object RegistrationRequestProcessView extends Management:
         if confirmed then
           service.rejectRequest(request.getId, operatorUsername, motivation) match
             case Right(rejected) =>
-              XmlToPdf.printDetails(
-                xmlPath = service.requestsFilePath,
-                recordId = rejected.getId,
-                pdfFileName = s"richiesta_${rejected.getId}_rifiutata",
-                title = Text.PrintRejectedTitle
-              )
+              val pdfPath = inPrintsFilePathName(s"${Text.PrintFileNamePrefix}_${rejected.getId}_rifiutata.pdf")
+              val fields = requestFields(rejected) ++ Seq(Text.MotivationLabel -> rejected.getMotivation)
+              val printed = PdfDetailsCreator.createDetailsPdf(pdfPath, Text.PrintRejectedTitle, fields)
+
+              if printed then
+                PdfViewer.viewPdf(pdfPath)
 
               result.show(Text.RejectSuccess, success = true)
               onProcessed()

@@ -1,15 +1,15 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.services.AccountService
+import pkg.a.gui.text.UiText.Accounts.Add as Text
+import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Validation.Account as Validation
 import pkg.a.gui.traits.Form
+import pkg.a.gui.validators.AccountValidator
 import pkg.b.logic.{Account, Classification, Role}
 import pkg.d.util.Util.cipher
 import scalafx.scene.Node
 import scalafx.scene.layout.BorderPane
-import pkg.a.gui.text.UiText.Accounts.Add as Text
-import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
-import pkg.a.gui.text.UiText.Validation.Account as Validation
-import pkg.a.gui.validators.AccountValidator
 
 object AccountAddView extends Form:
 

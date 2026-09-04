@@ -2,10 +2,11 @@ package pkg.a.gui.views
 
 import pkg.a.gui.services.DocumentManagementControlService
 import pkg.a.gui.services.DocumentManagementControlService.ManagedDocument
-import pkg.a.gui.traits.Management
-import pkg.a.gui.text.UiText.DocumentManagementControl as Text
 import pkg.a.gui.text.UiText.Common.Buttons
-import pkg.d.util.XmlToPdf
+import pkg.a.gui.text.UiText.DocumentManagementControl as Text
+import pkg.a.gui.traits.Management
+import pkg.b.logic.pdf.{PdfTableCreator, PdfViewer}
+import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.layout.BorderPane
 
@@ -15,7 +16,6 @@ object DocumentManagementControlView extends Management:
 
     val documents = ObservableBuffer.empty[ManagedDocument]
     val result = createResultMessage()
-
     val table = managementTable(documents, Text.Empty)
 
     table.columns ++= Seq(
@@ -36,30 +36,34 @@ object DocumentManagementControlView extends Management:
 
     clearResultOnSelection(table, result)
 
-    def printDocumentsList(): Unit =
-      val rows =
-        documents.map: document =>
-          Seq(
-            if document.protocolNumber.nonEmpty then document.protocolNumber else document.id,
-            if document.classification.nonEmpty then document.classification else Text.NotAvailable,
-            if document.registeredDate.nonEmpty then document.registeredDate else Text.NotAvailable,
-            document.operator,
-            Text.Stages.labelOf(document.stage)
-          )
-        .toSeq
+    def documentRow(document: ManagedDocument): Seq[String] =
+      Seq(
+        if document.protocolNumber.nonEmpty then document.protocolNumber else document.id,
+        if document.classification.nonEmpty then document.classification else Text.NotAvailable,
+        if document.registeredDate.nonEmpty then document.registeredDate else Text.NotAvailable,
+        document.operator,
+        Text.Stages.labelOf(document.stage)
+      )
 
+    def printDocumentsList(): Unit =
+      val pdfPath = inPrintsFilePathName(s"${Text.PrintFileName}.pdf")
       val printed =
-        XmlToPdf.printSections(
-          pdfFileName = Text.PrintFileName,
+        PdfTableCreator.createTablePdf(
+          pdfPathName = pdfPath,
           title = Text.PrintTitle,
-          sections = Seq(
-            (
-              "",
-              Seq(Text.IdColumn, Text.ClassificationColumn, Text.RegisteredDateColumn, Text.OperatorColumn, Text.StageColumn),
-              rows
-            )
-          )
+          headers = Seq(
+            Text.IdColumn,
+            Text.ClassificationColumn,
+            Text.RegisteredDateColumn,
+            Text.OperatorColumn,
+            Text.StageColumn
+          ),
+          rows = documents.toSeq.map(documentRow),
+          columnWeights = Seq(1.3f, 1.2f, 1.4f, 1.7f, 1.4f)
         )
+
+      if printed then
+        PdfViewer.viewPdf(pdfPath)
 
       result.show(
         if printed then Text.PrintSuccess else Text.PrintError,
@@ -71,7 +75,6 @@ object DocumentManagementControlView extends Management:
     val summaryButton = primaryButton(Text.Summary, () => withSelectedItem(table, result, Text.SelectToSummary)(onSummary))
     disableWithoutSelection(table, viewButton, summaryButton)
     val bottomActions = actionBar(Seq(closeButton(onExit), refreshButton, printButton(printDocumentsList), viewButton, summaryButton))
-
     val header = titleBox(Text.Title, Text.Subtitle)
 
     loadDocuments()

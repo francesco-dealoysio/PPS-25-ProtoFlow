@@ -1,15 +1,14 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.text.UiStyles.Common.FormSectionTitleStyle
-import pkg.a.gui.traits.Form
 import pkg.a.gui.text.UiText.Accounts.{Edit as EditText, Profile as ProfileText}
-import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Validation.Account as Validation
+import pkg.a.gui.traits.Form
 import pkg.a.gui.validators.AccountValidator
+import pkg.b.logic.pdf.{PdfDetailsCreator, PdfViewer}
 import pkg.b.logic.{Account, Classification, Role}
-import pkg.d.util.Util.{cipher, inDatabaseFilePathName}
-import pkg.d.util.XmlToPdf
+import pkg.d.util.Util.{cipher, inPrintsFilePathName}
 import scalafx.scene.Node
 import scalafx.scene.layout.{BorderPane, VBox}
 
@@ -157,26 +156,23 @@ object AccountEditView extends Form:
     val reset = resetButton(resetForm)
     val exit = closeButton(onExit)
 
-    val print =
-      secondaryButton(
-        text = Buttons.Print,
-        action = () =>
-          val printed =
-            XmlToPdf.printDetails(
-              xmlPath = inDatabaseFilePathName("accounts.xml"),
-              recordId = selectedAccount.getId,
-              pdfFileName = s"account_${selectedAccount.getId}",
-              title = EditText.PrintTitle
-            )
+    def printAccount(): Unit =
+      val pdfPath = inPrintsFilePathName(s"account_${selectedAccount.getId}.pdf")
+      val fields =
+        Seq(
+          Labels.Id -> selectedAccount.getId,
+          Labels.Surname -> selectedAccount.getSurname,
+          Labels.Name -> selectedAccount.getName,
+          Labels.Email -> selectedAccount.getEmail,
+          Labels.Phone -> selectedAccount.getPhone,
+          Labels.Role -> selectedAccount.getRole,
+          Labels.Area -> selectedAccount.getArea,
+          Labels.Assignment -> selectedAccount.getAssignment,
+          Labels.Username -> selectedAccount.getUsername
+        )
 
-          result.show(
-            message =
-              if printed then EditText.PrintSuccess
-              else EditText.PrintError,
-            success = printed
-          )
-      )
-
+      PdfDetailsCreator.createDetailsPdf(pdfPath, EditText.PrintTitle, fields)
+      PdfViewer.viewPdf(pdfPath)
 
     val profileInfoRows =
       Seq(
@@ -222,7 +218,7 @@ object AccountEditView extends Form:
       else
         formGrid(accountRows)
 
-    val actions = Seq(Some(exit), Option.unless(profileMode)(print), Some(reset), Some(save)).flatten
+    val actions = Seq(Some(exit), Option.unless(profileMode)(printButton(printAccount)), Some(reset), Some(save)).flatten
 
     val (titleText, subtitleText) =
       if profileMode then

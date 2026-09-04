@@ -2,12 +2,12 @@ package pkg.a.gui.views
 
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.DocumentLogs
-import pkg.a.gui.text.UiText.DocumentLogs.{Fields, Management as Text, Operations, Prompts}
+import pkg.a.gui.text.UiText.DocumentLogs.{Fields, Operations, Prompts, Management as Text}
 import pkg.a.gui.traits.Management
 import pkg.b.logic.DocumentLog
-import pkg.d.util.Util.inLogFilePathName
 import pkg.d.util.Filters.getDocumentOperationsLogPredicate
-import pkg.d.util.XmlToPdf
+import pkg.b.logic.pdf.{PdfTableCreator, PdfViewer}
+import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.{ComboBox, DatePicker, TextField}
 import scalafx.scene.layout.BorderPane
@@ -83,22 +83,36 @@ object DocumentLogManagementView extends Management:
 
     clearResultOnSelection(table, result)
 
+    def logRow(log: DocumentLog): Seq[String] =
+      Seq(
+        log.getId,
+        log.getDocumentId,
+        Operations.labelOf(log.getOperationType),
+        log.getProcessedDate,
+        log.getProcessedTime,
+        log.getProcessedBy
+      )
+
     def printLogs(): Unit =
+      val pdfPath = inPrintsFilePathName(s"${Text.PrintFileName}.pdf")
       val printed =
-        XmlToPdf.printList(
-          xmlPath = inLogFilePathName("documentOperations.xml"),
-          pdfFileName = Text.PrintFileName,
+        PdfTableCreator.createTablePdf(
+          pdfPathName = pdfPath,
           title = Text.PrintTitle,
-          fields = Seq(
-            "id",
-            "documentId",
-            "operationType",
-            "processedDate",
-            "processedTime",
-            "processedBy"
+          headers = Seq(
+            Fields.Id,
+            Fields.DocumentId,
+            Fields.OperationType,
+            Fields.ProcessedDate,
+            Fields.ProcessedTime,
+            Fields.ProcessedBy
           ),
-          recordIds = logs.map(_.getId).toSeq
+          rows = logs.toSeq.map(logRow),
+          columnWeights = Seq(0.8f, 1.1f, 1.5f, 1.2f, 1f, 1.6f)
         )
+
+      if printed then
+        PdfViewer.viewPdf(pdfPath)
 
       result.show(
         if printed then Text.PrintSuccess else Text.PrintError,

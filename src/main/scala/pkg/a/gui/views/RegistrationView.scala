@@ -2,11 +2,9 @@ package pkg.a.gui.views
 
 import pkg.a.gui.services.RegistrationRequestService
 import pkg.a.gui.text.UiStyles.Registration.{CardStyle, GridStyle}
-import pkg.a.gui.text.UiText.Common.Buttons
-import pkg.a.gui.text.UiText.Common.Fields.Labels
-import pkg.a.gui.text.UiText.Common.Fields.Prompts
+import pkg.a.gui.text.UiText.Common.{Buttons, Dialogs}
+import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Registration as Text
-import pkg.a.gui.text.UiText.Common.Dialogs
 import pkg.a.gui.traits.Form
 import pkg.a.gui.validators.RegistrationValidator
 import pkg.b.logic.{Classification, Role, Registration as RegistrationModel}

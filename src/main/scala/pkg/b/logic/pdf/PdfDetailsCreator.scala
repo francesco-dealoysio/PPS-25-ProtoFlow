@@ -1,7 +1,7 @@
 package pkg.b.logic.pdf
 
-import pkg.d.util.Util.inPrintsFilePathName
 import pkg.d.util.DateTime.currentDisplayDateTime
+import pkg.d.util.Logger.logger
 import org.apache.pdfbox.pdmodel.common.*
 import org.apache.pdfbox.pdmodel.font.PDType1Font
 import org.apache.pdfbox.pdmodel.PDDocument
@@ -10,7 +10,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream
 import java.awt.Color
 import java.nio.file.{Files, Paths}
 
-object PdfCreator:
+object PdfDetailsCreator:
   
   case class Font(fontType: PDType1Font, fontSize: Float)
 
@@ -31,9 +31,9 @@ object PdfCreator:
   private var pdfPathName: String = _
   private var title: String = _
 
-  private val document: PDDocument = new PDDocument()
-  private var page: PDPage = new PDPage(PDRectangle.A4)
-  private var content: PDPageContentStream = new PDPageContentStream(document, page)
+  private var document: PDDocument = _
+  private var page: PDPage = _
+  private var content: PDPageContentStream = _
 
   private val fontType = PDType1Font.COURIER_BOLD
   private val fontHeader = Font(fontType, 6)
@@ -41,13 +41,13 @@ object PdfCreator:
   private val fontBody = Font(fontType, 12)
   private val fontFooter = Font(fontType, 8)
 
-  private val pageWidth = page.getMediaBox.getWidth
-  private val pageHeight = page.getMediaBox.getHeight
+  private val pageWidth = PDRectangle.A4.getWidth
+  private val pageHeight = PDRectangle.A4.getHeight
 
   private val startX = 0
   private val startY = pageHeight
 
-  private val margin = 50f // threshold
+  private val margin = 50f
   private val marginTop = 50f
   private val marginLeft = 40f
   private val marginRight = 40f
@@ -65,31 +65,28 @@ object PdfCreator:
 
   private val pageNumber = 1
 
-  def createPdf(pdfPathName: String, title: String, fields: Seq[(String, String)]): Unit =
-
-    if pdfPathName == "" || Files.isDirectory(Paths.get(pdfPathName)) then
-      println("Filename paramenter cannot be empty, pdf not created!")
-      return
-
-    this.pdfPathName = pdfPathName
-    this.title = title
-
-    document.addPage(page)
-
-    writeHeader()
-
-    writeTitle()
-
-    writeFooter()
-
-    writeBody(fields)
-
-    content.close()
-
-    writePageNumbers()
-
-    document.save(pdfPathName)
-    document.close()
+  def createDetailsPdf(pdfPathName: String, title: String, fields: Seq[(String, String)]): Boolean =
+    if pdfPathName.isBlank || Files.isDirectory(Paths.get(pdfPathName)) then
+      false
+    else
+      try
+        initializeDocument()
+        this.pdfPathName = pdfPathName
+        this.title = title
+        document.addPage(page)
+        writeHeader()
+        writeTitle()
+        writeFooter()
+        writeBody(fields)
+        content.close()
+        writePageNumbers()
+        document.save(pdfPathName)
+        document.close()
+        true
+      catch
+        case exception: Exception =>
+          logger(exception)
+          false
 
   private def writeHeader(): Unit =
     val xOffset = startX + paddingLeft
@@ -209,6 +206,11 @@ object PdfCreator:
       content.stroke()
       content.close()
     }
+
+  private def initializeDocument(): Unit =
+    document = new PDDocument()
+    page = new PDPage(PDRectangle.A4)
+    content = new PDPageContentStream(document, page)
 
   def wrapText(text: String, maxWidth: Float): Seq[String] =
     val words = text.split("\\s+")

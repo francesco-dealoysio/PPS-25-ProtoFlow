@@ -2,8 +2,7 @@ package pkg.a.gui.views
 
 import pkg.a.gui.services.DocumentManagementControlService.{ManagedDocument, Stages}
 import pkg.a.gui.text.UiStyles.HomePage.*
-import pkg.a.gui.text.UiText.Common.Documents.NoDocuments
-import pkg.a.gui.text.UiText.Common.Documents.Fields as DocumentFields
+import pkg.a.gui.text.UiText.Common.Documents.{NoDocuments, Fields as DocumentFields}
 import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.DocumentManagementControl as ManagementText
 import pkg.a.gui.traits.Management

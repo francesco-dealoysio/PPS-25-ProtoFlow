@@ -12,8 +12,7 @@ object Util:
     require(text != null, "Input text cannot be null")
 
     val digest = MessageDigest.getInstance("SHA3-512")
-    val digestBytes =
-      digest.digest(text.getBytes(StandardCharsets.UTF_8))
+    val digestBytes = digest.digest(text.getBytes(StandardCharsets.UTF_8))
 
     digestBytes.map(byte => f"${byte & 0xff}%02x").mkString
 

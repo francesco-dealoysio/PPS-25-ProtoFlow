@@ -1,14 +1,14 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.traits.Management
-import pkg.b.logic.{Account, AuthorizationEngine}
 import pkg.a.gui.text.UiText.Accounts.Management as Text
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Common.Fields.Labels
+import pkg.a.gui.traits.Management
+import pkg.b.logic.{Account, AuthorizationEngine}
+import pkg.b.logic.pdf.{PdfTableCreator, PdfViewer}
+import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.layout.BorderPane
-import pkg.d.util.Util.inDatabaseFilePathName
-import pkg.d.util.XmlToPdf
 
 object AccountManagementView extends Management:
 
@@ -20,9 +20,7 @@ object AccountManagementView extends Management:
 
     val accountLogic = new Account()
     val accounts = ObservableBuffer.empty[Account]
-
     val result = createResultMessage()
-
     val table = managementTable(accounts, Text.Empty)
 
     table.columns ++= Seq(
@@ -57,32 +55,52 @@ object AccountManagementView extends Management:
           )
 
         if confirmed then
-          // The "last admin" rule lives in AuthorizationEngine (Prolog), not duplicated here:
-          // this only asks the single source of truth which error to show before attempting.
           val adminCount = accounts.count(_.getRole.equalsIgnoreCase("admin"))
-
           if !AuthorizationEngine.canDeleteAccount(selected.getRole, adminCount) then
             result.show(Text.LastAdminDeleteError, success = false)
           else
             val deleted = accountLogic.recordDelete(selected.getId)
-
             if deleted then
               loadAccounts()
-              result.show(
-                Text.deletedAccount(selected.getUsername),
-                success = true
-              )
+              result.show(Text.deletedAccount(selected.getUsername), success = true)
             else
               result.show(Text.DeleteError, success = false)
 
+    def accountRow(account: Account): Seq[String] =
+      Seq(
+        account.getSurname,
+        account.getName,
+        account.getUsername,
+        account.getEmail,
+        account.getPhone,
+        account.getRole,
+        account.getArea,
+        account.getAssignment
+      )
+
     def printAccounts(): Unit =
+      val pdfPath = inPrintsFilePathName(s"${Text.PrintFileName}.pdf")
       val printed =
-        XmlToPdf.printList(
-          xmlPath = inDatabaseFilePathName("accounts.xml"),
-          pdfFileName = Text.PrintFileName,
+        PdfTableCreator.createTablePdf(
+          pdfPathName = pdfPath,
           title = Text.PrintTitle,
-          fields = Seq("id", "surname", "name", "username", "email", "phone", "role", "area", "assignment")
+          headers = Seq(
+            Labels.Surname,
+            Labels.Name,
+            Labels.Username,
+            Labels.Email,
+            Labels.Phone,
+            Labels.Role,
+            Labels.Area,
+            Labels.Assignment
+          ),
+          rows = accounts.toSeq.map(accountRow),
+          columnWeights = Seq(1.2f, 1.2f, 1.4f, 2f, 1.3f, 1f, 1.2f, 1.5f)
         )
+
+      if printed then
+        PdfViewer.viewPdf(pdfPath)
+
       result.show(
         if printed then Text.PrintSuccess else Text.PrintError,
         success = printed
@@ -95,12 +113,9 @@ object AccountManagementView extends Management:
       onAdd())
 
     val editButton = secondaryButton(Buttons.Edit, () => withSelectedItem(table, result, Text.SelectToEdit)(onEdit))
-
     val deleteButton = dangerButton(Buttons.Delete, deleteSelectedAccount)
     disableWithoutSelection(table, editButton, deleteButton)
-
     val bottomActions = actionBar(Seq(closeButton(onExit), printButton(printAccounts), editButton, deleteButton, addButton))
-
     val header = titleBox(Text.Title, Text.Subtitle)
 
     loadAccounts()

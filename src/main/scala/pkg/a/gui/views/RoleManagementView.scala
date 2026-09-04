@@ -1,18 +1,22 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.traits.Management
-import pkg.b.logic.{Account, AuthorizationEngine, Registration, Role}
-import pkg.d.util.Util.inDatabaseFilePathName
-import pkg.d.util.XmlToPdf
-import scalafx.collections.ObservableBuffer
-import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.Roles.Management as Text
+import pkg.a.gui.traits.Management
+import pkg.b.logic.{Account, AuthorizationEngine, Registration, Role}
+import pkg.b.logic.pdf.{PdfTableCreator, PdfViewer}
+import pkg.d.util.Util.inPrintsFilePathName
+import scalafx.collections.ObservableBuffer
+import scalafx.scene.layout.BorderPane
 
 object RoleManagementView extends Management:
 
-  def apply(onAdd: () => Unit = () => (), onEdit: Role => Unit = _ => (), onExit: () => Unit = () => ()): BorderPane =
+  def apply(
+             onAdd: () => Unit = () => (),
+             onEdit: Role => Unit = _ => (),
+             onExit: () => Unit = () => ()
+           ): BorderPane =
 
     val roleLogic = new Role()
     val accountLogic = new Account()
@@ -63,8 +67,6 @@ object RoleManagementView extends Management:
 
           val roleInUse = roleAssignedToAccount || roleRequestedByPendingRegistration
 
-          // The "admin role" rule lives in AuthorizationEngine (Prolog), not duplicated here:
-          // this only asks the single source of truth which error to show before attempting.
           if !AuthorizationEngine.canDeleteRole(selected.getRole) then
             result.show(Text.AdminRoleDeleteError, success = false)
           else if roleInUse then
@@ -77,17 +79,27 @@ object RoleManagementView extends Management:
             else
               result.show(Text.DeleteError, success = false)
 
+    def roleRow(role: Role): Seq[String] =
+      Seq(role.getRole, role.getName, role.getDescription)
+
     def printRoles(): Unit =
+      val pdfPath = inPrintsFilePathName(s"${Text.PrintFileName}.pdf")
       val printed =
-        XmlToPdf.printList(
-          xmlPath = inDatabaseFilePathName("roles.xml"),
-          pdfFileName = "elenco-ruoli.pdf",
-          title = Text.PrintTitle
+        PdfTableCreator.createTablePdf(
+          pdfPathName = pdfPath,
+          title = Text.PrintTitle,
+          headers = Seq(Labels.Role, Labels.RoleName, Labels.Description),
+          rows = roles.toSeq.map(roleRow),
+          columnWeights = Seq(1.2f, 1.8f, 4f)
         )
+
       if printed then
-        result.show(Text.PrintSuccess, success = true)
-      else
-        result.show(Text.PrintError, success = false)
+        PdfViewer.viewPdf(pdfPath)
+
+      result.show(
+        if printed then Text.PrintSuccess else Text.PrintError,
+        success = printed
+      )
 
     clearResultOnSelection(table, result)
 
@@ -97,11 +109,9 @@ object RoleManagementView extends Management:
     )
 
     val editButton = secondaryButton(Buttons.Edit, () => withSelectedItem(table, result, Text.SelectToEdit)(onEdit))
-
     val deleteButton = dangerButton(Buttons.Delete, deleteSelectedRole)
     disableWithoutSelection(table, editButton, deleteButton)
     val bottomActions = actionBar(Seq(closeButton(onExit), printButton(printRoles), editButton, deleteButton, addButton))
-
     val header = titleBox(Text.Title, Text.Subtitle)
 
     loadRoles()

@@ -1,9 +1,9 @@
 package pkg.a.gui.services
 
+import pkg.a.gui.validators.RegistrationValidator
 import pkg.b.logic.{Account, Registration}
 import pkg.d.util.Util.{cipher, inDatabaseFilePathName, inIdsFilePathName}
 import pkg.d.util.{DateTime, IdGen}
-import pkg.a.gui.validators.RegistrationValidator
 
 import scala.util.Random
 

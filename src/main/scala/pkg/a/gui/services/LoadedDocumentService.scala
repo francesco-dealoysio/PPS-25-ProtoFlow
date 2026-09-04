@@ -3,7 +3,7 @@ package pkg.a.gui.services
 import pkg.b.logic.{LoadedDocument, RegisteredDocument}
 import pkg.d.util.DateTime.{localDate, localTime}
 import pkg.d.util.IdGen
-import pkg.d.util.Util.{inIdsFilePathName, inDocumentsFilePathName}
+import pkg.d.util.Util.{inDocumentsFilePathName, inIdsFilePathName}
 
 object  LoadedDocumentService:
 

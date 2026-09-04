@@ -1,24 +1,26 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.traits.Management
-import pkg.b.logic.Classification
-import scalafx.collections.ObservableBuffer
-import pkg.d.util.Util.inDatabaseFilePathName
-import pkg.d.util.XmlToPdf
+import pkg.a.gui.text.UiText.Classifications.Management as Text
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Common.Fields.Labels
-import pkg.a.gui.text.UiText.Classifications.Management as Text
+import pkg.a.gui.traits.Management
+import pkg.b.logic.Classification
+import pkg.b.logic.pdf.{PdfTableCreator, PdfViewer}
+import pkg.d.util.Util.inPrintsFilePathName
+import scalafx.collections.ObservableBuffer
 import scalafx.scene.layout.BorderPane
 
 object ClassificationManagementView extends Management:
 
-  def apply(onAdd: () => Unit = () => (), onEdit: Classification => Unit = _ => (), onExit: () => Unit = () => ()): BorderPane =
+  def apply(
+             onAdd: () => Unit = () => (),
+            onEdit: Classification => Unit = _ => (),
+             onExit: () => Unit = () => ()
+           ): BorderPane =
 
     val classificationLogic = new Classification()
     val classifications = ObservableBuffer.empty[Classification]
-
     val result = createResultMessage()
-    
     val table = managementTable(classifications, Text.Empty)
 
     table.columns ++= Seq(
@@ -53,21 +55,30 @@ object ClassificationManagementView extends Management:
           else
             result.show(Text.DeleteError, success = false)
 
+    def classificationRow(classification: Classification): Seq[String] =
+      Seq(classification.getClassification, classification.getDescription)
+
     def printClassifications(): Unit =
       if classifications.isEmpty then
         result.show(Text.PrintEmpty, success = false)
       else
+        val pdfPath = inPrintsFilePathName(s"${Text.PrintFileName}.pdf")
         val printed =
-          XmlToPdf.printList(
-            xmlPath = inDatabaseFilePathName("classifications.xml"),
-            pdfFileName = "elenco-classifiche.pdf",
-            title = Text.PrintTitle
+          PdfTableCreator.createTablePdf(
+            pdfPathName = pdfPath,
+            title = Text.PrintTitle,
+            headers = Seq(Labels.Classification, Labels.Description),
+            rows = classifications.toSeq.map(classificationRow),
+            columnWeights = Seq(1.5f, 4f)
           )
 
         if printed then
-          result.show(Text.PrintSuccess, success = true)
-        else
-          result.show(Text.PrintError, success = false)
+          PdfViewer.viewPdf(pdfPath)
+
+        result.show(
+          if printed then Text.PrintSuccess else Text.PrintError,
+          success = printed
+        )
 
     clearResultOnSelection(table, result)
 

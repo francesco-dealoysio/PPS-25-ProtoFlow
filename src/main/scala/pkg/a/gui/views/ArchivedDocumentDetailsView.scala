@@ -1,16 +1,16 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.text.UiText.ArchivedDocuments.{Details as Text, Fields as ArchiveFields}
-import pkg.a.gui.text.UiText.LoadedDocuments.Fields as DocumentFields
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.Common.Fields.Labels
-import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegistrationFields
 import pkg.a.gui.text.UiText.DocumentManagementControl.Fields as ManagementFields
+import pkg.a.gui.text.UiText.LoadedDocuments.Fields as DocumentFields
+import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegistrationFields
 import pkg.a.gui.traits.Form
 import pkg.b.logic.ArchivedDocument
+import pkg.b.logic.pdf.{PdfDetailsCreator, PdfViewer}
+import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.scene.layout.BorderPane
-import pkg.d.util.Util.inDocumentsFilePathName
-import pkg.d.util.XmlToPdf
 
 object ArchivedDocumentDetailsView extends Form:
 
@@ -67,16 +67,36 @@ object ArchivedDocumentDetailsView extends Form:
     val result = createResultMessage()
 
     def printDocumentDetails(): Unit =
-      val safeProtocolNumber =
-        selectedDocument.getProtocolNumber.replaceAll("[^a-zA-Z0-9_-]", "_")
-
-      val printed =
-        XmlToPdf.printDetails(
-          xmlPath = inDocumentsFilePathName("archived.xml"),
-          recordId = selectedDocument.getId,
-          pdfFileName = s"${Text.PrintFileNamePrefix}_$safeProtocolNumber",
-          title = Text.PrintTitle
+      val safeProtocolNumber = selectedDocument.getProtocolNumber.replaceAll("[^a-zA-Z0-9_-]", "_")
+      val pdfPath = inPrintsFilePathName(s"${Text.PrintFileNamePrefix}_$safeProtocolNumber.pdf")
+      val fields =
+        Seq(
+          CommonDocumentFields.Id -> selectedDocument.getId,
+          DocumentFields.DocumentDate -> selectedDocument.getDocumentDate,
+          DocumentFields.DocumentProtocol -> selectedDocument.getDocumentProtocol,
+          DocumentFields.DocumentType -> selectedDocument.getDocumentType,
+          CommonDocumentFields.Sender -> selectedDocument.getSender,
+          CommonDocumentFields.Recipient -> selectedDocument.getRecipient,
+          CommonDocumentFields.Subject -> selectedDocument.getSubject,
+          DocumentFields.Remarks -> selectedDocument.getRemarks,
+          ManagementFields.LoadedDate -> selectedDocument.getLoadedDate,
+          ManagementFields.LoadedTime -> selectedDocument.getLoadedTime,
+          DocumentFields.ProcessedBy -> selectedDocument.getLoadedBy,
+          CommonDocumentFields.ProtocolNumber -> selectedDocument.getProtocolNumber,
+          RegistrationFields.RegisteredDate -> selectedDocument.getRegisteredDate,
+          RegistrationFields.RegisteredTime -> selectedDocument.getRegisteredTime,
+          RegistrationFields.RegisteredBy -> selectedDocument.getRegisteredBy,
+          ArchiveFields.ArchivedDate -> selectedDocument.getArchivedDate,
+          ArchiveFields.ArchivedTime -> selectedDocument.getArchivedTime,
+          ArchiveFields.ArchivedBy -> selectedDocument.getArchivedBy,
+          ArchiveFields.ArchiveLocation -> selectedDocument.getArchiveLocation,
+          Labels.Classification -> selectedDocument.getClassification
         )
+
+      val printed = PdfDetailsCreator.createDetailsPdf(pdfPath, Text.PrintTitle, fields)
+
+      if printed then
+        PdfViewer.viewPdf(pdfPath)
 
       result.show(
         message = if printed then Text.PrintSuccess else Text.PrintError,

@@ -28,6 +28,7 @@ object IdentityText:
       val PrintSuccess = "Elenco dei ruoli stampato correttamente nella cartella protoflow/prints."
       val PrintError = "Non è stato possibile stampare l'elenco dei ruoli."
       val PrintTitle = "Elenco Ruoli"
+      val PrintFileName = "elenco-ruoli"
       val AdminRoleDeleteError = "Non è possibile eliminare il ruolo di amministratore."
       val RoleInUseDeleteError = "Non è possibile eliminare un ruolo assegnato a un account o presente in una richiesta di registrazione in attesa."
 
@@ -63,6 +64,7 @@ object IdentityText:
       val PrintSuccess = "Elenco delle classifiche stampato correttamente nella cartella protoflow/prints."
       val PrintError = "Non è stato possibile stampare l'elenco delle classifiche."
       val PrintTitle = "Elenco Classifiche"
+      val PrintFileName = "elenco-classifiche"
 
       def deleted(classification: String): String =
         s"La classifica '$classification' è stata eliminata correttamente."

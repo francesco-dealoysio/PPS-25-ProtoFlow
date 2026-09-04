@@ -119,7 +119,6 @@ class ArchivedDocumentServiceTest:
       sender = "ACEA",
       recipient = "Tesoreria",
       subject = "Bollette energia elettrica",
-      remarks = "",
       loadedDate = "2026-08-30",
       loadedTime = "09:00:00",
       loadedBy = "verdi",

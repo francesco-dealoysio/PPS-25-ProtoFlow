@@ -1,12 +1,12 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.traits.Form
-import pkg.b.logic.Classification
-import scalafx.scene.layout.BorderPane
 import pkg.a.gui.text.UiText.Classifications.Edit as Text
 import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.Validation.Classification as Validation
+import pkg.a.gui.traits.Form
 import pkg.a.gui.validators.ClassificationValidator
+import pkg.b.logic.Classification
+import scalafx.scene.layout.BorderPane
 
 object ClassificationEditView extends Form:
 

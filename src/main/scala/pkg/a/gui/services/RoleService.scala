@@ -2,7 +2,7 @@ package pkg.a.gui.services
 
 import pkg.b.logic.Role
 import pkg.d.util.IdGen
-import pkg.d.util.Util.{inIdsFilePathName, inDatabaseFilePathName}
+import pkg.d.util.Util.{inDatabaseFilePathName, inIdsFilePathName}
 
 object  RoleService:
 

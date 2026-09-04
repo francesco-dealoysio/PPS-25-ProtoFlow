@@ -5,7 +5,10 @@ import pkg.a.gui.text.UiText.Common.ApplicationName
 import pkg.a.gui.text.UiText.DocumentLogs.Operations
 import pkg.a.gui.text.UiText.DocumentManagementControl as Text
 import pkg.a.gui.traits.{Form, Management}
-import pkg.d.util.{DateTime, XmlToPdf}
+import pkg.b.logic.pdf.{PdfDocumentSummaryCreator, PdfViewer}
+import pkg.b.logic.pdf.PdfDocumentSummaryCreator.SummaryData
+import pkg.d.util.DateTime
+import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.layout.BorderPane
 
@@ -37,6 +40,8 @@ object DocumentManagementSummaryView extends Form with Management:
 
     def printSummary(): Unit =
       val safeDocumentCode = summary.documentCode.replaceAll("[^A-Za-z0-9._-]", "_")
+      val pdfPath = inPrintsFilePathName(s"${Text.SummaryPrintFileName}_$safeDocumentCode.pdf")
+
       val phaseRows =
         summary.phases.map: phase =>
           Seq(
@@ -49,7 +54,7 @@ object DocumentManagementSummaryView extends Form with Management:
           )
 
       val printData =
-        XmlToPdf.SummaryPrintData(
+        SummaryData(
           applicationTitle = ApplicationName,
           reportTitle = Text.SummaryTitle,
           generatedAtLabel = Text.SummaryGeneratedAt,
@@ -68,17 +73,14 @@ object DocumentManagementSummaryView extends Form with Management:
           logoResourcePath = "/img/message.jpg"
         )
 
-      val printed =
-        XmlToPdf.printDocumentManagementSummary(
-          pdfFileName = s"${Text.SummaryPrintFileName}_$safeDocumentCode.pdf",
-          data = printData
-        )
+      val printed = PdfDocumentSummaryCreator.createSummaryPdf(pdfPath, printData)
+
+      if printed then
+        PdfViewer.viewPdf(pdfPath)
 
       result.show(
-        if printed then
-          Text.SummaryPrintSuccess
-        else
-          Text.SummaryPrintError,
+        if printed then Text.SummaryPrintSuccess
+        else Text.SummaryPrintError,
         success = printed
       )
 

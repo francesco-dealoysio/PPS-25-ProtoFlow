@@ -2,16 +2,18 @@ package pkg.a.gui.views
 
 import pkg.a.gui.services.StatisticsService
 import pkg.a.gui.services.StatisticsService.{MonthlyCount, RoleCount, UserCount}
-import pkg.a.gui.traits.Management
-import pkg.a.gui.text.UiText.Statistics as Text
 import pkg.a.gui.text.UiStyles.Common.RootStyle
 import pkg.a.gui.text.UiStyles.HomePage.{CardsContainerStyle, StatCardStyle, StatCardTitleStyle, StatCardValueStyle}
-import pkg.d.util.XmlToPdf
+import pkg.a.gui.text.UiText.Statistics as Text
+import pkg.a.gui.traits.Management
+import pkg.b.logic.pdf.{PdfSectionsCreator, PdfViewer}
+import pkg.b.logic.pdf.PdfSectionsCreator.Section
+import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Insets
 import scalafx.scene.chart.{BarChart, CategoryAxis, NumberAxis, XYChart}
 import scalafx.scene.control.{ScrollPane, TableView}
-import scalafx.scene.layout.{BorderPane, ColumnConstraints, GridPane, HBox, Priority, VBox}
+import scalafx.scene.layout.*
 
 object StatisticsView extends Management:
 
@@ -60,41 +62,72 @@ object StatisticsView extends Management:
       )
 
     def printStatistics(): Unit =
-      val printed =
-        XmlToPdf.printSections(
-          pdfFileName = Text.PrintFileName,
-          title = Text.PrintTitle,
-          sections = Seq(
-            (
+      val pdfPath = inPrintsFilePathName(s"${Text.PrintFileName}.pdf")
+
+      val sections =
+        Seq(
+          Section(
+            title = Text.RegistrationsTotal,
+            headers = Seq(
               Text.RegistrationsTotal,
-              Seq(Text.RegistrationsTotal, Text.RegistrationsApproved, Text.RegistrationsRejected),
-              Seq(Seq(registrationsSummary.total.toString, registrationsSummary.approved.toString, registrationsSummary.rejected.toString))
+              Text.RegistrationsApproved,
+              Text.RegistrationsRejected
             ),
-            (
-              Text.RegisteredByMonthTitle,
-              Seq("Mese", "Conteggio"),
-              registeredByMonth.map(c => Seq(c.yearMonth, c.count.toString))
-            ),
-            (
-              Text.ArchivedByMonthTitle,
-              Seq("Mese", "Conteggio"),
-              archivedByMonth.map(c => Seq(c.yearMonth, c.count.toString))
-            ),
-            (
-              Text.AccessesByRoleTitle,
-              Seq("Ruolo", "Conteggio"),
-              accessesByRole.map(c => Seq(c.roleName, c.count.toString))
-            ),
-            (
-              Text.AccessesByUserTitle,
-              Seq(Text.UserColumn, Text.AccessCountColumn),
-              accessesByUser.map(c => Seq(c.username, c.count.toString))
+            rows = Seq(
+              Seq(
+                registrationsSummary.total.toString,
+                registrationsSummary.approved.toString,
+                registrationsSummary.rejected.toString
+              )
             )
+          ),
+          Section(
+            title = Text.RegisteredByMonthTitle,
+            headers = Seq("Mese", "Conteggio"),
+            rows =
+              registeredByMonth.map: count =>
+                Seq(count.yearMonth, count.count.toString),
+            columnWeights = Seq(2f, 1f)
+          ),
+          Section(
+            title = Text.ArchivedByMonthTitle,
+            headers = Seq("Mese", "Conteggio"),
+            rows =
+              archivedByMonth.map: count =>
+                Seq(count.yearMonth, count.count.toString),
+            columnWeights = Seq(2f, 1f)
+          ),
+          Section(
+            title = Text.AccessesByRoleTitle,
+            headers = Seq("Ruolo", "Conteggio"),
+            rows =
+              accessesByRole.map: count =>
+                Seq(count.roleName, count.count.toString),
+            columnWeights = Seq(2f, 1f)
+          ),
+          Section(
+            title = Text.AccessesByUserTitle,
+            headers = Seq(Text.UserColumn, Text.AccessCountColumn),
+            rows =
+              accessesByUser.map: count =>
+                Seq(count.username, count.count.toString),
+            columnWeights = Seq(2f, 1f)
           )
         )
 
+      val printed =
+        PdfSectionsCreator.createSectionsPdf(
+          pdfPathName = pdfPath,
+          title = Text.PrintTitle,
+          sections = sections
+        )
+
+      if printed then
+        PdfViewer.viewPdf(pdfPath)
+
       result.show(
-        if printed then Text.PrintSuccess else Text.PrintError,
+        if printed then Text.PrintSuccess
+        else Text.PrintError,
         success = printed
       )
 

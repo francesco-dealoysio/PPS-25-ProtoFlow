@@ -10,11 +10,11 @@ object PdfDefaultViewer:
 
     if !file.exists() then
       println(s"Error: File '$pdfPathName' not found.")
-      sys.exit(1)
+      return
 
     if !Desktop.isDesktopSupported then
       println("Error: Desktop API is not supported on this system.")
-      sys.exit(1)
+      return
 
     try
       Desktop.getDesktop.open(file)

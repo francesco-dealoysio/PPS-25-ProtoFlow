@@ -7,6 +7,9 @@ import pkg.a.gui.validators.{AccountValidatorTest, ClassificationValidatorTest, 
 import pkg.b.logic.{AccessLogTest, AccountTest, ArchivedDocumentTest, AuthorizationEngineTest, ClassificationTest, DocumentLogTest, ErrorLogTest, LoadedDocumentTest, RegisteredDocumentTest, RegistrationTest, RoleTest}
 import pkg.c.data.{FileSystemTest, PropertiesTest, XmlTest}
 import pkg.d.util.{DateTimeTest, FiltersTest, IdGenTest, XmlToPdfTest}
+import pkg.c.data.{PropertiesTest, XmlTest}
+import pkg.d.util.{DateTimeTest, FiltersTest}
+import pkg.b.logic.pdf.{PdfDetailsCreatorTest, PdfDocumentSummaryCreatorTest, PdfSectionsCreatorTest, PdfTableCreatorTest, PdfVerifierTest}
 
 @RunWith(classOf[Suite])
 @Suite.SuiteClasses(
@@ -47,6 +50,12 @@ import pkg.d.util.{DateTimeTest, FiltersTest, IdGenTest, XmlToPdfTest}
     classOf[FiltersTest],
     classOf[IdGenTest],
     classOf[XmlToPdfTest]
+
+    classOf[PdfDetailsCreatorTest],
+    classOf[PdfTableCreatorTest],
+    classOf[PdfSectionsCreatorTest],
+    classOf[PdfDocumentSummaryCreatorTest],
+    classOf[PdfVerifierTest]
   )
 )
 

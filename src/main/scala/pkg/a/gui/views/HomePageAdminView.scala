@@ -1,14 +1,14 @@
 package pkg.a.gui.views
 
+import pkg.a.gui.navigation.HomeNavigator
+import pkg.a.gui.navigation.NavigationFlows.*
 import pkg.a.gui.services.DocumentManagementControlService
 import pkg.a.gui.services.DocumentManagementControlService.ManagedDocument
 import pkg.a.gui.structures.MenuAction
-import pkg.a.gui.traits.HomePage
-import pkg.b.logic.{Account, Classification, DocumentLog, Registration, Role}
-import scalafx.scene.layout.Pane
-import pkg.a.gui.navigation.HomeNavigator
-import pkg.a.gui.navigation.NavigationFlows.*
 import pkg.a.gui.text.UiText.HomePages
+import pkg.a.gui.traits.HomePage
+import pkg.b.logic.*
+import scalafx.scene.layout.Pane
 
 object HomePageAdminView extends HomePage:
 

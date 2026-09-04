@@ -1,12 +1,12 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.services.DocumentManagementControlService.ManagedDocument
+import pkg.a.gui.text.UiText.ArchivedDocuments.Fields as ArchivedFields
+import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.DocumentManagementControl as Text
 import pkg.a.gui.text.UiText.DocumentManagementControl.Fields as ManagementFields
-import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields as LoadedFields
 import pkg.a.gui.text.UiText.RegisteredDocuments.Fields as RegisteredFields
-import pkg.a.gui.text.UiText.ArchivedDocuments.Fields as ArchivedFields
 import pkg.a.gui.traits.Form
 import scalafx.scene.layout.BorderPane
 

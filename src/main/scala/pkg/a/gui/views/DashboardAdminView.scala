@@ -1,11 +1,11 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.services.{DocumentManagementControlService, RegistrationRequestService}
 import pkg.a.gui.services.DocumentManagementControlService.Stages
+import pkg.a.gui.services.{DocumentManagementControlService, RegistrationRequestService}
+import pkg.a.gui.text.UiText.Dashboards.Admin as Text
 import pkg.a.gui.views.DashboardView.DashboardCard
 import pkg.b.logic.Account
 import scalafx.scene.layout.VBox
-import pkg.a.gui.text.UiText.Dashboards.Admin as Text
 
 object DashboardAdminView:
 

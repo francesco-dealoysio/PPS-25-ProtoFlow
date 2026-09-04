@@ -1,17 +1,17 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.services.ArchivedDocumentService
+import pkg.a.gui.text.UiText.ArchivedDocuments.{Fields, Management as Text}
+import pkg.a.gui.text.UiText.Common.Buttons
+import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.traits.Management
 import pkg.b.logic.ArchivedDocument
-import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.Filters.getDocumentPredicate
-import pkg.d.util.XmlToPdf
+import pkg.b.logic.pdf.{PdfTableCreator, PdfViewer}
+import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.BorderPane
-import pkg.a.gui.text.UiText.ArchivedDocuments.{Fields, Management as Text}
-import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
-import pkg.a.gui.text.UiText.Common.Buttons
 
 object ArchivedDocumentManagementView extends Management:
 
@@ -84,18 +84,41 @@ object ArchivedDocumentManagementView extends Management:
       operatorFilter.value = Text.AllOperators
       searchDocuments()
 
+    def documentRow(document: ArchivedDocument): Seq[String] =
+      Seq(
+        document.getId,
+        document.getProtocolNumber,
+        document.getArchivedDate,
+        document.getArchivedTime,
+        document.getArchivedBy,
+        document.getSubject,
+        document.getArchiveLocation
+      )
+
     def printDocumentsList(): Unit =
+      val pdfPath = inPrintsFilePathName(s"${Text.PrintFileName}.pdf")
       val printed =
-        XmlToPdf.printList(
-          xmlPath = inDocumentsFilePathName("archived.xml"),
-          pdfFileName = Text.PrintFileName,
+        PdfTableCreator.createTablePdf(
+          pdfPathName = pdfPath,
           title = Text.PrintTitle,
-          fields = Seq("protocolNumber", "archivedDate", "archivedTime", "archivedBy", "archiveLocation"),
-          recordIds = documents.map(_.getId).toSeq
+          headers = Seq(
+            CommonDocumentFields.Id,
+            Fields.ProtocolNumber,
+            Fields.ArchivedDate,
+            Fields.ArchivedTime,
+            Fields.ArchivedBy,
+            CommonDocumentFields.Subject,
+            Fields.ArchiveLocation
+          ),
+          rows = documents.toSeq.map(documentRow),
+          columnWeights = Seq(1f, 1.2f, 1.1f, 0.9f, 1.4f, 2.4f, 1.8f)
         )
 
+      if printed then
+        PdfViewer.viewPdf(pdfPath)
+
       result.show(
-        message = if printed then Text.PrintSuccess else Text.PrintError,
+        if printed then Text.PrintSuccess else Text.PrintError,
         success = printed
       )
 

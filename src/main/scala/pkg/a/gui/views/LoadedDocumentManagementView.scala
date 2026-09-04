@@ -1,21 +1,24 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.services.LoadedDocumentService
+import pkg.a.gui.text.UiText.Common.Buttons
+import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
+import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Management as Text}
 import pkg.a.gui.traits.Management
 import pkg.b.logic.LoadedDocument
-import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.d.util.Filters.getLoadedDocumentPredicate
-import pkg.d.util.XmlToPdf
-import pkg.a.gui.text.UiText.Common.Buttons
-import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Management as Text}
-import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
+import pkg.b.logic.pdf.{PdfTableCreator, PdfViewer}
+import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.BorderPane
 
 object LoadedDocumentManagementView extends Management:
 
-  def apply(onRegister: LoadedDocument => Unit = _ => (), onExit: () => Unit = () => ()): BorderPane =
+  def apply(
+             onRegister: LoadedDocument => Unit = _ => (),
+             onExit: () => Unit = () => ()
+           ): BorderPane =
     
     val documents = ObservableBuffer.empty[LoadedDocument]
     var allDocuments = List.empty[LoadedDocument]
@@ -95,18 +98,39 @@ object LoadedDocumentManagementView extends Management:
           else
             result.show(Text.DeleteError, success = false)
 
+    def documentRow(document: LoadedDocument): Seq[String] =
+      Seq(
+        document.getId,
+        document.getSender,
+        document.getSubject,
+        document.getDocumentType,
+        document.getDocumentDate,
+        document.getProcessedBy
+      )
+
     def printDocumentsList(): Unit =
+      val pdfPath = inPrintsFilePathName(s"${Text.PrintFileName}.pdf")
       val printed =
-        XmlToPdf.printList(
-          xmlPath = inDocumentsFilePathName("loaded.xml"),
-          pdfFileName = Text.PrintFileName,
+        PdfTableCreator.createTablePdf(
+          pdfPathName = pdfPath,
           title = Text.PrintTitle,
-          recordIds = documents.map(_.getId).toSeq
+          headers = Seq(
+            CommonDocumentFields.Id,
+            CommonDocumentFields.Sender,
+            CommonDocumentFields.Subject,
+            Fields.DocumentType,
+            Fields.DocumentDate,
+            Fields.ProcessedBy
+          ),
+          rows = documents.toSeq.map(documentRow),
+          columnWeights = Seq(1.2f, 1.5f, 2.5f, 1.1f, 1.2f, 1.5f)
         )
 
+      if printed then
+        PdfViewer.viewPdf(pdfPath)
+
       result.show(
-        if printed then Text.PrintSuccess
-        else Text.PrintError,
+        if printed then Text.PrintSuccess else Text.PrintError,
         success = printed
       )
 
@@ -114,12 +138,9 @@ object LoadedDocumentManagementView extends Management:
     val resetFilterButton = secondaryButton(Buttons.ResetFilter, resetFilters)
     val registerButton = primaryButton(Buttons.Register, () => withSelectedItem(table, result, Text.SelectToRegister)(onRegister))
     val deleteButton = dangerButton(Buttons.Delete, deleteSelectedDocument)
-
     disableWithoutSelection(table, registerButton, deleteButton)
     val bottomActions = actionBar(Seq(resetFilterButton, closeButton(onExit), refreshButton, printButton(printDocumentsList), deleteButton, registerButton))
-
     val header = titleBox(Text.Title, Text.Subtitle)
-
     val filters = filterBar(fromDateFilter, toDateFilter, subjectFilter, operatorFilter)
 
     loadDocuments()

@@ -1,15 +1,14 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.text.UiText.Common.Fields.Labels
-import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Prompts, DocumentTypes}
-import pkg.a.gui.text.UiText.LoadedDocuments.Add as Text
-import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
-import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.services.LoadedDocumentService
+import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
+import pkg.a.gui.text.UiText.Common.Fields.Labels
+import pkg.a.gui.text.UiText.LoadedDocuments.{DocumentTypes, Fields, Prompts, Add as Text}
+import pkg.a.gui.text.UiText.Validation.LoadedDocument as Validation
 import pkg.a.gui.traits.Form
 import pkg.a.gui.validators.LoadedDocumentValidator
 import pkg.b.logic.LoadedDocument
-import pkg.d.util.DateTime.{localDate, localTime}
+import pkg.d.util.DateTime.localDate
 import scalafx.scene.Node
 import scalafx.scene.control.Alert
 import scalafx.scene.layout.BorderPane

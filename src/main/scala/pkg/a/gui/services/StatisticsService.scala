@@ -1,6 +1,6 @@
 package pkg.a.gui.services
 
-import pkg.b.logic.{AccessLog, ArchivedDocument, RegisteredDocument, Registration, Role}
+import pkg.b.logic.*
 import pkg.d.util.DateTime
 
 import scala.util.Try

@@ -2,11 +2,11 @@ package pkg.a.gui.views
 
 import pkg.a.gui.services.DocumentManagementControlService
 import pkg.a.gui.services.DocumentManagementControlService.Stages
+import pkg.a.gui.text.UiText.Dashboards.Operator as Text
 import pkg.a.gui.views.DashboardView.DashboardCard
 import pkg.b.logic.{Account, DocumentLog}
 import pkg.d.util.DateTime
 import scalafx.scene.layout.VBox
-import pkg.a.gui.text.UiText.Dashboards.Operator as Text
 
 object DashboardOperView:
 
