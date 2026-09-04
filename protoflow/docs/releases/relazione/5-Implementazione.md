@@ -217,15 +217,25 @@ Invece di implementare una funzione diversa per ogni combinazione, la schermata 
 
 Questa funzionalità è stata anche uno dei casi che hanno motivato il successivo refactoring del trait `Management`, perché gran parte del comportamento sviluppato per i log poteva essere riutilizzato nelle altre schermate di gestione dei documenti.
 
-### 5.2.7 Generazione e visualizzazione dei PDF
+### 5.2.7 Gestione dei documenti PDF
 
-Diversi requisiti del progetto richiedono la possibilità di stampare elenchi o schede di dettaglio. Mi sono occupato della realizzazione e successiva generalizzazione di `XmlToPdf`, utilizzato per produrre report relativi ad account, ruoli, classifiche, documenti e log.
+Per supportare le funzionalità di stampa dell'applicazione è stato utilizzato il package `pkg.b.logic.pdf`, che raccoglie i componenti dedicati alla generazione e alla gestione dei documenti PDF.
 
-La prima versione era stata sviluppata per una singola funzionalità di stampa. Con l'aumento dei casi d'uso ho però preferito centralizzare il comportamento comune e parametrizzare solamente il contenuto specifico del documento.
+Il mio intervento si è concentrato in particolare sulla realizzazione e sull'adattamento dei componenti necessari alle diverse tipologie di informazioni mostrate dalle GUI. Le schermate dell'applicazione possono infatti richiedere documenti con strutture differenti: schede relative a un singolo elemento, tabelle contenenti più record, report suddivisi in sezioni oppure riepiloghi più articolati.
 
-`printList` viene utilizzato per la produzione di elenchi, mentre `printDetails` genera una scheda relativa a un singolo elemento. La creazione vera e propria del PDF è centralizzata in `createPdf`, che riceve una funzione `Document => Unit`: ogni report specifica quindi solamente ciò che deve essere inserito nel documento, mentre apertura, chiusura, gestione del file e degli errori rimangono comuni.
+Per la generazione delle schede di dettaglio viene utilizzato `PdfDetailsCreator`, che riceve il titolo del documento e una sequenza di coppie campo-valore. Questo componente permette di riutilizzare la stessa logica per elementi differenti, come account, documenti, richieste di registrazione e log.
 
-La difficoltà principale è stata rendere `XmlToPdf` sufficientemente generale da poter essere riutilizzato per dati con strutture differenti, senza introdurre un metodo completamente separato per ogni nuova funzionalità di stampa. Il componente è stato quindi esteso progressivamente seguendo le esigenze emerse durante lo sviluppo, mantenendo comune la parte relativa alla costruzione del documento e lasciando ai singoli casi d'uso solamente la definizione del contenuto da rappresentare.
+Per gli elenchi è stato introdotto `PdfTableCreator`, che astrae la costruzione di un documento tabellare ricevendo le intestazioni, le righe da visualizzare e, quando necessario, la configurazione delle larghezze delle colonne. Le diverse schermate di gestione possono quindi preparare i propri dati e delegare al componente solamente la loro rappresentazione nel PDF.
+
+Le statistiche richiedono invece la presenza di più gruppi di dati nello stesso documento. Per questo scopo è stato realizzato `PdfSectionsCreator`, che consente di costruire un PDF formato da più sezioni, ciascuna caratterizzata da un proprio titolo e da una propria tabella.
+
+Un caso differente è rappresentato dal riepilogo relativo alla lavorazione di un documento. Per questa funzionalità è stato introdotto `PdfDocumentSummaryCreator`, responsabile della costruzione di un report composto da informazioni eterogenee che non possono essere rappresentate efficacemente attraverso una semplice tabella.
+
+I generatori PDF lavorano esclusivamente sui dati ricevuti dai propri chiamanti e non dipendono direttamente dal sistema di persistenza. La responsabilità di recuperare e organizzare le informazioni rimane quindi nei servizi e nelle view, mentre il package PDF si occupa solamente della loro rappresentazione.
+
+Questa separazione consente di mantenere i componenti più semplici, riutilizzabili e con responsabilità ben definite.
+
+La visualizzazione del documento è gestita separatamente dalla sua generazione attraverso `PdfViewer`, che permette di mostrare il PDF prodotto e di accedere alle operazioni di stampa o di apertura tramite il visualizzatore predefinito del sistema.
 
 ### 5.2.8 Refactoring, validazione e test
 
