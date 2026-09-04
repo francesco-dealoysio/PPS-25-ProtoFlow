@@ -3,6 +3,13 @@
 [Next Chapter](7-Retrospettiva.md)
 # 6. Testing
 
+Nell'ambito del progetto sono state adottate quattro tipologie di test:
+
+- Unit test
+- Test di regressione
+- Test funzionali / di accettazione condotti a fine sprint
+- Test di accettazione sul prodotto finito, tramite casi d'uso
+
 Unit Test: effettuati tramite JUnit4, a copertura delle entità di dominio (package `pkg.b.logic`), dei servizi applicativi (`pkg.a.gui.services`), dei validator (`pkg.a.gui.validators`) e delle utility di supporto (`pkg.c.data`, `pkg.d.util`), per un totale di 39 classi di test.
 
 Test di regressione: tutte le classi di test sono raccolte nella suite `AllTestsSuite`, eseguita automaticamente ad ogni push sul branch `develop` tramite una GitHub Action dedicata, che inizializza l'ambiente ProtoFlow e lancia l'intera suite con `sbt test`.
