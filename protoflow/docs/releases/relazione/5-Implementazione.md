@@ -7,107 +7,6 @@ Questa sezione raccoglie, per ciascun membro del gruppo, una descrizione delle p
 
 A differenza della sezione 4 (Design di dettaglio), che descrive l'organizzazione interna dei sottosistemi in modo tecnico e indipendente dall'autore, questa sezione ha un taglio più personale: ogni sottosezione è scritta dal componente del gruppo che ha realizzato quella parte.
 
-## 5.1 Motore di autorizzazione Prolog, controllo di gestione e moduli di supporto — Thomas Testa
-
-### 5.1.1 Motore di autorizzazione Prolog
-
-Il requisito obbligatorio "utilizzo di regole logiche per la verifica delle autorizzazioni" e il relativo opzionale "personalizzazione delle regole organizzative tramite Prolog" sono le parti di cui mi sono occupato più a lungo e con la maggiore autonomia progettuale, in un branch dedicato (`feature/autorizzazione-prolog`) integrato successivamente in `develop`.
-
-L'implementazione è divisa in due livelli:
-
-- **`PrologEngine`** (`pkg.d.util`), l'unico file del progetto che importa `alice.tuprolog.*`. Incapsula il motore tuProlog dietro un'unica funzione `Term => LazyList[Term]`, seguendo il pattern Scala2P visto a lezione. Rispetto alla versione delle slide, l'iteratore che consuma le soluzioni controlla esplicitamente `hasOpenAlternatives` prima di richiamare `solveNext()`: senza questo controllo, `solveNext()` lancia un'eccezione (`NoMoreSolutionException`) invece di segnalare in modo pulito l'esaurimento delle soluzioni — un comportamento che ho scoperto testando goal con un numero finito di soluzioni, il caso più comune nell'uso reale.
-- **`AuthorizationEngine`** (`pkg.b.logic`), che espone all'applicazione un'API Scala pura (`isAuthorized`, `canDeleteRole`, `canDeleteAccount`, `permittedActions`) senza mai far trapelare i tipi di tuProlog. Tutte le regole di autorizzazione sono definite in `authorization.pl` (fatti `can/2`, predicati `authorized/2`, `permitted_actions/2` con `findall`, `can_delete_role/1`, `can_delete_account/2`), caricata come risorsa.
-
-Ho scelto di centralizzare la verifica in un unico varco applicativo, `HomePage.navigate`: ogni azione richiesta dal menu passa da lì e viene verificata con `AuthorizationEngine.isAuthorized` prima di essere eseguita, indipendentemente dalla view che l'ha originata. Le stesse regole Prolog vengono interrogate anche da `Role.recordDelete` e `Account.recordDelete` (per gli invarianti "non si elimina il ruolo admin" e "non si elimina l'ultimo amministratore"), così la policy resta definita in un unico punto anche per operazioni che non passano dal menu.
-
-Per l'opzionale, ho aggiunto la possibilità per un amministratore di estendere le regole a runtime dalla GUI (`AuthorizationRuleAddView`, `AuthorizationRulesManagementView`): le regole aggiunte vengono asserite nel motore live (`assert`/`retract`) e persistite in un file separato, `customRules.pl`, mai unito alla teoria di base spedita con l'applicazione. Questo evita due problemi: che un aggiornamento dell'app cancelli le personalizzazioni di un cliente, e che una regola custom duplichi silenziosamente un permesso già concesso dalla teoria base — quest'ultimo un bug che ho effettivamente introdotto e corretto durante lo sviluppo, controllando `isAuthorized` (base + custom) invece della sola collezione delle regole custom prima di asserire.
-
-La difficoltà maggiore non è stata tecnica ma di valutazione: dopo aver completato questa parte mi sono chiesto onestamente se Prolog avesse semplificato il codice rispetto all'equivalente in Scala. La risposta, discussa più nel dettaglio in sezione 7, è che lo ha fatto in modo netto solo per `permitted_actions/2` (il `findall` elimina la necessità di una struttura dati parallela per il menu dinamico); per un controllo puntuale come `authorized/2` l'equivalente Scala (una `Map[String, Set[MenuAction]]`) sarebbe stato altrettanto leggibile e più diretto. Il vantaggio reale, per come l'ho strutturato, è avere un unico posto dichiarativo in cui tutte le regole di autorizzazione sono leggibili e modificabili senza toccare il codice Scala.
-
-### 5.1.2 Controllo di gestione documenti
-
-Il modulo "Controllo di Gestione" (`DocumentManagementControlView`, `DocumentManagementControlService`, `DocumentManagementDetailsView`, `DocumentManagementSummaryView`) offre una vista unificata sullo stato di lavorazione di un documento, indipendentemente dallo stadio del ciclo di vita in cui si trova (preso in carico, protocollato o archiviato).
-
-La parte più delicata è stata l'aggregazione: `LoadedDocument`, `RegisteredDocument` e `ArchivedDocument` sono tre entità indipendenti, ciascuna persistita nel proprio file XML, non collegate da ereditarietà. Ho evitato un vero merge/join tra le tre collezioni sfruttando un invariante già garantito dal resto del sistema: quando un documento avanza di stadio, il record dello stadio precedente viene eliminato (lo fanno `LoadedDocumentService`/`ArchivedDocumentService`), quindi un dato id esiste sempre in un solo file alla volta. `DocumentManagementControlService.getManagedDocuments` si limita quindi a mappare ciascuna collezione in un view model comune (`ManagedDocument`) e a concatenare i risultati, ordinandoli per id — molto più semplice di un join, ma corretto solo perché quell'invariante è rispettata a monte.
-
-`DocumentManagementSummaryView` ricostruisce invece lo storico cronologico delle fasi di un singolo documento leggendo `DocumentLog` e ordinandolo con una chiave composita (fase, poi id del log), per gestire correttamente più operazioni dello stesso tipo nello stesso giorno.
-
-### 5.1.3 Statistiche di utilizzo del sistema
-
-`StatisticsService` aggrega i dati di utilizzo (documenti protocollati/archiviati per mese, accessi per ruolo e per utente, esito delle richieste di registrazione) leggendo direttamente le entità di dominio, senza un database relazionale con `GROUP BY` a disposizione. L'ho tenuto deliberatamente privo di dipendenze da ScalaFX, cosa che ha permesso di testarlo con JUnit senza dover avviare il toolkit grafico — l'unico dei moduli che ho scritto per cui esiste una suite di test dedicata al livello di servizio.
-
-Un dettaglio a cui ho dedicato attenzione è la gestione delle date non valide: `yearMonthOf` prova a interpretare la data di un documento e, se fallisce, scarta silenziosamente quel record invece di far fallire l'intera pagina statistiche — una scelta di robustezza rispetto a dati "sporchi", coerente col fatto che la persistenza su XML non impone alcun controllo di formato in scrittura.
-
-### 5.1.4 Gestione delle richieste di registrazione e protocollazione
-
-Su `RegistrationRequestService` ho implementato il flusso di approvazione di una richiesta di registrazione: generazione di username univoco e password temporanea, creazione dell'account con password cifrata (SHA3-512), e solo in caso di successo l'aggiornamento dello stato della richiesta. Non essendoci transazioni atomiche tra due file XML indipendenti, in caso di fallimento nell'aggiornamento della richiesta il servizio esegue un rollback esplicito cancellando l'account appena creato, per evitare account "orfani" non riconducibili a nessuna richiesta approvata.
-
-Ho inoltre curato la protocollazione dei documenti (`RegisteredDocument`, `RegisteredDocumentDetailsView`) e, in una fase successiva di consolidamento del progetto, una serie di correzioni trasversali individuate testando manualmente l'applicazione: la perdita del campo note durante l'archiviazione (un campo semplicemente dimenticato nella costruzione del documento archiviato), l'assenza di uno scroll nelle schermate di form/dettaglio più lunghe (che tagliava fuori dalla vista i pulsanti di azione), e alcune duplicazioni di regole di business già presenti nel motore di autorizzazione ma reimplementate localmente in due view di gestione.
-
-## 5.2 Interfaccia grafica, gestione documentale e moduli di supporto — Roberto Pisu
-
-Una parte consistente del mio lavoro ha riguardato l'interfaccia grafica dell'applicazione e l'implementazione dei flussi attraverso cui i diversi utenti interagiscono con il sistema. Mi sono occupato in particolare della gestione di ruoli e classifiche, dell'archiviazione e consultazione dei documenti archiviati, della gestione dei log, delle funzionalità di stampa e di diverse schermate trasversali, come homepage, dashboard e modifica del profilo.
-
-Con l'aumento delle funzionalità, una parte importante del lavoro è diventata inoltre il refactoring dell'infrastruttura GUI. Molte schermate implementavano infatti comportamenti molto simili — form, tabelle, filtri, validazione e navigazione — che ho progressivamente centralizzato in componenti comuni, cercando di mantenere nelle singole view solamente la logica specifica della funzionalità rappresentata.
-
-### 5.2.1 Interfaccia grafica e navigazione
-
-I requisiti relativi alle homepage dei diversi utenti, alla modifica del profilo e alle numerose schermate di gestione hanno portato alla realizzazione di un numero elevato di view ScalaFX.
-
-Nelle prime versioni ogni homepage gestiva direttamente l'istanziazione delle schermate successive e le callback necessarie per ritornare alla pagina precedente. Questa soluzione funzionava inizialmente, ma con l'aumento delle funzionalità produceva homepage sempre più estese e numerose sequenze di navigazione quasi identiche.
-
-Ho quindi contribuito a separare progressivamente la navigazione dalla costruzione delle singole view attraverso `AppNavigator`, `HomeNavigator` e `NavigationFlows`. Le schermate ricevono callback come `onExit`, `onSaved`, `onAdd` o `onEdit`, senza conoscere direttamente la view che verrà mostrata successivamente.
-
-In `NavigationFlows` ho inoltre raccolto alcuni flussi ricorrenti, come gestione → inserimento → gestione e gestione → modifica → gestione. L'utilizzo di funzioni di ordine superiore e genericità permette così di descrivere una sola volta comportamenti riutilizzati da entità differenti.
-
-Un problema emerso durante l'implementazione dei form riguardava inoltre la possibilità di abbandonare una schermata dopo aver modificato dei campi, perdendo silenziosamente i dati inseriti. Per questo ho introdotto il controllo delle modifiche non salvate: il form mantiene il valore iniziale dei campi e il navigator può verificare la presenza di modifiche prima di consentire l'uscita dalla schermata.
-
-### 5.2.2 Accesso al sistema e richiesta di registrazione
-
-I requisiti relativi all'accesso al sistema e alla richiesta di registrazione sono stati tra i primi su cui ho lavorato e hanno costituito anche il punto di partenza per buona parte dell'infrastruttura GUI sviluppata successivamente.
-
-Per la richiesta di registrazione ho realizzato `RegistrationView`, occupandomi della costruzione del form, della raccolta dei dati e del feedback fornito all'utente. Inizialmente parte dei controlli sui campi era contenuta direttamente nella view; con l'evoluzione del progetto questi controlli sono stati progressivamente spostati in `RegistrationValidator`, permettendo alla schermata di concentrarsi sulla sola interazione con l'utente. Tra i controlli aggiunti successivamente rientra anche la validazione del numero di telefono.
-
-Mi sono occupato inoltre del flusso di autenticazione attraverso `LoginView` e `LoginService`. Una delle prime versioni della schermata interrogava direttamente la logica necessaria alla verifica delle credenziali; ho successivamente introdotto `LoginService` per separare l'interazione grafica dall'accesso ai dati e dalla verifica dell'account. Questa scelta è stata poi mantenuta anche nel resto dell'interfaccia, dove le view comunicano prevalentemente con servizi dedicati invece di accedere direttamente alle entità persistite.
-
-Durante il consolidamento del sistema ho inoltre sostituito l'uso di MD5 con SHA3-512 per la gestione delle password, aggiornando in modo coerente i punti nei quali le credenziali vengono create o verificate. L'obiettivo era evitare che operazioni differenti, come autenticazione, creazione di un account e approvazione di una richiesta, utilizzassero strategie di hashing diverse.
-
-Queste prime schermate sono state anche uno dei principali casi che hanno motivato la successiva introduzione del trait `Form`: molte delle funzionalità realizzate inizialmente in modo specifico per login e registrazione sono state infatti generalizzate e riutilizzate negli altri form dell'applicazione.
-
-### 5.2.3 Homepage, dashboard e modifica del profilo
-
-Un'altra parte di cui mi sono occupato fin dalle prime fasi del progetto riguarda le homepage dei diversi utenti e, successivamente, le dashboard personalizzate previste per i diversi ruoli.
-
-La prima implementazione utilizzava una homepage generale configurata in base al tipo di utente. In una fase iniziale avevo adottato una soluzione basata sul pattern Strategy per separare le configurazioni dei diversi profili; con l'aumento delle funzionalità e il successivo refactoring della GUI questa struttura è stata progressivamente sostituita dalle attuali `HomePageAdminView`, `HomePageOperView` e `HomePageViewerView`, che condividono il comportamento comune definito nel trait `HomePage`.
-
-Una difficoltà concreta era evitare che la differenziazione tra i ruoli portasse a tre copie quasi identiche della stessa interfaccia. Ho quindi mantenuto nel trait comune la costruzione degli elementi condivisi — struttura della pagina, menu, footer e comportamento generale — lasciando alle singole homepage principalmente la definizione delle funzionalità specifiche disponibili per quel profilo.
-
-Successivamente ho implementato anche le dashboard (`DashboardAdminView`, `DashboardOperView`, `DashboardViewerView`) a partire da una struttura comune, `DashboardView`. Anche in questo caso ho cercato di evitare tre implementazioni indipendenti: il contenitore e il comportamento condiviso rimangono comuni, mentre ogni ruolo fornisce solamente le informazioni che hanno effettivamente significato per il proprio utilizzo del sistema.
-
-Mi sono inoltre occupato della modifica del profilo personale. La stessa `AccountEditView` utilizzata dall'amministratore per la gestione degli account viene adattata al caso dell'utente autenticato, limitando le operazioni consentite sul proprio profilo. Ho collegato questa funzionalità direttamente al footer della homepage, rendendo il nome dell'utente il punto di accesso alla schermata di modifica.
-
-Questa parte ha richiesto particolare attenzione alla distinzione tra riuso dell'interfaccia e autorizzazioni: riutilizzare la stessa view non deve infatti implicare che un utente possa modificare gli stessi campi disponibili all'amministratore. Un errore di questo tipo è emerso durante il testing ed è stato successivamente corretto restringendo le operazioni disponibili nel caso di modifica del proprio profilo.
-
-### 5.2.4 Gestione di ruoli e classifiche
-
-La gestione amministrativa di ruoli e classifiche è una delle funzionalità di cui mi sono occupato maggiormente. Ho implementato le relative schermate di gestione, inserimento e modifica (`RoleManagementView`, `RoleAddView`, `RoleEditView`, `ClassificationManagementView`, `ClassificationAddView`, `ClassificationEditView`) e parte dei componenti di supporto utilizzati da queste view.
-
-Queste schermate hanno evidenziato molto presto una forte duplicazione. I form contenevano sempre la stessa struttura di campi, errori e pulsanti, mentre le pagine di gestione ripetevano la costruzione di tabelle, colonne, selezione degli elementi e azioni CRUD.
-
-Da questa esperienza sono nati i trait `Form` e `Management`. `FormField` consente di trattare in modo uniforme controlli ScalaFX differenti, associando al controllo le operazioni necessarie per leggerne il valore, modificarlo e gestirne gli errori. Il trait `Management` raccoglie invece operazioni comuni alle schermate basate su tabelle, come la costruzione delle colonne, la gestione della selezione e il caricamento sicuro dei dati.
-
-Durante questo refactoring ho cercato di evitare che i trait comuni diventassero semplicemente contenitori di codice generico. Ho mantenuto quindi al loro interno solamente i comportamenti realmente condivisi, lasciando alle singole view la gestione delle regole specifiche del dominio.
-
-### 5.2.5 Archiviazione dei documenti
-
-Il requisito relativo all'archiviazione dei documenti è stato uno dei blocchi funzionali principali di cui mi sono occupato. Ho implementato `ArchivedDocument`, il relativo servizio, le schermate per l'archiviazione e la successiva consultazione dei documenti archiviati.
-
-Ho scelto di mantenere nel documento archiviato anche le informazioni accumulate nelle fasi precedenti del ciclo di vita. Un `ArchivedDocument` contiene quindi i dati originali del documento, quelli della presa in carico e della protocollazione, oltre alle informazioni introdotte al momento dell'archiviazione.
-
-La parte più delicata dell'implementazione è stata il passaggio da documento protocollato a documento archiviato. L'operazione modifica due file XML indipendenti: viene prima creato il record nell'archivio e poi eliminato quello presente tra i documenti protocollati.
-
-Non essendoci transazioni atomiche, ho gestito esplicitamente il caso di fallimento: se l'inserimento nell'archivio riesce ma la cancellazione del documento protocollato fallisce, il nuovo record viene eliminato nuovamente dall'archivio. Questo rollback evita che lo stesso documento possa risultare contemporaneamente presente in due stadi differenti del ciclo di vita.
-
 ## 5.1 Sezione descrittiva studente DE ALOYSIO Francesco
 <p style="text-align: justify;">
 Nell’ambito della architettura di alto livello scelta, articolata nei seguenti livelli:
@@ -188,9 +87,69 @@ Elenco dei moduli sviluppati:
   <tr><td rowspan="1">pck</td><td>AllTestsSuite.scala</td><td></td></tr>
 </table>
 
-## 5.2 Sezione descrittiva studente PISU Roberto
+## 5.2 Interfaccia grafica, gestione documentale e moduli di supporto — Roberto Pisu
 
-## 5.3 Sezione descrittiva studente TESTA Thomas
+Una parte consistente del mio lavoro ha riguardato l'interfaccia grafica dell'applicazione e l'implementazione dei flussi attraverso cui i diversi utenti interagiscono con il sistema. Mi sono occupato in particolare della gestione di ruoli e classifiche, dell'archiviazione e consultazione dei documenti archiviati, della gestione dei log, delle funzionalità di stampa e di diverse schermate trasversali, come homepage, dashboard e modifica del profilo.
+
+Con l'aumento delle funzionalità, una parte importante del lavoro è diventata inoltre il refactoring dell'infrastruttura GUI. Molte schermate implementavano infatti comportamenti molto simili — form, tabelle, filtri, validazione e navigazione — che ho progressivamente centralizzato in componenti comuni, cercando di mantenere nelle singole view solamente la logica specifica della funzionalità rappresentata.
+
+### 5.2.1 Interfaccia grafica e navigazione
+
+I requisiti relativi alle homepage dei diversi utenti, alla modifica del profilo e alle numerose schermate di gestione hanno portato alla realizzazione di un numero elevato di view ScalaFX.
+
+Nelle prime versioni ogni homepage gestiva direttamente l'istanziazione delle schermate successive e le callback necessarie per ritornare alla pagina precedente. Questa soluzione funzionava inizialmente, ma con l'aumento delle funzionalità produceva homepage sempre più estese e numerose sequenze di navigazione quasi identiche.
+
+Ho quindi contribuito a separare progressivamente la navigazione dalla costruzione delle singole view attraverso `AppNavigator`, `HomeNavigator` e `NavigationFlows`. Le schermate ricevono callback come `onExit`, `onSaved`, `onAdd` o `onEdit`, senza conoscere direttamente la view che verrà mostrata successivamente.
+
+In `NavigationFlows` ho inoltre raccolto alcuni flussi ricorrenti, come gestione → inserimento → gestione e gestione → modifica → gestione. L'utilizzo di funzioni di ordine superiore e genericità permette così di descrivere una sola volta comportamenti riutilizzati da entità differenti.
+
+Un problema emerso durante l'implementazione dei form riguardava inoltre la possibilità di abbandonare una schermata dopo aver modificato dei campi, perdendo silenziosamente i dati inseriti. Per questo ho introdotto il controllo delle modifiche non salvate: il form mantiene il valore iniziale dei campi e il navigator può verificare la presenza di modifiche prima di consentire l'uscita dalla schermata.
+
+### 5.2.2 Accesso al sistema e richiesta di registrazione
+
+I requisiti relativi all'accesso al sistema e alla richiesta di registrazione sono stati tra i primi su cui ho lavorato e hanno costituito anche il punto di partenza per buona parte dell'infrastruttura GUI sviluppata successivamente.
+
+Per la richiesta di registrazione ho realizzato `RegistrationView`, occupandomi della costruzione del form, della raccolta dei dati e del feedback fornito all'utente. Inizialmente parte dei controlli sui campi era contenuta direttamente nella view; con l'evoluzione del progetto questi controlli sono stati progressivamente spostati in `RegistrationValidator`, permettendo alla schermata di concentrarsi sulla sola interazione con l'utente. Tra i controlli aggiunti successivamente rientra anche la validazione del numero di telefono.
+
+Mi sono occupato inoltre del flusso di autenticazione attraverso `LoginView` e `LoginService`. Una delle prime versioni della schermata interrogava direttamente la logica necessaria alla verifica delle credenziali; ho successivamente introdotto `LoginService` per separare l'interazione grafica dall'accesso ai dati e dalla verifica dell'account. Questa scelta è stata poi mantenuta anche nel resto dell'interfaccia, dove le view comunicano prevalentemente con servizi dedicati invece di accedere direttamente alle entità persistite.
+
+Durante il consolidamento del sistema ho inoltre sostituito l'uso di MD5 con SHA3-512 per la gestione delle password, aggiornando in modo coerente i punti nei quali le credenziali vengono create o verificate. L'obiettivo era evitare che operazioni differenti, come autenticazione, creazione di un account e approvazione di una richiesta, utilizzassero strategie di hashing diverse.
+
+Queste prime schermate sono state anche uno dei principali casi che hanno motivato la successiva introduzione del trait `Form`: molte delle funzionalità realizzate inizialmente in modo specifico per login e registrazione sono state infatti generalizzate e riutilizzate negli altri form dell'applicazione.
+
+### 5.2.3 Homepage, dashboard e modifica del profilo
+
+Un'altra parte di cui mi sono occupato fin dalle prime fasi del progetto riguarda le homepage dei diversi utenti e, successivamente, le dashboard personalizzate previste per i diversi ruoli.
+
+La prima implementazione utilizzava una homepage generale configurata in base al tipo di utente. In una fase iniziale avevo adottato una soluzione basata sul pattern Strategy per separare le configurazioni dei diversi profili; con l'aumento delle funzionalità e il successivo refactoring della GUI questa struttura è stata progressivamente sostituita dalle attuali `HomePageAdminView`, `HomePageOperView` e `HomePageViewerView`, che condividono il comportamento comune definito nel trait `HomePage`.
+
+Una difficoltà concreta era evitare che la differenziazione tra i ruoli portasse a tre copie quasi identiche della stessa interfaccia. Ho quindi mantenuto nel trait comune la costruzione degli elementi condivisi — struttura della pagina, menu, footer e comportamento generale — lasciando alle singole homepage principalmente la definizione delle funzionalità specifiche disponibili per quel profilo.
+
+Successivamente ho implementato anche le dashboard (`DashboardAdminView`, `DashboardOperView`, `DashboardViewerView`) a partire da una struttura comune, `DashboardView`. Anche in questo caso ho cercato di evitare tre implementazioni indipendenti: il contenitore e il comportamento condiviso rimangono comuni, mentre ogni ruolo fornisce solamente le informazioni che hanno effettivamente significato per il proprio utilizzo del sistema.
+
+Mi sono inoltre occupato della modifica del profilo personale. La stessa `AccountEditView` utilizzata dall'amministratore per la gestione degli account viene adattata al caso dell'utente autenticato, limitando le operazioni consentite sul proprio profilo. Ho collegato questa funzionalità direttamente al footer della homepage, rendendo il nome dell'utente il punto di accesso alla schermata di modifica.
+
+Questa parte ha richiesto particolare attenzione alla distinzione tra riuso dell'interfaccia e autorizzazioni: riutilizzare la stessa view non deve infatti implicare che un utente possa modificare gli stessi campi disponibili all'amministratore. Un errore di questo tipo è emerso durante il testing ed è stato successivamente corretto restringendo le operazioni disponibili nel caso di modifica del proprio profilo.
+
+### 5.2.4 Gestione di ruoli e classifiche
+
+La gestione amministrativa di ruoli e classifiche è una delle funzionalità di cui mi sono occupato maggiormente. Ho implementato le relative schermate di gestione, inserimento e modifica (`RoleManagementView`, `RoleAddView`, `RoleEditView`, `ClassificationManagementView`, `ClassificationAddView`, `ClassificationEditView`) e parte dei componenti di supporto utilizzati da queste view.
+
+Queste schermate hanno evidenziato molto presto una forte duplicazione. I form contenevano sempre la stessa struttura di campi, errori e pulsanti, mentre le pagine di gestione ripetevano la costruzione di tabelle, colonne, selezione degli elementi e azioni CRUD.
+
+Da questa esperienza sono nati i trait `Form` e `Management`. `FormField` consente di trattare in modo uniforme controlli ScalaFX differenti, associando al controllo le operazioni necessarie per leggerne il valore, modificarlo e gestirne gli errori. Il trait `Management` raccoglie invece operazioni comuni alle schermate basate su tabelle, come la costruzione delle colonne, la gestione della selezione e il caricamento sicuro dei dati.
+
+Durante questo refactoring ho cercato di evitare che i trait comuni diventassero semplicemente contenitori di codice generico. Ho mantenuto quindi al loro interno solamente i comportamenti realmente condivisi, lasciando alle singole view la gestione delle regole specifiche del dominio.
+
+### 5.2.5 Archiviazione dei documenti
+
+Il requisito relativo all'archiviazione dei documenti è stato uno dei blocchi funzionali principali di cui mi sono occupato. Ho implementato `ArchivedDocument`, il relativo servizio, le schermate per l'archiviazione e la successiva consultazione dei documenti archiviati.
+
+Ho scelto di mantenere nel documento archiviato anche le informazioni accumulate nelle fasi precedenti del ciclo di vita. Un `ArchivedDocument` contiene quindi i dati originali del documento, quelli della presa in carico e della protocollazione, oltre alle informazioni introdotte al momento dell'archiviazione.
+
+La parte più delicata dell'implementazione è stata il passaggio da documento protocollato a documento archiviato. L'operazione modifica due file XML indipendenti: viene prima creato il record nell'archivio e poi eliminato quello presente tra i documenti protocollati.
+
+Non essendoci transazioni atomiche, ho gestito esplicitamente il caso di fallimento: se l'inserimento nell'archivio riesce ma la cancellazione del documento protocollato fallisce, il nuovo record viene eliminato nuovamente dall'archivio. Questo rollback evita che lo stesso documento possa risultare contemporaneamente presente in due stadi differenti del ciclo di vita.
 
 In una successiva fase di consolidamento ho inoltre uniformato l'identificativo del documento lungo tutti gli stadi, mantenendo lo stesso `id` dalla presa in carico fino all'archiviazione. Questa scelta ha semplificato sia la ricerca dei documenti sia la ricostruzione del loro storico.
 
@@ -217,6 +176,7 @@ La prima versione era stata sviluppata per una singola funzionalità di stampa. 
 `printList` viene utilizzato per la produzione di elenchi, mentre `printDetails` genera una scheda relativa a un singolo elemento. La creazione vera e propria del PDF è centralizzata in `createPdf`, che riceve una funzione `Document => Unit`: ogni report specifica quindi solamente ciò che deve essere inserito nel documento, mentre apertura, chiusura, gestione del file e degli errori rimangono comuni.
 
 La difficoltà principale è stata rendere `XmlToPdf` sufficientemente generale da poter essere riutilizzato per dati con strutture differenti, senza introdurre un metodo completamente separato per ogni nuova funzionalità di stampa. Il componente è stato quindi esteso progressivamente seguendo le esigenze emerse durante lo sviluppo, mantenendo comune la parte relativa alla costruzione del documento e lasciando ai singoli casi d'uso solamente la definizione del contenuto da rappresentare.
+
 ### 5.2.8 Refactoring, validazione e test
 
 Oltre alle singole funzionalità, una parte rilevante del mio contributo ha riguardato il consolidamento del codice sviluppato durante i vari sprint.
@@ -229,9 +189,42 @@ Ho inoltre lavorato sulla suite di test e sulla configurazione della Continuous 
 
 Infine ho aggiunto una GitHub Action per l'esecuzione automatica dei test sul branch `develop`. Questo controllo si è rivelato particolarmente utile nella fase finale, in cui modifiche ai componenti GUI comuni potevano influenzare contemporaneamente numerose funzionalità dell'applicazione.
 
-## 5.3 Sezione descrittiva studente 3
+## 5.3 Motore di autorizzazione Prolog, controllo di gestione e moduli di supporto — Thomas Testa
 
-*[da completare]*
+### 5.3.1 Motore di autorizzazione Prolog
+
+Il requisito obbligatorio "utilizzo di regole logiche per la verifica delle autorizzazioni" e il relativo opzionale "personalizzazione delle regole organizzative tramite Prolog" sono le parti di cui mi sono occupato più a lungo e con la maggiore autonomia progettuale, in un branch dedicato (`feature/autorizzazione-prolog`) integrato successivamente in `develop`.
+
+L'implementazione è divisa in due livelli:
+
+- **`PrologEngine`** (`pkg.d.util`), l'unico file del progetto che importa `alice.tuprolog.*`. Incapsula il motore tuProlog dietro un'unica funzione `Term => LazyList[Term]`, seguendo il pattern Scala2P visto a lezione. Rispetto alla versione delle slide, l'iteratore che consuma le soluzioni controlla esplicitamente `hasOpenAlternatives` prima di richiamare `solveNext()`: senza questo controllo, `solveNext()` lancia un'eccezione (`NoMoreSolutionException`) invece di segnalare in modo pulito l'esaurimento delle soluzioni — un comportamento che ho scoperto testando goal con un numero finito di soluzioni, il caso più comune nell'uso reale.
+- **`AuthorizationEngine`** (`pkg.b.logic`), che espone all'applicazione un'API Scala pura (`isAuthorized`, `canDeleteRole`, `canDeleteAccount`, `permittedActions`) senza mai far trapelare i tipi di tuProlog. Tutte le regole di autorizzazione sono definite in `authorization.pl` (fatti `can/2`, predicati `authorized/2`, `permitted_actions/2` con `findall`, `can_delete_role/1`, `can_delete_account/2`), caricata come risorsa.
+
+Ho scelto di centralizzare la verifica in un unico varco applicativo, `HomePage.navigate`: ogni azione richiesta dal menu passa da lì e viene verificata con `AuthorizationEngine.isAuthorized` prima di essere eseguita, indipendentemente dalla view che l'ha originata. Le stesse regole Prolog vengono interrogate anche da `Role.recordDelete` e `Account.recordDelete` (per gli invarianti "non si elimina il ruolo admin" e "non si elimina l'ultimo amministratore"), così la policy resta definita in un unico punto anche per operazioni che non passano dal menu.
+
+Per l'opzionale, ho aggiunto la possibilità per un amministratore di estendere le regole a runtime dalla GUI (`AuthorizationRuleAddView`, `AuthorizationRulesManagementView`): le regole aggiunte vengono asserite nel motore live (`assert`/`retract`) e persistite in un file separato, `customRules.pl`, mai unito alla teoria di base spedita con l'applicazione. Questo evita due problemi: che un aggiornamento dell'app cancelli le personalizzazioni di un cliente, e che una regola custom duplichi silenziosamente un permesso già concesso dalla teoria base — quest'ultimo un bug che ho effettivamente introdotto e corretto durante lo sviluppo, controllando `isAuthorized` (base + custom) invece della sola collezione delle regole custom prima di asserire.
+
+La difficoltà maggiore non è stata tecnica ma di valutazione: dopo aver completato questa parte mi sono chiesto onestamente se Prolog avesse semplificato il codice rispetto all'equivalente in Scala. La risposta, discussa più nel dettaglio in sezione 7, è che lo ha fatto in modo netto solo per `permitted_actions/2` (il `findall` elimina la necessità di una struttura dati parallela per il menu dinamico); per un controllo puntuale come `authorized/2` l'equivalente Scala (una `Map[String, Set[MenuAction]]`) sarebbe stato altrettanto leggibile e più diretto. Il vantaggio reale, per come l'ho strutturato, è avere un unico posto dichiarativo in cui tutte le regole di autorizzazione sono leggibili e modificabili senza toccare il codice Scala.
+
+### 5.3.2 Controllo di gestione documenti
+
+Il modulo "Controllo di Gestione" (`DocumentManagementControlView`, `DocumentManagementControlService`, `DocumentManagementDetailsView`, `DocumentManagementSummaryView`) offre una vista unificata sullo stato di lavorazione di un documento, indipendentemente dallo stadio del ciclo di vita in cui si trova (preso in carico, protocollato o archiviato).
+
+La parte più delicata è stata l'aggregazione: `LoadedDocument`, `RegisteredDocument` e `ArchivedDocument` sono tre entità indipendenti, ciascuna persistita nel proprio file XML, non collegate da ereditarietà. Ho evitato un vero merge/join tra le tre collezioni sfruttando un invariante già garantito dal resto del sistema: quando un documento avanza di stadio, il record dello stadio precedente viene eliminato (lo fanno `LoadedDocumentService`/`ArchivedDocumentService`), quindi un dato id esiste sempre in un solo file alla volta. `DocumentManagementControlService.getManagedDocuments` si limita quindi a mappare ciascuna collezione in un view model comune (`ManagedDocument`) e a concatenare i risultati, ordinandoli per id — molto più semplice di un join, ma corretto solo perché quell'invariante è rispettata a monte.
+
+`DocumentManagementSummaryView` ricostruisce invece lo storico cronologico delle fasi di un singolo documento leggendo `DocumentLog` e ordinandolo con una chiave composita (fase, poi id del log), per gestire correttamente più operazioni dello stesso tipo nello stesso giorno.
+
+### 5.3.3 Statistiche di utilizzo del sistema
+
+`StatisticsService` aggrega i dati di utilizzo (documenti protocollati/archiviati per mese, accessi per ruolo e per utente, esito delle richieste di registrazione) leggendo direttamente le entità di dominio, senza un database relazionale con `GROUP BY` a disposizione. L'ho tenuto deliberatamente privo di dipendenze da ScalaFX, cosa che ha permesso di testarlo con JUnit senza dover avviare il toolkit grafico — l'unico dei moduli che ho scritto per cui esiste una suite di test dedicata al livello di servizio.
+
+Un dettaglio a cui ho dedicato attenzione è la gestione delle date non valide: `yearMonthOf` prova a interpretare la data di un documento e, se fallisce, scarta silenziosamente quel record invece di far fallire l'intera pagina statistiche — una scelta di robustezza rispetto a dati "sporchi", coerente col fatto che la persistenza su XML non impone alcun controllo di formato in scrittura.
+
+### 5.3.4 Gestione delle richieste di registrazione e protocollazione
+
+Su `RegistrationRequestService` ho implementato il flusso di approvazione di una richiesta di registrazione: generazione di username univoco e password temporanea, creazione dell'account con password cifrata (SHA3-512), e solo in caso di successo l'aggiornamento dello stato della richiesta. Non essendoci transazioni atomiche tra due file XML indipendenti, in caso di fallimento nell'aggiornamento della richiesta il servizio esegue un rollback esplicito cancellando l'account appena creato, per evitare account "orfani" non riconducibili a nessuna richiesta approvata.
+
+Ho inoltre curato la protocollazione dei documenti (`RegisteredDocument`, `RegisteredDocumentDetailsView`) e, in una fase successiva di consolidamento del progetto, una serie di correzioni trasversali individuate testando manualmente l'applicazione: la perdita del campo note durante l'archiviazione (un campo semplicemente dimenticato nella costruzione del documento archiviato), l'assenza di uno scroll nelle schermate di form/dettaglio più lunghe (che tagliava fuori dalla vista i pulsanti di azione), e alcune duplicazioni di regole di business già presenti nel motore di autorizzazione ma reimplementate localmente in due view di gestione.
 
 [Back to index](0-Indice.md) |
 [Previous Chapter](4-Design_di_dettaglio.md) |
