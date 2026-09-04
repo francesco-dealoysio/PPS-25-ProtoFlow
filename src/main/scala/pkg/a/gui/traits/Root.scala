@@ -1,12 +1,12 @@
 package pkg.a.gui.traits
 
+import pkg.a.gui.text.UiStyles.App.*
+import pkg.a.gui.text.UiText.Common.*
 import pkg.d.util.DateTime
 import scalafx.beans.property.BooleanProperty
 import scalafx.geometry.Pos
 import scalafx.scene.control.Button
 import scalafx.scene.layout.*
-import pkg.a.gui.text.UiStyles.App.*
-import pkg.a.gui.text.UiText.Common.*
 
 /**
  * Provides the common root layout of the application,

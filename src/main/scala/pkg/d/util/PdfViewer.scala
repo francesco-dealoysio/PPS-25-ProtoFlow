@@ -1,7 +1,7 @@
 package pkg.d.util
 
 //import org.apache.pdfbox.Loader // y commented
-import org.apache.pdfbox.pdmodel.PDDocument // y added
+import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.PDFRenderer
 import scalafx.scene.Scene
 import scalafx.scene.control.ScrollPane

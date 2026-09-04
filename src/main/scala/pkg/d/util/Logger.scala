@@ -1,10 +1,11 @@
 package pkg.d.util
 
 import pkg.b.logic.ErrorLog
-import pkg.d.util.Util.inLogFilePathName
-import pkg.d.util.DateTime.{localDate, localTime}
-import java.nio.file.{Files, Paths}
 import pkg.c.data.Xml.createEmptyXmlFile
+import pkg.d.util.DateTime.{localDate, localTime}
+import pkg.d.util.Util.inLogFilePathName
+
+import java.nio.file.{Files, Paths}
 
 object Logger:
 

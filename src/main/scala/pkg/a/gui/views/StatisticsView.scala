@@ -6,8 +6,8 @@ import pkg.a.gui.text.UiStyles.Common.RootStyle
 import pkg.a.gui.text.UiStyles.HomePage.{CardsContainerStyle, StatCardStyle, StatCardTitleStyle, StatCardValueStyle}
 import pkg.a.gui.text.UiText.Statistics as Text
 import pkg.a.gui.traits.Management
-import pkg.b.logic.pdf.{PdfSectionsCreator, PdfViewer}
 import pkg.b.logic.pdf.PdfSectionsCreator.Section
+import pkg.b.logic.pdf.{PdfSectionsCreator, PdfViewer}
 import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Insets

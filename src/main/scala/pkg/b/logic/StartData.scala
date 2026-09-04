@@ -1,7 +1,8 @@
 package pkg.b.logic
 
-import scala.xml.Elem
 import pkg.d.util.Util.cipher
+
+import scala.xml.Elem
 
 object StartData:
 

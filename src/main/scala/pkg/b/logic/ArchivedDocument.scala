@@ -1,8 +1,9 @@
 package pkg.b.logic
 
-import pkg.d.util.Util.inDocumentsFilePathName
 import pkg.c.data.Xml.{createEmptyXmlFile, insertElemIntoXML}
 import pkg.d.util.Logger.*
+import pkg.d.util.Util.inDocumentsFilePathName
+
 import java.nio.file.{Files, Paths}
 
 case class ArchivedDocument(

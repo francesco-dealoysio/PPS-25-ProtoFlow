@@ -1,12 +1,11 @@
 package pkg.b.logic.pdf
 
-import pkg.d.util.DateTime.currentDisplayDateTime
-import pkg.d.util.Logger.logger
+import org.apache.pdfbox.pdmodel.{PDDocument, PDPage, PDPageContentStream}
 import org.apache.pdfbox.pdmodel.common.*
 import org.apache.pdfbox.pdmodel.font.PDType1Font
-import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.pdmodel.PDPage
-import org.apache.pdfbox.pdmodel.PDPageContentStream
+import pkg.d.util.DateTime.currentDisplayDateTime
+import pkg.d.util.Logger.logger
+
 import java.awt.Color
 import java.nio.file.{Files, Paths}
 

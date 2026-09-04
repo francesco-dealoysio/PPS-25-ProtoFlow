@@ -2,8 +2,8 @@ package pkg.b.logic.pdf
 
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
-import org.junit.Assert.*
 import org.junit.*
+import org.junit.Assert.*
 import pkg.b.logic.pdf.PdfSectionsCreator.Section
 
 import java.nio.file.{Files, Path, Paths}

@@ -2,9 +2,10 @@ package pkg.c.data
 
 import org.junit.*
 import org.junit.Assert.*
+import pkg.c.data.Properties.*
+
 import java.io.File
 import java.util.Properties
-import pkg.c.data.Properties.*
 
 class PropertiesTest:
 

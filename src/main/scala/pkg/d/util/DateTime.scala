@@ -4,8 +4,8 @@ import scalafx.animation.{KeyFrame, Timeline}
 import scalafx.beans.property.StringProperty
 import scalafx.util.Duration
 
-import java.time.{LocalDate, LocalDateTime, LocalTime, ZoneId}
 import java.time.format.DateTimeFormatter
+import java.time.{LocalDate, LocalDateTime, LocalTime, ZoneId}
 
 object DateTime:
 

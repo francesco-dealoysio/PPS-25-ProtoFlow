@@ -2,11 +2,11 @@ package pkg.b.logic.pdf
 
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.printing.{Orientation, PDFPageable}
+
 import java.awt.print.PrinterJob
 import java.awt.{Dimension, Toolkit}
-import javax.print.PrintService
 import javax.print.attribute.HashPrintRequestAttributeSet
-import javax.print.{DocFlavor, PrintServiceLookup, ServiceUI}
+import javax.print.{DocFlavor, PrintService, PrintServiceLookup, ServiceUI}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.*
 import scala.concurrent.{Await, Future}

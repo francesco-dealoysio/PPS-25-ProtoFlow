@@ -5,8 +5,8 @@ import pkg.a.gui.text.UiText.DocumentLogs
 import pkg.a.gui.text.UiText.DocumentLogs.{Fields, Operations, Prompts, Management as Text}
 import pkg.a.gui.traits.Management
 import pkg.b.logic.DocumentLog
-import pkg.d.util.Filters.getDocumentOperationsLogPredicate
 import pkg.b.logic.pdf.{PdfTableCreator, PdfViewer}
+import pkg.d.util.Filters.getDocumentOperationsLogPredicate
 import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.{ComboBox, DatePicker, TextField}

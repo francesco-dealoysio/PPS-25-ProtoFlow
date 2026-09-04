@@ -6,8 +6,8 @@ import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.LoadedDocuments.{Fields, Management as Text}
 import pkg.a.gui.traits.Management
 import pkg.b.logic.LoadedDocument
-import pkg.d.util.Filters.getLoadedDocumentPredicate
 import pkg.b.logic.pdf.{PdfTableCreator, PdfViewer}
+import pkg.d.util.Filters.getLoadedDocumentPredicate
 import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*

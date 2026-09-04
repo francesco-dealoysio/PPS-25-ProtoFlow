@@ -2,11 +2,11 @@ package pkg.a.gui.views
 
 import pkg.a.gui.text.UiText.Common.Documents.Fields as CommonDocumentFields
 import pkg.a.gui.text.UiText.Common.Fields.Labels
+import pkg.a.gui.text.UiText.DocumentManagementControl.Fields as ManagementFields
 import pkg.a.gui.text.UiText.LoadedDocuments.Fields as DocumentFields
 import pkg.a.gui.text.UiText.RegisteredDocuments.{Details as Text, Fields as RegistrationFields}
 import pkg.a.gui.traits.Form
 import pkg.b.logic.RegisteredDocument
-import pkg.a.gui.text.UiText.DocumentManagementControl.Fields as ManagementFields
 import pkg.b.logic.pdf.{PdfDetailsCreator, PdfViewer}
 import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.scene.layout.BorderPane

@@ -9,7 +9,6 @@ import pkg.c.data.{FileSystemTest, PropertiesTest, XmlTest}
 import pkg.d.util.{DateTimeTest, FiltersTest, IdGenTest, XmlToPdfTest}
 import pkg.c.data.{PropertiesTest, XmlTest}
 import pkg.d.util.{DateTimeTest, FiltersTest}
-import pkg.b.logic.pdf.{PdfDetailsCreatorTest, PdfDocumentSummaryCreatorTest, PdfSectionsCreatorTest, PdfTableCreatorTest, PdfVerifierTest}
 
 @RunWith(classOf[Suite])
 @Suite.SuiteClasses(

@@ -8,9 +8,9 @@ import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.RegistrationRequests.Process as Text
 import pkg.a.gui.traits.Management
 import pkg.b.logic.Registration
+import pkg.b.logic.pdf.{PdfDetailsCreator, PdfViewer}
 import pkg.d.util.DateTime
 import pkg.d.util.Util.inPrintsFilePathName
-import pkg.b.logic.pdf.{PdfDetailsCreator, PdfViewer}
 import scalafx.geometry.Insets
 import scalafx.scene.control.*
 import scalafx.scene.layout.*

@@ -1,14 +1,14 @@
 package pkg.a.gui.traits
 
 import pkg.a.gui.navigation.HomeNavigator.ViewNavigationState
-import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.Node
-import scalafx.scene.control.{Button, ComboBox, DatePicker, Label, PasswordField, ScrollPane, TextArea, TextField, TextInputControl}
-import scalafx.scene.layout.*
-import pkg.d.util.DateTime
 import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.text.UiText.Common.Buttons.*
+import pkg.d.util.DateTime
 import scalafx.application.Platform
+import scalafx.geometry.{Insets, Pos}
+import scalafx.scene.Node
+import scalafx.scene.control.*
+import scalafx.scene.layout.*
 
 /**
  * Provides reusable components and utilities for building and managing forms,

@@ -7,7 +7,7 @@ import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Insets
 import scalafx.scene.Node
-import scalafx.scene.control.{Button, ComboBox, DatePicker, Label, TableColumn, TableView, TextField}
+import scalafx.scene.control.*
 import scalafx.scene.layout.{BorderPane, HBox, Priority, VBox}
 
 /**

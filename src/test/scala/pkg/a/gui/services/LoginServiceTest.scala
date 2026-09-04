@@ -3,7 +3,7 @@ package pkg.a.gui.services
 import org.junit.*
 import org.junit.Assert.*
 import pkg.a.gui.services.LoginService.LoginError
-import pkg.b.logic.{Account, AccessLog, Role}
+import pkg.b.logic.{AccessLog, Account, Role}
 import pkg.c.data.Xml.createEmptyXmlFile
 import pkg.d.util.Util.{cipher, inTestFilePathName}
 

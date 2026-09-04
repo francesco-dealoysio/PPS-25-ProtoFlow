@@ -5,8 +5,8 @@ import pkg.a.gui.text.UiText.Common.ApplicationName
 import pkg.a.gui.text.UiText.DocumentLogs.Operations
 import pkg.a.gui.text.UiText.DocumentManagementControl as Text
 import pkg.a.gui.traits.{Form, Management}
-import pkg.b.logic.pdf.{PdfDocumentSummaryCreator, PdfViewer}
 import pkg.b.logic.pdf.PdfDocumentSummaryCreator.SummaryData
+import pkg.b.logic.pdf.{PdfDocumentSummaryCreator, PdfViewer}
 import pkg.d.util.DateTime
 import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.collections.ObservableBuffer

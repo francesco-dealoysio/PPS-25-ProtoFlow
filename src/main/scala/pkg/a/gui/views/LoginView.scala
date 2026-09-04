@@ -3,8 +3,8 @@ package pkg.a.gui.views
 import pkg.a.gui.services.LoginService
 import pkg.a.gui.services.LoginService.LoginError
 import pkg.a.gui.text.UiStyles.Login.*
-import pkg.a.gui.text.UiText.Common.{ApplicationName, Buttons}
 import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Common.{ApplicationName, Buttons}
 import pkg.a.gui.text.UiText.Login
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Account

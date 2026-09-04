@@ -3,8 +3,8 @@ package pkg.a.gui.traits
 import pkg.a.gui.navigation.HomeNavigator
 import pkg.a.gui.structures.{MenuAction, MenuItem}
 import pkg.a.gui.text.UiStyles.HomePage.*
-import pkg.a.gui.text.UiText.Common.Dialogs.{Denied, Logout as LogoutDialog, UnsavedChanges}
-import pkg.a.gui.text.UiText.Menu.{Dashboard, Logout as LogoutLabel, labels}
+import pkg.a.gui.text.UiText.Common.Dialogs.{Denied, UnsavedChanges, Logout as LogoutDialog}
+import pkg.a.gui.text.UiText.Menu.{Dashboard, labels, Logout as LogoutLabel}
 import pkg.b.logic.{Account, AuthorizationEngine, Role}
 import scalafx.geometry.Pos
 import scalafx.scene.control.Button

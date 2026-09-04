@@ -2,8 +2,9 @@ package pkg.b.logic.pdf
 
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
-import org.junit.Assert.*
 import org.junit.*
+import org.junit.Assert.*
+
 import java.nio.file.{Files, Path, Paths}
 import scala.util.Using
 

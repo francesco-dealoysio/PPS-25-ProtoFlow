@@ -1,7 +1,8 @@
 package pkg.b.logic.pdf
 
-import org.junit.Assert.*
 import org.junit.*
+import org.junit.Assert.*
+
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path, Paths}
 

@@ -4,6 +4,7 @@ import org.junit.*
 import org.junit.Assert.*
 import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile}
 import pkg.d.util.Util.inTestFilePathName
+
 import java.nio.file.{Files, Paths}
 
 class DocumentLogTest:

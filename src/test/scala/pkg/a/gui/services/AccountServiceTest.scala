@@ -5,6 +5,7 @@ import org.junit.Assert.*
 import pkg.b.logic.Account
 import pkg.c.data.Xml.createEmptyXmlFile
 import pkg.d.util.Util.{cipher, inTestFilePathName}
+
 import java.nio.file.{Files, Paths}
 
 class AccountServiceTest:

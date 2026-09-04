@@ -1,6 +1,6 @@
 package pkg.b.logic
 
-import pkg.c.data.Xml.{getRecordsFromXML, insertElemIntoXML, removeElemFromXML, searchFieldValue, updateElemOfXML}
+import pkg.c.data.Xml.*
 import pkg.d.util.Logger.logger
 import pkg.d.util.Util.inDatabaseFilePathName
 

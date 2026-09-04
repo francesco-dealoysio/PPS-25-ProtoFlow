@@ -6,9 +6,9 @@ import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.RegistrationRequests.Management as Text
 import pkg.a.gui.traits.Management
 import pkg.b.logic.Registration
+import pkg.b.logic.pdf.{PdfTableCreator, PdfViewer}
 import pkg.d.util.DateTime
 import pkg.d.util.Util.inPrintsFilePathName
-import pkg.b.logic.pdf.{PdfTableCreator, PdfViewer}
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.*
 import scalafx.scene.layout.*

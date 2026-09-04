@@ -4,8 +4,8 @@ import pkg.a.gui.text.UiText.Accounts.Management as Text
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.traits.Management
-import pkg.b.logic.{Account, AuthorizationEngine}
 import pkg.b.logic.pdf.{PdfTableCreator, PdfViewer}
+import pkg.b.logic.{Account, AuthorizationEngine}
 import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.layout.BorderPane

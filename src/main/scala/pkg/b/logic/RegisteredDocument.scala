@@ -1,8 +1,8 @@
 package pkg.b.logic
 
 import pkg.b.logic.Entity
-import pkg.d.util.Logger.logger
 import pkg.c.data.Xml.{createEmptyXmlFile, insertElemIntoXML}
+import pkg.d.util.Logger.logger
 import pkg.d.util.Util.inDocumentsFilePathName
 
 case class RegisteredDocument(

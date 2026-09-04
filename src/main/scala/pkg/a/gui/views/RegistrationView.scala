@@ -2,8 +2,8 @@ package pkg.a.gui.views
 
 import pkg.a.gui.services.RegistrationRequestService
 import pkg.a.gui.text.UiStyles.Registration.{CardStyle, GridStyle}
-import pkg.a.gui.text.UiText.Common.{Buttons, Dialogs}
 import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
+import pkg.a.gui.text.UiText.Common.{Buttons, Dialogs}
 import pkg.a.gui.text.UiText.Registration as Text
 import pkg.a.gui.traits.Form
 import pkg.a.gui.validators.RegistrationValidator

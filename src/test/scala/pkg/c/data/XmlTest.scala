@@ -3,12 +3,13 @@ package pkg.c.data
 import org.junit.*
 import org.junit.Assert.*
 import pkg.b.logic.{Account, Role}
-import pkg.c.data.Xml.{cleanXmlFile, createEmptyXmlFile, getRecordsFromXML, insertElemIntoXML, removeElemFromXML, saveXML, searchFieldValue, updateElemOfXML}
-import pkg.d.util.Util.{inTestFilePathName, cipher}
-import java.nio.file.Files.readAllLines
+import pkg.c.data.Xml.*
+import pkg.d.util.Util.{cipher, inTestFilePathName}
+
 import java.nio.file.*
-import scala.xml.Elem
+import java.nio.file.Files.readAllLines
 import scala.jdk.CollectionConverters.*
+import scala.xml.Elem
 
 class XmlTest:
 
