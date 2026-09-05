@@ -46,7 +46,7 @@ l'adeguamento sia dei requisiti (User Story) che del Product Backlog.
 
 ## 6.4 Test di accettazione
 In questa fase sono stati eseguiti i test di accettazione sul prodotto finito, sulla base dei
-**[Casi d'Uso](../../process/use_case_test/ "Apertura directory")** redatti ad hoc relativi alle attività che l'utente finale deve
+**[Casi d'Uso](../../process/use_case_test/Elenco_Use_Case_Test.pdf "Apertura elenco")** redatti ad hoc relativi alle attività che l'utente finale deve
 essere in grado di svolgere attraverso l'applicazione: casi d'uso che ripercorrono l'intera fase di sviluppo, prodotti
 dagli sviluppatori e utilizzati sia da questi ultimi sia dagli utenti finali per verificare l'esistenza e la correttezza
 delle funzionalità previste. Anche in questa fase i componenti del team hanno indossato un doppio ruolo: quello di 
