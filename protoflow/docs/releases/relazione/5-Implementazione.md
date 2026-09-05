@@ -59,7 +59,7 @@ Elenco dei moduli sviluppati:
   <tr><td>StartData.scala</td><td>Contiene le strutture di tipo Elem utilizzate dalla funzione init per inizializzare i
     file accounts.xml, roles.xml e classifications.xml con le infomnazioni minimali necessarie al funzionamento dell' 
     applicazione.</td></tr>
-  <tr><td rowspan="5">pck.b.logic.pdf</td><td>PdfCreator.scala</td><td>Genera, siulla base dell'input, un file pdf
+  <tr><td rowspan="5">pck.b.logic.pdf</td><td>PdfDetailsCreator.scala</td><td>Genera, siulla base dell'input, un file pdf
     corrispondente alla scheda relativa al record di una entità (es. Scheda Account).</td></tr>
   <tr><td>PdfVerifier.scala</td><td>Preposto alla verifica il formato di un presunto file pdf, viene utilizzato dai
     moduli che manipolano i file pdf.</td></tr>

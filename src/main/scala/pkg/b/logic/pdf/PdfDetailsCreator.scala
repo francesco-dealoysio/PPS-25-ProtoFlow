@@ -5,15 +5,14 @@ import org.apache.pdfbox.pdmodel.common.*
 import org.apache.pdfbox.pdmodel.font.PDType1Font
 import pkg.d.util.DateTime.currentDisplayDateTime
 import pkg.d.util.Logger.logger
-
 import java.awt.Color
 import java.nio.file.{Files, Paths}
 
 object PdfDetailsCreator:
   
-  case class Font(fontType: PDType1Font, fontSize: Float)
+  private case class Font(fontType: PDType1Font, fontSize: Float)
 
-  case class Rect(
+  private case class Rect(
                    var xPos: Float,
                    var yPos: Float,
                    var width: Float,
@@ -22,7 +21,7 @@ object PdfDetailsCreator:
                    var fillColor: Color = Color.WHITE
   )
 
-  enum HorizontalAlignment:
+  private enum HorizontalAlignment:
     case LEFT
     case RIGHT
     case CENTER
@@ -211,7 +210,7 @@ object PdfDetailsCreator:
     page = new PDPage(PDRectangle.A4)
     content = new PDPageContentStream(document, page)
 
-  def wrapText(text: String, maxWidth: Float): Seq[String] =
+  private def wrapText(text: String, maxWidth: Float): Seq[String] =
     val words = text.split("\\s+")
     val lines = scala.collection.mutable.ListBuffer[String]()
     val currentLine = new StringBuilder

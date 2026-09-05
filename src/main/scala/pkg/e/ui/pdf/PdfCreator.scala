@@ -12,9 +12,9 @@ import java.awt.Color
 
 object PdfCreator:
   
-  case class Font(fontType: PDType1Font, fontSize: Float)
+  private case class Font(fontType: PDType1Font, fontSize: Float)
 
-  case class Rect(
+  private case class Rect(
                    var xPos: Float,
                    var yPos: Float,
                    var width: Float,

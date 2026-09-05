@@ -48,6 +48,8 @@ l'adeguamento sia dei requisiti (User Story) che del Product Backlog.
 
 ## 6.4 Test di accettazione sul prodotto finito
 
+- **[Casi d'Uso](../../process/use_case_test/ "Apertura directory")**
+
 Redazione di Casi d’Uso relativi alle attività che l’utente finale deve essere in grado di 
 svolgere attraverso l’applicazione. I Casi d’uso sono utilizzati dagli sviluppatori e dagli utenti finali
 per verificare l’esistenza e correttezza delle funzionalità previste.
