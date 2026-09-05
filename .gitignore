@@ -15,6 +15,7 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 .idea/
+/src/main/resources/META-INF/MANIFEST.MF
 
 ### Eclipse ###
 .apt_generated
