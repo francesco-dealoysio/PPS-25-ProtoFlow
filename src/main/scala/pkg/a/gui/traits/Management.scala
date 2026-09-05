@@ -1,7 +1,6 @@
 package pkg.a.gui.traits
 
 import pkg.a.gui.text.UiStyles.Management.*
-import pkg.a.gui.text.UiStyles.Buttons.*
 import pkg.a.gui.text.UiStyles.Common.RootStyle
 import pkg.d.util.Logger.logger
 import scalafx.Includes.*

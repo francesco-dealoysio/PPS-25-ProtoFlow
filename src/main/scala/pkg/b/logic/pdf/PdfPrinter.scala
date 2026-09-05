@@ -2,7 +2,6 @@ package pkg.b.logic.pdf
 
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.printing.{Orientation, PDFPageable}
-
 import java.awt.print.PrinterJob
 import java.awt.{Dimension, Toolkit}
 import javax.print.attribute.HashPrintRequestAttributeSet

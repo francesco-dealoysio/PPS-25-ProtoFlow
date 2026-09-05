@@ -1,12 +1,10 @@
 package pkg.b.logic.pdf
 
-
 import org.apache.pdfbox.pdmodel.common.PDRectangle
 import org.apache.pdfbox.pdmodel.font.PDType1Font
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject
 import org.apache.pdfbox.pdmodel.{PDDocument, PDPage, PDPageContentStream}
 import pkg.d.util.Logger.logger
-
 import java.awt.Color
 import java.nio.file.{Files, Paths}
 import scala.collection.mutable.ListBuffer

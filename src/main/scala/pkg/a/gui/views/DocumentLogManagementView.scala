@@ -9,7 +9,7 @@ import pkg.b.logic.pdf.{PdfTableCreator, PdfViewer}
 import pkg.d.util.Filters.getDocumentOperationsLogPredicate
 import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.collections.ObservableBuffer
-import scalafx.scene.control.{ComboBox, DatePicker, TextField}
+import scalafx.scene.control.TextField
 import scalafx.scene.layout.BorderPane
 
 object DocumentLogManagementView extends Management:
@@ -76,7 +76,6 @@ object DocumentLogManagementView extends Management:
           DocumentLog().getRecords[DocumentLog]()
         else
           val predicate = getDocumentOperationsLogPredicate(criteria)
-
           DocumentLog().getRecordsByFilter[DocumentLog](predicate)
 
       showFilteredItems(logs, table, filteredLogs, result, Text.NoFilterResults)(_.getId)
@@ -131,11 +130,8 @@ object DocumentLogManagementView extends Management:
     val resetFilterButton = secondaryButton(Buttons.ResetFilter, resetFilters)
     val viewButton = primaryButton(DocumentLogs.Management.View, () => withSelectedItem(table, result, Text.SelectToView)(onView))
     val filters = filterBar(operationFilter, fromDateFilter, toDateFilter, documentIdFilter, operatorFilter)
-
     disableWithoutSelection(table, viewButton)
-
     val header = titleBox(Text.Title, Text.Subtitle)
-
     val actions = actionBar(Seq(resetFilterButton, closeButton(onExit), refreshButton, printButton(printLogs), viewButton))
 
     loadLogs()

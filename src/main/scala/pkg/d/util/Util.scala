@@ -1,7 +1,6 @@
 package pkg.d.util
 
 import pkg.c.data.Properties.getPropsFileProperty
-
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 

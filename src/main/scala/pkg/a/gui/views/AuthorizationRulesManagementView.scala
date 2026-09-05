@@ -16,9 +16,7 @@ object AuthorizationRulesManagementView extends Management:
   def apply(onAdd: () => Unit = () => (), onExit: () => Unit = () => ()): BorderPane =
 
     val rules = ObservableBuffer.empty[CustomRule]
-
     val result = createResultMessage()
-
     val table = managementTable(rules, Text.Empty)
 
     table.columns ++= Seq(

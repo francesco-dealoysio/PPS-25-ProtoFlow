@@ -3,7 +3,6 @@ package pkg.b.logic.pdf
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.PDFRenderer
 import pkg.b.logic.pdf.PdfVerifier.isPdf
-
 import java.awt.*
 import java.awt.event.*
 import java.awt.image.BufferedImage

@@ -3,7 +3,6 @@ package pkg.b.logic
 import pkg.c.data.Xml.createEmptyXmlFile
 import pkg.d.util.IdGen
 import pkg.d.util.Util.{inIdsFilePathName, inLogFilePathName}
-
 import java.nio.file.{Files, Paths}
 
 case class AccessLog(
