@@ -22,9 +22,6 @@ colloca nel livello di logica applicativa ed in quello dei dati, oltre ad alcune
 </p>
 
 <p style="text-align: justify;">
-Inoltre, nel package pkg.e.ui, a scopo meramente didattico, ho sviluppato una versione alternativa delle gui, non utilizzata
-nell’ambito dell’applicativo, basata su una gerarchia di traits (diagramma delle classi allegato).
-
 Nel dettaglio di seguito il riepilogo delle attività effettuate:
 </p>
 
@@ -89,32 +86,6 @@ Elenco dei moduli sviluppati:
     in argomento, tali predicati sono utilizzati dai moduli che chiamano le funzioni deputate a filtrare un insieme 
     di record (es. getRecordsByFilter[DocumentLog](predicate, xmlFilePathName). In particolare tali funzionalità
     sono impiegare nelle sezioni di ricerca delle maschere di gestione.</td></tr>
-  <tr><td rowspan="4">pck.e.ui.traits</td><td>GUI.scala</td><td>Trait contenente gli elementi basici utilizzati da tutte le
-    gui del sistema, gli elementi grafici ed i comportamenti. In particolare l'intestazione ed il piè di pagina.
-    </td></tr>
-  <tr><td>Homepage.scala</td><td>Trait contenente gli elementi utilizzati da tutte le maschere homepage, gli elementi
-    grafici ed i comportamenti. Questo trait estende GUI ed aggiunge alle maschere la gestione del menù.</td></tr>
-  <tr><td>Management.scala</td><td>Trait contenente gli elementi utilizzati da tutte le maschere di gestione, gli elementi
-    grafici ed i comportamenti. Questo trait estende GUI ed aggiunge alle maschere la gestione di una griglia (datagrid)
-    per mostrare i record e la barra degli strumenti utilizzati da questo tipo di maschera.</td></tr>
-  <tr><td>Operation.scala</td><td>Trait contenente gli elementi utilizzati da tutte le maschere relative alle operazioni
-    sulle entità (aggiunta, modifica, eliminazione, ecc...), sia gli elementi grafici che i comportamenti. Questo trait
-    estende GUI ed aggiunge alle maschere un'area per i dati del record e la barra degli strumenti utilizzati da questo
-    tipo di maschera.</td></tr>
-  <tr><td rowspan="3">pck.e.ui.homepages</td><td>AdminHomepage.scala</td><td>Homepage associata agli utenti aventi il
-    ruolo Amministratore.</td></tr>
-  <tr><td>OperatorHomepage.scala</td><td>Homepage associata agli utenti aventi il ruolo Operatore, ovvero gli operatori
-    di protocollo  deputati a gestire la procollazione (presa in carico, protocollazione, archiviazione e consultazione)
-    .</td></tr>
-  <tr><td>ViewerHomepage.scala</td><td>Homepage associata agli utenti aventi il ruolo Viewer, ovvero gli utenti che
-    possono soltanto consultare.</td></tr>
-  <tr><td rowspan="1">pck.e.ui.management</td><td>Account.management.scala</td><td>Maschera di gestione degli Account.</td></tr>
-  <tr><td rowspan="3">pck.e.ui.operations</td><td>Login.scala</td><td>Maschera di login, per accedere al sistema o per
-    effettuare una richiesta di registrazione.</td></tr>
-  <tr><td>AccountAdd.scala</td><td>Maschera per effettuare l'aggiunta di un Account, attivabile dalla masche di gestione
-    Account.</td></tr>
-  <tr><td>DocumentLoad.scala</td><td>Maschera che consente all'operatore di protocollo di acquisire nel sistema le 
-    informazioni di un documento e di prenderlo in carico.</td></tr>
   <tr style="font-weight: normal; font-size: 20px;"><th colspan="3">Moduli sviluppati in src.test</th></tr>
   <tr style="text-align: center;"><td>Package</td><td>Modulo</td><td>Descrizione</td></tr>
   <tr><td rowspan="7">pck.b.logic</td><td>AccountTest.scala</td><td>Classe di test utilizzata per testare il modulo
@@ -137,7 +108,7 @@ Elenco dei moduli sviluppati:
     classi di test. Utilizzata per il test di regressione.</td></tr>
 </table>
 
-## 5.2 Interfaccia grafica, gestione documentale e moduli di supporto — Roberto Pisu
+## 5.2 Sezione descrittiva studente Roberto Pisu
 
 Una parte consistente del mio lavoro ha riguardato l'interfaccia grafica dell'applicazione e l'implementazione dei flussi attraverso cui i diversi utenti interagiscono con il sistema. Mi sono occupato in particolare della gestione di ruoli e classifiche, dell'archiviazione e consultazione dei documenti archiviati, della gestione dei log, delle funzionalità di stampa e di diverse schermate trasversali, come homepage, dashboard e modifica del profilo.
 
@@ -249,7 +220,7 @@ Ho inoltre lavorato sulla suite di test e sulla configurazione della Continuous 
 
 Infine ho aggiunto una GitHub Action per l'esecuzione automatica dei test sul branch `develop`. Questo controllo si è rivelato particolarmente utile nella fase finale, in cui modifiche ai componenti GUI comuni potevano influenzare contemporaneamente numerose funzionalità dell'applicazione.
 
-## 5.3 Motore di autorizzazione Prolog, controllo di gestione e moduli di supporto — Thomas Testa
+## 5.3 Sezione descrittiva studente Thomas Testa
 
 ### 5.3.1 Motore di autorizzazione Prolog
 
