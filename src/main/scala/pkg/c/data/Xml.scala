@@ -102,9 +102,10 @@ object Xml:
     id.setAccessible(true)
     val readId = id.get(obj).toString
     if searchFieldValue(xmlFilePathName, "id", readId) then
-      removeElemFromXML(xmlFilePathName, id.get(obj).toString)
-      insertElemIntoXML(xmlFilePathName, obj)
-      result = true
+      val removeCompleted = removeElemFromXML(xmlFilePathName, id.get(obj).toString)
+      val insertCompleted = insertElemIntoXML(xmlFilePathName, obj)
+      if removeCompleted && insertCompleted then
+        result = true
     else
       println(s"Record with id: $id not found.")
     result

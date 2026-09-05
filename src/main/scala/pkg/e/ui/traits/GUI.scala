@@ -82,7 +82,7 @@ trait GUI extends JFXApp3:
           HBox.setHgrow(spacer, Priority.Always)
           
           val dateTime = new Label("")
-          dateTime.text <== DateTime.dynamicDateTimeProperty()
+          // dateTime.text <== DateTime.dynamicDateTimeProperty()
 
           val role = user.getRole match {
             case "admin" => "Amministratore"

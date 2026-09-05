@@ -174,7 +174,7 @@ object Filters:
           case record: ArchivedDocument => record.getLoadedBy.trim.toLowerCase != value.head.trim.toLowerCase
           case _ => false
 
-      case FilterCriteria("getLaodedBy", "contains", value) =>
+      case FilterCriteria("getLoadedBy", "contains", value) =>
           case record: ArchivedDocument => value.map(_.trim.toLowerCase).contains(record.getLoadedBy.trim.toLowerCase)
           case _ => false
 

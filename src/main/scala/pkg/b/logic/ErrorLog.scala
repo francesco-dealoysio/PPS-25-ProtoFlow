@@ -32,7 +32,7 @@ case class ErrorLog(
   def getMethod: String = method
   def getLine: String = line
   def getMessage: String = message
-  def getStrack: String = stack
+  def getStack: String = stack
 
   override def xmlFile = "errors.xml"
 

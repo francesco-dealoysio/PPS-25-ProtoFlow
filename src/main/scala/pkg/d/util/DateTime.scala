@@ -38,8 +38,7 @@ object DateTime:
     parseDateTime(value).format(displayDateTimeFormatter)
 
   def dynamicDateTimeProperty(): StringProperty =
-    val dateTimeProperty =
-      StringProperty(currentDisplayDateTime)
+    val dateTimeProperty = StringProperty(currentDisplayDateTime)
 
     val timeline =
       new Timeline:
@@ -47,8 +46,7 @@ object DateTime:
         keyFrames = Seq(
           KeyFrame(
             time = ClockRefreshInterval,
-            onFinished = _ =>
-              dateTimeProperty.value = currentDisplayDateTime
+            onFinished = _ => dateTimeProperty.value = currentDisplayDateTime
           )
         )
 

@@ -1,7 +1,6 @@
 package pkg.b.logic
 
 import pkg.b.logic.StartData.*
-import pkg.c.data.*
 import pkg.c.data.FileSystem.*
 import pkg.c.data.Properties.*
 import pkg.c.data.Xml.*
@@ -57,13 +56,13 @@ object Init:
     if (Files.notExists(Paths.get(inLogFilePathName("accessLog.xml"))))
       createEmptyXmlFile(inLogFilePathName("accessLog.xml"), "accessLog")
 
-    IdGen(inIdsFilePathName("accessLogId"), 1)
-    IdGen(inIdsFilePathName("errorlogId"), 1)
-    IdGen(inIdsFilePathName("accountId"), 4)
-    IdGen(inIdsFilePathName("roleId"), 4)
-    IdGen(inIdsFilePathName("classificationId"), 9)
-    IdGen(inIdsFilePathName("registrationId"), 1)
-    IdGen(inIdsFilePathName("loadedDocumentId"), 1)
+    IdGen.initialize(inIdsFilePathName("accessLogId"))
+    IdGen.initialize(inIdsFilePathName("errorlogId"))
+    IdGen.initialize(inIdsFilePathName("accountId"), 3)
+    IdGen.initialize(inIdsFilePathName("roleId"), 3)
+    IdGen.initialize(inIdsFilePathName("classificationId"), 8)
+    IdGen.initialize(inIdsFilePathName("registrationId"))
+    IdGen.initialize(inIdsFilePathName("loadedDocumentId"))
   
   @main def tryInit(): Unit =
     init()
