@@ -25,17 +25,6 @@ object Xml:
       case Failure(ex) =>
         logger(ex match { case e: Exception => e })
 
-  private def recordUpdate(obj: AnyRef, fieldName: String, value: String): AnyRef =
-    try
-      val field = obj.getClass.getDeclaredField(fieldName)
-      field.setAccessible(true)
-      field.set(obj, value)
-      obj
-    catch
-      case e: Exception =>
-        logger(e)
-        obj
-
   def getRecordsFromXML(xmlFilePathName: String, classType: Class[?]): Seq[AnyRef] =
     val xmlTry: Try[Elem] = Try(XML.loadFile(xmlFilePathName))
 
@@ -65,15 +54,6 @@ object Xml:
     val pw = new PrintWriter(xmlFilePathName, StandardCharsets.UTF_8.name())
     try pw.write(new PrettyPrinter(80, 2).format(xmlElem))
     finally pw.close()
-
-  private def recordToElem(obj: Any): Elem =
-    val fields = obj.getClass.getDeclaredFields
-    val children: Seq[Node] = fields.map { field =>
-      field.setAccessible(true)
-      val value = Option(field.get(obj)).map(_.toString).getOrElse("")
-      scala.xml.Elem(null, field.getName, scala.xml.Null, scala.xml.TopScope, true, scala.xml.Text(value))
-    }
-    scala.xml.Elem(null, "record", scala.xml.Null, scala.xml.TopScope, true, children *)
 
   def insertElemIntoXML(xmlFilePathName: String, obj: Any): Boolean =
     var result = false
@@ -147,3 +127,24 @@ object Xml:
         logger(ex match { case e: Exception => e })
         println(s"Error loading XML: ${ex.getMessage}")
       result
+
+  private def recordUpdate(obj: AnyRef, fieldName: String, value: String): AnyRef =
+    try
+      val field = obj.getClass.getDeclaredField(fieldName)
+      field.setAccessible(true)
+      field.set(obj, value)
+      obj
+    catch
+      case e: Exception =>
+        logger(e)
+        obj
+
+  private def recordToElem(obj: Any): Elem =
+    val fields = obj.getClass.getDeclaredFields
+    val children: Seq[Node] = fields.map { field =>
+      field.setAccessible(true)
+      val value = Option(field.get(obj)).map(_.toString).getOrElse("")
+      scala.xml.Elem(null, field.getName, scala.xml.Null, scala.xml.TopScope, true, scala.xml.Text(value))
+    }
+    scala.xml.Elem(null, "record", scala.xml.Null, scala.xml.TopScope, true, children *)
+

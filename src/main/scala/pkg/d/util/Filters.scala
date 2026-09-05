@@ -10,6 +10,34 @@ object Filters:
 
   private case class CriteriaGroup(criteria: List[FilterCriteria], combineWithAnd: Boolean)
 
+  def getDocumentOperationsLogPredicate(criteria: List[(String, String, List[String])]): Any => Boolean =
+    val criteriaGroup = CriteriaGroup(
+      criteria.map((field, operator, value) => FilterCriteria(field, operator, value)),
+      combineWithAnd = true
+    )
+    combineDocumentOperationsLogPredicates(criteriaGroup)
+
+  def getDocumentPredicate(criteria: List[(String, String, List[String])]): Any => Boolean =
+    val criteriaGroup = CriteriaGroup(
+      criteria.map((field, operator, value) => FilterCriteria(field, operator, value)),
+      combineWithAnd = true
+    )
+    combineDocumentPredicates(criteriaGroup)
+
+  def getRegisteredDocumentPredicate(criteria: List[(String, String, List[String])]): Any => Boolean =
+    val criteriaGroup = CriteriaGroup(
+      criteria.map((field, operator, value) => FilterCriteria(field, operator, value)),
+      combineWithAnd = true
+    )
+    combineRegisteredDocumentPredicates(criteriaGroup)
+
+  def getLoadedDocumentPredicate(criteria: List[(String, String, List[String])]): Any => Boolean =
+    val criteriaGroup = CriteriaGroup(
+      criteria.map((field, operator, value) => FilterCriteria(field, operator, value)),
+      combineWithAnd = true
+    )
+    combineLoadedDocumentPredicates(criteriaGroup)
+
   private def buildDocumentOperationsLogPredicate(criteria: FilterCriteria): Any => Boolean =
     import pkg.b.logic.DocumentLog
 
@@ -393,26 +421,12 @@ object Filters:
     else
       obj => preds.exists(_(obj))
 
-  def getDocumentOperationsLogPredicate(criteria: List[(String, String, List[String])]): Any => Boolean =
-    val criteriaGroup = CriteriaGroup(
-      criteria.map((field, operator, value) => FilterCriteria(field, operator, value)),
-      combineWithAnd = true
-    )
-    combineDocumentOperationsLogPredicates(criteriaGroup)
-
   private def combineDocumentPredicates(group: CriteriaGroup): Any => Boolean =
     val preds = group.criteria.map(buildDocumentPredicate)
     if group.combineWithAnd then
       obj => preds.forall(_(obj))
     else
       obj => preds.exists(_(obj))
-
-  def getDocumentPredicate(criteria: List[(String, String, List[String])]): Any => Boolean =
-    val criteriaGroup = CriteriaGroup(
-      criteria.map((field, operator, value) => FilterCriteria(field, operator, value)),
-      combineWithAnd = true
-    )
-    combineDocumentPredicates(criteriaGroup)
 
   private def combineRegisteredDocumentPredicates(group: CriteriaGroup): Any => Boolean =
     val preds = group.criteria.map(buildRegisteredDocumentPredicate)
@@ -421,23 +435,9 @@ object Filters:
     else
       obj => preds.exists(_(obj))
 
-  def getRegisteredDocumentPredicate(criteria: List[(String, String, List[String])]): Any => Boolean =
-    val criteriaGroup = CriteriaGroup(
-      criteria.map((field, operator, value) => FilterCriteria(field, operator, value)),
-      combineWithAnd = true
-    )
-    combineRegisteredDocumentPredicates(criteriaGroup)
-
   private def combineLoadedDocumentPredicates(group: CriteriaGroup): Any => Boolean =
     val preds = group.criteria.map(buildLoadedDocumentPredicate)
     if group.combineWithAnd then
       obj => preds.forall(_(obj))
     else
       obj => preds.exists(_(obj))
-
-  def getLoadedDocumentPredicate(criteria: List[(String, String, List[String])]): Any => Boolean =
-    val criteriaGroup = CriteriaGroup(
-      criteria.map((field, operator, value) => FilterCriteria(field, operator, value)),
-      combineWithAnd = true
-    )
-    combineLoadedDocumentPredicates(criteriaGroup)
