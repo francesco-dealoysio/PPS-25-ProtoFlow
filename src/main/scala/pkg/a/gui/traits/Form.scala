@@ -363,6 +363,7 @@ trait Form extends Common:
       content = stack
       fitToWidth = true
       fitToHeight = true
+      focusTraversable = false
       styleClass += FormScrollStyle
 
     val page = new BorderPane:
@@ -370,7 +371,7 @@ trait Form extends Common:
       center = scrollPane
 
     page.delegate.setUserData(ViewNavigationState(hasUnsavedChanges))
-    initialFocus.foreach(focusOnOpen)
+    initialFocus.foreach(field => focusOnOpen(page, field))
     page
 
   private def makeReadOnly[C <: TextInputControl](field: FormField[C]): FormField[C] =
@@ -379,9 +380,16 @@ trait Form extends Common:
     field.control.styleClass += ReadOnlyFormFieldStyle
     field
 
-  private def focusOnOpen(field: FormField[? <: Node]): Unit =
-    Platform.runLater:
-      field.requestFocus()
+  private def focusOnOpen(page: BorderPane, field: FormField[? <: Node]): Unit =
+    if page.delegate.getScene != null then
+      Platform.runLater:
+        field.requestFocus()
+    else
+      page.delegate.sceneProperty().addListener((_, _, scene) =>
+        if scene != null then
+          Platform.runLater:
+            field.requestFocus()
+      )
 
   private def formField[C <: Node](control: C, initialValue: String)(readValue: C => String, writeValue: (C, String) => Unit): FormField[C] =
     FormField(

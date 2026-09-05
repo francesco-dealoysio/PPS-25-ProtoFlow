@@ -7,13 +7,8 @@ lazy val root = (project in file("."))
     name := "PPS-25-ProtoFlow"
   )
 
-Compile / mainClass := Some("pkg.RunApp")
-
-Compile / packageBin / mappings ~= {
-  _.filterNot { case (_, pathInJar) =>
-    pathInJar.equalsIgnoreCase("META-INF/MANIFEST.MF")
-  }
-}
+Compile / run / mainClass := Some("pkg.RunApp")
+Compile / packageBin / mainClass := Some("pkg.RunApp")
 
 Test / parallelExecution := false
 
