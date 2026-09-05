@@ -50,19 +50,25 @@ object Init:
     if (Files.notExists(Paths.get(inDocumentsFilePathName("loaded.xml"))))
       createEmptyXmlFile(inDocumentsFilePathName("loaded.xml"), "loaded")
 
+    if (Files.notExists(Paths.get(inDocumentsFilePathName("registered.xml"))))
+      createEmptyXmlFile(inDocumentsFilePathName("registered.xml"), "registered")
+
+    if (Files.notExists(Paths.get(inDocumentsFilePathName("archived.xml"))))
+      createEmptyXmlFile(inDocumentsFilePathName("archived.xml"), "archived")
+
     if (Files.notExists(Paths.get(inLogFilePathName("documentOperations.xml"))))
       createEmptyXmlFile(inLogFilePathName("documentOperations.xml"), "operations")
 
     if (Files.notExists(Paths.get(inLogFilePathName("accessLog.xml"))))
       createEmptyXmlFile(inLogFilePathName("accessLog.xml"), "accessLog")
 
-    IdGen.initialize(inIdsFilePathName("accessLogId"))
-    IdGen.initialize(inIdsFilePathName("errorlogId"))
-    IdGen.initialize(inIdsFilePathName("accountId"), 3)
-    IdGen.initialize(inIdsFilePathName("roleId"), 3)
-    IdGen.initialize(inIdsFilePathName("classificationId"), 8)
-    IdGen.initialize(inIdsFilePathName("registrationId"))
-    IdGen.initialize(inIdsFilePathName("loadedDocumentId"))
-  
+    IdGen.initialize(inIdsFilePathName("accessLogId"), 1)
+    IdGen.initialize(inIdsFilePathName("errorlogId"), 1)
+    IdGen.initialize(inIdsFilePathName("accountId"), 4)
+    IdGen.initialize(inIdsFilePathName("roleId"), 4)
+    IdGen.initialize(inIdsFilePathName("classificationId"), 9)
+    IdGen.initialize(inIdsFilePathName("loadedDocumentId"), 1)
+    IdGen.initialize(inIdsFilePathName("documentOperationLogId"), 1)
+
   @main def tryInit(): Unit =
     init()

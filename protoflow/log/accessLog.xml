@@ -1,72 +1,9 @@
 <accessLog>
   <record>
-    <id>130</id>
-    <username>mrossi</username>
-    <role>admin</role>
-    <processedDate>2026-08-18</processedDate>
-    <processedTime>10:00:00.00</processedTime>
-  </record>
-  <record>
-    <id>131</id>
-    <username>mrossi</username>
-    <role>admin</role>
-    <processedDate>2026-08-18</processedDate>
-    <processedTime>10:00:00.00</processedTime>
-  </record>
-  <record>
-    <id>132</id>
-    <username>frank</username>
-    <role>admin</role>
-    <processedDate>2026-09-05</processedDate>
-    <processedTime>02:43:07.58</processedTime>
-  </record>
-  <record>
-    <id>122</id>
-    <username>frank</username>
-    <role>admin</role>
-    <processedDate>2026-09-04</processedDate>
-    <processedTime>21:48:29.92</processedTime>
-  </record>
-  <record>
-    <id>123</id>
-    <username>frank</username>
-    <role>admin</role>
-    <processedDate>2026-09-04</processedDate>
-    <processedTime>21:50:28.57</processedTime>
-  </record>
-  <record>
-    <id>124</id>
-    <username>frank</username>
-    <role>admin</role>
-    <processedDate>2026-09-04</processedDate>
-    <processedTime>21:50:55.69</processedTime>
-  </record>
-  <record>
-    <id>125</id>
-    <username>mrossi</username>
-    <role>admin</role>
-    <processedDate>2026-08-18</processedDate>
-    <processedTime>10:00:00.00</processedTime>
-  </record>
-  <record>
-    <id>126</id>
-    <username>frank</username>
-    <role>admin</role>
-    <processedDate>2026-09-05</processedDate>
-    <processedTime>10:57:30.23</processedTime>
-  </record>
-  <record>
-    <id>127</id>
-    <username>mrossi</username>
-    <role>admin</role>
-    <processedDate>2026-08-18</processedDate>
-    <processedTime>10:00:00.00</processedTime>
-  </record>
-  <record>
-    <id>128</id>
+    <id>1</id>
     <username>tommy</username>
     <role>oper</role>
     <processedDate>2026-09-05</processedDate>
-    <processedTime>12:39:35.07</processedTime>
+    <processedTime>17:45:32.51</processedTime>
   </record>
 </accessLog>
