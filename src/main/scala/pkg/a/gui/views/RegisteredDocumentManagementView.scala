@@ -147,11 +147,7 @@ object RegisteredDocumentManagementView extends Management:
 
     loadDocuments()
 
-    bindSearch(
-      dateFilters = Seq(fromDateFilter, toDateFilter),
-      textFilters = Seq(subjectFilter),
-      comboFilters = Seq(operatorFilter)
-    )(searchDocuments)
+    bindSearch(fromDateFilter, toDateFilter, subjectFilter, operatorFilter)(searchDocuments())
 
     managementPage(
       growNode = Some(table),

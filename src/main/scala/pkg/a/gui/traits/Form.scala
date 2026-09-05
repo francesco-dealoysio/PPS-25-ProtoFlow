@@ -1,11 +1,11 @@
 package pkg.a.gui.traits
 
 import pkg.a.gui.navigation.HomeNavigator.ViewNavigationState
-import pkg.a.gui.text.UiStyles.Common.*
+import pkg.a.gui.text.UiStyles.Common.{RootStyle, SubtitleStyle, TitleStyle}
+import pkg.a.gui.text.UiStyles.Form.*
 import pkg.a.gui.text.UiText.Common.Buttons.*
 import pkg.d.util.DateTime
 import scalafx.application.Platform
-import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Node
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
@@ -159,10 +159,10 @@ trait Form extends Common:
     )
 
   /**
-   * Creates a password form field.
+   * Creates a combo box form field.
    * @param prompt       the placeholder text
    * @param initialValue the initial field value
-   * @return the configured password field
+   * @return the configured combo box field
    */
   protected def stringComboField(items: Seq[String], initialValue: String = "", prompt: String = ""): FormField[ComboBox[String]] =
     val control =
@@ -178,7 +178,7 @@ trait Form extends Common:
       readValue = combo =>
         Option(combo.value.value).getOrElse(""),
       writeValue = (combo, value) =>
-        combo.value = if value.isBlank then null else value
+        combo.value = Option(value).filterNot(_.isBlank).orNull
     )
 
   /**
@@ -188,16 +188,13 @@ trait Form extends Common:
    */
   protected def formGrid(rows: Seq[FormRow]): GridPane =
     new GridPane:
-      hgap = 16
-      vgap = 8
-      maxWidth = 700
-
+      styleClass += FormGridStyle
       columnConstraints = Seq(
         new ColumnConstraints:
           minWidth = 130,
         new ColumnConstraints:
           hgrow = Priority.Always
-        )
+      )
 
       rows.zipWithIndex.foreach:
         case (row, index) =>
@@ -221,8 +218,7 @@ trait Form extends Common:
 
     val box =
       new HBox:
-        spacing = 30
-        alignment = Pos.TopCenter
+        styleClass += TwoColumnFormStyle
         children = Seq(left, right)
 
     HBox.setHgrow(left, Priority.Always)
@@ -268,7 +264,7 @@ trait Form extends Common:
       new DatePicker(DateTime.parseDate(initialValue)):
         maxWidth = Double.MaxValue
         styleClass += FormFieldStyle
-  
+
     formField(control, initialValue)(
       readValue = picker =>
         Option(picker.value.value)
@@ -354,22 +350,15 @@ trait Form extends Common:
         Seq(titleBoxNode, form, resultMessage, actions)
 
     val formContent = new VBox:
-      spacing = 20
-      padding = Insets(25)
-      maxWidth = 800
-      maxHeight = Double.MaxValue
+      styleClass += FormContentStyle
       config.contentStyle.foreach(styleClass += _)
+      maxHeight = Double.MaxValue
       children = pageChildren
 
     val stack = new StackPane:
-      alignment = Pos.TopCenter
+      styleClass += FormStackStyle
       children = Seq(formContent)
 
-    // Content taller than the window would otherwise be clipped (no scrollbar), hiding
-    // fields and, worse, the action buttons: wrap in a ScrollPane instead of using the
-    // stack directly. fitToWidth/fitToHeight keep the short-content behavior unchanged
-    // (centered, actions pushed to the bottom via the spacer) while letting tall content
-    // scroll instead of overflow.
     val scrollPane = new ScrollPane:
       content = stack
       fitToWidth = true

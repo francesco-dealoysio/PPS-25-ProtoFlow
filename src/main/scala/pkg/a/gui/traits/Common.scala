@@ -2,11 +2,9 @@ package pkg.a.gui.traits
 
 import pkg.a.gui.text.CommonText.Common.Buttons.Print
 import pkg.a.gui.text.UiStyles.Common.*
+import pkg.a.gui.text.UiStyles.Form.{FormActionsStyle, FormLabelStyle}
+import pkg.a.gui.text.UiStyles.Buttons.*
 import pkg.a.gui.text.UiText.Common.Buttons.Close
-import pkg.b.logic.pdf.{PdfDetailsCreator, PdfViewer}
-import pkg.d.util.Logger.logger
-import pkg.d.util.Util.inPrintsFilePathName
-import scalafx.geometry.Pos
 import scalafx.scene.control.{Alert, Button, ButtonType, Label}
 import scalafx.scene.layout.{HBox, VBox}
 
@@ -46,12 +44,9 @@ trait Common:
    * @return true if the user confirms, false otherwise
    */
   protected def askConfirmation(titleText: String, header: String, content: String): Boolean =
-    val dialog =
-      new Alert(Alert.AlertType.Confirmation):
-        title = titleText
-        headerText = header
-        contentText = content
-    dialog.showAndWait().contains(ButtonType.OK)
+    createAlert(Alert.AlertType.Confirmation, titleText, Some(header), content)
+      .showAndWait()
+      .contains(ButtonType.OK)
 
   /**
    * Shows an error dialog.
@@ -60,23 +55,18 @@ trait Common:
    * @param content   the error message
    */
   protected def showError(titleText: String, header: String, content: String): Unit =
-    new Alert(Alert.AlertType.Error):
-      title = titleText
-      headerText = header
-      contentText = content
-    .showAndWait()
+    createAlert(Alert.AlertType.Error, titleText, Some(header), content)
+      .showAndWait()
 
   /**
    * Shows an informational dialog for a successful operation.
    * @param titleText the dialog title
    * @param content the success message
+   * @param header    optional dialog header (defaults to None)
    */
-  protected def showSuccess(titleText: String, content: String): Unit =
-    new Alert(Alert.AlertType.Information):
-      title = titleText
-      headerText = None
-      contentText = content
-    .showAndWait()
+  protected def showSuccess(titleText: String, content: String, header: Option[String] = None): Unit =
+    createAlert(Alert.AlertType.Information, titleText, header, content)
+      .showAndWait()
 
   /**
    * Creates a result message with configurable styles.
@@ -101,15 +91,11 @@ trait Common:
   /**
    * Creates an action bar containing the given buttons.
    * @param buttons      the buttons displayed in the bar
-   * @param styleName    the style applied to the bar
-   * @param barAlignment the alignment of the buttons
    * @return the configured action bar
    */
-  protected def actionBar(buttons: Seq[Button], styleName: String =  FormActionsStyle, barAlignment: Pos = Pos.CenterRight): HBox =
+  protected def actionBar(buttons: Seq[Button]): HBox =
     new HBox:
-      alignment = barAlignment
-      spacing = 12
-      styleClass += styleName
+      styleClass += FormActionsStyle
       children = buttons
 
   /**
@@ -138,11 +124,11 @@ trait Common:
 
   /**
    * Creates a close button executing the given exit action.
-   * @param onExit the action executed when the button is pressed
+   * @param action the action executed when the button is pressed
    * @param text   the button text
    */
-  protected def closeButton(onExit: () => Unit, text: String = Close): Button =
-    secondaryButton(text, onExit)
+  protected def closeButton(action: () => Unit, text: String = Close): Button =
+    secondaryButton(text, action)
 
 
   /**
@@ -152,7 +138,7 @@ trait Common:
    * @return the configured print button
    */
   protected def printButton(action: () => Unit, text: String = Print): Button =
-    secondaryButton(text = text, action = action)
+    secondaryButton(text, action)
 
   /**
    * Creates a title section containing a title and a subtitle.
@@ -164,7 +150,7 @@ trait Common:
    */
   protected def titleBox(titleText: String, subtitleText: String, titleStyle: String = TitleStyle, subtitleStyle: String = SubtitleStyle): VBox =
     new VBox:
-      spacing = 5
+      styleClass += TitleBoxStyle
       children = Seq(
         new Label(titleText):
           styleClass += titleStyle,
@@ -178,7 +164,7 @@ trait Common:
       styleClass += styleName
       onAction = _ => action()
 
-  private def showMessage(label: Label, message: String, success: Boolean, successStyle: String = MessageSuccessStyle, errorStyle: String = MessageErrorStyle): Unit =
+  private def showMessage(label: Label, message: String, success: Boolean, successStyle: String, errorStyle: String): Unit =
     label.text = message
     label.visible = true
     label.managed = true
@@ -186,16 +172,22 @@ trait Common:
     label.styleClass +=
       (if success then successStyle else errorStyle)
 
-  private def clearMessage(label: Label, successStyle: String = MessageSuccessStyle, errorStyle: String = MessageErrorStyle): Unit =
+  private def clearMessage(label: Label, successStyle: String, errorStyle: String): Unit =
     label.text = ""
     label.visible = false
     label.managed = false
     label.styleClass.removeAll(successStyle, errorStyle)
 
-  private def messageLabel(baseStyle: String = MessageStyle): Label =
+  private def messageLabel(baseStyle: String): Label =
     new Label:
       visible = false
       managed = false
       wrapText = true
       maxWidth = Double.MaxValue
       styleClass += baseStyle
+
+  private def createAlert(alertType: Alert.AlertType, dialogTitle: String, header: Option[String], content: String): Alert =
+    new Alert(alertType):
+      title = dialogTitle
+      headerText = header.orNull
+      contentText = content

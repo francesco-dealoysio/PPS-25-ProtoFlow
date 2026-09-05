@@ -1,7 +1,7 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.services.DocumentManagementControlService.{ManagedDocument, Stages}
-import pkg.a.gui.text.UiStyles.HomePage.*
+import pkg.a.gui.text.UiStyles.Dashboard.*
 import pkg.a.gui.text.UiText.Common.Documents.{NoDocuments, Fields as DocumentFields}
 import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.DocumentManagementControl as ManagementText
@@ -13,7 +13,6 @@ import scalafx.scene.layout.{HBox, VBox}
 object DashboardView extends Management:
 
   private val RecentDocumentsLimit = 10
-  private val CardWidth = 190
 
   case class DashboardCard(title: String, value: String, subtitle: String)
 
@@ -35,9 +34,7 @@ object DashboardView extends Management:
   private def statCard(card: DashboardCard): VBox =
 
     new VBox:
-      prefWidth = CardWidth
       styleClass += StatCardStyle
-
       children = Seq(
         fieldLabel(card.title, StatCardTitleStyle),
         fieldLabel(card.value, StatCardValueStyle),
@@ -48,8 +45,6 @@ object DashboardView extends Management:
 
     val recentDocuments = ObservableBuffer(documents.reverse.take(RecentDocumentsLimit)*)
     val table = managementTable(recentDocuments, NoDocuments)
-    table.styleClass += DocumentsTableStyle
-    table.placeholder = fieldLabel(NoDocuments, TablePlaceholderStyle)
     table.columns ++= Seq(
       stringColumn[ManagedDocument](DocumentFields.ProtocolNumber): document =>
         if document.protocolNumber.nonEmpty then document.protocolNumber else document.id,

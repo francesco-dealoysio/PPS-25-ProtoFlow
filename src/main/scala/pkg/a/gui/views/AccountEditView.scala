@@ -1,6 +1,6 @@
 package pkg.a.gui.views
 
-import pkg.a.gui.text.UiStyles.Common.FormSectionTitleStyle
+import pkg.a.gui.text.UiStyles.Form.{FormSectionTitleStyle, FormSectionsStyle}
 import pkg.a.gui.text.UiText.Accounts.{Edit as EditText, Profile as ProfileText}
 import pkg.a.gui.text.UiText.Common.Fields.{Labels, Prompts}
 import pkg.a.gui.text.UiText.Validation.Account as Validation
@@ -213,8 +213,7 @@ object AccountEditView extends Form:
     val form =
       if profileMode then
         new VBox:
-          spacing = 16
-
+          styleClass += FormSectionsStyle
           children = Seq(
             fieldLabel(ProfileText.AccountInfo, FormSectionTitleStyle),
             formGrid(profileInfoRows),

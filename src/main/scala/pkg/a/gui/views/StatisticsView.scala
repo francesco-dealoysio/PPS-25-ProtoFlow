@@ -3,23 +3,19 @@ package pkg.a.gui.views
 import pkg.a.gui.services.StatisticsService
 import pkg.a.gui.services.StatisticsService.{MonthlyCount, RoleCount, UserCount}
 import pkg.a.gui.text.UiStyles.Common.RootStyle
-import pkg.a.gui.text.UiStyles.HomePage.{CardsContainerStyle, StatCardStyle, StatCardTitleStyle, StatCardValueStyle}
+import pkg.a.gui.text.UiStyles.Dashboard.{CardsContainerStyle, StatCardStyle, StatCardTitleStyle, StatCardValueStyle}
+import pkg.a.gui.text.UiStyles.Statistics.*
 import pkg.a.gui.text.UiText.Statistics as Text
 import pkg.a.gui.traits.Management
 import pkg.b.logic.pdf.PdfSectionsCreator.Section
 import pkg.b.logic.pdf.{PdfSectionsCreator, PdfViewer}
 import pkg.d.util.Util.inPrintsFilePathName
 import scalafx.collections.ObservableBuffer
-import scalafx.geometry.Insets
 import scalafx.scene.chart.{BarChart, CategoryAxis, NumberAxis, XYChart}
 import scalafx.scene.control.{ScrollPane, TableView}
 import scalafx.scene.layout.*
 
 object StatisticsView extends Management:
-
-  private val ChartCardStyle = "chart-card"
-  private val StatsChartStyle = "stats-chart"
-  private val CardHeight = 300.0
 
   def apply(onExit: () => Unit = () => ()): BorderPane =
     
@@ -43,9 +39,9 @@ object StatisticsView extends Management:
     val accessesByRole = StatisticsService.accessesByRole()
     val accessesByUser = StatisticsService.accessesByUser()
 
-    val registeredChart = monthlyBarChart(Text.RegisteredByMonthTitle, registeredByMonth, "chart-registered")
-    val archivedChart = monthlyBarChart(Text.ArchivedByMonthTitle, archivedByMonth, "chart-archived")
-    val roleChart = roleBarChart(Text.AccessesByRoleTitle, accessesByRole, "chart-role")
+    val registeredChart = monthlyBarChart(Text.RegisteredByMonthTitle, registeredByMonth, RegisteredChartStyle)
+    val archivedChart = monthlyBarChart(Text.ArchivedByMonthTitle, archivedByMonth, ArchivedChartStyle)
+    val roleChart = roleBarChart(Text.AccessesByRoleTitle, accessesByRole, RoleChartStyle)
 
     val userTable = managementTable(ObservableBuffer(accessesByUser*), Text.AccessesByUserTitle)
     userTable.columns ++= Seq(
@@ -135,8 +131,7 @@ object StatisticsView extends Management:
 
     val contentBox =
       new VBox:
-        spacing = 18
-        padding = Insets(20)
+        styleClass += ContentStyle
         children = Seq(
           header,
           registrationsCards,
@@ -154,7 +149,6 @@ object StatisticsView extends Management:
 
   private def statCard(title: String, value: String): VBox =
     new VBox:
-      prefWidth = 190
       styleClass += StatCardStyle
       children = Seq(
         fieldLabel(title, StatCardTitleStyle),
@@ -171,8 +165,7 @@ object StatisticsView extends Management:
       card.maxWidth = Double.MaxValue
 
     new GridPane:
-      hgap = 18
-      vgap = 18
+      styleClass += GridStyle
       columnConstraints = Seq(equalColumn, equalColumn)
       add(topLeft, 0, 0)
       add(topRight, 1, 0)
@@ -182,17 +175,12 @@ object StatisticsView extends Management:
   private def chartCard(chart: BarChart[String, Number]): VBox =
     VBox.setVgrow(chart, Priority.Always)
     new VBox:
-      prefHeight = CardHeight
-      minHeight = CardHeight
       styleClass += ChartCardStyle
       children = Seq(chart)
 
   private def tableCard(cardTitle: String, table: TableView[UserCount]): VBox =
     VBox.setVgrow(table, Priority.Always)
     new VBox:
-      prefHeight = CardHeight
-      minHeight = CardHeight
-      spacing = 8
       styleClass += ChartCardStyle
       children = Seq(fieldLabel(cardTitle), table)
 
@@ -210,8 +198,6 @@ object StatisticsView extends Management:
       title = chartTitle
       legendVisible = false
       animated = false
-      categoryGap = 20
-      prefHeight = 260
       styleClass ++= Seq(StatsChartStyle, accentStyle)
       data = series
 
@@ -229,7 +215,5 @@ object StatisticsView extends Management:
       title = chartTitle
       legendVisible = false
       animated = false
-      categoryGap = 20
-      prefHeight = 260
       styleClass ++= Seq(StatsChartStyle, accentStyle)
       data = series
