@@ -24,7 +24,7 @@ object RoleAddView extends Form:
     def currentRole(id: String = ""): Role =
       Role(
         id = id,
-        role = role.value.toLowerCase,
+        role = role.value.trim.toLowerCase,
         name = name.value,
         description = description.value
       )
@@ -42,7 +42,7 @@ object RoleAddView extends Form:
         )
 
       showFormFieldErrors(errors):
-        case Validation.RoleRequired | Validation.DuplicateRole => role
+        case Validation.RoleRequired | Validation.RoleInvalid | Validation.DuplicateRole => role
         case Validation.NameRequired | Validation.DuplicateRoleName => name
         case Validation.DescriptionRequired => description
 
@@ -55,7 +55,7 @@ object RoleAddView extends Form:
     val save =
       saveButton: () =>
         if validateForm() then
-          RoleService.addRole(role.value.toLowerCase, name.value, description.value) match
+          RoleService.addRole(role.value.trim.toLowerCase, name.value, description.value) match
             case Right(_) =>
               formSaved = true
               result.show(Text.Success, success = true)

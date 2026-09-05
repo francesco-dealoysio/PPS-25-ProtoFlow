@@ -32,6 +32,10 @@ class RoleValidatorTest:
     )
     assertValid(role, currentId = Some("1"))
 
+  @Test
+  def testInvalidRoleFormat(): Unit =
+    val role = validRole().copy(role = "ufficio tecnico")
+    assertEquals(Seq(RoleInvalid), validator.validate(role, existingRoles))
 
   private def assertValid(role: Role, currentId: Option[String] = None): Unit =
     val errors = validator.validate(role, existingRoles, currentId)
