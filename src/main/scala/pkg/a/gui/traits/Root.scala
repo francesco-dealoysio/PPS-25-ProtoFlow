@@ -68,7 +68,7 @@ trait Root extends Common:
       )
 
   private def createFooter(currentUser: String, roleName: String, onProfileOpen: () => Unit): HBox =
-    val dateTimeLabel = fieldLabel("")
+    val dateTimeLabel = fieldLabel("", FooterTextStyle)
     val userInfoLabel = fieldLabel(footerUserInfo(currentUser, roleName), FooterUserInfoStyle)
 
     dateTimeLabel.text <==

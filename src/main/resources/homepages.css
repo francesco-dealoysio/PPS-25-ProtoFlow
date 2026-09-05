@@ -60,6 +60,12 @@
     -fx-alignment: center-right;
 }
 
+.footer-text {
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #111827;
+}
+
 .footer-user-info {
     -fx-cursor: hand;
 }

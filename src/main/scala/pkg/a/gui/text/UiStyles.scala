@@ -43,6 +43,7 @@ object UiStyles:
     val UserInfoStyle = "user-info"
     val FooterStyle = "app-footer"
     val FooterUserInfoStyle = "footer-user-info"
+    val FooterTextStyle = "footer-text"
 
   object HomePage:
     val SidebarStyle = "sidebar"
