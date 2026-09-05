@@ -4,7 +4,6 @@ import pkg.a.gui.text.UiStyles.App.*
 import pkg.a.gui.text.UiText.Common.*
 import pkg.d.util.DateTime
 import scalafx.beans.property.BooleanProperty
-import scalafx.geometry.Pos
 import scalafx.scene.control.Button
 import scalafx.scene.layout.*
 
@@ -57,11 +56,9 @@ trait Root extends Common:
 
     val menuButton =
       new Button(MenuIcon):
-        styleClass += MenuToggleButtonStyle
         onAction = _ => onMenuToggle()
 
     new HBox:
-      alignment = Pos.CenterLeft
       styleClass += HeaderStyle
       children = Seq(
         menuButton,
@@ -71,7 +68,7 @@ trait Root extends Common:
       )
 
   private def createFooter(currentUser: String, roleName: String, onProfileOpen: () => Unit): HBox =
-    val dateTimeLabel = fieldLabel("", FooterDateTimeStyle)
+    val dateTimeLabel = fieldLabel("")
     val userInfoLabel = fieldLabel(footerUserInfo(currentUser, roleName), FooterUserInfoStyle)
 
     dateTimeLabel.text <==
@@ -81,7 +78,5 @@ trait Root extends Common:
       onProfileOpen()
       
     new HBox:
-      alignment = Pos.CenterRight
-      spacing = 20
       styleClass += FooterStyle
       children = Seq(userInfoLabel, dateTimeLabel)

@@ -15,6 +15,9 @@
 
 .request-details-grid {
     -fx-background-color: transparent;
+    -fx-hgap: 18;
+    -fx-vgap: 12;
+    -fx-padding: 18;
 }
 
 .request-detail-label {

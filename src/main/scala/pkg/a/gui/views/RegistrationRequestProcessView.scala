@@ -1,8 +1,8 @@
 package pkg.a.gui.views
 
 import pkg.a.gui.services.RegistrationRequestService
-import pkg.a.gui.text.UiStyles.Common.FormFieldStyle
-import pkg.a.gui.text.UiStyles.Requests.*
+import pkg.a.gui.text.UiStyles.Form.FormFieldStyle
+import pkg.a.gui.text.UiStyles.RegistrationRequests.*
 import pkg.a.gui.text.UiText.Common.Buttons
 import pkg.a.gui.text.UiText.Common.Fields.Labels
 import pkg.a.gui.text.UiText.RegistrationRequests.Process as Text
@@ -11,7 +11,6 @@ import pkg.b.logic.Registration
 import pkg.b.logic.pdf.{PdfDetailsCreator, PdfViewer}
 import pkg.d.util.DateTime
 import pkg.d.util.Util.inPrintsFilePathName
-import scalafx.geometry.Insets
 import scalafx.scene.control.*
 import scalafx.scene.layout.*
 
@@ -29,9 +28,6 @@ object RegistrationRequestProcessView extends Management:
     val result = createResultMessage()
 
     val detailsGrid = new GridPane:
-      hgap = 18
-      vgap = 12
-      padding = Insets(18)
       styleClass += DetailsGridStyle
 
     val detailRows = Seq(
@@ -55,7 +51,6 @@ object RegistrationRequestProcessView extends Management:
         detailsGrid.add(detailValue(value), labelColumn + 1, row)
 
     val detailsCard = new VBox:
-      spacing = 10
       styleClass += DetailsCardStyle
       children = Seq(
         new Label(Text.DetailsTitle):
@@ -72,7 +67,6 @@ object RegistrationRequestProcessView extends Management:
         styleClass += FormFieldStyle
 
     val motivationBox = new VBox:
-      spacing = 8
       styleClass += DetailsCardStyle
       children = Seq(
         fieldLabel(Text.MotivationLabel),

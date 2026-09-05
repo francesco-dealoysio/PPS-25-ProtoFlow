@@ -140,11 +140,7 @@ object DocumentLogManagementView extends Management:
 
     loadLogs()
 
-    bindSearch(
-      dateFilters = Seq(fromDateFilter, toDateFilter),
-      textFilters = Seq(documentIdFilter),
-      comboFilters = Seq(operationFilter, operatorFilter)
-    )(searchLogs)
+    bindSearch(fromDateFilter, toDateFilter, documentIdFilter, operationFilter, operatorFilter)(searchLogs())
 
     managementPage(
       growNode = Some(table),

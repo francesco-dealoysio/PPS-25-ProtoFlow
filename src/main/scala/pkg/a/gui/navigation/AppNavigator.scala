@@ -48,11 +48,10 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
     val scene = new Scene(RegistrationWindowWidth, RegistrationWindowHeight):
       root = RegistrationView(
         validator = RegistrationValidator(),
-
-        onExit = () =>
-          showLogin()
+        onExit = () => showLogin()
       )
 
+    addPageStylesheets(scene, "/registration.css")
     stage.scene = scene
     stage.sizeToScene()
     stage.centerOnScreen()
@@ -70,12 +69,7 @@ class AppNavigator(stage: JFXApp3.PrimaryStage):
             onLogout = () => showLogin()
           )
 
-        addPageStylesheets(
-          scene,
-          "/homepages.css",
-          "/registration-requests-management.css"
-        )
-
+        addPageStylesheets(scene, "/homepages.css", "/statistics.css", "/registration-requests.css")
         stage.scene = scene
         stage.sizeToScene()
         stage.minWidth = HomeWindowWidth

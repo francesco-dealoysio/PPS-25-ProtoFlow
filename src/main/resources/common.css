@@ -2,33 +2,6 @@
     -fx-font-family: "Segoe UI", "Arial", sans-serif;
 }
 
-/* Login e registrazione */
-
-.registration-root {
-    -fx-background-color: #ffffff;
-}
-
-.registration-card {
-    -fx-background-color: #ffffff;
-    -fx-padding: 35 65 35 65;
-    -fx-spacing: 18;
-}
-
-.registration-title {
-    -fx-font-size: 26px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #111827;
-}
-
-.registration-subtitle {
-    -fx-font-size: 13px;
-    -fx-text-fill: #6b7280;
-}
-
-.registration-grid {
-    -fx-padding: 10 0 5 0;
-}
-
 /* Form e schermate di gestione */
 
 .content-root {
@@ -86,19 +59,24 @@
 .description-area {
     -fx-background-color: #ffffff;
     -fx-border-color: #d1d5db;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
 }
 
 .form-field {
-    -fx-pref-width: 330;
-    -fx-pref-height: 36;
-    -fx-padding: 6 10 6 10;
+    -fx-pref-width: 330px;
+    -fx-pref-height: 36px;
+    -fx-padding: 6px 10px 6px 10px;
 }
 
 .form-field:focused,
 .description-area:focused {
     -fx-border-color: #2563eb;
+}
+
+.form-actions {
+    -fx-spacing: 12px;
+    -fx-alignment: center-right;
 }
 
 .description-area {
@@ -130,6 +108,33 @@
 
 .read-only-form-field:focused {
     -fx-border-color: #e5e7eb;
+}
+
+/* Layout form */
+
+.form-grid {
+    -fx-hgap: 16px;
+    -fx-vgap: 8px;
+    -fx-max-width: 700px;
+}
+
+.two-column-form {
+    -fx-spacing: 30px;
+    -fx-alignment: top-center;
+}
+
+.form-content {
+    -fx-spacing: 20px;
+    -fx-padding: 25px;
+    -fx-max-width: 800px;
+}
+
+.form-sections {
+    -fx-spacing: 16px;
+}
+
+.form-stack {
+    -fx-alignment: top-center;
 }
 
 /* Pulsanti */
@@ -198,19 +203,15 @@
 
 /* Tabelle */
 
-.table-view .table-cell {
-    -fx-alignment: CENTER-LEFT;
-}
-
-.table-view .table-row-cell {
-    -fx-cell-size: 20px;
-}
-
 .content-table {
     -fx-background-color: white;
     -fx-border-color: #dfe5eb;
     -fx-border-radius: 6px;
     -fx-background-radius: 6px;
+}
+
+.content-table .table-cell {
+    -fx-alignment: CENTER-LEFT;
 }
 
 .content-table .column-header-background {
@@ -237,4 +238,19 @@
 
 .content-table .table-row-cell:selected .text {
     -fx-fill: #1e3a5f;
+}
+
+/* Layout gestione */
+
+.title-box {
+    -fx-spacing: 5px;
+}
+
+.management-content {
+    -fx-spacing: 18px;
+    -fx-padding: 20px;
+}
+
+.filter-bar {
+    -fx-spacing: 10px;
 }

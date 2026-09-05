@@ -6,7 +6,6 @@ import pkg.a.gui.text.UiStyles.HomePage.*
 import pkg.a.gui.text.UiText.Common.Dialogs.{Denied, UnsavedChanges, Logout as LogoutDialog}
 import pkg.a.gui.text.UiText.Menu.{Dashboard, labels, Logout as LogoutLabel}
 import pkg.b.logic.{Account, AuthorizationEngine, Role}
-import scalafx.geometry.Pos
 import scalafx.scene.control.Button
 import scalafx.scene.layout.*
 
@@ -53,7 +52,6 @@ trait HomePage extends Root:
 
     val contentArea =
       new StackPane:
-        styleClass += ContentAreaStyle
         children = Seq(dashboardView(currentAccount))
 
     val navigator =
@@ -99,7 +97,7 @@ trait HomePage extends Root:
               content = Denied.Content
             )
 
-    val sidebar = createSidebar(currentAccount.getRole, action => navigate(action))
+    val sidebar = createSidebar(currentAccount.getRole, navigate)
 
     createRoot(
       currentUser = currentAccount.getUsername,
@@ -110,22 +108,19 @@ trait HomePage extends Root:
     )
 
   private def menuItems(role: String): Seq[MenuItem] =
-    Seq(MenuItem(Dashboard, MenuAction.Dashboard)) ++
-      AuthorizationEngine
-        .permittedActions(role)
-        .map(action => MenuItem(labels(action), action)) ++
-      Seq(MenuItem(LogoutLabel, MenuAction.Logout))
+    val permitted = AuthorizationEngine
+      .permittedActions(role)
+      .map(action => MenuItem(labels(action), action))
+    MenuItem(Dashboard, MenuAction.Dashboard) +: permitted :+ MenuItem(LogoutLabel, MenuAction.Logout)
 
   private def createSidebar(role: String, onNavigate: MenuAction => Unit): VBox =
     val buttons =
       menuItems(role).map: item =>
         new Button(item.label):
           maxWidth = Double.MaxValue
-          alignment = Pos.CenterLeft
           styleClass += SidebarButtonStyle
           onAction = _ => onNavigate(item.action)
 
     new VBox:
-      prefWidth = 230
       styleClass += SidebarStyle
       children = buttons

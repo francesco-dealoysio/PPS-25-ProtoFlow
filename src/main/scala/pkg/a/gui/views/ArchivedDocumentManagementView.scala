@@ -132,11 +132,7 @@ object ArchivedDocumentManagementView extends Management:
 
     loadDocuments()
 
-    bindSearch(
-      dateFilters = Seq(fromDateFilter, toDateFilter),
-      textFilters = Seq(subjectFilter, idFilter),
-      comboFilters = Seq(operatorFilter)
-    )(searchDocuments)
+    bindSearch(fromDateFilter, toDateFilter, subjectFilter, idFilter, operatorFilter)(searchDocuments())
 
     managementPage(
       growNode = Some(table),

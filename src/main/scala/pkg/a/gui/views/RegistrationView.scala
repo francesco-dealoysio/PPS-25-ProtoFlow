@@ -106,28 +106,20 @@ object RegistrationView extends Form:
       if canExit then onExit()
 
     val formGrid = new GridPane:
-      hgap = 18
-      vgap = 14
       styleClass += GridStyle
 
       add(fieldLabel(Labels.required(Labels.Name)), 0, 0)
       add(name.control, 0, 1)
-
       add(fieldLabel(Labels.required(Labels.Surname)), 1, 0)
       add(surname.control, 1, 1)
-
       add(fieldLabel(Labels.required(Labels.Email)), 0, 2)
       add(email.control, 0, 3)
-
       add(fieldLabel(Labels.Phone), 1, 2)
       add(phone.control, 1, 3)
-
       add(fieldLabel(Labels.required(Labels.Role)), 0, 4)
       add(role.control, 0, 5)
-
       add(fieldLabel(Labels.required(Labels.Area)), 1, 4)
       add(area.control, 1, 5)
-
       add(fieldLabel(Labels.required(Labels.Assignment)), 0, 6)
       add(assignment.control, 0, 7)
 

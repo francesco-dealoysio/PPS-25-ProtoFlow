@@ -1,18 +1,57 @@
-.login-card {
-    -fx-max-width: 420;
-    -fx-max-height: 520;
+.login-root {
     -fx-background-color: #ffffff;
-    -fx-border-color: #e5e7eb;
-    -fx-border-radius: 10;
-    -fx-background-radius: 10;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 18, 0.2, 0, 4);
 }
 
+/* Titoli */
+
+.login-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.login-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6b7280;
+}
+
+/* Card */
+
+.login-card {
+    -fx-max-width: 420px;
+    -fx-max-height: 520px;
+    -fx-padding: 36px 46px 36px 46px;
+    -fx-spacing: 18px;
+    -fx-alignment: center;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow( gaussian,rgba(0, 0, 0, 0.08), 18,0.2, 0, 4);
+}
+
+/* Header */
+
+.login-header {
+    -fx-alignment: center;
+    -fx-spacing: 10px;
+}
+
+.login-title-section {
+    -fx-alignment: center;
+}
+
+/* Logo */
+
 .login-logo {
+    -fx-min-width: 58px;
+    -fx-min-height: 58px;
+    -fx-max-width: 58px;
+    -fx-max-height: 58px;
     -fx-background-color: #f3f4f6;
     -fx-border-color: #d1d5db;
-    -fx-border-radius: 12;
-    -fx-background-radius: 12;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
 }
 
 .login-logo-text {
@@ -21,10 +60,28 @@
     -fx-text-fill: #111827;
 }
 
+/* Form */
+
+.login-form {
+    -fx-spacing: 16px;
+    -fx-alignment: center;
+}
+
+.login-field {
+    -fx-spacing: 6px;
+    -fx-alignment: center-left;
+    -fx-max-width: 220px;
+}
+
+/* Messaggi */
+
 .login-message {
-    -fx-padding: 10 12 10 12;
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
+    -fx-min-width: 320px;
+    -fx-pref-width: 320px;
+    -fx-max-width: 320px;
+    -fx-padding: 10px 12px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
     -fx-font-size: 12px;
 }
 
@@ -32,4 +89,18 @@
     -fx-text-fill: #991b1b;
     -fx-border-color: #fecaca;
     -fx-background-color: #fef2f2;
+}
+
+/* Azioni */
+
+.login-registration-button {
+    -fx-max-width: 220px;
+}
+
+.login-spacer {
+    -fx-min-height: 6px;
+}
+
+.login-actions {
+    -fx-alignment: center;
 }

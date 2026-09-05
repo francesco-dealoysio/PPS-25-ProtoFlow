@@ -1,156 +1,46 @@
-<archivedDocuments>
+<archived>
   <record>
-    <id>23</id>
-    <documentDate>2026-08-28</documentDate>
-    <documentProtocol>Protocollo</documentProtocol>
-    <documentType>Lettera</documentType>
-    <sender>Luca</sender>
-    <recipient>Marco</recipient>
-    <subject>Oggetto</subject>
-    <remarks/>
-    <loadedDate>2026-08-28</loadedDate>
-    <loadedTime>10:38:55.50</loadedTime>
-    <loadedBy>tommy</loadedBy>
-    <protocolNumber>2026/23/Materiali</protocolNumber>
-    <registeredDate>2026-08-28</registeredDate>
-    <registeredTime>10:39:11.62</registeredTime>
-    <registeredBy>tommy</registeredBy>
-    <archivedDate>2026-08-28</archivedDate>
-    <archivedTime>10:39:18.45</archivedTime>
-    <archivedBy>tommy</archivedBy>
-    <archiveLocation>Materiali</archiveLocation>
-    <classification>Materiali</classification>
-  </record>
-  <record>
-    <id>37</id>
-    <documentDate>2026-09-01</documentDate>
-    <documentProtocol>pippo</documentProtocol>
-    <documentType>Email</documentType>
-    <sender>inps</sender>
-    <recipient>pluto</recipient>
-    <subject>test</subject>
-    <remarks/>
-    <loadedDate>2026-09-01</loadedDate>
-    <loadedTime>19:00:36.19</loadedTime>
-    <loadedBy>tommy</loadedBy>
-    <protocolNumber>2026/37/Addestramento</protocolNumber>
-    <registeredDate>2026-09-01</registeredDate>
-    <registeredTime>19:00:52.64</registeredTime>
-    <registeredBy>tommy</registeredBy>
-    <archivedDate>2026-09-01</archivedDate>
-    <archivedTime>19:00:59.82</archivedTime>
-    <archivedBy>tommy</archivedBy>
-    <archiveLocation>Addestramento</archiveLocation>
-    <classification>Addestramento</classification>
-  </record>
-  <record>
-    <id>39</id>
-    <documentDate>2026-09-01</documentDate>
-    <documentProtocol>123243522</documentProtocol>
-    <documentType>Plico</documentType>
-    <sender>acea</sender>
-    <recipient>unuci</recipient>
-    <subject>bollette</subject>
-    <remarks/>
-    <loadedDate>2026-09-01</loadedDate>
-    <loadedTime>19:05:38.24</loadedTime>
-    <loadedBy>tommy</loadedBy>
-    <protocolNumber>2026/39/Amministrazione</protocolNumber>
-    <registeredDate>2026-09-01</registeredDate>
-    <registeredTime>19:05:58.60</registeredTime>
-    <registeredBy>tommy</registeredBy>
-    <archivedDate>2026-09-01</archivedDate>
-    <archivedTime>19:06:06.02</archivedTime>
-    <archivedBy>tommy</archivedBy>
-    <archiveLocation>Amministrazione</archiveLocation>
-    <classification>Amministrazione</classification>
-  </record>
-  <record>
-    <id>42</id>
-    <documentDate>2026-09-01</documentDate>
-    <documentProtocol>423534</documentProtocol>
-    <documentType>Lettera</documentType>
-    <sender>acea roma</sender>
-    <recipient>unuci</recipient>
-    <subject>bollete 2024</subject>
-    <remarks/>
-    <loadedDate>2026-09-01</loadedDate>
-    <loadedTime>19:10:10.81</loadedTime>
-    <loadedBy>tommy</loadedBy>
-    <protocolNumber>2026/42/Segreteria</protocolNumber>
-    <registeredDate>2026-09-01</registeredDate>
-    <registeredTime>19:10:25.42</registeredTime>
-    <registeredBy>tommy</registeredBy>
-    <archivedDate>2026-09-01</archivedDate>
-    <archivedTime>19:10:38.05</archivedTime>
-    <archivedBy>tommy</archivedBy>
-    <archiveLocation>Segreteria</archiveLocation>
-    <classification>Segreteria</classification>
-  </record>
-  <record>
-    <id>47</id>
-    <documentDate>2026-09-02</documentDate>
-    <documentProtocol>123</documentProtocol>
+    <id>1</id>
+    <documentDate>2026-09-05</documentDate>
+    <documentProtocol>inps/123</documentProtocol>
     <documentType>Lettera</documentType>
     <sender>INPS</sender>
     <recipient>UNUCI</recipient>
     <subject>Pensioni</subject>
-    <remarks/>
-    <loadedDate>2026-09-02</loadedDate>
-    <loadedTime>00:57:41.75</loadedTime>
+    <remarks>Personale</remarks>
+    <loadedDate>2026-09-05</loadedDate>
+    <loadedTime>17:46:11.68</loadedTime>
     <loadedBy>tommy</loadedBy>
-    <protocolNumber>2026/47/Personale</protocolNumber>
-    <registeredDate>2026-09-02</registeredDate>
-    <registeredTime>00:58:47.73</registeredTime>
+    <protocolNumber>2026/1/Personale</protocolNumber>
+    <registeredDate>2026-09-05</registeredDate>
+    <registeredTime>17:46:23.12</registeredTime>
     <registeredBy>tommy</registeredBy>
-    <archivedDate>2026-09-02</archivedDate>
-    <archivedTime>00:59:03.03</archivedTime>
+    <archivedDate>2026-09-05</archivedDate>
+    <archivedTime>17:46:28.73</archivedTime>
     <archivedBy>tommy</archivedBy>
     <archiveLocation>Personale</archiveLocation>
     <classification>Personale</classification>
   </record>
   <record>
-    <id>0</id>
-    <documentDate>2026-09-02</documentDate>
-    <documentProtocol>PROT-001</documentProtocol>
+    <id>2</id>
+    <documentDate>2026-09-05</documentDate>
+    <documentProtocol>ACEA/12</documentProtocol>
     <documentType>Email</documentType>
     <sender>ACEA</sender>
-    <recipient>Tesoreria</recipient>
-    <subject>Bollette energia elettrica</subject>
-    <remarks>Urgente</remarks>
-    <loadedDate>2026-09-02</loadedDate>
-    <loadedTime>15:15:51.55</loadedTime>
-    <loadedBy>rossi</loadedBy>
-    <protocolNumber>2026/0/Personale</protocolNumber>
-    <registeredDate>2026-09-02</registeredDate>
-    <registeredTime>23:30:37.92</registeredTime>
-    <registeredBy>tommy</registeredBy>
-    <archivedDate>2026-09-02</archivedDate>
-    <archivedTime>23:30:45.08</archivedTime>
-    <archivedBy>tommy</archivedBy>
-    <archiveLocation>Materiali</archiveLocation>
-    <classification>Personale</classification>
-  </record>
-  <record>
-    <id>74</id>
-    <documentDate>2026-09-05</documentDate>
-    <documentProtocol>inps/123</documentProtocol>
-    <documentType>Email</documentType>
-    <sender>INPS</sender>
     <recipient>UNUCI</recipient>
-    <subject>Pratiche</subject>
-    <remarks>Per il Tesoriere</remarks>
+    <subject>Bollette</subject>
+    <remarks>Amministrazione</remarks>
     <loadedDate>2026-09-05</loadedDate>
-    <loadedTime>12:40:26.53</loadedTime>
+    <loadedTime>17:47:05.63</loadedTime>
     <loadedBy>tommy</loadedBy>
-    <protocolNumber>2026/74/Amministrazione</protocolNumber>
+    <protocolNumber>2026/2/Amministrazione</protocolNumber>
     <registeredDate>2026-09-05</registeredDate>
-    <registeredTime>12:40:39.70</registeredTime>
+    <registeredTime>17:47:20.72</registeredTime>
     <registeredBy>tommy</registeredBy>
     <archivedDate>2026-09-05</archivedDate>
-    <archivedTime>12:40:45.75</archivedTime>
+    <archivedTime>17:47:35.03</archivedTime>
     <archivedBy>tommy</archivedBy>
     <archiveLocation>Amministrazione</archiveLocation>
     <classification>Amministrazione</classification>
   </record>
-</archivedDocuments>
+</archived>

@@ -1,11 +1,12 @@
 package pkg.a.gui.traits
 
-import pkg.a.gui.text.UiStyles.Common.*
+import pkg.a.gui.text.UiStyles.Management.*
+import pkg.a.gui.text.UiStyles.Buttons.*
+import pkg.a.gui.text.UiStyles.Common.RootStyle
 import pkg.d.util.Logger.logger
 import scalafx.Includes.*
 import scalafx.beans.property.StringProperty
 import scalafx.collections.ObservableBuffer
-import scalafx.geometry.Insets
 import scalafx.scene.Node
 import scalafx.scene.control.*
 import scalafx.scene.layout.{BorderPane, HBox, Priority, VBox}
@@ -66,10 +67,8 @@ trait Management extends Common:
   protected def clearResultOnSelection[T](table: TableView[T], result: ResultMessage): Unit =
     table.selectionModel.value
       .selectedItem
-      .onChange:
-        (_, _, selected) =>
-          if selected != null then
-            result.clear()
+      .onChange: (_, _, selected) =>
+        Option(selected).foreach(_ => result.clear())
 
   /**
    * Executes an action on the currently selected table item.
@@ -116,21 +115,17 @@ trait Management extends Common:
    * Builds the common layout of a management page.
    * @param pageChildren the nodes displayed in the page
    * @param growNode     the optional node allowed to grow vertically
-   * @param spacingValue the spacing between page elements
-   * @param paddingValue the page padding
-   * @param rootStyle    the style applied to the page root
    * @return the configured management page
    */
-  protected def managementPage(pageChildren: Seq[Node], growNode: Option[Node] = None, spacingValue: Double = 18, paddingValue: Insets = Insets(20), rootStyle: String = RootStyle): BorderPane =
+  protected def managementPage(pageChildren: Seq[Node], growNode: Option[Node] = None): BorderPane =
     val content =
       new VBox:
-        spacing = spacingValue
-        padding = paddingValue
+        styleClass += ManagementContentStyle
         growNode.foreach: node =>
           VBox.setVgrow(node, Priority.Always)
         children = pageChildren
     new BorderPane:
-      styleClass += rootStyle
+      styleClass += RootStyle
       center = content
 
   /**
@@ -212,7 +207,7 @@ trait Management extends Common:
    */
   protected def filterBar(filters: Node*): HBox =
     new HBox:
-      spacing = 10
+      styleClass += FilterBarStyle
       children = filters
 
   /**
@@ -234,16 +229,16 @@ trait Management extends Common:
       result.show(noResultsMessage, success = true)
 
   /**
-   * Executes the search action whenever one of the given filters changes.
-   * @param dateFilters  the date filters to observe
-   * @param textFilters  the text filters to observe
-   * @param comboFilters the combo box filters to observe
-   * @param search       the search action to execute
+   * Executes the search action whenever any of the given filter controls changes.
+   * @param controls the filter UI controls to observe
+   * @param search   the search action to execute
    */
-  protected def bindSearch(dateFilters: Seq[DatePicker] = Seq.empty, textFilters: Seq[TextField] = Seq.empty, comboFilters: Seq[ComboBox[String]] = Seq.empty)(search: () => Unit): Unit =
-    dateFilters.foreach(_.value.onChange(search()))
-    textFilters.foreach(_.text.onChange(search()))
-    comboFilters.foreach(_.value.onChange(search()))
+  protected def bindSearch(controls: Node*)(search: => Unit): Unit =
+    controls.foreach:
+      case dp: DatePicker  => dp.value.onChange(search)
+      case tf: TextField   => tf.text.onChange(search)
+      case cb: ComboBox[?] => cb.value.onChange(search)
+      case _               => ()
 
   /**
    * Creates a date filter.

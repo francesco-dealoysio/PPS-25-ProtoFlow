@@ -8,29 +8,24 @@ import pkg.a.gui.text.UiText.Common.{ApplicationName, Buttons}
 import pkg.a.gui.text.UiText.Login
 import pkg.a.gui.traits.Form
 import pkg.b.logic.Account
-import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.Node
 import scalafx.scene.control.{Button, Label, PasswordField, TextField}
 import scalafx.scene.layout.*
 
 object LoginView extends Form:
 
-  private val ResultMessageWidth = 320
-  private val LogoSize = 58
-  private val FormControlWidth = 220
-
   def apply(onLoginSuccess: Account => Unit, onRegistrationRequest: () => Unit): BorderPane =
 
     val username = stringField(prompt = Prompts.Username)
     val password = passwordFormField(Prompts.Password)
-    val result = loginResult()
+    val result = createResultMessage(baseStyle = MessageStyle, errorStyle = MessageErrorStyle)
     val resetAction = () => resetLoginForm(username, password, result)
     val loginAction = () => attemptLogin(username, password, result, onLoginSuccess)
 
     configureFieldActions(username, password, loginAction)
     val actions = loginActions(resetAction, loginAction)
     val registrationButton = secondaryButton(Buttons.RequestRegistration, onRegistrationRequest)
-    registrationButton.maxWidth = FormControlWidth
+    registrationButton.styleClass += RegistrationButtonStyle
     val card =
       loginCard(
         header = loginHeader(),
@@ -44,13 +39,6 @@ object LoginView extends Form:
       styleClass += RootStyle
       center = card
 
-
-  private def loginResult(): ResultMessage =
-    val result = createResultMessage(MessageStyle, MessageErrorStyle)
-    result.label.minWidth = ResultMessageWidth
-    result.label.prefWidth = ResultMessageWidth
-    result.label.maxWidth = ResultMessageWidth
-    result
 
   private def resetLoginForm(username: FormField[TextField], password: FormField[PasswordField], result: ResultMessage): Unit =
     resetFields(username, password)
@@ -83,7 +71,9 @@ object LoginView extends Form:
   private def loginActions(resetAction: () => Unit, loginAction: () => Unit): HBox =
     val clearButton = resetButton(resetAction)
     val loginButton = primaryButton(Buttons.Login, loginAction)
-    actionBar(Seq(clearButton, loginButton), barAlignment = Pos.Center)
+    val actions = actionBar(Seq(clearButton, loginButton))
+    actions.styleClass += ActionsStyle
+    actions
 
   private def loginHeader(): VBox =
     val titleSection =
@@ -93,26 +83,20 @@ object LoginView extends Form:
         titleStyle = TitleStyle,
         subtitleStyle = SubtitleStyle
       )
-    titleSection.alignment = Pos.Center
+    titleSection.styleClass += TitleSectionStyle
     new VBox:
-      alignment = Pos.Center
-      spacing = 10
+      styleClass += HeaderStyle
       children = Seq(loginLogo(), titleSection)
 
   private def loginLogo(): StackPane =
     new StackPane:
-      minWidth = LogoSize
-      minHeight = LogoSize
-      maxWidth = LogoSize
-      maxHeight = LogoSize
       styleClass += LogoStyle
       children = new Label("PF"):
         styleClass += LogoTextStyle
 
   private def loginForm(username: Node, password: Node): VBox =
     new VBox:
-      spacing = 16
-      alignment = Pos.Center
+      styleClass += FormStyle
       children = Seq(
         loginField(Labels.required(Labels.Username), username),
         loginField(Labels.required(Labels.Password), password)
@@ -120,23 +104,12 @@ object LoginView extends Form:
 
   private def loginField(label: String, control: Node): VBox =
     new VBox:
-      spacing = 6
-      alignment = Pos.CenterLeft
-      maxWidth = FormControlWidth
+      styleClass += FieldStyle
       children = Seq(fieldLabel(label), control)
 
   private def loginCard(header: VBox, form: VBox, resultLabel: Label, actions: HBox, registrationButton: Button): VBox =
+    val spacer = new Region:
+      styleClass += SpacerStyle
     new VBox:
-      alignment = Pos.Center
-      spacing = 18
-      padding = Insets(36, 46, 36, 46)
-      styleClass ++= Seq(CardStyle, LoginCardStyle)
-      children = Seq(
-        header,
-        form,
-        resultLabel,
-        actions,
-        new Region:
-          minHeight = 6,
-          registrationButton
-      )
+      styleClass += CardStyle
+      children = Seq(header, form, resultLabel, actions, spacer, registrationButton)
