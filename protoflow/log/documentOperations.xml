@@ -1,0 +1,26 @@
+<operations>
+  <record>
+    <id>22997</id>
+    <documentId>74</documentId>
+    <operationType>loading</operationType>
+    <processedDate>2026-09-05</processedDate>
+    <processedTime>12:40:26.53</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+  <record>
+    <id>22998</id>
+    <documentId>74</documentId>
+    <operationType>registering</operationType>
+    <processedDate>2026-09-05</processedDate>
+    <processedTime>12:40:39.70</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+  <record>
+    <id>22999</id>
+    <documentId>74</documentId>
+    <operationType>archiving</operationType>
+    <processedDate>2026-09-05</processedDate>
+    <processedTime>12:40:45.75</processedTime>
+    <processedBy>tommy</processedBy>
+  </record>
+</operations>

@@ -7,8 +7,8 @@ Nell'ambito del progetto sono state adottate quattro tipologie di test:
 
 - Unit test
 - Test di regressione
-- Test funzionali / di accettazione condotti a fine sprint
-- Test di accettazione sul prodotto finito, tramite casi d'uso
+- Test funzionali
+- Test di accettazione
 
 ## 6.1 Unit test
 
@@ -18,7 +18,7 @@ Effettuati tramite JUnit4 durante il coding, contestualmente all'implementazione
 
 Tutte le classi di test sono raccolte nella suite `AllTestsSuite`, il cui scopo è verificare che le funzionalità già implementate continuino a funzionare correttamente dopo ogni nuova modifica al codice. La suite viene eseguita automaticamente ad ogni push sul branch `develop` tramite una GitHub Action dedicata, che inizializza l'ambiente ProtoFlow e lancia l'intera suite con `sbt test`, oltre che manualmente in locale dallo sviluppatore con lo stesso comando.
 
-## 6.3 Test Funzionali / di Accettazione
+## 6.3 Test funzionali
 
 La verifica del lavoro svolto non è stata riservata solo al termine dello sprint: via via che una funzionalità veniva implementata, veniva anche testata manualmente per controllarne la correttezza, prima ancora di arrivare alla Sprint Review. I test funzionali veri e propri, eseguiti al termine di ogni sprint allo scopo di verificare la correttezza delle implementazioni effettuate, sono stati invece condotti secondo quanto specificato nelle sezioni “Done definition” contenute nelle User Story.
 
@@ -45,10 +45,13 @@ l'adeguamento sia dei requisiti (User Story) che del Product Backlog.
 </p>
 
 ## 6.4 Test di accettazione
-
-- **[Casi d'Uso](../../process/use_case_test/ "Apertura directory")**
-
-In questa fase sono stati eseguiti i test di accettazione sul prodotto finito, tramite la redazione di Casi d'Uso relativi alle attività che l'utente finale deve essere in grado di svolgere attraverso l'applicazione: casi d'uso che ripercorrono l'intera fase di sviluppo, prodotti dagli sviluppatori e utilizzati sia da questi ultimi sia dagli utenti finali per verificare l'esistenza e la correttezza delle funzionalità previste. Anche in questa fase i componenti del team hanno indossato un doppio ruolo: quello di sviluppatore, che dimostra quanto realizzato, e quello di End User, che esamina in modo critico il comportamento e la correttezza di quanto prodotto.
+In questa fase sono stati eseguiti i test di accettazione sul prodotto finito, sulla base dei
+**[Casi d'Uso](../../process/use_case_test/ "Apertura directory")** redatti ad hoc relativi alle attività che l'utente finale deve
+essere in grado di svolgere attraverso l'applicazione: casi d'uso che ripercorrono l'intera fase di sviluppo, prodotti
+dagli sviluppatori e utilizzati sia da questi ultimi sia dagli utenti finali per verificare l'esistenza e la correttezza
+delle funzionalità previste. Anche in questa fase i componenti del team hanno indossato un doppio ruolo: quello di 
+sviluppatore, che dimostra quanto realizzato, e quello di End User, che esamina in modo critico il comportamento e la
+correttezza di quanto prodotto.
 
 [Back to index](0-Indice.md) |
 [Previous Chapter](5-Implementazione.md) |
