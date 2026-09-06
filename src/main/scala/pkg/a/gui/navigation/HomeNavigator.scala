@@ -23,6 +23,6 @@ private[gui] final class HomeNavigator(contentArea: StackPane, dashboardFactory:
   private def currentViewState: Option[ViewNavigationState] =
     contentArea.children.headOption
       .flatMap: node =>
-        Option(node.delegate.getUserData)
+        Option(node.userData)
           .collect:
             case state: ViewNavigationState => state
