@@ -205,7 +205,7 @@ indipendentemente dall'interfaccia.
 
 ## 4.2 Controllo di gestione, autorizzazione Prolog e registrazioni — Thomas Testa
 
-Questa sezione approfondisce tre punti del sistema che, a differenza delle astrazioni condivise descritte in 4.1, non riguardano l'infrastruttura comune ma la logica applicativa di specifici sottosistemi: l'aggregazione dei documenti nel Controllo di Gestione, il ciclo di vita delle regole di autorizzazione personalizzate, e il flusso di approvazione di una richiesta di registrazione.
+Questa sezione approfondisce quattro punti del sistema che, a differenza delle astrazioni condivise descritte in 4.1, non riguardano l'infrastruttura comune ma la logica applicativa di specifici sottosistemi: l'aggregazione dei documenti nel Controllo di Gestione, il ciclo di vita delle regole di autorizzazione personalizzate, il flusso di approvazione di una richiesta di registrazione, e l'aggregazione dei dati di utilizzo del sistema.
 
 ### 4.2.1 Aggregazione dei documenti nel Controllo di Gestione
 
@@ -231,6 +231,14 @@ Il requisito opzionale di personalizzazione delle regole organizzative estende i
 
 Poiché l'account e la richiesta sono persistiti in due file XML indipendenti, non esiste una transazione atomica che copra entrambe le scritture. Se l'inserimento dell'account riesce ma l'aggiornamento della richiesta fallisce, il servizio esegue un rollback esplicito cancellando l'account appena creato, in modo da non lasciare nel sistema un account "orfano" non riconducibile ad alcuna richiesta approvata. La password in chiaro non viene mai persistita: esiste solo nel valore di ritorno (`RegistrationApproval`), usato per mostrarla una tantum all'operatore che dovrà comunicarla al nuovo utente.
 
+### 4.2.4 Statistiche di utilizzo del sistema
+
+`StatisticsService` aggrega i dati di utilizzo del sistema leggendo direttamente le entità di dominio coinvolte, senza un database relazionale con `GROUP BY` a disposizione: documenti protocollati e archiviati per mese (`registeredDocumentsByMonth`, `archivedDocumentsByMonth`), esito delle richieste di registrazione processate (`processedRegistrations`), e accessi al sistema per ruolo e per utente (`accessesByRole`, `accessesByUser`), questi ultimi letti dall'entità `AccessLog`, popolata da `writeAccessLog` ad ogni login riuscito.
+
+![Aggregazione dei dati di utilizzo del sistema](img/cap4-statistiche.png)
+
+`accessesByRole` è l'unico dei metodi che aggrega leggendo da due entità indipendenti: gli accessi sono raggruppati per codice di ruolo, ma il nome visualizzato viene risolto interrogando separatamente l'entità `Role`, cosicché un'eventuale rinomina di un ruolo si riflette automaticamente nelle statistiche già registrate, senza dover denormalizzare il nome nel log di accesso.
+
 ## 4.3 Modello di dominio, persistenza e generazione documenti PDF — Francesco de Aloysio
 
 Questa sezione descrive l'organizzazione del livello di logica applicativa e di quello dei dati, ovvero le astrazioni comuni che modellano le entità di dominio e le funzionalità di supporto (persistenza su XML, configurazione, filtri di ricerca, generazione di documenti PDF) su cui si appoggia il resto del sistema.
@@ -239,7 +247,7 @@ Questa sezione descrive l'organizzazione del livello di logica applicativa e di 
 
 Le entità applicative (`Account`, `Role`, `Classification`, `Registration`, `DocumentLog`, `ErrorLog`, `LoadedDocument`, `RegisteredDocument`, `ArchivedDocument`) condividono lo stesso insieme di operazioni di base verso la persistenza: lettura di tutti i record, ricerca per id, ricerca per filtro, inserimento, modifica ed eliminazione. Per evitare di ripetere questa logica in ciascuna entità, tali operazioni sono state raccolte nel trait `Entity`, che le implementa una sola volta parametricamente rispetto al tipo concreto e le espone come `getRecords`, `getRecordsByFilter`, `getRecordById`, `recordInsert`, `recordUpdate` e `recordDelete`. Ogni entità concreta implementa `Entity` limitandosi a indicare il proprio file XML di persistenza (tramite `xmlFile` e `getDefaultXmlFilePathName`) ed eventuali specializzazioni delle singole operazioni, come i controlli aggiuntivi che `Account`, `Role` e `Classification` effettuano prima di un inserimento o un aggiornamento.
 
-Inserrire immagine qui
+![Entity e le entità di dominio](img/cap4-entity.png)
 
 ### 4.3.2 Persistenza su file XML e configurazione
 
@@ -247,15 +255,21 @@ In assenza di un database relazionale, la persistenza dei dati è affidata a fil
 
 Accanto alla persistenza dei dati applicativi, `Properties` gestisce il file di configurazione `protoflow.properties` (lettura, scrittura e modifica delle proprietà del sistema), mentre `Filesystem` si occupa della creazione della struttura a directory (`protoflow/`, con le sottocartelle per database, id, log e stampe) al primo avvio dell'applicazione. `IdGen` genera identificativi progressivi per ciascuna entità mantenendo un contatore persistito su file, e `Logger` intercetta le eccezioni sollevate dagli altri moduli per registrarle in `error.xml`.
 
+![Persistenza su file XML e configurazione](img/cap4-persistenza.png)
+
 ### 4.3.3 Filtri di ricerca
 
 Le numerose schermate di gestione richiedono di poter combinare più criteri di ricerca (ad esempio per intervallo di date, tipo di operazione o operatore). Il modulo `Filters` costruisce, a partire da una lista di criteri, il predicato booleano usato per filtrare i record di un'entità, invece di richiedere una funzione di ricerca dedicata per ogni combinazione possibile. I criteri stessi sono modellati dalle case class `FilterCriteria` (un singolo criterio, con campo, operatore e valore) e `GroupCriteria` (un insieme di criteri combinati in AND o in OR), così che le view di gestione possano costruire ricerche arbitrariamente complesse componendo questi due elementi.
+
+![Filtri di ricerca](img/cap4-filtri.png)
 
 ### 4.3.4 Generazione e visualizzazione dei documenti PDF
 
 La produzione dei documenti PDF (schede di dettaglio ed elenchi stampabili) è centralizzata in `PdfDetailsCreator`, che si occupa della composizione del documento a basso livello: intestazione, corpo, piè di pagina, numerazione delle pagine e a capo automatico del testo (`wrapText`) entro i margini configurati. Il posizionamento degli elementi grafici sulla pagina è astratto tramite le case class di supporto `Rect` (un rettangolo con posizione, dimensioni e colori) e `Font` (tipo e dimensione del carattere), mentre `HorizontalAlignment` definisce l'allineamento del testo all'interno di un rettangolo.
 
 Il documento PDF prodotto viene poi reso disponibile all'utente tramite tre moduli distinti e complementari: `PdfViewer`, che integra nella GUI un visualizzatore con paginazione, zoom e stampa diretta; `PdfDefaultViewer`, che apre invece il file con il visualizzatore PDF predefinito del sistema operativo ospite; e `PdfPrinter`, che permette di selezionare una stampante tra quelle disponibili e di avviare la stampa. `PdfVerifier` completa il quadro verificando che un file sia effettivamente un PDF valido prima di essere passato a uno di questi moduli.
+
+![Generazione e visualizzazione dei documenti PDF](img/cap4-pdf.png)
 
 [Back to index](0-Indice.md) |
 [Previous Chapter](3-Design_architetturale.md) |

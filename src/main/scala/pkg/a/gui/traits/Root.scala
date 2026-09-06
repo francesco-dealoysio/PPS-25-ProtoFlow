@@ -73,10 +73,10 @@ trait Root extends Common:
 
     dateTimeLabel.text <==
       DateTime.dynamicDateTimeProperty()
-    
+
     userInfoLabel.onMouseClicked = _ =>
       onProfileOpen()
-      
+
     new HBox:
       styleClass += FooterStyle
       children = Seq(userInfoLabel, dateTimeLabel)

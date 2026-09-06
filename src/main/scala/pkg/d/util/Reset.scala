@@ -10,7 +10,7 @@ import scala.jdk.CollectionConverters.IterableHasAsScala
 object Reset:
 
   def reset(): Unit =
-    
+
     val files = Seq(
       // database
       inDatabaseFilePathName("accounts.xml"),

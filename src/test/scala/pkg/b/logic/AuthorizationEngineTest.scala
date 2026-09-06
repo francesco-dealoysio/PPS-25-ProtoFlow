@@ -6,8 +6,6 @@ import pkg.a.gui.structures.MenuAction
 
 class AuthorizationEngineTest:
 
-  // Custom rules are persisted to a real file and shared by a single engine instance,
-  // so every test that adds one must remove it again, pass or fail.
   @After
   def cleanUpCustomRules(): Unit =
     AuthorizationEngine.removeCustomRule("oper", MenuAction.Ruoli)
@@ -108,9 +106,6 @@ class AuthorizationEngineTest:
 
   @Test
   def addingARuleAlreadyGrantedByTheBaseTheoryIsANoOp(): Unit =
-    // admin already has statistiche from authorization.pl: customizing it again must not
-    // assert a duplicate can/2 fact, or permitted_actions would list it twice (findall
-    // returns one solution per matching clause).
     assertFalse(AuthorizationEngine.addCustomRule("admin", MenuAction.Statistiche))
     assertFalse(AuthorizationEngine.listCustomRules().contains(("admin", MenuAction.Statistiche)))
 

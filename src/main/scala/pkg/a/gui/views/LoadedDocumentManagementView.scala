@@ -19,7 +19,7 @@ object LoadedDocumentManagementView extends Management:
              onRegister: LoadedDocument => Unit = _ => (),
              onExit: () => Unit = () => ()
            ): BorderPane =
-    
+
     val documents = ObservableBuffer.empty[LoadedDocument]
     var allDocuments = List.empty[LoadedDocument]
     val result = createResultMessage()

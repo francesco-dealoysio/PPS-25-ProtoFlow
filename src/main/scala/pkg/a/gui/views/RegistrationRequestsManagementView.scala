@@ -40,7 +40,7 @@ object RegistrationRequestsManagementView extends Management:
         service
           .getPendingRequests
           .sortBy(_.getDate)
-    
+
     clearResultOnSelection(table, result)
 
     def requestRow(request: Registration): Seq[String] =

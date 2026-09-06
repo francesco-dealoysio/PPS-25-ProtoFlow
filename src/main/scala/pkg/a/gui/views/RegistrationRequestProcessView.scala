@@ -166,7 +166,7 @@ object RegistrationRequestProcessView extends Management:
 
             case Left(error) =>
               result.show(error, success = false)
-    
+
     val rejectButton = dangerButton(Buttons.Reject, reject)
     val approveButton = primaryButton(Buttons.Approve, approve)
 

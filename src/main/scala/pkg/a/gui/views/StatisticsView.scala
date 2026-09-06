@@ -18,7 +18,7 @@ import scalafx.scene.layout.*
 object StatisticsView extends Management:
 
   def apply(onExit: () => Unit = () => ()): BorderPane =
-    
+
     val result = createResultMessage()
 
     val header = titleBox(Text.Title, Text.Subtitle)

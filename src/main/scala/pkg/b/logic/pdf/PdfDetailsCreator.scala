@@ -10,7 +10,7 @@ import java.awt.Color
 import java.nio.file.{Files, Paths}
 
 object PdfDetailsCreator:
-  
+
   private case class Font(fontType: PDType1Font, fontSize: Float)
 
   private case class Rect(
