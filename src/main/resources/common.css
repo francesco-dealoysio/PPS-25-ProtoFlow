@@ -1,0 +1,256 @@
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+/* Form e schermate di gestione */
+
+.content-root {
+    -fx-background-color: #f4f6f8;
+}
+
+.content-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #243447;
+}
+
+.content-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #667788;
+}
+
+.content-scroll-pane,
+.content-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.content-scroll-pane {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.content-message {
+    -fx-padding: 10px 14px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+
+.content-message-success {
+    -fx-background-color: #e8f5e9;
+    -fx-border-color: #81c784;
+    -fx-text-fill: #256029;
+}
+
+.content-message-error {
+    -fx-background-color: #ffebee;
+    -fx-border-color: #ef9a9a;
+    -fx-text-fill: #b71c1c;
+}
+
+/* Campi e validazione */
+
+.form-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.form-field,
+.description-area {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.form-field {
+    -fx-pref-width: 330px;
+    -fx-pref-height: 36px;
+    -fx-padding: 6px 10px 6px 10px;
+}
+
+.form-field:focused,
+.description-area:focused {
+    -fx-border-color: #2563eb;
+}
+
+.form-actions {
+    -fx-spacing: 12px;
+    -fx-alignment: center-right;
+}
+
+.description-area {
+    -fx-padding: 6px;
+}
+
+.field-error {
+    -fx-text-fill: #b91c1c;
+    -fx-font-size: 12px;
+}
+
+.form-field-error {
+    -fx-border-color: #dc2626;
+    -fx-border-width: 1.5px;
+}
+
+.form-section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #243447;
+    -fx-padding: 6px 0 2px 0;
+}
+
+.read-only-form-field {
+    -fx-background-color: #f3f4f6;
+    -fx-border-color: #e5e7eb;
+    -fx-text-fill: #4b5563;
+}
+
+.read-only-form-field:focused {
+    -fx-border-color: #e5e7eb;
+}
+
+/* Layout form */
+
+.form-grid {
+    -fx-hgap: 16px;
+    -fx-vgap: 8px;
+    -fx-max-width: 700px;
+}
+
+.two-column-form {
+    -fx-spacing: 30px;
+    -fx-alignment: top-center;
+}
+
+.form-content {
+    -fx-spacing: 20px;
+    -fx-padding: 25px;
+    -fx-max-width: 800px;
+}
+
+.form-sections {
+    -fx-spacing: 16px;
+}
+
+.form-stack {
+    -fx-alignment: top-center;
+}
+
+/* Pulsanti */
+
+.primary-button,
+.secondary-button,
+.danger-button {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 9px 18px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.primary-button,
+.danger-button {
+    -fx-text-fill: white;
+}
+
+.primary-button {
+    -fx-background-color: #2563eb;
+}
+
+.primary-button:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.primary-button:pressed {
+    -fx-background-color: #1e40af;
+}
+
+.secondary-button {
+    -fx-background-color: #f3f4f6;
+    -fx-text-fill: #374151;
+    -fx-border-color: #d1d5db;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #e5e7eb;
+}
+
+.secondary-button:pressed {
+    -fx-background-color: #d1d5db;
+}
+
+.danger-button {
+    -fx-background-color: #c62828;
+}
+
+.danger-button:hover {
+    -fx-background-color: #b71c1c;
+}
+
+.danger-button:pressed {
+    -fx-background-color: #991b1b;
+}
+
+.primary-button:disabled,
+.secondary-button:disabled,
+.danger-button:disabled {
+    -fx-opacity: 0.55;
+    -fx-cursor: default;
+}
+
+/* Tabelle */
+
+.content-table {
+    -fx-background-color: white;
+    -fx-border-color: #dfe5eb;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.content-table .table-cell {
+    -fx-alignment: CENTER-LEFT;
+}
+
+.content-table .column-header-background {
+    -fx-background-color: #edf2f7;
+}
+
+.content-table .column-header {
+    -fx-background-color: transparent;
+    -fx-padding: 10px 8px;
+}
+
+.content-table .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #334155;
+}
+
+.content-table .table-row-cell {
+    -fx-cell-size: 40px;
+}
+
+.content-table .table-row-cell:selected {
+    -fx-background-color: #dbeafe;
+}
+
+.content-table .table-row-cell:selected .text {
+    -fx-fill: #1e3a5f;
+}
+
+/* Layout gestione */
+
+.title-box {
+    -fx-spacing: 5px;
+}
+
+.management-content {
+    -fx-spacing: 18px;
+    -fx-padding: 20px;
+}
+
+.filter-bar {
+    -fx-spacing: 10px;
+}

@@ -1,0 +1,84 @@
+package pkg.a.gui.views
+
+import pkg.a.gui.text.UiText.Classifications.Edit as Text
+import pkg.a.gui.text.UiText.Common.Fields.Labels
+import pkg.a.gui.text.UiText.Validation.Classification as Validation
+import pkg.a.gui.traits.Form
+import pkg.a.gui.validators.ClassificationValidator
+import pkg.b.logic.Classification
+import scalafx.scene.layout.BorderPane
+
+object ClassificationEditView extends Form:
+
+  def apply(selectedClassification: Classification, onSaved: () => Unit, onExit: () => Unit): BorderPane =
+
+    val classificationLogic = new Classification()
+    val validator = new ClassificationValidator()
+
+    val id = readOnlyStringField(selectedClassification.getId)
+    val classification = stringField(selectedClassification.getClassification)
+    val description = areaField(selectedClassification.getDescription)
+
+    val monitoredFields = Seq(classification, description)
+    val result = createResultMessage()
+
+    def currentClassification: Classification =
+      Classification(
+        id = selectedClassification.getId,
+        classification = classification.value,
+        description = description.value
+      )
+
+    def clearErrors(): Unit =
+      clearFormFieldErrors(monitoredFields*)
+      result.clear()
+
+    def resetForm(): Unit =
+      resetFields(monitoredFields*)
+      clearErrors()
+      classification.requestFocus()
+
+    def validateForm(): Boolean =
+      clearErrors()
+
+      val errors =
+        validator.validate(
+          classification = currentClassification,
+          existingClassifications = classificationLogic.getRecords(),
+          currentClassificationId = Some(selectedClassification.getId)
+        )
+
+      showFormFieldErrors(errors):
+        case Validation.ClassificationRequired | Validation.DuplicateClassification => classification
+        case Validation.DescriptionRequired => description
+
+    var formSaved = false
+
+    val save =
+      saveButton: () =>
+        if validateForm() then
+          val updated = classificationLogic.recordUpdate[Classification](currentClassification)
+          if updated then
+            formSaved = true
+            showSuccess(Text.Title, Text.Success)
+            onSaved()
+          else
+            result.show(Text.Error, success = false)
+
+    val form =
+      formGrid(
+        Seq(
+          formRow(Labels.Id, id),
+          formRow(Labels.required(Labels.Classification), classification),
+          formRow(Labels.required(Labels.Description), description)
+        )
+      )
+
+    formPage(
+      header = FormHeader(Text.Title, Text.Subtitle),
+      form = form,
+      resultMessage = result.label,
+      actions = actionBar(Seq(closeButton(onExit), resetButton(resetForm), save)),
+      initialFocus = Some(classification),
+      hasUnsavedChanges = () => hasFormChanges(formSaved, monitoredFields)
+    )

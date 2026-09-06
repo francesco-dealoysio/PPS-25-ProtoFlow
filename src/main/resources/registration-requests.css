@@ -1,0 +1,30 @@
+.request-details-card {
+    -fx-background-color: white;
+    -fx-padding: 16px;
+    -fx-spacing: 12px;
+    -fx-border-color: #dfe5eb;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.request-details-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #243447;
+}
+
+.request-details-grid {
+    -fx-background-color: transparent;
+    -fx-hgap: 18;
+    -fx-vgap: 12;
+    -fx-padding: 18;
+}
+
+.request-detail-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #536579;
+}
+
+.request-detail-value {
+    -fx-text-fill: #1f2937;
+}

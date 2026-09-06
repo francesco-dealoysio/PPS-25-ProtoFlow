@@ -1,0 +1,16 @@
+.registration-card {
+    -fx-background-color: #ffffff;
+    -fx-padding: 35 65 35 65;
+    -fx-spacing: 18;
+}
+
+.registration-grid {
+    -fx-padding: 10 0 5 0;
+    -fx-hgap: 18;
+    -fx-vgap: 14;
+}
+
+.form-content.registration-card {
+    -fx-padding: 35 65 35 65;
+    -fx-spacing: 18;
+}
