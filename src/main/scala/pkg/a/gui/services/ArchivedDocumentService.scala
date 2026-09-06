@@ -94,7 +94,7 @@ object ArchivedDocumentService:
                                      operatorUsername: String,
                                      archiveLocation: String
                                    ): ArchivedDocument =
-    
+
     ArchivedDocument(
       id = source.getId,
       documentDate = source.getDocumentDate,

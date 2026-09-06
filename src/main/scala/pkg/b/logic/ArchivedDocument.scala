@@ -8,7 +8,7 @@ import java.nio.file.{Files, Paths}
 
 case class ArchivedDocument(
                              private var id: String = "",
-                           
+
                              private var documentDate: String = "",
                              private var documentProtocol: String = "",
                              private var documentType: String = "",
@@ -16,11 +16,11 @@ case class ArchivedDocument(
                              private var recipient: String = "",
                              private var subject: String = "",
                              private var remarks: String = "",
-                           
+
                              private var loadedDate: String = "",
                              private var loadedTime: String = "",
                              private var loadedBy: String = "",
-                           
+
                              private var protocolNumber: String = "",
                              private var registeredDate: String = "",
                              private var registeredTime: String = "",
@@ -36,7 +36,7 @@ case class ArchivedDocument(
 
   def this() =
     this( "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
-    
+
   def setId(value: String): Unit = id = value
   def setDocumentDate(value: String): Unit = documentDate = value
   def setDocumentProtocol(value: String): Unit = documentProtocol = value

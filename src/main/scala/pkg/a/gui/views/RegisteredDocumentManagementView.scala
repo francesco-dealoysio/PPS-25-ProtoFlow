@@ -20,7 +20,7 @@ object RegisteredDocumentManagementView extends Management:
             onView: RegisteredDocument => Unit = _ => (),
             onExit: () => Unit = () => ()
            ): BorderPane =
-    
+
     val documents = ObservableBuffer.empty[RegisteredDocument]
     var allDocuments = List.empty[RegisteredDocument]
     val result = createResultMessage()

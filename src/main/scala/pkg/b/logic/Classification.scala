@@ -37,7 +37,7 @@ case class Classification(
       case e: Exception =>
         logger(e)
     result
-  
+
   override def recordUpdate[T](obj: T, xmlFilePathName: String = defaultXmlFilePathName): Boolean =
     var result = false
     try

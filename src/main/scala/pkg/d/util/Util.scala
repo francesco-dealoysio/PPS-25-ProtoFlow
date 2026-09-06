@@ -27,15 +27,15 @@ object Util:
 
   def inIdsFilePathName(fileName: String): String =
     inFolderFilePathName("ids", fileName)
-    
+
   def inTestFilePathName(fileName: String): String =
     inFolderFilePathName("test", fileName)
-    
+
   def inPrintsFilePathName(fileName: String): String =
     inFolderFilePathName("prints", fileName)
 
   private def inFolderFilePathName(folder: String, fileName: String): String =
     val fs = java.io.File.separator
     val baseFolder = System.getProperty("user.dir") + fs + "protoflow"
-    
+
     getPropsFileProperty(baseFolder + fs + "protoflow.properties", folder + ".folder") + fs + fileName

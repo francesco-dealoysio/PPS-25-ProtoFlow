@@ -11,7 +11,7 @@ case class DocumentLog(
                      private var operationType: String = "",
                      private var processedDate: String = "",
                      private var processedTime: String = "",
-                     private var processedBy: String = ""                      
+                     private var processedBy: String = ""
                    ) extends Entity:
   def this() =
     this("", "", "", "", "")
@@ -29,7 +29,7 @@ case class DocumentLog(
   def getProcessedDate: String = processedDate
   def getProcessedTime: String = processedTime
   def getProcessedBy: String = processedBy
-  
+
   override def xmlFile = "documentOperations.xml"
 
   override protected def defaultXmlFilePathName: String =

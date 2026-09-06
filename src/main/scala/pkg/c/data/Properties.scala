@@ -56,7 +56,7 @@ object Properties:
           case e: IOException =>
             println("Error in removePropsFileProperty")
             logger(e)
-  
+
   def clearPropsFileProperties(filePath: String): Unit =
     try
       if (File(filePath).exists())
@@ -68,7 +68,7 @@ object Properties:
       case e: IOException =>
         println("Error in clearPropsFileProperties")
         logger(e)
-  
+
   def getPropsFileProperties(filePath: String): Properties =
     val props = new Properties()
     val source = Source.fromFile(filePath)
@@ -77,7 +77,7 @@ object Properties:
     finally
       source.close()
     props
-  
+
   def setPropsFileProperties(filePath: String, props: Properties): Unit =
     try
       if (File(filePath).exists())
@@ -87,7 +87,7 @@ object Properties:
       case e: IOException =>
         println("Error in setPropsFileProperties")
         logger(e)
-  
+
   private def displayPropsFileProperties(filePath: String): Unit =
     try
       if (File(filePath).exists())

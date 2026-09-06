@@ -7,7 +7,7 @@ object AppText:
   object Menu:
     val Dashboard = "Dashboard"
     val Logout = "Logout"
-    
+
     val labels: Map[MenuAction, String] = Map(
       MenuAction.Profilo -> "Profilo",
       MenuAction.Statistiche -> "Statistiche",
