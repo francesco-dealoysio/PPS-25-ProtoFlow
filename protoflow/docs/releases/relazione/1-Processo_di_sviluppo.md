@@ -167,7 +167,7 @@ concentrazione, in alcuni sprint, su determinati task in base al carico di lavor
 | S2 | 10/07/2026 – 17/07/2026 | Gestione del processo di registrazione; CRUD di Account, Ruoli e Classifiche; modifica del profilo utente |
 | S3 | 22/07/2026 – 30/07/2026 | Completamento della gestione Ruoli; ciclo di vita del documento (presa in carico, protocollazione, archiviazione) |
 | S4 | 03/08/2026 – 11/08/2026 | Log degli eventi di protocollazione; funzionalità di ricerca; stampa di documenti e log |
-| S5 | 12/08/2026 – ?/?/2026   | Controllo di gestione documentale, riepilogo documento, statistiche, dashboard per ruolo; redazione della documentazione di progetto |
+| S5 | 12/08/2026 – 06/09/2026 | Controllo di gestione documentale, riepilogo documento, statistiche, dashboard per ruolo; redazione della documentazione di progetto |
 
 ### Sprint 0 — Avvio (26/06/2026 – 01/07/2026)
 <p style="text-align: justify;">
