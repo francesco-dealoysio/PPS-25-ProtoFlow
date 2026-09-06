@@ -235,7 +235,7 @@ Poiché l'account e la richiesta sono persistiti in due file XML indipendenti, n
 
 `StatisticsService` aggrega i dati di utilizzo del sistema leggendo direttamente le entità di dominio coinvolte, senza un database relazionale con `GROUP BY` a disposizione: documenti protocollati e archiviati per mese (`registeredDocumentsByMonth`, `archivedDocumentsByMonth`), esito delle richieste di registrazione processate (`processedRegistrations`), e accessi al sistema per ruolo e per utente (`accessesByRole`, `accessesByUser`), questi ultimi letti dall'entità `AccessLog`, popolata da `writeAccessLog` ad ogni login riuscito.
 
-inserisci immagine qui
+![Aggregazione dei dati di utilizzo del sistema](img/cap4-statistiche.png)
 
 `accessesByRole` è l'unico dei metodi che aggrega leggendo da due entità indipendenti: gli accessi sono raggruppati per codice di ruolo, ma il nome visualizzato viene risolto interrogando separatamente l'entità `Role`, cosicché un'eventuale rinomina di un ruolo si riflette automaticamente nelle statistiche già registrate, senza dover denormalizzare il nome nel log di accesso.
 
