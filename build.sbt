@@ -8,10 +8,10 @@ lazy val root = (project in file("."))
   )
 
 Compile / run / mainClass := Some("pkg.RunApp")
-Compile / packageBin / mainClass := Some("pkg.RunApp")
+Compile / packageBin / mainClass := Some( "pkg.RunApp")
 
 Test / parallelExecution := false
-Test / test := (Test / testOnly).toTask(" pkg.AllTestsSuite").value
+Test / test := (Test / testOnly).toTask(" pkg.*").value
 
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-xml" % "2.4.0",
