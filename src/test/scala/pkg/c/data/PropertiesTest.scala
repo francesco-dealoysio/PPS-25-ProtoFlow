@@ -5,7 +5,6 @@ import org.junit.Assert.*
 import pkg.c.data.Properties.*
 import pkg.d.util.Util.inTestFilePathName
 import java.io.File
-import java.nio.file.{Files, Paths}
 import java.util.Properties
 
 class PropertiesTest:
@@ -15,15 +14,11 @@ class PropertiesTest:
 
   @Before
   def setUp(): Unit =
-    PropertiesTest.filePathName = propsFile
+    PropertiesTest._propsFile = propsFile
+    PropertiesTest._comment = propsFile
 
   @After
   def tearDown(): Unit = ()
-
-  @Test
-  def testCreatePropsFile(): Unit =
-    createPropsFile(propsFile, comment)
-    assertTrue(File(propsFile).exists())
 
   @Test
   def testSetPropsFileProperty(): Unit =
@@ -78,13 +73,14 @@ class PropertiesTest:
 
 object PropertiesTest:
 
-  var filePathName: String = _
+  var _propsFile: String = inTestFilePathName("testfile.properties")
+  var _comment: String = "Configuration file"
 
   @BeforeClass
-  def beforeAll(): Unit = ()
+  def testCreatePropsFile(): Unit =
+    createPropsFile(_propsFile, _comment)
+    assertTrue(File(_propsFile).exists())
 
   @AfterClass
   def afterAll(): Unit =
-    //Files.deleteIfExists(Paths.get(inTestFilePathName(filePathName)))
-    println(filePathName)
-
+    println(_propsFile + " succesfully created!")
