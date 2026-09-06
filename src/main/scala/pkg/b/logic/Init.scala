@@ -69,6 +69,7 @@ object Init:
     IdGen.initialize(inIdsFilePathName("classificationId"), 9)
     IdGen.initialize(inIdsFilePathName("loadedDocumentId"), 1)
     IdGen.initialize(inIdsFilePathName("documentOperationLogId"), 1)
+    IdGen.initialize(inIdsFilePathName("registrationId"), 1)
 
   def main(args: Array[String]): Unit =
     init()

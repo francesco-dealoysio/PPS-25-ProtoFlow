@@ -32,7 +32,8 @@ object Reset:
       inIdsFilePathName("roleId"),
       inIdsFilePathName("classificationId"),
       inIdsFilePathName("loadedDocumentId"),
-      inIdsFilePathName("documentOperationLogId")
+      inIdsFilePathName("documentOperationLogId"),
+      inIdsFilePathName("registrationId")
     )
 
     try
