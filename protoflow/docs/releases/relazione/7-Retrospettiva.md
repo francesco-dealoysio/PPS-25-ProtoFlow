@@ -2,7 +2,7 @@
 [Previous Chapter](6-Testing.md)
 # 7. Retrospettiva
 
-La Sprint Retrospective è, come previsto dalla metodologia Scrum, l'incontro che lo Scrum Team tiene in fase di Strint 
+La Sprint Retrospective è, come previsto dalla metodologia Scrum, l'incontro che lo Scrum Team tiene in fase di Sprint 
 Review al termine di ogni Sprint con i seguenti scopi:
 
 - esaminare l'andamento dello Sprint appena terminato in relazione a comportamenti delle persone, relazioni, processi e strumenti;
