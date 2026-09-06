@@ -1,6 +1,6 @@
 package pkg.d.util
 
-import alice.tuprolog.{Prolog, Struct, Term, Theory}
+import alice.tuprolog.{Prolog, SolveInfo, Struct, Term, Theory}
 
 import scala.language.implicitConversions
 
@@ -14,7 +14,7 @@ object PrologEngine:
     (goal: Term) =>
       new Iterable[Term]:
         override def iterator: Iterator[Term] = new Iterator[Term]:
-          var solution = engine.solve(goal)
+          var solution: SolveInfo = engine.solve(goal)
           var exhausted = false
           override def hasNext: Boolean = !exhausted && solution.isSuccess
           override def next(): Term =

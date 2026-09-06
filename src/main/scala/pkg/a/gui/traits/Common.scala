@@ -1,9 +1,9 @@
 package pkg.a.gui.traits
 
 import pkg.a.gui.text.CommonText.Common.Buttons.Print
+import pkg.a.gui.text.UiStyles.Buttons.*
 import pkg.a.gui.text.UiStyles.Common.*
 import pkg.a.gui.text.UiStyles.Form.{FormActionsStyle, FormLabelStyle}
-import pkg.a.gui.text.UiStyles.Buttons.*
 import pkg.a.gui.text.UiText.Common.Buttons.Close
 import scalafx.scene.control.{Alert, Button, ButtonType, Label}
 import scalafx.scene.layout.{HBox, VBox}

@@ -1,7 +1,7 @@
 package pkg.d.util
 
 import pkg.d.util.Logger.logger
-import pkg.d.util.Util._
+import pkg.d.util.Util.*
 
 import java.io.IOException
 import java.nio.file.{DirectoryStream, Files, Path, Paths}
@@ -82,4 +82,3 @@ object Reset:
 @main def tryReset(): Unit =
   println("-".repeat(17) + "\nTest Reset.scala:\n" + "-".repeat(17))
   Reset.reset()
-

@@ -1,7 +1,7 @@
 package pkg.a.gui.traits
 
-import pkg.a.gui.text.UiStyles.Management.*
 import pkg.a.gui.text.UiStyles.Common.RootStyle
+import pkg.a.gui.text.UiStyles.Management.*
 import pkg.d.util.Logger.logger
 import scalafx.Includes.*
 import scalafx.beans.property.StringProperty

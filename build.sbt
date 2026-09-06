@@ -10,8 +10,18 @@ lazy val root = (project in file("."))
 Compile / run / mainClass := Some("pkg.RunApp")
 Compile / packageBin / mainClass := Some( "pkg.RunApp")
 
+lazy val initBeforeTests = taskKey[Unit]("Initialize ProtoFlow before tests")
+
+initBeforeTests := {
+  (Compile / runMain).toTask(" pkg.b.logic.Init").value
+}
+
 Test / parallelExecution := false
-Test / test := (Test / testOnly).toTask(" pkg.*").value
+
+Test / test := Def.sequential(
+  initBeforeTests,
+  (Test / testOnly).toTask(" pkg.*")
+).value
 
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-xml" % "2.4.0",

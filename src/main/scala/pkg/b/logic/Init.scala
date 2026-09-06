@@ -70,5 +70,5 @@ object Init:
     IdGen.initialize(inIdsFilePathName("loadedDocumentId"), 1)
     IdGen.initialize(inIdsFilePathName("documentOperationLogId"), 1)
 
-  @main def tryInit(): Unit =
+  def main(args: Array[String]): Unit =
     init()

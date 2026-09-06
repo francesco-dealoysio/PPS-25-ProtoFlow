@@ -30,8 +30,5 @@ jobs:
       - name: Pulisci il progetto
         run: sbt -batch clean
 
-      - name: Inizializza ProtoFlow
-        run: sbt -batch "runMain pkg.b.logic.tryInit"
-
       - name: Esegui tutti i test
         run: sbt -batch test

@@ -3,9 +3,8 @@ package pkg.d.util
 import pkg.b.logic.ErrorLog
 import pkg.c.data.Xml.createEmptyXmlFile
 import pkg.d.util.DateTime.{localDate, localTime}
-import pkg.d.util.Util.inLogFilePathName
+import pkg.d.util.Util.*
 
-import pkg.d.util.Util._
 import java.nio.file.{Files, Paths}
 
 object Logger:
