@@ -47,9 +47,9 @@ object DocumentManagementControlService:
                                       )
 
   def getManagedDocuments(
-                            loadedFilePathName: String = "",
-                            registeredFilePathName: String = "",
-                            archivedFilePathName: String = ""
+                            loadedFilePathName: Option[String] = None,
+                            registeredFilePathName: Option[String] = None,
+                            archivedFilePathName: Option[String] = None
                           ): List[ManagedDocument] =
     val fromLoaded = loadedDocuments(loadedFilePathName).map(toManagedDocument)
     val fromRegistered = registeredDocuments(registeredFilePathName).map(toManagedDocument)
@@ -59,13 +59,11 @@ object DocumentManagementControlService:
       .sortBy(_.id.toIntOption.getOrElse(Int.MaxValue))
       .toList
 
-  def getDocumentManagementSummary(document: ManagedDocument, documentLogFilePathName: String = ""): DocumentManagementSummary =
+  def getDocumentManagementSummary(document: ManagedDocument, documentLogFilePathName: Option[String] = None): DocumentManagementSummary =
 
-    val logs =
-      if documentLogFilePathName.isEmpty then
-        DocumentLog().getRecordsByFilter[DocumentLog](_.getDocumentId == document.id)
-      else
-        DocumentLog().getRecordsByFilter[DocumentLog](_.getDocumentId == document.id, documentLogFilePathName)
+    val logs = documentLogFilePathName.fold(DocumentLog().getRecordsByFilter[DocumentLog](_.getDocumentId == document.id))(path =>
+      DocumentLog().getRecordsByFilter[DocumentLog](_.getDocumentId == document.id, path)
+    )
 
     val phaseOrder =
       Seq(
@@ -99,17 +97,20 @@ object DocumentManagementControlService:
       phases = phases
     )
 
-  private def loadedDocuments(xmlFilePathName: String): Seq[LoadedDocument] =
-    if xmlFilePathName.isEmpty then LoadedDocument().getRecords[LoadedDocument]()
-    else LoadedDocument().getRecords[LoadedDocument](xmlFilePathName)
+  private def loadedDocuments(xmlFilePathName: Option[String]): Seq[LoadedDocument] =
+    xmlFilePathName.fold(LoadedDocument().getRecords[LoadedDocument]())(path =>
+      LoadedDocument().getRecords[LoadedDocument](path)
+    )
 
-  private def registeredDocuments(xmlFilePathName: String): Seq[RegisteredDocument] =
-    if xmlFilePathName.isEmpty then RegisteredDocument().getRecords[RegisteredDocument]()
-    else RegisteredDocument().getRecords[RegisteredDocument](xmlFilePathName)
+  private def registeredDocuments(xmlFilePathName: Option[String]): Seq[RegisteredDocument] =
+    xmlFilePathName.fold(RegisteredDocument().getRecords[RegisteredDocument]())(path =>
+      RegisteredDocument().getRecords[RegisteredDocument](path)
+    )
 
-  private def archivedDocuments(xmlFilePathName: String): Seq[ArchivedDocument] =
-    if xmlFilePathName.isEmpty then ArchivedDocument().getRecords[ArchivedDocument]()
-    else ArchivedDocument().getRecords[ArchivedDocument](xmlFilePathName)
+  private def archivedDocuments(xmlFilePathName: Option[String]): Seq[ArchivedDocument] =
+    xmlFilePathName.fold(ArchivedDocument().getRecords[ArchivedDocument]())(path =>
+      ArchivedDocument().getRecords[ArchivedDocument](path)
+    )
 
   private def toManagedDocument(document: LoadedDocument): ManagedDocument =
     ManagedDocument(

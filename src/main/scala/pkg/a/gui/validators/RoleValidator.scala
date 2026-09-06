@@ -21,10 +21,7 @@ class RoleValidator:
     validate(role, existingRoles, currentRoleId).isEmpty
 
   private def validateRequired(errorMessage: String, value: String): Option[String] =
-    if value.trim.isEmpty then
-      Some(errorMessage)
-    else
-      None
+    Option.when(value.trim.isEmpty)(errorMessage)
 
   private def validateUniqueRole(role: String, existingRoles: Seq[Role], currentRoleId: Option[String]): Option[String] =
 
@@ -41,10 +38,7 @@ class RoleValidator:
               .trim
               .equalsIgnoreCase(normalizedName)
 
-      if duplicateExists then
-        Some(DuplicateRole)
-      else
-        None
+      Option.when(duplicateExists)(DuplicateRole)
 
   private def validateUniqueName(roleName: String, existingRoles: Seq[Role], currentRoleId: Option[String]): Option[String] =
     val normalizedName = roleName.trim
@@ -56,16 +50,11 @@ class RoleValidator:
           !currentRoleId.contains(existingRole.getId) &&
             existingRole.getName.trim.equalsIgnoreCase(normalizedName)
 
-      if duplicateExists then
-        Some(DuplicateRoleName)
-      else
-        None
+      Option.when(duplicateExists)(DuplicateRoleName)
 
   private def validateRoleFormat(role: String): Option[String] =
     val normalizedRole = role.trim.toLowerCase
     if normalizedRole.isEmpty then
       None
-    else if rolePattern.matches(normalizedRole) then
-      None
     else
-      Some(RoleInvalid)
+      Option.unless(rolePattern.matches(normalizedRole))(RoleInvalid)
