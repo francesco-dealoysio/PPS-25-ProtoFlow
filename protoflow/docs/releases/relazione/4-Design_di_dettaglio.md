@@ -205,7 +205,7 @@ indipendentemente dall'interfaccia.
 
 ## 4.2 Controllo di gestione, autorizzazione Prolog e registrazioni — Thomas Testa
 
-Questa sezione approfondisce tre punti del sistema che, a differenza delle astrazioni condivise descritte in 4.1, non riguardano l'infrastruttura comune ma la logica applicativa di specifici sottosistemi: l'aggregazione dei documenti nel Controllo di Gestione, il ciclo di vita delle regole di autorizzazione personalizzate, e il flusso di approvazione di una richiesta di registrazione.
+Questa sezione approfondisce quattro punti del sistema che, a differenza delle astrazioni condivise descritte in 4.1, non riguardano l'infrastruttura comune ma la logica applicativa di specifici sottosistemi: l'aggregazione dei documenti nel Controllo di Gestione, il ciclo di vita delle regole di autorizzazione personalizzate, il flusso di approvazione di una richiesta di registrazione, e l'aggregazione dei dati di utilizzo del sistema.
 
 ### 4.2.1 Aggregazione dei documenti nel Controllo di Gestione
 
@@ -230,6 +230,14 @@ Il requisito opzionale di personalizzazione delle regole organizzative estende i
 ![Flusso di approvazione di una richiesta, con rollback in caso di fallimento parziale](img/cap4-approvazione-richiesta.png)
 
 Poiché l'account e la richiesta sono persistiti in due file XML indipendenti, non esiste una transazione atomica che copra entrambe le scritture. Se l'inserimento dell'account riesce ma l'aggiornamento della richiesta fallisce, il servizio esegue un rollback esplicito cancellando l'account appena creato, in modo da non lasciare nel sistema un account "orfano" non riconducibile ad alcuna richiesta approvata. La password in chiaro non viene mai persistita: esiste solo nel valore di ritorno (`RegistrationApproval`), usato per mostrarla una tantum all'operatore che dovrà comunicarla al nuovo utente.
+
+### 4.2.4 Statistiche di utilizzo del sistema
+
+`StatisticsService` aggrega i dati di utilizzo del sistema leggendo direttamente le entità di dominio coinvolte, senza un database relazionale con `GROUP BY` a disposizione: documenti protocollati e archiviati per mese (`registeredDocumentsByMonth`, `archivedDocumentsByMonth`), esito delle richieste di registrazione processate (`processedRegistrations`), e accessi al sistema per ruolo e per utente (`accessesByRole`, `accessesByUser`), questi ultimi letti dall'entità `AccessLog`, popolata da `writeAccessLog` ad ogni login riuscito.
+
+inserisci immagine qui
+
+`accessesByRole` è l'unico dei metodi che aggrega leggendo da due entità indipendenti: gli accessi sono raggruppati per codice di ruolo, ma il nome visualizzato viene risolto interrogando separatamente l'entità `Role`, cosicché un'eventuale rinomina di un ruolo si riflette automaticamente nelle statistiche già registrate, senza dover denormalizzare il nome nel log di accesso.
 
 ## 4.3 Modello di dominio, persistenza e generazione documenti PDF — Francesco de Aloysio
 
