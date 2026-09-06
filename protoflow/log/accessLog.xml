@@ -41,4 +41,11 @@
     <processedDate>2026-09-06</processedDate>
     <processedTime>13:12:21.89</processedTime>
   </record>
+  <record>
+    <id>7</id>
+    <username>mrossi</username>
+    <role>admin</role>
+    <processedDate>2026-08-18</processedDate>
+    <processedTime>10:00:00.00</processedTime>
+  </record>
 </accessLog>
