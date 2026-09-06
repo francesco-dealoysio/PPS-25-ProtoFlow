@@ -38,7 +38,7 @@ class PropertiesTest:
   @Test
   def testRemovePropsFileProperty(): Unit =
     clearPropsFileProperties(propsFile)
-    removePropsFileProperty(propsFile, "colore") // inesistente
+    removePropsFileProperty(propsFile, "colore")
     setPropsFileProperty(propsFile, "colore", "rosso")
     assertEquals("rosso", getPropsFileProperty(propsFile, "colore"))
     removePropsFileProperty(propsFile, "colore")

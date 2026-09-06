@@ -1,5 +1,6 @@
 package pkg
 
+import org.junit.BeforeClass
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 import pkg.a.gui.services.*
@@ -8,6 +9,8 @@ import pkg.b.logic.pdf.*
 import pkg.b.logic.*
 import pkg.c.data.{FileSystemTest, PropertiesTest, XmlTest}
 import pkg.d.util.{DateTimeTest, FiltersTest, IdGenTest, UtilTest}
+
+import scala.annotation.static
 
 @RunWith(classOf[Suite])
 @Suite.SuiteClasses(
@@ -58,3 +61,9 @@ import pkg.d.util.{DateTimeTest, FiltersTest, IdGenTest, UtilTest}
 )
 
 class AllTestsSuite
+
+object AllTestsSuite:
+  @BeforeClass
+  @static
+  def initialize(): Unit =
+    Init.init()
