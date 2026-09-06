@@ -3,21 +3,27 @@ package pkg.c.data
 import org.junit.*
 import org.junit.Assert.*
 import pkg.c.data.Properties.*
-
+import pkg.d.util.Util.inTestFilePathName
 import java.io.File
+import java.nio.file.{Files, Paths}
 import java.util.Properties
 
 class PropertiesTest:
 
+  val propsFile: String = inTestFilePathName("testfile.properties")
+  val comment: String = "Configuration file"
+
   @Before
-  private val propsFile: String = "testfile.properties"
-  private val comment: String = "Configuration file"
-  clearPropsFileProperties(propsFile)
+  def setUp(): Unit =
+    PropertiesTest.filePathName = propsFile
+
+  @After
+  def tearDown(): Unit = ()
 
   @Test
   def testCreatePropsFile(): Unit =
     createPropsFile(propsFile, comment)
-    assertTrue(File("testfile.properties").exists())
+    assertTrue(File(propsFile).exists())
 
   @Test
   def testSetPropsFileProperty(): Unit =
@@ -69,4 +75,16 @@ class PropertiesTest:
     setPropsFileProperties(propsFile, props)
     assertEquals("triangolo", getPropsFileProperty(propsFile, "figura"))
     assertEquals("10", getPropsFileProperty(propsFile, "altezza"))
+
+object PropertiesTest:
+
+  var filePathName: String = _
+
+  @BeforeClass
+  def beforeAll(): Unit = ()
+
+  @AfterClass
+  def afterAll(): Unit =
+    //Files.deleteIfExists(Paths.get(inTestFilePathName(filePathName)))
+    println(filePathName)
 

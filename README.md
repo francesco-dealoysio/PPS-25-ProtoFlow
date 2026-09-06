@@ -8,7 +8,7 @@ The application provides role-based functionalities for administrators, operator
 
 ## Authors
 
-- Francesco De Aloysio
+- Francesco de Aloysio
 - Roberto Pisu
 - Thomas Testa
 

@@ -43,7 +43,7 @@ Normalmente la scelta della composizione del team è oggetto di attenta analisi 
 questa necessaria a verificare la bontà della scelta.
 
 Ovviamente, nel caso del nostro progetto, finalizzato al sostenimento dell'esame, le suddette premesse non sono realizzabili.
-Tuttavia, potrebbe essere utile, allo scopo di favorire la conoscenza, saggiare la compatibilità ed effettuare una fase di amalgama tra studenti chiamati a
+Tuttavia, potrebbe essere utile, allo scopo di favorire la conoscenza, saggiare la compatibilità ed effettuare una fase di amalgama tra gli studenti chiamati a
 sviluppare insieme il progetto finale d'esame, comporre i gruppi di lavoro sin dall'inizio del corso, affinché le persone lavorino insieme già dall'inizio 
 per le attività dei laboratorio.
 

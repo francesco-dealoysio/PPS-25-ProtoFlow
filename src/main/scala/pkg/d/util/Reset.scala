@@ -32,7 +32,6 @@ object Reset:
       inIdsFilePathName("accountId"),
       inIdsFilePathName("roleId"),
       inIdsFilePathName("classificationId"),
-      //inIdsFilePathName("registrationId"),
       inIdsFilePathName("loadedDocumentId"),
       inIdsFilePathName("documentOperationLogId")
     )
@@ -40,12 +39,10 @@ object Reset:
     try
       files.foreach { filePathName =>
         val file = Paths.get(filePathName)
-
-        if Files.exists(file) then {
-          //println(s"File: ${file.getFileName} exists!")
+        if Files.exists(file) then
           Files.delete(file)
           println(s"File: $file deleted!")
-        } else
+        else
           println(s"File: $file doesn't exist!")
       }
     catch
@@ -60,7 +57,7 @@ object Reset:
       val dir: Path = Paths.get(directoryPath)
 
       if !Files.exists(dir) then
-        //println(s"Directory does not exist: $directoryPath")
+        println(s"Directory does not exist: $directoryPath")
         return
       if !Files.isDirectory(dir) then
         println(s"Path is not a directory: $directoryPath")

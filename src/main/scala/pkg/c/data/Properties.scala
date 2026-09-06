@@ -1,22 +1,29 @@
 package pkg.c.data
 
+import pkg.d.util.Logger
+import pkg.d.util.Logger.logger
+
 import java.io.*
 import java.util.Properties
 import scala.io.Source
 import scala.jdk.CollectionConverters.*
+import scala.util.{Failure, Success, Try, Using}
 
 object Properties:
 
   def createPropsFile(filePath: String, comment: String): Unit =
     val props = new Properties()
-    try
+    val result = Using(new FileOutputStream(filePath)) { out =>
       props.setProperty("_this", filePath)
       props.setProperty("_comment", comment)
-      props.store(new FileOutputStream(filePath), comment)
-    catch
-      case e: IOException =>
-        println(s"Error in createPropsFile: ${e.getMessage}")
-  
+      props.store(out, comment)
+    }
+    result match
+      case Success(_) =>
+        println(s"File $filePath set successfully.")
+      case Failure(ex) =>
+        System.err.println(s"Error setting file: $filePath")
+
   def setPropsFileProperty(filePath: String, key: String, value: String): Unit =
     val props = new Properties()
     try
@@ -26,6 +33,7 @@ object Properties:
     catch
       case e: IOException =>
         println(s"Error in setPropsFileProperty: $filePath")
+        logger(e)
 
   def getPropsFileProperty(filePath: String, key: String): String =
     val props = new Properties()
@@ -34,8 +42,8 @@ object Properties:
       props.getProperty(key, "<not set>")
     catch
       case e: IOException =>
-        s"Error in getPropsFileProperty: ${e.getMessage}"
-  
+        logger(e); "<error>"
+
   def removePropsFileProperty(filePath: String, key: String): Unit =
     if (File(filePath).exists())
       val props = getPropsFileProperties(filePath)
@@ -46,7 +54,8 @@ object Properties:
           props.store(new FileOutputStream(filePath), comment)
         catch
           case e: IOException =>
-            s"Error in removePropsFileProperty: ${e.getMessage}"
+            println("Error in removePropsFileProperty")
+            logger(e)
   
   def clearPropsFileProperties(filePath: String): Unit =
     try
@@ -57,7 +66,8 @@ object Properties:
         props.store(new FileOutputStream(filePath), comment)
     catch
       case e: IOException =>
-        println(s"Error in clearPropsFileProperties: ${e.getMessage}")
+        println("Error in clearPropsFileProperties")
+        logger(e)
   
   def getPropsFileProperties(filePath: String): Properties =
     val props = new Properties()
@@ -75,7 +85,8 @@ object Properties:
         props.store(new FileOutputStream(filePath), comment)
     catch
       case e: IOException =>
-        println(s"Error in setPropsFileProperties: ${e.getMessage}")
+        println("Error in setPropsFileProperties")
+        logger(e)
   
   private def displayPropsFileProperties(filePath: String): Unit =
     try
@@ -85,4 +96,5 @@ object Properties:
         propsMap.foreach { case (k, v) => println(s"$k = $v") }
     catch
       case e: IOException =>
-        println(s"Error in displayPropsFileProperties: ${e.getMessage}")
+        println("Error in displayPropsFileProperties")
+        logger(e)
