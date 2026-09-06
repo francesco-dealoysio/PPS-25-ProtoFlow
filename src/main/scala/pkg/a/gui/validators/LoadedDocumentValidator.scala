@@ -19,7 +19,4 @@ class LoadedDocumentValidator:
     validate(document).isEmpty
 
   private def validateRequired(errorMessage: String, value: String): Option[String] =
-    if value.trim.isEmpty then
-      Some(errorMessage)
-    else
-      None
+    Option.when(value.trim.isEmpty)(errorMessage)

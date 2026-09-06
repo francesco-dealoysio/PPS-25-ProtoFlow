@@ -66,9 +66,9 @@ class DocumentManagementControlServiceTest:
   def testGetManagedDocumentsMergesAllThreeStagesSortedById(): Unit =
     val result =
       DocumentManagementControlService.getManagedDocuments(
-        loadedFilePathName = loadedXmlFile,
-        registeredFilePathName = registeredXmlFile,
-        archivedFilePathName = archivedXmlFile
+        loadedFilePathName = Some(loadedXmlFile),
+        registeredFilePathName = Some(registeredXmlFile),
+        archivedFilePathName = Some(archivedXmlFile)
       )
 
     assertEquals(List("1", "2", "3"), result.map(_.id))
@@ -77,9 +77,9 @@ class DocumentManagementControlServiceTest:
   def testLoadedDocumentIsMappedToLoadingStage(): Unit =
     val result =
       DocumentManagementControlService.getManagedDocuments(
-        loadedFilePathName = loadedXmlFile,
-        registeredFilePathName = registeredXmlFile,
-        archivedFilePathName = archivedXmlFile
+        loadedFilePathName = Some(loadedXmlFile),
+        registeredFilePathName = Some(registeredXmlFile),
+        archivedFilePathName = Some(archivedXmlFile)
       )
 
     val loaded = result.find(_.id == "3").get
@@ -91,9 +91,9 @@ class DocumentManagementControlServiceTest:
   def testRegisteredDocumentIsMappedToRegisteringStage(): Unit =
     val result =
       DocumentManagementControlService.getManagedDocuments(
-        loadedFilePathName = loadedXmlFile,
-        registeredFilePathName = registeredXmlFile,
-        archivedFilePathName = archivedXmlFile
+        loadedFilePathName = Some(loadedXmlFile),
+        registeredFilePathName = Some(registeredXmlFile),
+        archivedFilePathName = Some(archivedXmlFile)
       )
 
     val registered = result.find(_.id == "1").get
@@ -107,9 +107,9 @@ class DocumentManagementControlServiceTest:
   def testArchivedDocumentIsMappedToArchivingStage(): Unit =
     val result =
       DocumentManagementControlService.getManagedDocuments(
-        loadedFilePathName = loadedXmlFile,
-        registeredFilePathName = registeredXmlFile,
-        archivedFilePathName = archivedXmlFile
+        loadedFilePathName = Some(loadedXmlFile),
+        registeredFilePathName = Some(registeredXmlFile),
+        archivedFilePathName = Some(archivedXmlFile)
       )
 
     val archived = result.find(_.id == "2").get

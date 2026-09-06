@@ -16,7 +16,7 @@ class AccountValidator:
       validateRequired(RoleRequired, account.getRole),
       validateLastAdminRole(account, existingAccounts, currentAccountId),
       validateRequired(UsernameRequired, account.getUsername),
-      if requirePassword then validateRequired(PasswordRequired, rawPassword) else None,
+      Option.when(requirePassword)(validateRequired(PasswordRequired, rawPassword)).flatten,
       validateUniqueUsername(account.getUsername, existingAccounts, currentAccountId)
     ).flatten
 
@@ -27,14 +27,12 @@ class AccountValidator:
     Seq(validateEmail(email)).flatten
 
   private def validateRequired(errorMessage: String, value: String): Option[String] =
-    if value.trim.isEmpty then Some(errorMessage)
-    else None
+    Option.when(value.trim.isEmpty)(errorMessage)
 
   private def validateEmail(value: String): Option[String] =
     val normalized = value.trim
     if normalized.isEmpty then Some(EmailRequired)
-    else if emailPattern.matches(normalized) then None
-    else Some(EmailInvalid)
+    else Option.unless(emailPattern.matches(normalized))(EmailInvalid)
 
   private def validateUniqueUsername(username: String, existingAccounts: Seq[Account], currentAccountId: Option[String]): Option[String] =
     val normalizedUsername = username.trim
@@ -47,8 +45,7 @@ class AccountValidator:
           !currentAccountId.contains(existing.getId) &&
             existing.getUsername.trim == normalizedUsername
 
-      if duplicateExists then Some(DuplicateUsername)
-      else None
+      Option.when(duplicateExists)(DuplicateUsername)
 
   private def validateLastAdminRole(account: Account, existingAccounts: Seq[Account], currentAccountId: Option[String]): Option[String] =
     val editingLastAdmin =
@@ -59,9 +56,5 @@ class AccountValidator:
           existing.getRole.equalsIgnoreCase("admin") &&
             existingAccounts.count(_.getRole.equalsIgnoreCase("admin")) == MinimumAdminAccounts
 
-    if editingLastAdmin &&
-      !account.getRole.equalsIgnoreCase("admin")
-    then
-      Some(LastAdminRoleChange)
-    else
-      None
+    val isChangingLastAdmin = editingLastAdmin && !account.getRole.equalsIgnoreCase("admin")
+    Option.when(isChangingLastAdmin)(LastAdminRoleChange)

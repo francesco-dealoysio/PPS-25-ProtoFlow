@@ -16,8 +16,7 @@ class ClassificationValidator:
     validate(classification, existingClassifications, currentClassificationId).isEmpty
 
   private def validateRequired(errorMessage: String, value: String): Option[String] =
-    if value.trim.isEmpty then Some(errorMessage)
-    else None
+    Option.when(value.trim.isEmpty)(errorMessage)
 
   private def validateUniqueClassification(classificationName: String, existingClassifications: Seq[Classification], currentClassificationId: Option[String]): Option[String] =
     val normalizedName = classificationName.trim
@@ -30,5 +29,4 @@ class ClassificationValidator:
           !currentClassificationId.contains(existing.getId) &&
             existing.getClassification.trim.equalsIgnoreCase(normalizedName)
 
-      if duplicateExists then Some(DuplicateClassification)
-      else None
+      Option.when(duplicateExists)(DuplicateClassification)

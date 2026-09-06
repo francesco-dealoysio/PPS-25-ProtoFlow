@@ -23,29 +23,19 @@ class DocumentArchivingValidator:
 
     if trimmedValue.isEmpty then
       Some(ArchiveErrors.ArchivedDateRequired)
-    else if Try(LocalDate.parse(trimmedValue)).isFailure then
-      Some(ArchiveErrors.ArchivedDateInvalid)
     else
-      None
+      Option.when(Try(LocalDate.parse(trimmedValue)).isFailure)(ArchiveErrors.ArchivedDateInvalid)
 
   private def validateArchivedTime(value: String): Option[String] =
     val trimmedValue = value.trim
 
     if trimmedValue.isEmpty then
       Some(ArchiveErrors.ArchivedTimeRequired)
-    else if Try(LocalTime.parse(trimmedValue)).isFailure then
-      Some(ArchiveErrors.ArchivedTimeInvalid)
     else
-      None
+      Option.when(Try(LocalTime.parse(trimmedValue)).isFailure)(ArchiveErrors.ArchivedTimeInvalid)
 
   private def validateArchivedBy(value: String): Option[String] =
-    if value.trim.isEmpty then
-      Some(ArchiveErrors.ArchivedByRequired)
-    else
-      None
+    Option.when(value.trim.isEmpty)(ArchiveErrors.ArchivedByRequired)
 
   private def validateArchiveLocation(value: String): Option[String] =
-    if value.trim.isEmpty then
-      Some(ArchiveErrors.ArchiveLocationRequired)
-    else
-      None
+    Option.when(value.trim.isEmpty)(ArchiveErrors.ArchiveLocationRequired)

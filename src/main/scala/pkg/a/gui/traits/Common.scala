@@ -26,7 +26,10 @@ trait Common:
      * Clears and hides the current message.
      */
     def clear(): Unit =
-      clearMessage(label, successStyle, errorStyle)
+      label.text = ""
+      label.visible = false
+      label.managed = false
+      label.styleClass.removeAll(successStyle, errorStyle)
 
     /**
      * Displays the given message using the appropriate result style.
@@ -34,7 +37,11 @@ trait Common:
      * @param success whether the message represents a successful result
      */
     def show(message: String, success: Boolean): Unit =
-      showMessage(label, message, success, successStyle, errorStyle)
+      label.text = message
+      label.visible = true
+      label.managed = true
+      label.styleClass.removeAll(successStyle, errorStyle)
+      label.styleClass += (if success then successStyle else errorStyle)
 
   /**
    * Shows a confirmation dialog and waits for the user's choice.
@@ -163,20 +170,6 @@ trait Common:
     new Button(text):
       styleClass += styleName
       onAction = _ => action()
-
-  private def showMessage(label: Label, message: String, success: Boolean, successStyle: String, errorStyle: String): Unit =
-    label.text = message
-    label.visible = true
-    label.managed = true
-    label.styleClass.removeAll(successStyle, errorStyle)
-    label.styleClass +=
-      (if success then successStyle else errorStyle)
-
-  private def clearMessage(label: Label, successStyle: String, errorStyle: String): Unit =
-    label.text = ""
-    label.visible = false
-    label.managed = false
-    label.styleClass.removeAll(successStyle, errorStyle)
 
   private def messageLabel(baseStyle: String): Label =
     new Label:

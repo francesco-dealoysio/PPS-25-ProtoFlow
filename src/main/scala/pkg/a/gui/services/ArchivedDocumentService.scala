@@ -69,9 +69,7 @@ object ArchivedDocumentService:
                                  archiveLocation: String,
                                  archivedFilePathName: String
                                ): Option[String] =
-    if source == null then
-      Some("Documento non valido")
-    else if source.getId.trim.isEmpty then
+    if source.getId.trim.isEmpty then
       Some("Id documento non valido")
     else if isAlreadyArchived(source, archivedFilePathName) then
       Some("Il documento risulta già archiviato")
@@ -81,11 +79,13 @@ object ArchivedDocumentService:
         .headOption
 
   private def isAlreadyArchived(source: RegisteredDocument, archivedFilePathName: String): Boolean =
-    archivedDocumentLogic
-      .getRecords[ArchivedDocument](archivedFilePathName)
-      .exists: archived =>
-        archived.getProtocolNumber.trim.nonEmpty &&
-          archived.getProtocolNumber.equalsIgnoreCase(source.getProtocolNumber)
+    val targetProtocol = source.getProtocolNumber.trim
+    if targetProtocol.isEmpty then false
+    else
+      archivedDocumentLogic
+        .getRecords[ArchivedDocument](archivedFilePathName)
+        .exists: archived =>
+          archived.getProtocolNumber.trim.equalsIgnoreCase(targetProtocol)
 
   private def buildArchivedDocument(
                                      source: RegisteredDocument,

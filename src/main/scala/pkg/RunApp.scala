@@ -9,15 +9,16 @@ import scalafx.scene.image.Image
 object RunApp extends JFXApp3:
 
   override def start(): Unit =
-
     Init.init()
+
     stage = new JFXApp3.PrimaryStage:
       title = ApplicationName
-    
-    Option(getClass.getResourceAsStream("/img/message.jpg"))
-      .foreach(stream => stage.icons.add(new Image(stream)))
-    
+
+    Option(getClass.getResource("/img/message.jpg"))
+      .map(_.toExternalForm)
+      .foreach(url => stage.icons.add(new Image(url)))
+
     val navigator = AppNavigator(stage)
     navigator.showLogin()
-    
+
     stage.show()

@@ -19,22 +19,16 @@ class RegistrationValidator:
     validate(request).isEmpty
 
   private def validateRequired(fieldName: String, value: String): Option[String] =
-    if value.trim.isEmpty then Some(required(fieldName))
-    else None
+    Option.when(value.trim.isEmpty)(required(fieldName))
 
   private def validatePhone(phone: String): Option[String] =
     val trimmedPhone = phone.trim
-    if trimmedPhone.nonEmpty && !trimmedPhone.matches("^\\d+$") then
-      Some(PhoneInvalid)
-    else
-      None
+    Option.when(trimmedPhone.nonEmpty && !trimmedPhone.matches("^\\d+$"))(PhoneInvalid)
 
   private def validateEmail(email: String): Option[String] =
     val trimmedEmail = email.trim
 
     if trimmedEmail.isEmpty then
       Some(EmailRequired)
-    else if !trimmedEmail.matches("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$") then
-      Some(EmailInvalid)
     else
-      None
+      Option.unless(trimmedEmail.matches("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$"))(EmailInvalid)
