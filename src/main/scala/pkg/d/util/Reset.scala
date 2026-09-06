@@ -2,6 +2,7 @@ package pkg.d.util
 
 import pkg.d.util.Logger.logger
 import pkg.d.util.Util._
+
 import java.io.IOException
 import java.nio.file.{DirectoryStream, Files, Path, Paths}
 import scala.jdk.CollectionConverters.IterableHasAsScala
@@ -9,9 +10,7 @@ import scala.jdk.CollectionConverters.IterableHasAsScala
 object Reset:
 
   def reset(): Unit =
-
-    // customRules ?? se viene eliminato, chi lo ricrea?
-
+    
     val files = Seq(
       // database
       inDatabaseFilePathName("accounts.xml"),

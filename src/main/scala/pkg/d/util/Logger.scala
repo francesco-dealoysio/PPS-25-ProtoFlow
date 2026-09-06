@@ -5,6 +5,7 @@ import pkg.c.data.Xml.createEmptyXmlFile
 import pkg.d.util.DateTime.{localDate, localTime}
 import pkg.d.util.Util.inLogFilePathName
 
+import pkg.d.util.Util._
 import java.nio.file.{Files, Paths}
 
 object Logger:
@@ -33,7 +34,6 @@ object Logger:
     override def initialValue(): Boolean = false
 
   private def getErrorLog(ex: Exception): ErrorLog =
-    import pkg.d.util.Util.*
     val errorLog = ErrorLog()
     val topElement = ex.getStackTrace.headOption
     topElement match

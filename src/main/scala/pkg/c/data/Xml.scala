@@ -114,8 +114,8 @@ object Xml:
     result
 
   def searchFieldValue(xmlFilePathName: String, fieldName: String, fieldValue: String): Boolean =
-    val xmlTry = Try(XML.loadFile(xmlFilePathName))
     var result = false
+    val xmlTry = Try(XML.loadFile(xmlFilePathName))
     xmlTry match
       case Success(root) =>
         root match

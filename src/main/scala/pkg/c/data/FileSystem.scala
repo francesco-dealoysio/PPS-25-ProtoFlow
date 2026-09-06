@@ -12,7 +12,7 @@ object FileSystem:
     val path = Paths.get(dirPath)
     try
       if (Files.notExists(path))
-        Files.createDirectories(path) // crea anche le cartelle superiori mancanti
+        Files.createDirectories(path)
         println(s"Directory creata: ${path.toAbsolutePath}")
       else
         println(s"Directory già esistente: ${path.toAbsolutePath}")
@@ -23,8 +23,7 @@ object FileSystem:
 
   def createFile(filePathName: String, content: String): Unit =
     val path = Paths.get(filePathName)
-    try {
-      
+    try
       if (Files.notExists(path.getParent))
         println(s"Pathname inesistente: ${path.getParent}")
         return
@@ -34,8 +33,7 @@ object FileSystem:
         println(s"File creato: ${path.toAbsolutePath}")
       else
         println(s"File già esistente: ${path.toAbsolutePath}")
-        
-    } catch
+    catch
       case e: IOException =>
         println(s"Errore in FileSystem.createFile")
         logger(e)
@@ -58,7 +56,6 @@ object FileSystem:
           println(s"Creata directory: $dir")
         else
           println(s"Directory già esistente: $dir")
-
       catch
         case ex: IOException =>
           System.err.println(s"Errore nella creazione di $dir: ${ex.getMessage}")
