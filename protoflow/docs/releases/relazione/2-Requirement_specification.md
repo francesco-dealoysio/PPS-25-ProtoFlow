@@ -68,11 +68,11 @@ Uno schema completo delle entità e delle loro relazioni, insieme all'architettu
 I requisiti funzionali sono organizzati per attore, secondo la Requirement Breakdown Structure (RBS) prodotta in fase di analisi. Il sistema prevede tre ruoli:
 </p>
 
-| Ruolo | Descrizione | Attività principali |
-|---|---|---|
-| **Admin** | Gestore dell'applicazione | Gestione di utenti, ruoli e classifiche (CRUD); elaborazione delle richieste di registrazione; estrazione e analisi dei log; tutte le attività previste per il ruolo Oper |
-| **Oper** | Operatore addetto alla protocollazione | Presa in carico, protocollazione e archiviazione dei documenti; tutte le attività previste per il ruolo Viewer, con visibilità globale sui documenti |
-| **Viewer** | Utente in sola consultazione | Ricerca e consultazione dei documenti archiviati, con visibilità limitata alla propria area di appartenenza; stampa dei risultati |
+| Ruolo | Descrizione | Attività principali                                                                                                                                                          |
+|---|---|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Admin** | Gestore dell'applicazione | Gestione di utenti, ruoli e classifiche (CRUD); elaborazione delle richieste di registrazione; estrazione e analisi dei log; gestione autorizzazioni e controllo di gestione |
+| **Oper** | Operatore addetto alla protocollazione | Presa in carico, protocollazione e archiviazione dei documenti; filtraggi nelle loro fasi differenti                                                                         |
+| **Viewer** | Utente in sola consultazione | Ricerca e consultazione dei documenti archiviati, con visibilità limitata alla propria area di appartenenza; stampa dei risultati                                            |
 
 *Nota sulla nomenclatura*: i documenti di analisi prodotti dal gruppo non sono coerenti tra loro sul nome del terzo ruolo — la RBS e il documento "Ruoli" lo chiamano **Viewer**, mentre il documento di specifica funzionale e il Product Backlog usano in alcuni punti **Reader**. Nell'implementazione il codice ruolo usato è `viewer`; questa relazione adotta quindi **Viewer** come nome definitivo, segnalando l'incoerenza nei documenti di partenza come un piccolo limite del processo di analisi (ripreso in sezione 7).
 <p style="text-align: justify;">
@@ -129,7 +129,7 @@ Dai vincoli tecnologici individuati in fase di analisi (RBS, ramo Constraint) e 
 - **Interfaccia grafica**: ScalaFX;
 - **Persistenza**: file XML, uno per entità/collezione di record. È una scelta più semplice di quanto suggerito dagli obiettivi del POS originale, che parlava genericamente di una "base dati relazionale" — per un progetto di questa scala, e per restare aderente agli strumenti indicati nella proposta d'esame, il gruppo ha optato per la persistenza su file, senza un DBMS relazionale. È uno scostamento dal documento di analisi iniziale, non un'omissione: viene ripreso onestamente in sezione 7;
 - **Programmazione logica**: Prolog (tuProlog 3.3.0), per le regole di autorizzazione — si veda la sezione 4;
-- **Testing**: JUnit/ScalaTest, con suite eseguita automaticamente ad ogni push tramite GitHub Actions;
+- **Testing**: JUnit, con suite eseguita automaticamente ad ogni push tramite GitHub Actions;
 - **Versionamento e collaborazione**: Git/GitHub, con branch per feature e merge verso `develop`;
 - **Ambiente di sviluppo**: IntelliJ IDEA;
 - **Documentazione**: Markdown per la relazione, versionata nello stesso repository del codice;

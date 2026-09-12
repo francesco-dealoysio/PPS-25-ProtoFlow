@@ -15,7 +15,7 @@ principali astrazioni introdotte durante lo sviluppo.
 La sezione è suddivisa in base alle principali aree sviluppate dai
 membri del gruppo.
 
-## 4.1 Interfaccia grafica e navigazione — Roberto Pisu
+## 4.1 Interfaccia grafica, navigazione e servizi applicativi — Roberto Pisu
 Questa sezione descrive la struttura dell'interfaccia grafica di ProtoFlow, concentrandosi in particolare sulla gestione della navigazione e sull'organizzazione delle schermate.
 
 Molte viste dell'applicazione condividono elementi e comportamenti simili, come la struttura dei moduli d'inserimento dati (form), le schermate di gestione e le home page dedicate ai vari ruoli utente.
@@ -123,7 +123,7 @@ dei campi richiesti e la logica specifica dell'operazione.
 
 La stessa struttura viene utilizzata, ad esempio, nelle schermate di
 inserimento e modifica di account, ruoli e classifiche e nelle
-schermate di dettaglio dei documenti.
+schermate di dettaglio dei documenti (solo in lettura in queste ultime).
 
 ### 4.1.4 Gestione uniforme di tabelle, selezione e filtri
 
@@ -202,6 +202,43 @@ rimangono indipendenti dalla tecnologia grafica.
 Questa separazione riduce la quantità di logica applicativa contenuta
 nelle view e rende le regole di validazione verificabili
 indipendentemente dall'interfaccia.
+
+### 4.1.7 Scelte applicative trasversali
+
+Oltre alle astrazioni comuni dell'interfaccia, alcune funzionalità hanno
+richiesto di definire esplicitamente il confine tra la view e la logica
+applicativa. Nei casi in cui un'operazione coordina accesso ai dati o
+più passaggi applicativi sono stati introdotti servizi dedicati. Un
+esempio è `LoginService`, che separa `LoginView` dalla verifica delle
+credenziali, dal recupero dell'account e dalla registrazione
+dell'accesso. Questo approccio è stato applicato soprattutto alle
+operazioni che richiedono coordinamento tra più componenti, senza
+imporre un ulteriore livello di servizio alle view che effettuano
+operazioni più semplici.
+
+Il riuso delle view è stato mantenuto separato dai permessi associati
+allo specifico contesto di utilizzo. In particolare,
+`AccountEditView` viene utilizzata sia per la gestione amministrativa
+degli account sia per la modifica del profilo personale, configurando
+nel secondo caso solamente le operazioni consentite all'utente
+autenticato. Analogamente, nella consultazione dei documenti da parte
+del Viewer, il vincolo sul cono di visibilità viene applicato prima di
+fornire i dati alla view, in modo che l'interfaccia riceva solamente
+documenti effettivamente accessibili.
+
+Nel passaggio tra gli stadi del ciclo di vita di un documento è stato
+mantenuto lo stesso identificativo dalla presa in carico fino
+all'archiviazione. Poiché le transizioni interessano file XML
+indipendenti, le operazioni che modificano due stadi vengono inoltre
+gestite in modo da preservare la consistenza: se la creazione del nuovo
+record riesce ma la rimozione di quello precedente fallisce, viene
+eseguito un rollback dell'operazione già completata.
+
+Infine, testi e riferimenti agli stili utilizzati dalle view sono stati
+centralizzati rispettivamente in `UiText` e `UiStyles`. Le singole
+schermate dipendono quindi da identificatori condivisi anziché
+duplicare stringhe, messaggi e nomi delle classi CSS, riducendo i punti
+da modificare quando cambia la presentazione dell'interfaccia.
 
 ## 4.2 Controllo di gestione, autorizzazione Prolog e registrazioni — Thomas Testa
 
